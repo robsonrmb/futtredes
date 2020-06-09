@@ -1,28 +1,36 @@
 class RedeModel {
   int _id;
   String _nome;
+  String _nomeFoto;
   int _status;
   String _pais;
   String _estado;
   String _cidade;
   String _local;
   String _info;
-  DateTime _disponibilidade;
+  String _disponibilidade;
   int _qtdIntegrantes;
   int _responsavelRede;
   int _responsavelJogos1;
   int _responsavelJogos2;
   int _responsavelJogos3;
 
-  RedeModel(this._id, this._nome, this._status, this._pais, this._estado,
+  RedeModel(this._id, this._nome, this._nomeFoto, this._status, this._pais, this._estado,
       this._cidade, this._local, this._info, this._disponibilidade,
       this._qtdIntegrantes, this._responsavelRede, this._responsavelJogos1,
       this._responsavelJogos2, this._responsavelJogos3);
+
+  RedeModel.Novo(this._nome, this._pais, this._cidade,
+      this._local, this._qtdIntegrantes, this._info);
+
+  RedeModel.Edita(this._id, this._nome, this._pais, this._cidade,
+      this._local, this._qtdIntegrantes, this._info);
 
   factory RedeModel.fromJson(Map<String, dynamic> json) {
     return RedeModel(
       json["id"],
       json["nome"],
+      json["nomeFoto"],
       json["status"],
       json["pais"],
       json["estado"],
@@ -68,9 +76,9 @@ class RedeModel {
     _qtdIntegrantes = value;
   }
 
-  DateTime get disponibilidade => _disponibilidade;
+  String get disponibilidade => _disponibilidade;
 
-  set disponibilidade(DateTime value) {
+  set disponibilidade(String value) {
     _disponibilidade = value;
   }
 
@@ -120,6 +128,24 @@ class RedeModel {
 
   set id(int value) {
     _id = value;
+  }
+
+  String get nomeFoto => _nomeFoto;
+
+  set nomeFoto(String value) {
+    _nomeFoto = value;
+  }
+
+  String getStatusFormatado () {
+    if (status == 10) {
+      return "NOVA";
+    }else if (status == 20) {
+      return "ABERTA";
+    }else if (status == 30) {
+      return "FECHADA";
+    }else if (status == 40) {
+      return "DESATIVADA";
+    }
   }
 
 }

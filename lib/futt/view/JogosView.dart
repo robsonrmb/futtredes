@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 class JogosView extends StatefulWidget {
 
-  int idTorneio;
-  String nomeTorneio;
-  int statusTorneio;
+  int idRede;
+  String nomeRede;
+  int statusRede;
   int idSubView;
   bool editaPlacar;
-  JogosView({this.idTorneio, this.nomeTorneio, this.statusTorneio, this.idSubView, this.editaPlacar});
+  JogosView({this.idRede, this.nomeRede, this.statusRede, this.idSubView, this.editaPlacar});
 
   @override
   _JogosViewState createState() => _JogosViewState();
@@ -141,13 +141,13 @@ class _JogosViewState extends State<JogosView> {
 
     bool _edtPlacar = false;
     if (widget.editaPlacar) {
-      if (widget.statusTorneio == 40) {
+      if (widget.statusRede == 40) {
         _edtPlacar = true;
       }
     }
 
     List<Widget> subViews = [
-      JogosTorneioSubView(widget.idTorneio, _paramFase, _edtPlacar),
+      JogosTorneioSubView(widget.idRede, _paramFase, _edtPlacar),
     ];
 
     return Scaffold(
@@ -209,7 +209,7 @@ class _JogosViewState extends State<JogosView> {
                             fontFamily: 'Candal',
                           ),
                         ),
-                        Text(widget.nomeTorneio,
+                        Text(widget.nomeRede,
                           style: TextStyle(
                             color: Colors.grey[500],
                             fontSize: 14,

@@ -1,77 +1,62 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
-import 'package:futt/futt/model/ClassificacaoTorneioModel.dart';
-import 'package:futt/futt/model/RankingEntidadeModel.dart';
-import 'package:futt/futt/model/TipoTorneioModel.dart';
-import 'package:futt/futt/model/TorneioModel.dart';
-import 'package:futt/futt/model/utils/GeneroModel.dart';
+import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
-import 'package:futt/futt/service/ClassificacaoTorneioService.dart';
-import 'package:futt/futt/service/GeneroService.dart';
 import 'package:futt/futt/service/PaisService.dart';
-import 'package:futt/futt/service/RankingEntidadeService.dart';
-import 'package:futt/futt/service/TipoTorneioService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class NovoTorneioView extends StatefulWidget {
+class EdicaoRedeView extends StatefulWidget {
+
+  RedeModel redeModel;
+  EdicaoRedeView({this.redeModel});
+
   @override
-  _NovoTorneioViewState createState() => _NovoTorneioViewState();
+  _EdicaoRedeViewState createState() => _EdicaoRedeViewState();
 }
 
-class _NovoTorneioViewState extends State<NovoTorneioView> {
+class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   String _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
-  int _controllerTipoTorneio = 0;
-  int _controllerClassificacaoTorneio = 0;
-  String _controllerGeneroTorneio = "";
-  int _controllerEntidadeTorneio = 0;
-  int _controllerRankingEntidadeTorneio = 0;
-  String _controllerPaisTorneio = "";
+  String _controllerPaisRede = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
-  TextEditingController _controllerDataInicio = TextEditingController();
-  TextEditingController _controllerDataFim = TextEditingController();
-  TextEditingController _controllerQtdDuplas = TextEditingController();
+  TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
 
-  void _cadastrar(BuildContext context) async {
+  _atualizar() async {
     try {
       String _msg = "";
 
       _valida();
 
-      //Grava torneios
-      TorneioModel torneioModel = TorneioModel.Novo(
-          _controllerNome.text, _controllerTipoTorneio, _controllerClassificacaoTorneio, _controllerGeneroTorneio,
-          _controllerEntidadeTorneio, _controllerRankingEntidadeTorneio, _controllerPaisTorneio, _controllerCidade.text,
-          _controllerLocal.text, _controllerDataInicio.text, _controllerDataFim.text,
-          int.parse(_controllerQtdDuplas.text), _controllerMais.text
+      RedeModel tm = RedeModel.Edita(
+        widget.redeModel.id, _controllerNome.text, _controllerPaisRede, _controllerCidade.text,
+        _controllerLocal.text, int.parse(_controllerQtdIntegrantes.text), _controllerMais.text
       );
-      //TorneioService torneioService = TorneioService();
-      //torneioService.inclui(torneioModel, ConstantesConfig.SERVICO_FIXO);
 
-      var _url = "${ConstantesRest.URL_TORNEIOS}/adiciona";
+      //RedeService redeService = RedeService();
+      //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
+
+      var _url = "${ConstantesRest.URL_TORNEIOS}/atualiza";
       var _dados = "";
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({ 'userId': 200, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        _url = "https://jsonplaceholder.typicode.com/posts/1";
+        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
       }
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.put(_url,
           headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
           body: _dados
       );
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Torneio inserido com sucesso!!!";
+        _msg = "Rede atualizado com sucesso!!!";
       }else{
         _msg = "Falha durante o processamento!!!";
       }
@@ -91,56 +76,19 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
     }
 
     DialogFutt dialogFutt = new DialogFutt();
-    dialogFutt.waiting(context, "Novo torneio", "${_mensagem}");
+    dialogFutt.waiting(context, "Edição de rede", "${_mensagem}");
     await Future.delayed(Duration(seconds: 3));
     Navigator.pop(context);
   }
 
   void _valida() {
     if (_controllerNome.text == "") {
-      throw Exception('Informe o título do torneio.');
-    }else if (_controllerTipoTorneio == 0) {
-      throw Exception('Informe o tipo de torneio.');
-    }else if (_controllerClassificacaoTorneio == 0) {
-      throw Exception('Informe a classificação do torneio.');
-    }else if (_controllerPaisTorneio == "") {
-      throw Exception('Informe o país de onde se realizará o torneio.');
+      throw Exception('Informe o título do rede.');
+    }else if (_controllerPaisRede == "") {
+      throw Exception('Informe o país de onde se realizará o rede.');
     }else if (_controllerCidade.text == "") {
-      throw Exception('Informe a cidade de onde se realizará o torneio.');
-    }else if (_controllerDataInicio.text == "") {
-      throw Exception('Informe a data de início do torneio.');
-    }else if (_controllerDataFim.text == "") {
-      throw Exception('Informe a data fim do torneio.');
-    }else{
-      if (_controllerTipoTorneio == 1) {
-        if (_controllerQtdDuplas.text != "16" && _controllerQtdDuplas.text != "32") {
-          throw Exception('Qtd de duplas para tipo de torneio: 16 ou 32.');
-        }
-      }else if (_controllerTipoTorneio == 2) {
-        if (_controllerQtdDuplas.text != "4" && _controllerQtdDuplas.text != "8" && _controllerQtdDuplas.text != "16") {
-          throw Exception('Qtd de duplas para tipo de torneio: 4, 8 ou 16.');
-        }
-      }else if (_controllerTipoTorneio == 3) {
-        if (_controllerQtdDuplas.text != "0" && _controllerQtdDuplas.text != "") {
-          throw Exception('Para torneios em grupo não informe a qtd de duplas.');
-        }
-      }
+      throw Exception('Informe a cidade de onde se realizará o rede.');
     }
-  }
-
-  Future<List<TipoTorneioModel>> _listaTipoTorneios() async {
-    TipoTorneioService resultadoService = TipoTorneioService();
-    return resultadoService.listaTodos(ConstantesConfig.SERVICO_FIXO);
-  }
-
-  Future<List<RankingEntidadeModel>> _listaEntidadesDoUsuario() async {
-    RankingEntidadeService rankingEntidadeService = RankingEntidadeService();
-    return rankingEntidadeService.listaPorUsuario(ConstantesConfig.SERVICO_FIXO);
-  }
-
-  Future<List<ClassificacaoTorneioModel>> _listaClassificacaoTorneios() async {
-    ClassificacaoTorneioService classificacaoTorneioService = ClassificacaoTorneioService();
-    return classificacaoTorneioService.listaTodos(ConstantesConfig.SERVICO_FIXO);
   }
 
   Future<List<PaisModel>> _listaPaises() async {
@@ -148,18 +96,27 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
     return paisService.listaPaises();
   }
 
-  Future<List<GeneroModel>> _listaGeneros() async {
-    GeneroService generoService = GeneroService();
-    return generoService.listaGeneros();
+  _atualizaValoresIniciais(RedeModel redeOrigem) {
+    _controllerNome.text = redeOrigem.nome;
+    _controllerPaisRede = redeOrigem.pais;
+    PaisModel _paisModel = PaisModel(redeOrigem.pais, redeOrigem.pais);
+
+    _controllerCidade.text = redeOrigem.cidade;
+    _controllerLocal.text = redeOrigem.local;
+    _controllerQtdIntegrantes.text = redeOrigem.qtdIntegrantes.toString();
+    _controllerMais.text = redeOrigem.info;
   }
 
   @override
   Widget build(BuildContext context) {
+
+    _atualizaValoresIniciais(widget.redeModel);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
-          "Cadastro de torneios",
+          "Atualização do rede",
           style: TextStyle(
               color: Colors.black
           ),
@@ -177,7 +134,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 5),
                   child: Text(
-                    "Insira os dados do torneio para cadastrar",
+                    "Altere os dados do rede para atualizar",
                     style: TextStyle(
                         fontSize: 12
                     ),
@@ -190,7 +147,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                 Padding(
                   padding: EdgeInsets.only(top: 5),
                   child: Text(
-                    "Logo do Torneio",
+                    "Logo do Rede",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -216,7 +173,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                             // prefixText: "Nome",
                             // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                             // labelText: "Informe seu nome",
-                            hintText: "Nome do torneio",
+                            hintText: "Nome do rede",
                             hintStyle: TextStyle(
                               fontSize: 14,
                               //fontWeight: FontWeight.w300,
@@ -237,61 +194,15 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
-                        child: FindDropdown<TipoTorneioModel>(
-                          onFind: (String filter) => _listaTipoTorneios(),
-                          searchBoxDecoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (TipoTorneioModel data) => _controllerTipoTorneio = data.id,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: FindDropdown<ClassificacaoTorneioModel>(
-                          showSearchBox: false,
-                          onFind: (String filter) => _listaClassificacaoTorneios(),
-                          searchBoxDecoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (ClassificacaoTorneioModel data) => _controllerClassificacaoTorneio = data.id,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: FindDropdown<GeneroModel>(
-                          showSearchBox: false,
-                          onFind: (String filter) => _listaGeneros(),
-                          searchBoxDecoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (GeneroModel data) => _controllerGeneroTorneio = data.id,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: FindDropdown<RankingEntidadeModel>(
-                          showSearchBox: false,
-                          onFind: (String filter) => _listaEntidadesDoUsuario(),
-                          searchBoxDecoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (RankingEntidadeModel data) => _controllerEntidadeTorneio = data.id,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
                         child: FindDropdown<PaisModel>(
+                          selectedItem: PaisModel(widget.redeModel.pais, widget.redeModel.pais),
                           showSearchBox: false,
                           onFind: (String filter) => _listaPaises(),
                           searchBoxDecoration: InputDecoration(
                             hintText: "Search",
                             border: OutlineInputBorder(),
                           ),
-                          onChanged: (PaisModel data) => _controllerPaisTorneio = data.id,
+                          onChanged: (PaisModel data) => _controllerPaisRede = data.id,
                         ),
                       ),
                       TextField(
@@ -350,60 +261,6 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                           children: <Widget>[
                             Expanded(
                               child: TextField(
-                                keyboardType: TextInputType.datetime,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "Data Início",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
-                                ),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black
-                                ),
-                                maxLength: 10,
-                                //maxLengthEnforced: true,
-                                controller: _controllerDataInicio,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                keyboardType: TextInputType.datetime,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "Data fim",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
-                                ),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black
-                                ),
-                                maxLength: 10,
-                                //maxLengthEnforced: true,
-                                controller: _controllerDataFim,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                            ),
-                            Expanded(
-                              child: TextField(
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   filled: true,
@@ -423,7 +280,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                                 ),
                                 maxLength: 2,
                                 //maxLengthEnforced: true,
-                                controller: _controllerQtdDuplas,
+                                controller: _controllerQtdIntegrantes,
                               ),
                             ),
                           ],
@@ -435,7 +292,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
                             border: Border.all(
-                                width: 1.0,
+                              width: 1.0,
                               color: Colors.grey[400],
                             )
                         ),
@@ -477,7 +334,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: widget.redeModel.status < 40 ? BottomAppBar(
         child: Container(
           padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
           color: Colors.grey[300],
@@ -486,7 +343,7 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
             textColor: Colors.white,
             padding: EdgeInsets.all(15),
             child: Text(
-              "Cadastrar",
+              "Atualizar",
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: 'Candal',
@@ -495,13 +352,10 @@ class _NovoTorneioViewState extends State<NovoTorneioView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(2),
             ),
-            onPressed: () {
-              _cadastrar(context);
-            },
+            onPressed: _atualizar,
           ),
         ),
-      )
+      ) : null,
     );
   }
-
 }

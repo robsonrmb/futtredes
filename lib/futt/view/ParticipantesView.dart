@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 class ParticipantesView extends StatefulWidget {
 
-  int idTorneio;
-  String nomeTorneio;
-  String paisTorneio;
-  String cidadeTorneio;
-  String dataTorneio;
-  int statusTorneio;
-  ParticipantesView({this.idTorneio, this.nomeTorneio, this.paisTorneio, this.cidadeTorneio, this.dataTorneio, this.statusTorneio});
+  int idRede;
+  String nomeRede;
+  String paisRede;
+  String cidadeRede;
+  String localRede;
+  ParticipantesView({this.idRede, this.nomeRede, this.paisRede, this.cidadeRede, this.localRede});
 
   @override
   _ParticipantesViewState createState() => _ParticipantesViewState();
@@ -18,13 +17,13 @@ class ParticipantesView extends StatefulWidget {
 class _ParticipantesViewState extends State<ParticipantesView> {
 
   String _mensagem = "";
-  int _idTorneio;
+  int _idRede;
   TextEditingController _controllerEmail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
-    _idTorneio = widget.idTorneio;
+    _idRede = widget.idRede;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -44,7 +43,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
-            child: Text("${widget.nomeTorneio}",
+            child: Text("${widget.nomeRede}",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -68,7 +67,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 10),
-                        child: Text("${widget.paisTorneio} - ${widget.cidadeTorneio}",
+                        child: Text("${widget.paisRede} - ${widget.cidadeRede}",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 12,
@@ -77,7 +76,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                        child: Text("${widget.dataTorneio}",
+                        child: Text("${widget.localRede}",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 12,
@@ -105,7 +104,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
             ),
           ),
           Expanded(
-            child: ParticipantesTorneioSubView(_idTorneio),
+            child: ParticipantesTorneioSubView(_idRede),
           )
         ],
       ),

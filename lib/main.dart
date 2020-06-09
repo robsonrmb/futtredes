@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:futt/futt/view/AvaliacoesView.dart';
 import 'package:futt/futt/view/CadastroView.dart';
-import 'package:futt/futt/view/EdicaoTorneioView.dart';
+import 'package:futt/futt/view/EdicaoRedeView.dart';
 import 'package:futt/futt/view/HomeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/LoginView.dart';
-import 'package:futt/futt/view/MeusTorneiosView.dart';
-import 'package:futt/futt/view/NovaAvaliacaoView.dart';
-import 'package:futt/futt/view/NovoTorneioView.dart';
+import 'package:futt/futt/view/MinhasRedesView.dart';
+import 'package:futt/futt/view/NovaRedeView.dart';
 import 'package:futt/futt/view/ParticipantesView.dart';
 import 'package:futt/futt/view/PerfilView.dart';
 import 'package:futt/futt/view/ResultadosView.dart';
@@ -21,12 +19,10 @@ void main() {
       "/jogos" : (context) => JogosView(),
       "/resultados" : (context) => ResultadosView(),
       "/participantes" : (context) => ParticipantesView(),
-      "/novo_torneio" : (context) => NovoTorneioView(),
-      "/edicao_torneio" : (context) => EdicaoTorneioView(),
-      "/meustorneios" : (context) => MeusTorneiosView(),
+      "/novarede" : (context) => NovaRedeView(),
+      "/edicaorede" : (context) => EdicaoRedeView(),
+      "/minhasredes" : (context) => MinhasRedesView(),
       "/perfil" : (context) => PerfilView(),
-      "/avaliacoes" : (context) => AvaliacoesView(),
-      "/nova_avaliacao" : (context) => NovaAvaliacaoView(0),
     },
     home: LoginView(),
     theme: ThemeData(

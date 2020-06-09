@@ -1,31 +1,31 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
-import 'package:futt/futt/model/TorneioModel.dart';
-import 'package:futt/futt/service/TorneioService.dart';
-import 'package:futt/futt/view/EdicaoTorneioView.dart';
+import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/service/RedeService.dart';
+import 'package:futt/futt/view/EdicaoRedeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/NovoParticipanteView.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class MeusTorneiosSubView extends StatefulWidget {
+class MinhasRedesSubView extends StatefulWidget {
   @override
-  _MeusTorneiosSubViewState createState() => _MeusTorneiosSubViewState();
+  _MinhasRedesSubViewState createState() => _MinhasRedesSubViewState();
 }
 
-class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
+class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   String _mensagem = "";
-  bool _atualizaTorneios = false;
+  bool _atualizaRedes = false;
 
   int _getIdSubView() {
     return 1;
   }
 
-  Future<List<TorneioModel>> _listaMeusTorneios(_atualizaTorneios) async {
-    TorneioService torneioService = TorneioService();
-    return torneioService.listaMeusTorneios(ConstantesConfig.SERVICO_FIXO);
+  Future<List<RedeModel>> _listaMinhasRedes(_atualizaRedes) async {
+    RedeService redeService = RedeService();
+    return redeService.listaMinhasRedes(ConstantesConfig.SERVICO_FIXO);
   }
 
   _processa(var _url, var _dados, String _mensagemDeSucesso) async {
@@ -41,7 +41,7 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Navigator.pop(context);
         setState(() {
-          _atualizaTorneios = true;
+          _atualizaRedes = true;
         });
         _mensagem = _mensagemDeSucesso;
 
@@ -80,46 +80,46 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
     Scaffold.of(context).showSnackBar(snackbar);
   }
 
-  _alteraStatus (int idTorneio) {
-    var _url = "${ConstantesRest.URL_TORNEIOS}/${idTorneio}/alterastatus";
+  _alteraStatus (int idRede) {
+    var _url = "${ConstantesRest.URL_TORNEIOS}/${idRede}/alterastatus";
     var _dados = "";
-    _processa(_url, _dados, "Status do torneio alterado com sucesso!!!");
+    _processa(_url, _dados, "Status do rede alterado com sucesso!!!");
   }
 
-  _resetTorneio (int idTorneio) {
-    var _url = "${ConstantesRest.URL_TORNEIOS}/${idTorneio}/reset";
+  _resetRede (int idRede) {
+    var _url = "${ConstantesRest.URL_TORNEIOS}/${idRede}/reset";
     var _dados = "";
-    _processa(_url, _dados, "Torneio reiniciado com sucesso!!!");
+    _processa(_url, _dados, "Rede reiniciado com sucesso!!!");
   }
 
-  _finalizaJogos (int idTorneio) {
-    var _url = "${ConstantesRest.URL_TORNEIOS}/${idTorneio}/finalizajogos";
+  _finalizaJogos (int idRede) {
+    var _url = "${ConstantesRest.URL_TORNEIOS}/${idRede}/finalizajogos";
     var _dados = "";
-    _processa(_url, _dados, "Status do torneio alterado com sucesso!!!");
+    _processa(_url, _dados, "Status do rede alterado com sucesso!!!");
   }
 
-  _gravaRanking (int idTorneio) {
-    var _url = "${ConstantesRest.URL_TORNEIOS}/${idTorneio}/gravaranking";
+  _gravaRanking (int idRede) {
+    var _url = "${ConstantesRest.URL_TORNEIOS}/${idRede}/gravaranking";
     var _dados = "";
     _processa(_url, _dados, "Ranking gerado/atualizado com sucesso!!!");
   }
 
-  _finalizaTorneio (int idTorneio) {
-    var _url = "${ConstantesRest.URL_TORNEIOS}/${idTorneio}/finaliza";
+  _finalizaRede (int idRede) {
+    var _url = "${ConstantesRest.URL_TORNEIOS}/${idRede}/finaliza";
     var _dados = "";
-    _processa(_url, _dados, "Torneio finalizado com sucesso!!!");
+    _processa(_url, _dados, "Rede finalizado com sucesso!!!");
   }
 
-  _desativa (int idTorneio) {
-    var _url = "${ConstantesRest.URL_TORNEIOS}/${idTorneio}/desativa";
+  _desativa (int idRede) {
+    var _url = "${ConstantesRest.URL_TORNEIOS}/${idRede}/desativa";
     var _dados = "";
-    _processa(_url, _dados, "Torneio desativado com sucesso!!!");
+    _processa(_url, _dados, "Rede desativado com sucesso!!!");
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<TorneioModel>>(
-      future: _listaMeusTorneios(_atualizaTorneios),
+    return FutureBuilder<List<RedeModel>>(
+      future: _listaMinhasRedes(_atualizaRedes),
       builder: (context, snapshot) {
         switch( snapshot.connectionState ) {
           case ConnectionState.none :
@@ -135,8 +135,8 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
 
-                  List<TorneioModel> torneios = snapshot.data;
-                  TorneioModel torneio = torneios[index];
+                  List<RedeModel> redes = snapshot.data;
+                  RedeModel rede = redes[index];
 
                   return Container(
                     margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -147,14 +147,14 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                     child: GestureDetector(
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage('${torneio.logoTorneio}'),
+                          backgroundImage: NetworkImage('${rede.nomeFoto}'),
                           radius: 20.0,
                         ),
                         title: Row(
                           children: <Widget>[
                             Flexible(
                               child: Text(
-                                "${torneio.nome}",
+                                "${rede.nome}",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -164,7 +164,7 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                           ],
                         ),
                         subtitle: Text(
-                          "${torneio.getStatusFormatado()}",
+                          "${rede.getStatusFormatado()}",
                           style: TextStyle(
                             color: Colors.orange,
                             fontSize: 16,
@@ -174,19 +174,19 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                         trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              torneio.status == 20 || torneio.status == 30  ? new GestureDetector(
+                              rede.status == 20 || rede.status == 30  ? new GestureDetector(
                                 child: Icon(Icons.person_add,
                                   //color: Colors.black
                                 ),
                                 onTap: (){
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => NovoParticipanteView(torneio.id),
+                                    builder: (context) => NovoParticipanteView(rede.id),
                                   ));
                                 },
                               ) : new Padding(
                                 padding: EdgeInsets.all(1),
                               ),
-                              torneio.status < 70 ? new GestureDetector(
+                              rede.status < 70 ? new GestureDetector(
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 10),
                                   child: Icon(Icons.monetization_on,
@@ -200,13 +200,13 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                               GestureDetector(
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 10),
-                                  child: Icon(torneio.status < 40 ? Icons.edit : Icons.remove_red_eye,
+                                  child: Icon(rede.status < 40 ? Icons.edit : Icons.remove_red_eye,
                                     //color: Colors.black
                                   ),
                                 ),
                                 onTap: (){
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => EdicaoTorneioView(torneioModel: torneio),
+                                    builder: (context) => EdicaoRedeView(redeModel: rede),
                                   ));
                                 },
                               ),
@@ -215,18 +215,18 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                       ),
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => JogosView(idTorneio: torneio.id, nomeTorneio: torneio.nome, statusTorneio: torneio.status, idSubView: _getIdSubView(), editaPlacar: true),
+                          builder: (context) => JogosView(idRede: rede.id, nomeRede: rede.nome, statusRede: rede.status, idSubView: _getIdSubView(), editaPlacar: true),
                         ));
                       },
                       onLongPress: (){
                         showDialog(context: context, builder: (context){
                           return AlertDialog(
-                            title: Text("${torneio.nome}"),
+                            title: Text("${rede.nome}"),
                             content: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
-                                  torneio.status < 40 ? new Padding(
+                                  rede.status < 40 ? new Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: RaisedButton(
                                       color: Color(0xff086ba4),
@@ -243,13 +243,13 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                       onPressed: () {
-                                        _alteraStatus(torneio.id);
+                                        _alteraStatus(rede.id);
                                       },
                                     ),
                                   ) : new Padding(
                                     padding: EdgeInsets.only(top: 1),
                                   ),
-                                  torneio.status == 40 ? new Padding(
+                                  rede.status == 40 ? new Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: RaisedButton(
                                       color: Color(0xff086ba4),
@@ -266,13 +266,13 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                       onPressed: () {
-                                        _resetTorneio(torneio.id);
+                                        _resetRede(rede.id);
                                       },
                                     ),
                                   ) : new Padding(
                                     padding: EdgeInsets.only(top: 1),
                                   ),
-                                  torneio.status == 40 ? new Padding(
+                                  rede.status == 40 ? new Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: RaisedButton(
                                       color: Color(0xff086ba4),
@@ -289,13 +289,13 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                       onPressed: () {
-                                        _finalizaJogos(torneio.id);
+                                        _finalizaJogos(rede.id);
                                       },
                                     ),
                                   ) : new Padding(
                                     padding: EdgeInsets.only(top: 1),
                                   ),
-                                  torneio.getStatusJogosFinalizadosComTorneiosAutomaticos() == 51 ? new Padding(
+                                  new Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: RaisedButton(
                                       color: Color(0xff086ba4),
@@ -312,20 +312,18 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                       onPressed: () {
-                                        _gravaRanking(torneio.id);
+                                        _gravaRanking(rede.id);
                                       },
                                     ),
-                                  ) : new Padding(
-                                    padding: EdgeInsets.only(top: 1),
                                   ),
-                                  torneio.getStatusJogosFinalizadosComTorneiosAutomaticos() == 52 ? new Padding(
+                                  new Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: RaisedButton(
                                       color: Color(0xff086ba4),
                                       textColor: Colors.white,
                                       padding: EdgeInsets.all(15),
                                       child: Text(
-                                        "Finalizar torneio",
+                                        "Finalizar rede",
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontFamily: 'Candal',
@@ -335,13 +333,11 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                       onPressed: () {
-                                        _finalizaTorneio(torneio.id);
+                                        _finalizaRede(rede.id);
                                       },
                                     ),
-                                  ) : new Padding(
-                                    padding: EdgeInsets.only(top: 1),
                                   ),
-                                  torneio.status < 60 ? new Padding(
+                                  rede.status < 60 ? new Padding(
                                     padding: EdgeInsets.only(top: 10),
                                     child: RaisedButton(
                                       color: Color(0xff086ba4),
@@ -358,7 +354,7 @@ class _MeusTorneiosSubViewState extends State<MeusTorneiosSubView> {
                                         borderRadius: BorderRadius.circular(2),
                                       ),
                                       onPressed: () {
-                                        _desativa(torneio.id);
+                                        _desativa(rede.id);
                                       },
                                     ),
                                   ) : new Padding(

@@ -1,47 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
-import 'package:futt/futt/model/TorneioModel.dart';
-import 'package:futt/futt/service/TorneioService.dart';
+import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/service/RedeService.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/ParticipantesView.dart';
-import 'package:futt/futt/view/ResultadosView.dart';
 
-class TorneiosSubView extends StatefulWidget {
+class RedesSubView extends StatefulWidget {
 
   int indiceDeBusca;
   String nomeFiltro;
   String paisFiltro;
   String cidadeFiltro;
   String dataFiltro;
-  TorneiosSubView(this.indiceDeBusca, this.nomeFiltro, this.paisFiltro, this.cidadeFiltro, this.dataFiltro);
+  RedesSubView(this.indiceDeBusca, this.nomeFiltro, this.paisFiltro, this.cidadeFiltro, this.dataFiltro);
 
   @override
-  _TorneiosSubViewState createState() => _TorneiosSubViewState();
+  _RedesSubViewState createState() => _RedesSubViewState();
 }
 
-class _TorneiosSubViewState extends State<TorneiosSubView> {
+class _RedesSubViewState extends State<RedesSubView> {
 
   int _getIdSubView() {
     return 1;
   }
 
-  Future<List<TorneioModel>> _listaTorneios() async {
-    if (widget.indiceDeBusca == 0 || (widget.nomeFiltro == "" && widget.paisFiltro == "" && widget.cidadeFiltro == "" && widget.dataFiltro == "")) {
-      TorneioService torneioService = TorneioService();
-      return torneioService.listaTodos(ConstantesConfig.SERVICO_FIXO);
-    }else{
-      TorneioModel torneioModel = TorneioModel.Filtro(
-        widget.nomeFiltro, widget.paisFiltro, widget.cidadeFiltro, widget.dataFiltro); //parametro cidade = local
-
-      TorneioService torneioService = TorneioService();
-      return torneioService.listaPorFiltros(torneioModel, ConstantesConfig.SERVICO_FIXO);
-    }
+  Future<List<RedeModel>> _listaRedesQueParticipo() async {
+    RedeService redeService = RedeService();
+    return redeService.listaRedesQueParticipo(ConstantesConfig.SERVICO_FIXO);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<TorneioModel>>(
-      future: _listaTorneios(),
+    return FutureBuilder<List<RedeModel>>(
+      future: _listaRedesQueParticipo(),
       builder: (context, snapshot) {
         switch( snapshot.connectionState ) {
           case ConnectionState.none :
@@ -57,8 +48,8 @@ class _TorneiosSubViewState extends State<TorneiosSubView> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
 
-                  List<TorneioModel> torneios = snapshot.data;
-                  TorneioModel torneio = torneios[index];
+                  List<RedeModel> redes = snapshot.data;
+                  RedeModel rede = redes[index];
 
                   return Container(
                     margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -70,14 +61,14 @@ class _TorneiosSubViewState extends State<TorneiosSubView> {
                       child:
                         ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: NetworkImage('${torneio.logoTorneio}'),
+                            backgroundImage: NetworkImage('${rede.nomeFoto}'),
                             radius: 20.0,
                           ),
                           title: Row(
                             children: <Widget>[
                                 Flexible(
                                   child: Text(
-                                    "${torneio.nome}",
+                                    "${rede.nome}",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -87,7 +78,7 @@ class _TorneiosSubViewState extends State<TorneiosSubView> {
                               ],
                             ),
                           subtitle: Text(
-                            "${torneio.dataInicio}",
+                            "${rede.pais} - ${rede.cidade} - ${rede.local}",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -96,22 +87,6 @@ class _TorneiosSubViewState extends State<TorneiosSubView> {
                           trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                torneio.status >= 60 ? new GestureDetector(
-                                  child: Icon(Icons.filter_1,
-                                    //color: Colors.black
-                                  ),
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(
-                                              builder: (context) => ResultadosView(idTorneio: torneio.id,
-                                                                                   nomeTorneio: torneio.nome,
-                                                                                   paisTorneio: torneio.pais,
-                                                                                   cidadeTorneio: torneio.cidade,
-                                                                                   dataTorneio: torneio.dataInicio)
-                                    ));
-                                  },
-                                ) : new Padding(
-                                  padding: EdgeInsets.all(1),
-                                ),
                                 GestureDetector(
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 10),
@@ -121,12 +96,11 @@ class _TorneiosSubViewState extends State<TorneiosSubView> {
                                   ),
                                   onTap: (){
                                     Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => ParticipantesView(idTorneio: torneio.id,
-                                          nomeTorneio: torneio.nome,
-                                          paisTorneio: torneio.pais,
-                                          cidadeTorneio: torneio.cidade,
-                                          dataTorneio: torneio.dataInicio,
-                                          statusTorneio: torneio.status,)
+                                        builder: (context) => ParticipantesView(idRede: rede.id,
+                                          nomeRede: rede.nome,
+                                          paisRede: rede.pais,
+                                          cidadeRede: rede.cidade,
+                                          localRede: rede.local,)
                                     ));
                                   },
                                 ),
@@ -135,7 +109,7 @@ class _TorneiosSubViewState extends State<TorneiosSubView> {
                         ),
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => JogosView(idTorneio: torneio.id, nomeTorneio: torneio.nome, idSubView: _getIdSubView(), editaPlacar: false),
+                          builder: (context) => JogosView(idRede: rede.id, nomeRede: rede.nome, idSubView: _getIdSubView(), editaPlacar: false),
                         ));
                       },
                     ),

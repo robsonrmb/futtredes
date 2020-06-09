@@ -3,17 +3,10 @@ import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/PaisService.dart';
 import 'package:futt/futt/view/DashboardView.dart';
 import 'package:futt/futt/view/EscolinhasView.dart';
-import 'package:futt/futt/view/EstatisticasView.dart';
-import 'package:futt/futt/view/InfoEscolinhasView.dart';
-import 'package:futt/futt/view/InfoTorneiosView.dart';
 import 'package:futt/futt/view/LoginView.dart';
-import 'package:futt/futt/view/MeusTorneiosView.dart';
-import 'package:futt/futt/view/NoticiasView.dart';
-import 'package:futt/futt/view/NovoTorneioView.dart';
-import 'package:futt/futt/view/RankingView.dart';
-import 'package:futt/futt/view/TorneiosView.dart';
-import 'package:find_dropdown/find_dropdown.dart';
+import 'package:futt/futt/view/MinhasRedesView.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/RedesView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
@@ -23,9 +16,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
-  TabController _controllerDashboard;
   TabController _controllerTorneios;
-  TabController _controllerEscolinha;
   int _currentIndex = 0;
 
   TextEditingController _controllerNome = TextEditingController();
@@ -57,36 +48,22 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controllerDashboard = TabController(
-      length: 3, vsync: this, initialIndex: 0,
-    );
     _controllerTorneios = TabController(
-      length: 3, vsync: this, initialIndex: 1,
-    );
-    _controllerEscolinha = TabController(
-      length: 2, vsync: this, initialIndex: 1,
+      length: 2, vsync: this, initialIndex: 0,
     );
   }
 
-  int _indiceAtual = 1;
-  String _titleAppBar = "Dashboard";
+  int _indiceAtual = 0;
+  String _titleAppBar = "Redes";
 
   @override
   Widget build(BuildContext context) {
-    /*
-    List<Widget> views = [
-      TorneiosView(),
-      DashboardView(),
-      EscolinhasView("","")
-    ];
-    */
-    _abrirAvaliacoes() {
-      print("Abrindo avaliações...");
-      Navigator.pushNamed(context, "/avaliacoes");
+
+    _novaRede() {
+      Navigator.pushNamed(context, "/novarede");
     }
 
     _abrirPerfil() {
-      print("Abrindo perfil...");
       Navigator.pushNamed(context, "/perfil");
     }
 
@@ -106,7 +83,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     String _getTitleAppBar(indice) {
       _titleAppBar = "Dashboard";
       if (indice == 0) {
-        _titleAppBar = "Torneios";
+        _titleAppBar = "Redes";
 
       }else if (indice == 2) {
         _titleAppBar = "Escolinhas";
@@ -131,7 +108,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: _abrirAvaliacoes,
+              onPressed: _novaRede,
             ),
             IconButton(
               icon: Icon(Icons.person),
@@ -143,25 +120,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             ),
           ],
           bottom:
-            _indiceAtual > 0 ?
-                (_indiceAtual == 1) ?
-                    TabBar(
-                      controller: _controllerDashboard,
-                      tabs: <Widget>[
-                        Tab(text: "Notícias",),
-                        Tab(text: "Dashboard",),
-                        Tab(text: "Ranking",),
-                      ],
-
-                    ) : TabBar(
-                      controller: _controllerEscolinha,
-                      tabs: <Widget>[
-                        Tab(text: "Informações",),
-                        Tab(text: "Escolinhas",),
-                      ],
-                    )
-
-          : TabBar(
+            _indiceAtual == 0 ? TabBar(
               controller: _controllerTorneios,
               onTap: (index) {
                 setState(() {
@@ -169,105 +128,20 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 });
               },
               tabs: <Widget>[
-                Tab(text: "Novo",),
-                Tab(text: "Pesquisa",),
-                Tab(text: "Meus",),
+                Tab(text: "Participante",),
+                Tab(text: "Dono",),
               ],
-            ),
+            ) : null,
         ),
-        floatingActionButton: (_indiceAtual == 0 && _currentIndex == 1) ? FloatingActionButton(
-          child: Icon(Icons.filter),
-          onPressed: () {
-            showDialog(context: context, builder: (context){
-              return AlertDialog(
-                title: Text("Pesquise seu torneio"),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Nome",
-                        ),
-                        controller: _controllerNome,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Datas",
-                        ),
-                        controller: _controllerData,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Cidade ou local",
-                        ),
-                        controller: _controllerCidade,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: FindDropdown<PaisModel>(
-                          label: "País",
-                          showSearchBox: false,
-                          onFind: (String filter) => _listaPaises(),
-                          searchBoxDecoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (PaisModel data) => _controllerPais = data.id,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: RaisedButton(
-                      color: Color(0xff086ba4),
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(15),
-                      child: Text(
-                        "Pesquisar",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Candal',
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    onPressed: () {
-                      _pesquisarTorneios();
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
-            });
-          },
-        ) : null,
       body: _indiceAtual > 0 ?
               (_indiceAtual == 1) ?
-                  TabBarView(
-                    controller: _controllerDashboard,
-                    children: <Widget>[
-                      NoticiasView(),
-                      EstatisticasView(),
-                      RankingView(2020, 7)
-                    ],
-                  ) : TabBarView(
-                        controller: _controllerEscolinha,
-                        children: <Widget>[
-                          InfoEscolinhasView(),
-                          EscolinhasView("", ""),
-                        ],
-                      )
+                DashboardView() : EscolinhasView("","")
 
       : TabBarView(
         controller: _controllerTorneios,
         children: <Widget>[
-          InfoTorneiosView(),
-          TorneiosView(),
-          MeusTorneiosView(),
+          RedesView(),
+          MinhasRedesView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -282,11 +156,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         fixedColor: Color(0xfff79e07),
         items: [
           BottomNavigationBarItem(
-            title: Text("Torneios"),
+            title: Text("Redes"),
             icon: Icon(Icons.whatshot),
           ),
           BottomNavigationBarItem(
-            title: Text("Dahboard"),
+            title: Text("Dashboard"),
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(

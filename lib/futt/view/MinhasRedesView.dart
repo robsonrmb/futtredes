@@ -1,12 +1,12 @@
-import 'package:futt/futt/view/subview/MeusTorneiosSubView.dart';
+import 'package:futt/futt/view/subview/MinhasRedesSubView.dart';
 import 'package:flutter/material.dart';
 
-class MeusTorneiosView extends StatefulWidget {
+class MinhasRedesView extends StatefulWidget {
   @override
-  _MeusTorneiosViewState createState() => _MeusTorneiosViewState();
+  _MinhasRedesViewState createState() => _MinhasRedesViewState();
 }
 
-class _MeusTorneiosViewState extends State<MeusTorneiosView> {
+class _MinhasRedesViewState extends State<MinhasRedesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,7 @@ class _MeusTorneiosViewState extends State<MeusTorneiosView> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            child: MeusTorneiosSubView(),
+            child: MinhasRedesSubView(),
           )
         ],
       ),

@@ -5,11 +5,11 @@ import 'package:futt/futt/rest/fixo/BaseRestFixo.dart';
 
 class JogoRedeService {
 
-  inclui(var jogoRedeModel, {bool fixo}) {
+  inclui(var JogoRedeModel, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO_REDE}/adiciona";
-      JogoRedeRest jogoRedeRest = JogoRedeRest();
-      jogoRedeRest.processaHttpPost(url, jogoRedeModel);
+      String url = "${ConstantesRest.URL_JOGO}/adiciona";
+      JogoRedeRest jogoRest = JogoRedeRest();
+      jogoRest.processaHttpPost(url, JogoRedeModel);
 
     }else{
       BaseRestFixo serviceFixo = BaseRestFixo();
@@ -17,11 +17,11 @@ class JogoRedeService {
     }
   }
 
-  atualiza(var jogoRedeModel, {bool fixo}) {
+  atualiza(var JogoRedeModel, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO_REDE}/atualiza";
-      JogoRedeRest jogoRedeRest = JogoRedeRest();
-      jogoRedeRest.processaHttpPut(url, jogoRedeModel);
+      String url = "${ConstantesRest.URL_JOGO}/atualiza";
+      JogoRedeRest jogoRest = JogoRedeRest();
+      jogoRest.processaHttpPut(url, JogoRedeModel);
 
     }else{
       BaseRestFixo serviceFixo = BaseRestFixo();
@@ -29,11 +29,11 @@ class JogoRedeService {
     }
   }
 
-  atualizaPlacar(var jogoRedeModel, {bool fixo}) {
+  atualizaPlacar(var JogoRedeModel, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO_REDE}/atualizaplacar";
-      JogoRedeRest jogoRedeRest = JogoRedeRest();
-      jogoRedeRest.processaHttpPut(url, jogoRedeModel);
+      String url = "${ConstantesRest.URL_JOGO}/atualizaplacar";
+      JogoRedeRest jogoRest = JogoRedeRest();
+      jogoRest.processaHttpPut(url, JogoRedeModel);
 
     }else{
       BaseRestFixo serviceFixo = BaseRestFixo();
@@ -43,9 +43,9 @@ class JogoRedeService {
 
   remove(String idJogo, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO_REDE}/remove/${idJogo}";
-      JogoRedeRest jogoRedeRest = JogoRedeRest();
-      jogoRedeRest.processaHttpDelete(url);
+      String url = "${ConstantesRest.URL_JOGO}/remove/${idJogo}";
+      JogoRedeRest jogoRest = JogoRedeRest();
+      jogoRest.processaHttpDelete(url);
 
     }else{
       BaseRestFixo serviceFixo = BaseRestFixo();
@@ -53,9 +53,14 @@ class JogoRedeService {
     }
   }
 
-  Future<List<JogoRedeModel>> listaPorRede(String idRede, {bool fixo}) {
-    String url = "${ConstantesRest.URL_JOGO_REDE}/rede/${idRede}";
-    JogoRedeRest jogoRedeRest = JogoRedeRest();
-    return jogoRedeRest.processaHttpGetList(url, fixo);
+  Future<List<JogoRedeModel>> listaPorRedes(int idRede, int dia, bool atualizouPlacar, bool fixo) async {
+    String url = "${ConstantesRest.URL_JOGO_REDE}/redes/${idRede}";
+    JogoRedeRest jogoRest = JogoRedeRest();
+    if (!atualizouPlacar) {
+      return jogoRest.processaHttpGetList(url, dia, fixo);
+    }else{
+      return jogoRest.processaHttpGetListPlacarAtualizado(url, dia, atualizouPlacar, fixo);
+    }
   }
+
 }

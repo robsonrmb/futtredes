@@ -7,25 +7,41 @@ import 'dart:convert';
 
 class RedeRest extends BaseRest {
 
-  Future<List<RedeModel>> processaHttpGetList(String url, bool fixo) async {
-    http.Response response = await http.get(url);
-    if (response.statusCode == 200 || (fixo != null && fixo == true)) {
-      var dadosJson = json.decode(response.body);
+  Future<List<RedeModel>> processaHttpGetList(String url, String tipo, bool fixo) async {
+    try {
+      http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        var dadosJson = json.decode(response.body);
+        return _parseListaRedeModel(dadosJson);
+
+      } else {
+        throw Exception('Failed to load Tipo Rede!!!');
+      }
+    } on Exception catch (exception) {
+      print(exception.toString());
       if (fixo != null && fixo == true) {
         RedeServiceFixo serviceFixo = RedeServiceFixo();
-        dadosJson = serviceFixo.responseRedeLista();
-      }
-      List<RedeModel> lista = List();
-      for (var registro in dadosJson) {
-        RedeModel redeModel = RedeModel.fromJson(
-            registro); //.converteJson
-        lista.add(redeModel);
-      }
-      return lista;
+        var dadosJson = json.decode(serviceFixo.responseRedeLista(tipo));
+        return _parseListaRedeModel(dadosJson);
 
-    }else{
-      throw Exception('Failed to load Tipo Usuario!!!');
+      } else {
+        throw Exception('Falha ao listar redes!!!');
+      }
+
+    } catch (error) {
+      print(error.toString());
     }
+
+  }
+
+  List<RedeModel> _parseListaRedeModel(dadosJson) {
+    List<RedeModel> lista = List();
+    for (var registro in dadosJson) {
+      RedeModel resultadoModel = RedeModel.fromJson(
+          registro); //.converteJson
+      lista.add(resultadoModel);
+    }
+    return lista;
   }
 
   Future<List<IntegranteModel>> processaHttpGetListIntegrantes(String url, bool fixo) async {
@@ -43,33 +59,8 @@ class RedeRest extends BaseRest {
         lista.add(integranteModel);
       }
       return lista;
-
-    }else{
-      throw Exception('Failed to load Tipo Usuario!!!');
+    } else {
+      throw Exception('Failed to load Tipo Rede!!!');
     }
-  }
-
-  Future<List<RedeModel>> processaHttpPostReturn(String url, var redeModel, bool fixo) async {
-    http.Response response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: {
-          jsonDecode(redeModel)
-        }
-    );
-    var dadosJson = json.decode(response.body);
-
-    if (fixo != null && fixo == true) {
-      RedeServiceFixo serviceFixo = RedeServiceFixo();
-      dadosJson = serviceFixo.responseRedeLista();
-    }
-    List<RedeModel> lista = List();
-    for (var registro in dadosJson) {
-      RedeModel usuarioModel = RedeModel.fromJson(registro); //.converteJson
-      lista.add(usuarioModel);
-    }
-    return lista;
   }
 }

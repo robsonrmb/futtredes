@@ -4,28 +4,11 @@ import 'package:futt/futt/model/RedeModel.dart';
 
 class RedeServiceFixo {
 
-  String retornoRede = '{'
-        '"id": 1, '
-        '"nome": "Show do Milhão", '
-        '"status": 1, '
-        '"pais": "Brasil", '
-        '"estado": null, '
-        '"cidade": "Rio de Janeiro", '
-        '"local": "Ipanema", '
-        '"info": "Dados gerais da rede", '
-        '"disponibilidade": "2020-06-01", '
-        '"qtdIntegrantes": 50, '
-        '"responsavelRede": 1, '
-        '"responsavelJogos1": 0, '
-        '"responsavelJogos2": 0, '
-        '"responsavelJogos3": 0 '
-      '} ';
-
-  String retornoRedes = '[ '
+  String _retornoRedesQParticipo = '[ '
       '{'
         '"id": 1, '
         '"nome": "Show do Milhão", '
-        '"status": 1, '
+        '"status": 2, '
         '"pais": "Brasil", '
         '"estado": null, '
         '"cidade": "Rio de Janeiro", '
@@ -37,19 +20,141 @@ class RedeServiceFixo {
         '"responsavelJogos1": 0, '
         '"responsavelJogos2": 0, '
         '"responsavelJogos3": 0 '
-      '} '
+      '}, '
+      '{'
+        '"id": 2, '
+        '"nome": "AABB Master", '
+        '"status": 2, '
+        '"pais": "Brasil", '
+        '"estado": null, '
+        '"cidade": "Brasília", '
+        '"local": "Clube AABB", '
+        '"info": "Dados gerais da rede", '
+        '"disponibilidade": "2020-08-01", '
+        '"qtdIntegrantes": 10, '
+        '"responsavelRede": 1, '
+        '"responsavelJogos1": 0, '
+        '"responsavelJogos2": 0, '
+        '"responsavelJogos3": 0 '
+      '},'
+      '{'
+        '"id": 3, '
+        '"nome": "SQA", '
+        '"status": 2, '
+        '"pais": "Brasil", '
+        '"estado": null, '
+        '"cidade": "Brasília", '
+        '"local": "Condomínio SQA", '
+        '"info": "Dados gerais da rede", '
+        '"disponibilidade": "2020-09-01", '
+        '"qtdIntegrantes": 10, '
+        '"responsavelRede": 1, '
+        '"responsavelJogos1": 0, '
+        '"responsavelJogos2": 0, '
+        '"responsavelJogos3": 0 '
+      '},'
+      '{'
+        '"id": 4, '
+        '"nome": "Liga das Trevas", '
+        '"status": 2, '
+        '"pais": "Brasil", '
+        '"estado": null, '
+        '"cidade": "Brasília", '
+        '"local": "Parque da Cidade", '
+        '"info": "Dados gerais da rede", '
+        '"disponibilidade": "2020-10-01", '
+        '"qtdIntegrantes": 50, '
+        '"responsavelRede": 1, '
+        '"responsavelJogos1": 0, '
+        '"responsavelJogos2": 0, '
+        '"responsavelJogos3": 0 '
+      '},'
+      '{'
+        '"id": 5, '
+        '"nome": "Rede do Candango", '
+        '"status": 4, '
+        '"pais": "Brasil", '
+        '"estado": null, '
+        '"cidade": "Brasília, '
+        '"local": "Parque da Cidade", '
+        '"info": "Dados gerais da rede", '
+        '"disponibilidade": "2020-06-01", '
+        '"qtdIntegrantes": 50, '
+        '"responsavelRede": 1, '
+        '"responsavelJogos1": 0, '
+        '"responsavelJogos2": 0, '
+        '"responsavelJogos3": 0 '
+      '}'
     ']';
 
-  String retornoIntegrante = '{ '
-        '"idUsuario": 1, '
-        '"nome": "Robson", '
-        '"nomeFoto": null, '
-        '"pais": "Brasil", '
-        '"estado": "DF", '
-        '"idRede": 0 '
-      '} ';
+  String _retornoMinhasRedes = '[ '
+        '{'
+          '"id": 2, '
+          '"nome": "AABB Master", '
+          '"status": 2, '
+          '"pais": "Brasil", '
+          '"estado": null, '
+          '"cidade": "Brasília", '
+          '"local": "Clube AABB", '
+          '"info": "Dados gerais da rede", '
+          '"disponibilidade": "2020-08-01", '
+          '"qtdIntegrantes": 10, '
+          '"responsavelRede": 1, '
+          '"responsavelJogos1": 0, '
+          '"responsavelJogos2": 0, '
+          '"responsavelJogos3": 0 '
+        '},'
+        '{'
+          '"id": 3, '
+          '"nome": "SQA", '
+          '"status": 2, '
+          '"pais": "Brasil", '
+          '"estado": null, '
+          '"cidade": "Brasília", '
+          '"local": "Condomínio SQA", '
+          '"info": "Dados gerais da rede", '
+          '"disponibilidade": "2020-09-01", '
+          '"qtdIntegrantes": 10, '
+          '"responsavelRede": 1, '
+          '"responsavelJogos1": 0, '
+          '"responsavelJogos2": 0, '
+          '"responsavelJogos3": 0 '
+        '},'
+        '{'
+          '"id": 4, '
+          '"nome": "Liga das Trevas", '
+          '"status": 2, '
+          '"pais": "Brasil", '
+          '"estado": null, '
+          '"cidade": "Brasília", '
+          '"local": "Parque da Cidade", '
+          '"info": "Dados gerais da rede", '
+          '"disponibilidade": "2020-10-01", '
+          '"qtdIntegrantes": 50, '
+          '"responsavelRede": 1, '
+          '"responsavelJogos1": 0, '
+          '"responsavelJogos2": 0, '
+          '"responsavelJogos3": 0 '
+        '},'
+        '{'
+          '"id": 5, '
+          '"nome": "Rede do Candango", '
+          '"status": 4, '
+          '"pais": "Brasil", '
+          '"estado": null, '
+          '"cidade": "Brasília, '
+          '"local": "Parque da Cidade", '
+          '"info": "Dados gerais da rede", '
+          '"disponibilidade": "2020-06-01", '
+          '"qtdIntegrantes": 50, '
+          '"responsavelRede": 1, '
+          '"responsavelJogos1": 0, '
+          '"responsavelJogos2": 0, '
+          '"responsavelJogos3": 0 '
+        '}'
+      ']';
 
-  String retornoIntegrantes = '[ '
+  String _retornoIntegrantes = '[ '
         '{ '
           '"idUsuario": 1, '
           '"nome": "Robson", '
@@ -68,57 +173,16 @@ class RedeServiceFixo {
         '} '
       ']';
 
-  String responseRedeLista() {
-    return retornoRedes;
-  }
-
-  String responseRedeObjeto() {
-    return retornoRedes;
+  String responseRedeLista(String tipo) {
+    if (tipo == "1") {
+      return _retornoRedesQParticipo;
+    }else{
+      return _retornoMinhasRedes;
+    }
   }
 
   String responseIntegrantesLista() {
-    return retornoIntegrantes;
-  }
-
-  Future<RedeModel> _buscaRedeFixo() async {
-    var dadosJson = json.decode(retornoRede);
-    return RedeModel.fromJson(dadosJson); //.converteJson
-  }
-
-  Future<List<RedeModel>> _listaRedesFixo() async {
-    var dadosJson = json.decode(retornoRedes);
-    List<RedeModel> lista = List();
-    for (var registro in dadosJson) {
-      RedeModel redeModel = RedeModel.fromJson(registro); //.converteJson
-      lista.add(redeModel);
-    }
-    return lista;
-  }
-
-  Future<List<IntegranteModel>> _listaIntegrantesFixo() async {
-    var dadosJson = json.decode(retornoRedes);
-    List<IntegranteModel> lista = List();
-    for (var registro in dadosJson) {
-      IntegranteModel integranteModel = IntegranteModel.fromJson(registro); //.converteJson
-      lista.add(integranteModel);
-    }
-    return lista;
-  }
-
-  Future<List<RedeModel>> listaPorFiltros(var redeModel) async {
-    _listaRedesFixo();
-  }
-
-  Future<List<RedeModel>> listaPorStatus(var status) async {
-    _listaRedesFixo();
-  }
-
-  Future<List<RedeModel>> listaTodos() async {
-    _listaRedesFixo();
-  }
-
-  Future<List<IntegranteModel>> listaIntegrantesDaRede(String idRede) async {
-    _listaIntegrantesFixo();
+    return _retornoIntegrantes;
   }
 
 }

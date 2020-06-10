@@ -41,7 +41,19 @@ class _RankingViewState extends State<RankingView> {
   @override
   Widget build(BuildContext context) {
 
-    return new Column(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Color(0xff093352),
+        textTheme: TextTheme(
+            title: TextStyle(
+                color: Colors.white,
+                fontSize: 20
+            )
+        ),
+        title: Text("Ranking"),
+      ),
+      body: Column(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(1),
@@ -140,6 +152,7 @@ class _RankingViewState extends State<RankingView> {
             child: RankingSubView(int.parse(_ano), _idRankingEntidade, widget.anoDefault, widget.idRankingDefault),
           )
         ],
-      );
+      ),
+    );
   }
 }

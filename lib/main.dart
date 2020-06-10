@@ -8,7 +8,6 @@ import 'package:futt/futt/view/MinhasRedesView.dart';
 import 'package:futt/futt/view/NovaRedeView.dart';
 import 'package:futt/futt/view/ParticipantesView.dart';
 import 'package:futt/futt/view/PerfilView.dart';
-import 'package:futt/futt/view/ResultadosView.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,7 +16,6 @@ void main() {
       "/cadastro" : (context) => CadastroView(),
       "/home" : (context) => HomeView(),
       "/jogos" : (context) => JogosView(),
-      "/resultados" : (context) => ResultadosView(),
       "/participantes" : (context) => ParticipantesView(),
       "/novarede" : (context) => NovaRedeView(),
       "/edicaorede" : (context) => EdicaoRedeView(),

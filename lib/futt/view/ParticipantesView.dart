@@ -1,4 +1,4 @@
-import 'package:futt/futt/view/subview/ParticipantesTorneioSubView.dart';
+import 'package:futt/futt/view/subview/ParticipantesSubView.dart';
 import 'package:flutter/material.dart';
 
 class ParticipantesView extends StatefulWidget {
@@ -8,7 +8,8 @@ class ParticipantesView extends StatefulWidget {
   String paisRede;
   String cidadeRede;
   String localRede;
-  ParticipantesView({this.idRede, this.nomeRede, this.paisRede, this.cidadeRede, this.localRede});
+  bool donoRede;
+  ParticipantesView({this.idRede, this.nomeRede, this.paisRede, this.cidadeRede, this.localRede, this.donoRede});
 
   @override
   _ParticipantesViewState createState() => _ParticipantesViewState();
@@ -16,14 +17,8 @@ class ParticipantesView extends StatefulWidget {
 
 class _ParticipantesViewState extends State<ParticipantesView> {
 
-  String _mensagem = "";
-  int _idRede;
-  TextEditingController _controllerEmail = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-
-    _idRede = widget.idRede;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -37,76 +32,59 @@ class _ParticipantesViewState extends State<ParticipantesView> {
         ),
         title: Text("Participantes"),
       ),
-      body: new Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
-            child: Text("${widget.nomeRede}",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: 'Candal'
+      body: Padding(
+        padding: EdgeInsets.all(5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                /*image: DecorationImage(
+                    image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),
+                    fit: BoxFit.cover
+                ),*/
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.orangeAccent,
               ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(1),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Image.asset("images/torneios.png", height: 46, width: 46,),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text("${widget.paisRede} - ${widget.cidadeRede}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+                    child: Text("${widget.nomeRede}",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Candal'
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                        child: Text("${widget.localRede}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          _mensagem == "" ? new Padding(
-            padding: EdgeInsets.fromLTRB(0, 2, 10, 0),
-          ) : new Padding(
-            padding: EdgeInsets.fromLTRB(0, 2, 10, 0),
-            child: Center(
-              child: Text("${_mensagem}",
-                style: TextStyle(
-                  color: Colors.amber,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 1),
+                    child: Text("${widget.paisRede} - ${widget.cidadeRede}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                    child: Text("${widget.localRede}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            child: ParticipantesTorneioSubView(_idRede),
-          )
-        ],
+            Expanded(
+              child: ParticipantesSubView(widget.idRede),
+            )
+          ],
+        ),
       ),
     );
   }

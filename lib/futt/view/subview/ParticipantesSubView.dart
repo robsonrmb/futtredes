@@ -3,20 +3,20 @@ import 'package:futt/futt/model/ParticipanteModel.dart';
 import 'package:futt/futt/service/ParticipanteService.dart';
 import 'package:flutter/material.dart';
 
-class ParticipantesTorneioSubView extends StatefulWidget {
+class ParticipantesSubView extends StatefulWidget {
 
-  int idTorneio;
-  ParticipantesTorneioSubView(this.idTorneio);
+  int idRede;
+  ParticipantesSubView(this.idRede);
 
   @override
-  _ParticipantesTorneioSubViewState createState() => _ParticipantesTorneioSubViewState();
+  _ParticipantesSubViewState createState() => _ParticipantesSubViewState();
 }
 
-class _ParticipantesTorneioSubViewState extends State<ParticipantesTorneioSubView> {
+class _ParticipantesSubViewState extends State<ParticipantesSubView> {
 
   Future<List<ParticipanteModel>> _listaParticipantes() async {
     ParticipanteService resultadoService = ParticipanteService();
-    return resultadoService.listaParticipantesDoTorneio(widget.idTorneio, ConstantesConfig.SERVICO_FIXO);
+    return resultadoService.listaParticipantesDoTorneio(widget.idRede, ConstantesConfig.SERVICO_FIXO);
   }
 
   @override
@@ -42,7 +42,7 @@ class _ParticipantesTorneioSubViewState extends State<ParticipantesTorneioSubVie
                   ParticipanteModel participante = participantes[index];
 
                   return Container(
-                    margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(5),

@@ -9,22 +9,11 @@ import 'package:futt/futt/view/RankingView.dart';
 
 class RedesSubView extends StatefulWidget {
 
-  int indiceDeBusca;
-  String nomeFiltro;
-  String paisFiltro;
-  String cidadeFiltro;
-  String dataFiltro;
-  RedesSubView(this.indiceDeBusca, this.nomeFiltro, this.paisFiltro, this.cidadeFiltro, this.dataFiltro);
-
   @override
   _RedesSubViewState createState() => _RedesSubViewState();
 }
 
 class _RedesSubViewState extends State<RedesSubView> {
-
-  int _getIdSubView() {
-    return 1;
-  }
 
   Future<List<RedeModel>> _listaRedesQueParticipo() async {
     RedeService redeService = RedeService();
@@ -106,10 +95,11 @@ class _RedesSubViewState extends State<RedesSubView> {
                                     onTap: (){
                                       Navigator.push(context, MaterialPageRoute(
                                           builder: (context) => ParticipantesView(idRede: rede.id,
-                                            nomeRede: rede.nome,
-                                            paisRede: rede.pais,
-                                            cidadeRede: rede.cidade,
-                                            localRede: rede.local,)
+                                              nomeRede: rede.nome,
+                                              paisRede: rede.pais,
+                                              cidadeRede: rede.cidade,
+                                              localRede: rede.local,
+                                              donoRede: false)
                                       ));
                                     },
                                   ),
@@ -131,7 +121,12 @@ class _RedesSubViewState extends State<RedesSubView> {
                           ),
                           onTap: (){
                             Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => JogosView(idRede: rede.id, nomeRede: rede.nome, idSubView: _getIdSubView(), editaPlacar: false),
+                              builder: (context) => JogosView(idRede: rede.id,
+                                  nomeRede: rede.nome,
+                                  paisRede: rede.pais,
+                                  cidadeRede: rede.cidade,
+                                  localRede: rede.local,
+                                  donoRede: false),
                             ));
                           },
                         ),

@@ -9,24 +9,18 @@ class RedesView extends StatefulWidget {
 
 class _RedesViewState extends State<RedesView> {
 
-  int _indiceDeBusca = 0; //Busca todos os torneios
-  String _nomeFiltro = "";
-  String _paisFiltro = "";
-  String _cidadeFiltro = "";
-  String _dataFiltro = "";
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(5),
       child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Expanded(
-          child: RedesSubView(_indiceDeBusca, _nomeFiltro, _paisFiltro, _cidadeFiltro, _dataFiltro),
-        )
-      ],
-    )
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(
+            child: RedesSubView(),
+          )
+        ],
+      ),
     );
   }
 }

@@ -17,13 +17,16 @@ class _RedesViewState extends State<RedesView> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Expanded(
           child: RedesSubView(_indiceDeBusca, _nomeFiltro, _paisFiltro, _cidadeFiltro, _dataFiltro),
         )
       ],
+    )
     );
   }
 }

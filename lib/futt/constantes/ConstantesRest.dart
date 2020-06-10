@@ -2,6 +2,7 @@ class ConstantesRest {
 
   static const URL_BASE = "http://localhost:8080";
   static const URL_BASE_TESTE = "https://jsonplaceholder.typicode.com";
+  static const URL_BASE_AMAZON = "https://futtapp.s3-sa-east-1.amazonaws.com/";
 
   static const URL_LOGIN = "${URL_BASE}/login";
   static const URL_NOVA_SENHA = "${URL_BASE}/auth/nova_senha";

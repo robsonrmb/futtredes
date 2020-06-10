@@ -1,8 +1,6 @@
 import 'package:futt/futt/view/components/EstatisticasJogosPontos.dart';
 import 'package:futt/futt/view/components/EstatisticasQuantitativas.dart';
 import 'package:futt/futt/view/components/EstatisticasSequenciais.dart';
-import 'package:futt/futt/view/components/EstatisticasTaticas.dart';
-import 'package:futt/futt/view/components/EstatisticasTecnicas.dart';
 import 'package:flutter/material.dart';
 
 class EstatisticasView extends StatefulWidget {
@@ -65,10 +63,6 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                 EstatisticasSequenciais(),
                 Padding(padding: EdgeInsets.all(3),),
                 EstatisticasJogosPontos(),
-                Padding(padding: EdgeInsets.all(3),),
-                EstatisticasTecnicas(),
-                Padding(padding: EdgeInsets.all(3),),
-                EstatisticasTaticas(),
                 Padding(padding: EdgeInsets.all(3),),
                 EstatisticasQuantitativas(),
               ],

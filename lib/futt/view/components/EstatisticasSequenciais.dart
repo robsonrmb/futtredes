@@ -69,33 +69,6 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
                       ),
                     ),
                   ),
-                  Padding(padding: EdgeInsets.all(3),),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        children: <Widget>[
-                          Text("ÚLTIMOS TORNEIOS",style: TextStyle(fontWeight: FontWeight.bold),),
-                          Padding(padding: EdgeInsets.all(3),),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Estatistica().torneio(int.parse(this._valoresSequenciais[5])),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().torneio(int.parse(this._valoresSequenciais[6])),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().torneio(int.parse(this._valoresSequenciais[7])),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().torneio(int.parse(this._valoresSequenciais[8])),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().torneio(int.parse(this._valoresSequenciais[9])),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               );
             }else{

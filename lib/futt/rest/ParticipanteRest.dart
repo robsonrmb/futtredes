@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class ParticipanteRest extends BaseRest {
 
-  Future<List<ParticipanteModel>> processaHttpGetList(String url, bool fixo) async {
+  Future<List<ParticipanteModel>> processaHttpGetList(String url, bool fixo, int lista) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -20,7 +20,7 @@ class ParticipanteRest extends BaseRest {
       print(exception.toString());
       if (fixo != null && fixo == true) {
         ParticipanteServiceFixo serviceFixo = ParticipanteServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista());
+        var dadosJson = json.decode(serviceFixo.responseLista(lista));
         return _parseListaParticipanteModel(dadosJson);
 
       } else {

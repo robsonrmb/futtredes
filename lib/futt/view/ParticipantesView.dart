@@ -17,6 +17,24 @@ class ParticipantesView extends StatefulWidget {
 
 class _ParticipantesViewState extends State<ParticipantesView> {
 
+  int _inclui = 0;
+  String _mensagem = "";
+  TextEditingController _controllerEmail = TextEditingController();
+
+  _adicionaParticipante() async {
+    if (_controllerEmail.text == "") {
+      setState(() {
+        _mensagem = "Informe o email do atleta.";
+      });
+    }else{
+      //enviar mensagem
+      setState(() {
+        _inclui = 2;
+      });
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -32,6 +50,54 @@ class _ParticipantesViewState extends State<ParticipantesView> {
         ),
         title: Text("Participantes"),
       ),
+      floatingActionButton: widget.donoRede ? FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          showDialog(context: context, builder: (context){
+            return AlertDialog(
+              title: Text("Adicione um atleta"),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                      ),
+                      controller: _controllerEmail,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.all(5),
+                    ),
+                    Text(_mensagem),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: RaisedButton(
+                    color: Color(0xff086ba4),
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      "Incluir",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Candal',
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  onPressed: () {
+                    _adicionaParticipante();
+                  },
+                ),
+              ],
+            );
+          });
+        },
+      ) : null,
       body: Padding(
         padding: EdgeInsets.all(5),
         child: Column(
@@ -81,7 +147,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
               ),
             ),
             Expanded(
-              child: ParticipantesSubView(widget.idRede),
+              child: ParticipantesSubView(widget.idRede, widget.donoRede, _inclui),
             )
           ],
         ),

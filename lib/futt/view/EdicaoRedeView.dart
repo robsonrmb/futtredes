@@ -3,6 +3,7 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
 
-  _atualizar() async {
+  _atualizaRede() async {
     try {
       String _msg = "";
 
@@ -42,7 +43,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       //RedeService redeService = RedeService();
       //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
 
-      var _url = "${ConstantesRest.URL_TORNEIOS}/atualiza";
+      var _url = "${ConstantesRest.URL_REDE}/atualiza";
       var _dados = "";
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
@@ -56,7 +57,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       );
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Rede atualizado com sucesso!!!";
+        _msg = "Rede atualizada com sucesso!!!";
       }else{
         _msg = "Falha durante o processamento!!!";
       }
@@ -88,6 +89,8 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       throw Exception('Informe o país de onde se realizará o rede.');
     }else if (_controllerCidade.text == "") {
       throw Exception('Informe a cidade de onde se realizará o rede.');
+    }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
+      throw Exception('Qtd de integrantes incorreto.');
     }
   }
 
@@ -100,7 +103,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     _controllerNome.text = redeOrigem.nome;
     _controllerPaisRede = redeOrigem.pais;
     PaisModel _paisModel = PaisModel(redeOrigem.pais, redeOrigem.pais);
-
     _controllerCidade.text = redeOrigem.cidade;
     _controllerLocal.text = redeOrigem.local;
     _controllerQtdIntegrantes.text = redeOrigem.qtdIntegrantes.toString();
@@ -115,13 +117,18 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(
-          "Atualização do rede",
-          style: TextStyle(
-              color: Colors.black
-          ),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          opacity: 1,
         ),
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Color(0xff093352),
+        textTheme: TextTheme(
+            title: TextStyle(
+                color: Colors.white,
+                fontSize: 20
+            )
+        ),
+        title: Text("Edição de redes"),
       ),
       body: Container(
         color: Colors.grey[300],
@@ -147,7 +154,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                 Padding(
                   padding: EdgeInsets.only(top: 5),
                   child: Text(
-                    "Logo do Rede",
+                    "Imagem da Rede",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -165,20 +172,19 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            prefixIcon: Icon(
+                            hintText: "Nome da rede",
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+                            ),
+                            /*prefixIcon: Icon(
                               Icons.done_all,
                               color: Colors.black,
-                            ),
-                            // icon: new Icon(Icons.person),
+                            ),*/
+                            // icon: new Icon(Icons.done_all),
                             // prefixText: "Nome",
                             // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                             // labelText: "Informe seu nome",
-                            hintText: "Nome do rede",
-                            hintStyle: TextStyle(
-                              fontSize: 14,
-                              //fontWeight: FontWeight.w300,
-                              color: Colors.grey[400],
-                            ),
                             /* border: OutlineInputBorder(
                               gapPadding: 5,
                             ),*/
@@ -187,22 +193,23 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               fontSize: 16,
                               color: Colors.black
                           ),
-                          //maxLength: 5,
-                          //maxLengthEnforced: true,
                           controller: _controllerNome,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: FindDropdown<PaisModel>(
+                          showSearchBox: true,
                           selectedItem: PaisModel(widget.redeModel.pais, widget.redeModel.pais),
-                          showSearchBox: false,
                           onFind: (String filter) => _listaPaises(),
                           searchBoxDecoration: InputDecoration(
                             hintText: "Search",
                             border: OutlineInputBorder(),
+                            icon: new Icon(Icons.monetization_on),
+                            labelText: "País",
                           ),
                           onChanged: (PaisModel data) => _controllerPaisRede = data.id,
+                          showClearButton: false,
                         ),
                       ),
                       TextField(
@@ -210,11 +217,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "Cidade",
+                          hintText: "Lisboa",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
                           ),
+                          // icon: new Icon(Icons.location_city),
                           /* border: OutlineInputBorder(
                                     gapPadding: 1,
                                   ),*/
@@ -223,8 +231,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                             fontSize: 14,
                             color: Colors.black
                         ),
-                        //maxLength: 100,
-                        //maxLengthEnforced: true,
                         controller: _controllerCidade,
                       ),
                       Padding(
@@ -235,56 +241,52 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "Local",
+                          hintText: "Cascais - Praia dos pescadores",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
                           ),
-                          /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
                         ),
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.black
                         ),
-                        //maxLength: 100,
-                        //maxLengthEnforced: true,
                         controller: _controllerLocal,
                       ),
                       Padding(
                         padding: EdgeInsets.all(5),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "32, 16, 8 ou 4",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
-                                ),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black
-                                ),
-                                maxLength: 2,
-                                //maxLengthEnforced: true,
-                                controller: _controllerQtdIntegrantes,
-                              ),
-                            ),
-                          ],
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "20",
+                          hintStyle: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
+                          ),
+                          // icon: new Icon(Icons.monetization_on),
+                          suffixIcon: Icon(
+                            Icons.monetization_on,
+                            color: Colors.black,
+                          ),
                         ),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black
+                        ),
+                        //maxLength: 3,
+                        //maxLengthEnforced: true,
+                        controller: _controllerQtdIntegrantes,
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => MensalidadeView(),
+                          ))
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(5),
                       ),
                       Container(
                         padding: EdgeInsets.all(5),
@@ -334,7 +336,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
           ),
         ),
       ),
-      bottomNavigationBar: widget.redeModel.status < 40 ? BottomAppBar(
+      bottomNavigationBar: widget.redeModel.status == 2 ? BottomAppBar(
         child: Container(
           padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
           color: Colors.grey[300],
@@ -343,7 +345,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
             textColor: Colors.white,
             padding: EdgeInsets.all(15),
             child: Text(
-              "Atualizar",
+              "Atualiza",
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: 'Candal',
@@ -352,7 +354,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(2),
             ),
-            onPressed: _atualizar,
+            onPressed: () {
+              _atualizaRede();
+            },
           ),
         ),
       ) : null,

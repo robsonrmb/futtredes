@@ -4,10 +4,10 @@ import 'package:futt/futt/rest/ParticipanteRest.dart';
 
 class ParticipanteService {
 
-  Future<List<ParticipanteModel>> listaParticipantesDoTorneio(int idTorneio, bool fixo) {
-    String url = "${ConstantesRest.URL_PARTICIPANTES}/${idTorneio}";
+  Future<List<ParticipanteModel>> listaParticipantesDaRede(int idRede, bool fixo, int lista) {
+    String url = "${ConstantesRest.URL_PARTICIPANTES}/${idRede}";
     ParticipanteRest participanteRest = ParticipanteRest();
-    return participanteRest.processaHttpGetList(url, fixo);
+    return participanteRest.processaHttpGetList(url, fixo, lista);
   }
 
 }

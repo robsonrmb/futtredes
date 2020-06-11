@@ -5,11 +5,9 @@ class ParticipanteModel {
   String _nomeFoto;
   String _pais;
   String _cidade;
-  int _idTorneio;
   String _email;
 
-  ParticipanteModel(this._idUsuario, this._nome, this._nomeFoto, this._pais,
-      this._cidade, this._idTorneio);
+  ParticipanteModel(this._idUsuario, this._nome, this._nomeFoto, this._pais, this._cidade);
 
   ParticipanteModel.Novo(this._idUsuario, this._email);
 
@@ -20,14 +18,7 @@ class ParticipanteModel {
       json["nomeFoto"],
       json["pais"],
       json["cidade"],
-      json["idTorneio"],
     );
-  }
-
-  int get idTorneio => _idTorneio;
-
-  set idTorneio(int value) {
-    _idTorneio = value;
   }
 
   String get cidade => _cidade;

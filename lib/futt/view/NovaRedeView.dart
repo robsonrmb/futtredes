@@ -77,9 +77,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
     dialogFutt.waiting(context, "Nova rede", "${_mensagem}");
     await Future.delayed(Duration(seconds: 3));
     Navigator.pop(context);
-    /*if (_mensagem == "Rede inserida com sucesso!!!") {
-      Navigator.pop(context);
-    }*/
   }
 
   void _valida() {
@@ -158,6 +155,11 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
+                            hintText: "Nome da rede",
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+                            ),
                             /*prefixIcon: Icon(
                               Icons.done_all,
                               color: Colors.black,
@@ -166,12 +168,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                             // prefixText: "Nome",
                             // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                             // labelText: "Informe seu nome",
-                            hintText: "Nome da rede",
-                            hintStyle: TextStyle(
-                              fontSize: 14,
-                              //fontWeight: FontWeight.w300,
-                              color: Colors.grey[400],
-                            ),
                             /* border: OutlineInputBorder(
                               gapPadding: 5,
                             ),*/
@@ -180,8 +176,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                               fontSize: 16,
                               color: Colors.black
                           ),
-                          //maxLength: 5,
-                          //maxLengthEnforced: true,
                           controller: _controllerNome,
                         ),
                       ),
@@ -219,8 +213,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                             fontSize: 14,
                             color: Colors.black
                         ),
-                        //maxLength: 100,
-                        //maxLengthEnforced: true,
                         controller: _controllerCidade,
                       ),
                       Padding(
@@ -236,17 +228,11 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                             fontSize: 14,
                             color: Colors.grey[400],
                           ),
-                          // icon: new Icon(Icons.location_city),
-                          /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
                         ),
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.black
                         ),
-                        //maxLength: 100,
-                        //maxLengthEnforced: true,
                         controller: _controllerLocal,
                       ),
                       Padding(
@@ -267,9 +253,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                             Icons.monetization_on,
                             color: Colors.black,
                           ),
-                          /* border: OutlineInputBorder(
-                                              gapPadding: 1,
-                                            ),*/
                         ),
                         style: TextStyle(
                             fontSize: 14,

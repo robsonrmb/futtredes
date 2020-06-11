@@ -3,6 +3,7 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,39 +21,31 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
   String _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
-  int _controllerTipoRede = 0;
-  int _controllerClassificacaoRede = 0;
-  String _controllerGeneroRede = "";
-  int _controllerEntidadeRede = 0;
-  int _controllerRankingEntidadeRede = 0;
   String _controllerPaisRede = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
-  TextEditingController _controllerDataInicio = TextEditingController();
-  TextEditingController _controllerDataFim = TextEditingController();
-  TextEditingController _controllerQtdDuplas = TextEditingController();
+  TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
 
-  void _cadastrar(BuildContext context) async {
+  void _cadastraNovaRede(BuildContext context) async {
     try {
       String _msg = "";
-
       _valida();
 
       //Grava redes
       RedeModel redeModel = RedeModel.Novo(
           _controllerNome.text, _controllerPaisRede, _controllerCidade.text,
-          _controllerLocal.text, int.parse(_controllerQtdDuplas.text), _controllerMais.text
+          _controllerLocal.text, int.parse(_controllerQtdIntegrantes.text), _controllerMais.text
       );
       //RedeService redeService = RedeService();
       //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
 
-      var _url = "${ConstantesRest.URL_TORNEIOS}/adiciona";
+      var _url = "${ConstantesRest.URL_REDE}/adiciona";
       var _dados = "";
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
         _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({ 'userId': 200, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        _dados = jsonEncode({ 'userId': 1, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
       }
 
       http.Response response = await http.post(_url,
@@ -61,7 +54,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       );
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Rede inserido com sucesso!!!";
+        _msg = "Rede inserida com sucesso!!!";
       }else{
         _msg = "Falha durante o processamento!!!";
       }
@@ -81,40 +74,23 @@ class _NovaRedeViewState extends State<NovaRedeView> {
     }
 
     DialogFutt dialogFutt = new DialogFutt();
-    dialogFutt.waiting(context, "Novo rede", "${_mensagem}");
+    dialogFutt.waiting(context, "Nova rede", "${_mensagem}");
     await Future.delayed(Duration(seconds: 3));
     Navigator.pop(context);
+    /*if (_mensagem == "Rede inserida com sucesso!!!") {
+      Navigator.pop(context);
+    }*/
   }
 
   void _valida() {
     if (_controllerNome.text == "") {
       throw Exception('Informe o título do rede.');
-    }else if (_controllerTipoRede == 0) {
-      throw Exception('Informe o tipo de rede.');
-    }else if (_controllerClassificacaoRede == 0) {
-      throw Exception('Informe a classificação do rede.');
     }else if (_controllerPaisRede == "") {
       throw Exception('Informe o país de onde se realizará o rede.');
     }else if (_controllerCidade.text == "") {
       throw Exception('Informe a cidade de onde se realizará o rede.');
-    }else if (_controllerDataInicio.text == "") {
-      throw Exception('Informe a data de início do rede.');
-    }else if (_controllerDataFim.text == "") {
-      throw Exception('Informe a data fim do rede.');
-    }else{
-      if (_controllerTipoRede == 1) {
-        if (_controllerQtdDuplas.text != "16" && _controllerQtdDuplas.text != "32") {
-          throw Exception('Qtd de duplas para tipo de rede: 16 ou 32.');
-        }
-      }else if (_controllerTipoRede == 2) {
-        if (_controllerQtdDuplas.text != "4" && _controllerQtdDuplas.text != "8" && _controllerQtdDuplas.text != "16") {
-          throw Exception('Qtd de duplas para tipo de rede: 4, 8 ou 16.');
-        }
-      }else if (_controllerTipoRede == 3) {
-        if (_controllerQtdDuplas.text != "0" && _controllerQtdDuplas.text != "") {
-          throw Exception('Para redes em grupo não informe a qtd de duplas.');
-        }
-      }
+    }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
+      throw Exception('Qtd de integrantes incorreto.');
     }
   }
 
@@ -126,15 +102,19 @@ class _NovaRedeViewState extends State<NovaRedeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(
-          "Cadastro de redes",
-          style: TextStyle(
-              color: Colors.black
-          ),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          opacity: 1,
         ),
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Color(0xff093352),
+        textTheme: TextTheme(
+            title: TextStyle(
+                color: Colors.white,
+                fontSize: 20
+            )
+        ),
+        title: Text("Cadastro de redes"),
       ),
       body: Container(
         color: Colors.grey[300],
@@ -147,7 +127,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 5),
                   child: Text(
-                    "Insira os dados do rede para cadastrar",
+                    "Insira os dados da rede para cadastrar",
                     style: TextStyle(
                         fontSize: 12
                     ),
@@ -160,7 +140,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                 Padding(
                   padding: EdgeInsets.only(top: 5),
                   child: Text(
-                    "Logo do Rede",
+                    "Imagem da Rede",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -178,15 +158,15 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            prefixIcon: Icon(
+                            /*prefixIcon: Icon(
                               Icons.done_all,
                               color: Colors.black,
-                            ),
-                            // icon: new Icon(Icons.person),
+                            ),*/
+                            // icon: new Icon(Icons.done_all),
                             // prefixText: "Nome",
                             // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                             // labelText: "Informe seu nome",
-                            hintText: "Nome do rede",
+                            hintText: "Nome da rede",
                             hintStyle: TextStyle(
                               fontSize: 14,
                               //fontWeight: FontWeight.w300,
@@ -208,13 +188,16 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: FindDropdown<PaisModel>(
-                          showSearchBox: false,
+                          showSearchBox: true,
                           onFind: (String filter) => _listaPaises(),
                           searchBoxDecoration: InputDecoration(
                             hintText: "Search",
                             border: OutlineInputBorder(),
+                            icon: new Icon(Icons.monetization_on),
+                            labelText: "País",
                           ),
                           onChanged: (PaisModel data) => _controllerPaisRede = data.id,
+                          showClearButton: false,
                         ),
                       ),
                       TextField(
@@ -222,11 +205,12 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "Cidade",
+                          hintText: "Lisboa",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
                           ),
+                          // icon: new Icon(Icons.location_city),
                           /* border: OutlineInputBorder(
                                     gapPadding: 1,
                                   ),*/
@@ -247,11 +231,12 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "Local",
+                          hintText: "Cascais - Praia dos pescadores",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
                           ),
+                          // icon: new Icon(Icons.location_city),
                           /* border: OutlineInputBorder(
                                     gapPadding: 1,
                                   ),*/
@@ -267,90 +252,40 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                       Padding(
                         padding: EdgeInsets.all(5),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                keyboardType: TextInputType.datetime,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "Data Início",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
-                                ),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black
-                                ),
-                                maxLength: 10,
-                                //maxLengthEnforced: true,
-                                controller: _controllerDataInicio,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                keyboardType: TextInputType.datetime,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "Data fim",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
-                                ),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black
-                                ),
-                                maxLength: 10,
-                                //maxLengthEnforced: true,
-                                controller: _controllerDataFim,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: "32, 16, 8 ou 4",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
-                                  ),
-                                  /* border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                  ),*/
-                                ),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black
-                                ),
-                                maxLength: 2,
-                                //maxLengthEnforced: true,
-                                controller: _controllerQtdDuplas,
-                              ),
-                            ),
-                          ],
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "20",
+                          hintStyle: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[400],
+                          ),
+                          // icon: new Icon(Icons.monetization_on),
+                          suffixIcon: Icon(
+                            Icons.monetization_on,
+                            color: Colors.black,
+                          ),
+                          /* border: OutlineInputBorder(
+                                              gapPadding: 1,
+                                            ),*/
                         ),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black
+                        ),
+                        //maxLength: 3,
+                        //maxLengthEnforced: true,
+                        controller: _controllerQtdIntegrantes,
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => MensalidadeView(),
+                          ))
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(5),
                       ),
                       Container(
                         padding: EdgeInsets.all(5),
@@ -419,7 +354,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
               borderRadius: BorderRadius.circular(2),
             ),
             onPressed: () {
-              _cadastrar(context);
+              _cadastraNovaRede(context);
             },
           ),
         ),

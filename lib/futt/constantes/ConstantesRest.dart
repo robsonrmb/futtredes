@@ -1,6 +1,8 @@
 class ConstantesRest {
 
-  static const URL_BASE = "http://localhost:8080";
+  static const URL_BASE = "https://futtapp.herokuapp.com";
+  static const URL_BASE_LOCAL = "http://localhost:8080";
+
   static const URL_BASE_TESTE = "https://jsonplaceholder.typicode.com";
   static const URL_BASE_AMAZON = "https://futtapp.s3-sa-east-1.amazonaws.com/";
 

@@ -1,9 +1,14 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
+import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
+import 'package:futt/futt/model/LoginModel.dart';
 import 'package:futt/futt/view/HomeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginView extends StatefulWidget {
   @override
@@ -23,47 +28,120 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _iniciar() async {
-    final prefs = await SharedPreferences.getInstance();
-    String email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
-    String senha = await prefs.getString(ConstantesConfig.PREFERENCES_SENHA);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
+      String senha = await prefs.getString(ConstantesConfig.PREFERENCES_SENHA);
 
-    if (email != null && senha != null && email != "" && senha != "") {
-      // validar dados na base
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView()));
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeView()),
-            (Route<dynamic> route) => false,
-      );
+      if (email != null && senha != null && email != "" && senha != "") {
+        _mensagem = "";
+        LoginModel loginModel = LoginModel(_controllerEmail.text, _controllerSenha.text);
 
-    }else{
+        var _url = "${ConstantesRest.URL_LOGIN}";
+        var _dados = loginModel.toJson();
+
+        if (ConstantesConfig.SERVICO_FIXO == true) {
+          _url = "https://jsonplaceholder.typicode.com/posts";
+          _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        }
+
+        http.Response response = await http.post(_url,
+            headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
+            body: jsonEncode(_dados)
+        );
+
+        if (response.statusCode == 200) {
+          //Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
+          await prefs.setString(ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeView()),
+                (Route<dynamic> route) => false,
+          );
+
+        }else{
+          setState(() {
+            var _dadosJson = jsonDecode(response.body);
+            ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+            _mensagem = exceptionModel.msg;
+          });
+        }
+
+      }else{
+        setState(() {
+          _mensagem = "Por favor, informe os dados!!!";
+        });
+      }
+    } on Exception catch (exception) {
+      print(exception.toString());
       setState(() {
-        _mensagem = "Por favor, informe os dados!!!";
+        _mensagem = exception.toString();
+      });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
       });
     }
   }
 
   void _entrar() async {
-    if (_controllerEmail.text != "" && _controllerSenha.text != "") {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
-      await prefs.setString(ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
+    try {
+      if (_controllerEmail.text != "" && _controllerSenha.text != "") {
+        _mensagem = "";
+        LoginModel loginModel = LoginModel(_controllerEmail.text, _controllerSenha.text);
 
-      //Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView()));
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => HomeView()),
-        (Route<dynamic> route) => false,
-      );
+        var _url = "${ConstantesRest.URL_LOGIN}";
+        var _dados = loginModel.toJson();
 
-    }else{
-      DialogFutt dialogFutt = new DialogFutt();
-      dialogFutt.waiting(context, "Mensagem", "Dados incorretos!!!");
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.pop(context);
+        if (ConstantesConfig.SERVICO_FIXO == true) {
+          _url = "https://jsonplaceholder.typicode.com/posts";
+          _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        }
 
+        http.Response response = await http.post(_url,
+            headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
+            body: jsonEncode(_dados)
+        );
+
+        if (response.statusCode == 200) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
+          await prefs.setString(ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeView()),
+                (Route<dynamic> route) => false,
+          );
+
+        }else{
+          setState(() {
+            _mensagem = "Dados incorretos!!!";
+          });
+        }
+
+      }else{
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Mensagem", "Dados incorretos!!!");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
+
+        setState(() {
+          _mensagem = "Dados incorretos!!!";
+        });
+      }
+
+    } on Exception catch (exception) {
+      print(exception.toString());
       setState(() {
-        _mensagem = "Dados incorretos!!!";
+        _mensagem = exception.toString();
+      });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
       });
     }
   }
@@ -71,12 +149,6 @@ class _LoginViewState extends State<LoginView> {
   void _abrirCadastro() {
     _mensagem = "";
     Navigator.pushNamed(context, "/cadastro");
-    /*
-    Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CadastroView())
-    );
-     */
   }
 
   @override
@@ -244,12 +316,14 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 15),
-                          child: Text(
-                            _mensagem,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Candal'
+                          child: Center(
+                            child: Text(
+                              _mensagem,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Candal'
+                              ),
                             ),
                           ),
                         ),

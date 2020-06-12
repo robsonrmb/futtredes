@@ -1,20 +1,33 @@
 class LoginModel {
-  String email;
-  String senha;
+  String _email;
+  String _senha;
 
-  LoginModel({this.email, this.senha});
+  LoginModel(this._email, this._senha);
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     return LoginModel(
-      email: json["email"],
-      senha: json["senha"],
+      json["email"],
+      json["senha"],
     );
   }
 
   toJson() {
     return {
-      'email': email,
-      'senha': senha,
+      'email': _email,
+      'senha': _senha,
     };
   }
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
+  }
+
+  String get senha => _senha;
+
+  set senha(String value) {
+    _senha = value;
+  }
+
 }

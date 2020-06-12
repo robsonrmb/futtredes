@@ -1,6 +1,7 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/CadastroLoginModel.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/view/LoginView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:flutter/material.dart';
@@ -53,11 +54,8 @@ class _CadastroViewState extends State<CadastroView> {
         throw Exception(_mensagem);
       }
 
-      //UsuarioService usuarioService = UsuarioService();
-      //usuarioService.inclui(cadastroLoginModel, ConstantesConfig.SERVICO_FIXO);
-
       var _url = "${ConstantesRest.URL_USUARIOS}";
-      var _dados = "";
+      var _dados = cadastroLoginModel.toJson();
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
         _url = "https://jsonplaceholder.typicode.com/posts";
@@ -66,15 +64,17 @@ class _CadastroViewState extends State<CadastroView> {
 
       http.Response response = await http.post(_url,
           headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-          body: _dados
+          body: jsonEncode(_dados)
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode == 201) {
         Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
 
       }else{
         setState(() {
-          _mensagem = "Falha durante o processamento!!!";
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          _mensagem = exceptionModel.msg;
         });
       }
 
@@ -281,12 +281,14 @@ class _CadastroViewState extends State<CadastroView> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 15),
-                          child: Text(
-                            _mensagem,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Candal'
+                          child: Center(
+                            child: Text(
+                              _mensagem,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Candal'
+                              ),
                             ),
                           ),
                         ),

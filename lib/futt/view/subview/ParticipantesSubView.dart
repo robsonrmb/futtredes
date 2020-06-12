@@ -3,7 +3,6 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ParticipanteModel.dart';
 import 'package:futt/futt/service/ParticipanteService.dart';
 import 'package:flutter/material.dart';
-import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

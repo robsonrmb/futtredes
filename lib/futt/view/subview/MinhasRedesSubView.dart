@@ -5,7 +5,6 @@ import 'package:futt/futt/service/RedeService.dart';
 import 'package:futt/futt/view/EdicaoRedeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/ParticipantesView.dart';
-import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

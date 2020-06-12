@@ -27,12 +27,18 @@ class _RedesSubViewState extends State<RedesSubView> {
       builder: (context, snapshot) {
         switch( snapshot.connectionState ) {
           case ConnectionState.none :
+            return Center(
+              child: Text("None!!!"),
+            );
           case ConnectionState.waiting :
             return Center(
               child: CircularProgressIndicator(),
             );
             break;
           case ConnectionState.active :
+            return Center(
+              child: Text("Active!!!"),
+            );
           case ConnectionState.done :
             if( snapshot.hasData ) {
               return ListView.builder(

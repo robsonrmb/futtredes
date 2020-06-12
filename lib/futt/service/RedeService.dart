@@ -79,15 +79,15 @@ class RedeService {
   }
 
   Future<List<RedeModel>> listaRedesQueParticipo(bool fixo) {
-    String url = "${ConstantesRest.URL_REDE}";
+    String url = "${ConstantesRest.URL_REDE}/participacao";
     RedeRest redeRest = RedeRest();
-    return redeRest.processaHttpGetList(url, "1", fixo);
+    return redeRest.processaHttpGetListToken(url, "1", fixo);
   }
 
   Future<List<RedeModel>> listaMinhasRedes(bool fixo) {
-    String url = "${ConstantesRest.URL_REDE}";
+    String url = "${ConstantesRest.URL_REDE}/minhasredes";
     RedeRest redeRest = RedeRest();
-    return redeRest.processaHttpGetList(url, "2", fixo);
+    return redeRest.processaHttpGetListToken(url, "2", fixo);
   }
 
   Future<List<IntegranteModel>> listaIntegrantesDaRede(String idRede, {bool fixo}) {

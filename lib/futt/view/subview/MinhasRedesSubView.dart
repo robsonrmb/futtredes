@@ -6,6 +6,8 @@ import 'package:futt/futt/view/EdicaoRedeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/ParticipantesView.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/components/DialogFutt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -23,7 +25,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     return redeService.listaMinhasRedes(ConstantesConfig.SERVICO_FIXO);
   }
 
-  showModalDesativa(BuildContext context, String title, String description, int idRede){
+  _showModalAtivaDesativa(BuildContext context, String title, String description, int idRede, String acao){
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -39,11 +41,11 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             ),
             actions: <Widget>[
               FlatButton(
-                onPressed: () => _desativa(idRede, false, context),
+                onPressed: () => _realizaAcao(idRede, false, context, acao),
                 child: Text("Não"),
               ),
               FlatButton(
-                onPressed: () => _desativa(idRede, true, context),
+                onPressed: () => _realizaAcao(idRede, true, context, acao),
                 child: Text("Sim"),
               )
             ],
@@ -52,28 +54,22 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     );
   }
 
-  _desativa(int idRede, bool resposta, BuildContext context) async {
+  _realizaAcao(int idRede, bool resposta, BuildContext context, acao) async {
     if (resposta) {
-      _desativando(idRede, context);
+      if (acao == "D") {
+        _desativando(idRede, context);
+      }else{
+        _ativando(idRede, context);
+      }
       Navigator.pop(context);
-      /*
-      DialogFutt dialogFutt = new DialogFutt();
-      dialogFutt.waiting(context, "Desativa rede", "Rede desativada com sucesso!!!");
-      await Future.delayed(Duration(seconds: 3));
-      Navigator.pop(context);
-      */
 
     }else{
       Navigator.pop(context);
     }
   }
 
-  _desativando(int idRede, BuildContext context) async {
+  _ativando(int idRede, BuildContext context) async {
     try {
-      String _msg = "";
-      //RedeService redeService = RedeService();
-      //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
-
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/desativa";
       var _dados = "";
 
@@ -82,19 +78,79 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
       }
 
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
       http.Response response = await http.put(_url,
-          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-          body: _dados
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token,
+        },
+        body: _dados,
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Rede desativada!!!";
+      if (response.statusCode == 201) {
+        _mensagem = "Rede desativada com sucesso!!!";
+
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Rede", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+
       }else{
-        _msg = "Falha durante o processamento!!!";
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
       }
+
+    } on Exception catch (exception) {
+      print(exception.toString());
       setState(() {
-        _mensagem = _msg;
+        _mensagem = exception.toString();
       });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
+      });
+    }
+  }
+
+  _desativando(int idRede, BuildContext context) async {
+    try {
+      var _url = "${ConstantesRest.URL_REDE}/${idRede}/desativa";
+      var _dados = "";
+
+      if (ConstantesConfig.SERVICO_FIXO == true) {
+        _url = "https://jsonplaceholder.typicode.com/posts/1";
+        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.put(_url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token,
+          },
+          body: _dados,
+      );
+
+      if (response.statusCode == 201) {
+        _mensagem = "Rede desativada com sucesso!!!";
+
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Rede", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+
+      }else{
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+      }
 
     } on Exception catch (exception) {
       print(exception.toString());
@@ -192,14 +248,27 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                       ));
                                     },
                                   ),
-                                  GestureDetector(
+                                  (rede.status == 1 || rede.status == 2) ? GestureDetector(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 10),
                                       child: Icon(Icons.delete_forever,),
                                     ),
                                     onTap: (){
-                                      showModalDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id);
+                                      _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
                                     },
+                                  ) : new Padding(
+                                    padding: EdgeInsets.all(1),
+                                  ),
+                                  (rede.status == 3 || rede.status == 4) ? GestureDetector(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Icon(Icons.local_activity,),
+                                    ),
+                                    onTap: (){
+                                      _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
+                                    },
+                                  ) : new Padding(
+                                    padding: EdgeInsets.all(1),
                                   ),
                                 ]
                             ),

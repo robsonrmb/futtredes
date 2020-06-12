@@ -110,6 +110,7 @@ class _LoginViewState extends State<LoginView> {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString(ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
           await prefs.setString(ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
+          await prefs.setString(ConstantesConfig.PREFERENCES_TOKEN, response.headers['authorization']);
 
           Navigator.pushAndRemoveUntil(
             context,
@@ -121,6 +122,11 @@ class _LoginViewState extends State<LoginView> {
           setState(() {
             _mensagem = "Dados incorretos!!!";
           });
+
+          DialogFutt dialogFutt = new DialogFutt();
+          dialogFutt.waiting(context, "Mensagem", "(${response.statusCode}) ${_mensagem}");
+          await Future.delayed(Duration(seconds: 3));
+          Navigator.pop(context);
         }
 
       }else{

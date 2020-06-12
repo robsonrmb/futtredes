@@ -1,5 +1,6 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/PaisService.dart';
@@ -9,6 +10,7 @@ import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -29,38 +31,65 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
   void _cadastraNovaRede(BuildContext context) async {
     try {
-      String _msg = "";
-      _valida();
+      _mensagem = "";
+      if (_controllerNome.text == "") {
+        _mensagem = "Informe o título do rede.";
+      }else if (_controllerPaisRede == "") {
+        _mensagem = "Informe o país de onde se realizará o rede.";
+      }else if (_controllerCidade.text == "") {
+        _mensagem = "Informe a cidade de onde se realizará o rede.";
+      }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
+        _mensagem = "Qtd de integrantes incorreto.";
+      }
 
-      //Grava redes
+      if (_mensagem != "") {
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Mensagem", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
+
+        throw Exception(_mensagem);
+      }
+
       RedeModel redeModel = RedeModel.Novo(
           _controllerNome.text, _controllerPaisRede, _controllerCidade.text,
           _controllerLocal.text, int.parse(_controllerQtdIntegrantes.text), _controllerMais.text
       );
-      //RedeService redeService = RedeService();
-      //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
 
       var _url = "${ConstantesRest.URL_REDE}/adiciona";
-      var _dados = "";
+      var _dados = redeModel.toJson();
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
         _url = "https://jsonplaceholder.typicode.com/posts";
         _dados = jsonEncode({ 'userId': 1, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
       }
 
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
       http.Response response = await http.post(_url,
-          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-          body: _dados
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token,
+          },
+          body: jsonEncode(_dados)
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Rede inserida com sucesso!!!";
+      if (response.statusCode == 201) {
+        _mensagem = "Rede inserida com sucesso!!!";
+
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Nova rede", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+
       }else{
-        _msg = "Falha durante o processamento!!!";
+        setState(() {
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          _mensagem = exceptionModel.msg;
+        });
       }
-      setState(() {
-        _mensagem = _msg;
-      });
 
     } on Exception catch (exception) {
       print(exception.toString());
@@ -71,23 +100,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       setState(() {
         _mensagem = error.toString();
       });
-    }
-
-    DialogFutt dialogFutt = new DialogFutt();
-    dialogFutt.waiting(context, "Nova rede", "${_mensagem}");
-    await Future.delayed(Duration(seconds: 3));
-    Navigator.pop(context);
-  }
-
-  void _valida() {
-    if (_controllerNome.text == "") {
-      throw Exception('Informe o título do rede.');
-    }else if (_controllerPaisRede == "") {
-      throw Exception('Informe o país de onde se realizará o rede.');
-    }else if (_controllerCidade.text == "") {
-      throw Exception('Informe a cidade de onde se realizará o rede.');
-    }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
-      throw Exception('Qtd de integrantes incorreto.');
     }
   }
 

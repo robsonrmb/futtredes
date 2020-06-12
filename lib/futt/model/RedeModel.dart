@@ -46,6 +46,17 @@ class RedeModel {
     );
   }
 
+  toJson() {
+    return {
+      'nome': _nome,
+      'pais': _pais,
+      'cidade': _cidade,
+      'local': _local,
+      'info': _info,
+      'qtdIntegrantes': _qtdIntegrantes,
+    };
+  }
+
   int get responsavelJogos3 => _responsavelJogos3;
 
   set responsavelJogos3(int value) {

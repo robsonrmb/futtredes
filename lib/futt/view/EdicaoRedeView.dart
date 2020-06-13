@@ -1,5 +1,6 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/PaisService.dart';
@@ -7,6 +8,7 @@ import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -31,39 +33,65 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   _atualizaRede() async {
     try {
-      String _msg = "";
+      _mensagem = "";
+      if (_controllerNome.text == "") {
+        throw Exception('Informe o título do rede.');
+      }else if (_controllerPaisRede == "") {
+        throw Exception('Informe o país de onde se realizará o rede.');
+      }else if (_controllerCidade.text == "") {
+        throw Exception('Informe a cidade de onde se realizará o rede.');
+      }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
+        throw Exception('Qtd de integrantes incorreto.');
+      }
 
-      _valida();
+      if (_mensagem != "") {
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Mensagem", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
 
-      RedeModel tm = RedeModel.Edita(
+        throw Exception(_mensagem);
+      }
+
+      RedeModel redeModel = RedeModel.Edita(
         widget.redeModel.id, _controllerNome.text, _controllerPaisRede, _controllerCidade.text,
         _controllerLocal.text, int.parse(_controllerQtdIntegrantes.text), _controllerMais.text
       );
 
-      //RedeService redeService = RedeService();
-      //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
-
       var _url = "${ConstantesRest.URL_REDE}/atualiza";
-      var _dados = "";
+      var _dados = redeModel.toJson();
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
         _url = "https://jsonplaceholder.typicode.com/posts/1";
         _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
       }
 
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
       http.Response response = await http.put(_url,
-          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-          body: _dados
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token,
+          },
+          body: jsonEncode(_dados)
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Rede atualizada com sucesso!!!";
+      if (response.statusCode == 201) {
+        _mensagem = "Rede atualizada com sucesso!!!";
+
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waiting(context, "Atualização de rede", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+
       }else{
-        _msg = "Falha durante o processamento!!!";
+        setState(() {
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          _mensagem = exceptionModel.msg;
+        });
       }
-      setState(() {
-        _mensagem = _msg;
-      });
 
     } on Exception catch (exception) {
       print(exception.toString());
@@ -74,23 +102,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       setState(() {
         _mensagem = error.toString();
       });
-    }
-
-    DialogFutt dialogFutt = new DialogFutt();
-    dialogFutt.waiting(context, "Edição de rede", "${_mensagem}");
-    await Future.delayed(Duration(seconds: 3));
-    Navigator.pop(context);
-  }
-
-  void _valida() {
-    if (_controllerNome.text == "") {
-      throw Exception('Informe o título do rede.');
-    }else if (_controllerPaisRede == "") {
-      throw Exception('Informe o país de onde se realizará o rede.');
-    }else if (_controllerCidade.text == "") {
-      throw Exception('Informe a cidade de onde se realizará o rede.');
-    }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
-      throw Exception('Qtd de integrantes incorreto.');
     }
   }
 

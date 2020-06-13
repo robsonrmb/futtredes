@@ -6,6 +6,7 @@ import 'package:futt/futt/view/EdicaoRedeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/ParticipantesView.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/ResponsaveisRedeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -205,8 +206,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                           //borderRadius: BorderRadius.circular(5),
                         ),
                         child: GestureDetector(
-                          child:
-                          ListTile(
+                          child: ListTile(
                             title: Row(
                               children: <Widget>[
                                 Flexible(
@@ -221,7 +221,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                               ],
                             ),
                             subtitle: Text(
-                              "${rede.pais} - ${rede.cidade} - ${rede.local}",
+                              "${rede.pais} - ${rede.cidade}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -232,7 +232,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                 children: <Widget>[
                                   GestureDetector(
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: EdgeInsets.only(left: 1),
                                       child: Icon(Icons.people,
                                         //color: Colors.black,
                                       ),
@@ -248,9 +248,20 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                       ));
                                     },
                                   ),
+                                  GestureDetector(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.smartphone,),
+                                    ),
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => ResponsaveisRedeView(redeModel: rede,)
+                                      ));
+                                    },
+                                  ),
                                   (rede.status == 1 || rede.status == 2) ? GestureDetector(
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.delete_forever,),
                                     ),
                                     onTap: (){

@@ -25,6 +25,8 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     _iniciar();
+    _controllerEmail.text = "robson.rmb@gmail.com";
+    _controllerSenha.text = "123";
   }
 
   void _iniciar() async {
@@ -64,25 +66,17 @@ class _LoginViewState extends State<LoginView> {
 
         }else{
           setState(() {
-            var _dadosJson = jsonDecode(response.body);
-            ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
-            _mensagem = exceptionModel.msg;
+            _mensagem = "";
           });
         }
-
-      }else{
-        setState(() {
-          _mensagem = "Por favor, informe os dados!!!";
-        });
       }
     } on Exception catch (exception) {
-      print(exception.toString());
       setState(() {
-        _mensagem = exception.toString();
+        _mensagem = "";
       });
     } catch (error) {
       setState(() {
-        _mensagem = error.toString();
+        _mensagem = "";
       });
     }
   }

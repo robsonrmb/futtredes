@@ -1,6 +1,6 @@
-class ParticipanteServiceFixo {
+class IntegranteServiceFixo {
 
-  String retornoParticipantes = '['
+  String retornoIntegrantes = '['
         '{'
           '"idUsurio": 9,'
           '"nome": "Messi",'
@@ -87,7 +87,7 @@ class ParticipanteServiceFixo {
         '}'
       ']';
 
-  String retornoParticipantesExcluido = '['
+  String retornoIntegrantesExcluido = '['
         '{'
           '"idUsurio": 9,'
           '"nome": "Messi",'
@@ -104,7 +104,7 @@ class ParticipanteServiceFixo {
         '},'
       ']';
 
-  String retornoParticipantesIncluido = '['
+  String retornoIntegrantesIncluido = '['
       '{'
         '"idUsurio": 9,'
         '"nome": "Messi",'
@@ -137,11 +137,11 @@ class ParticipanteServiceFixo {
 
   String responseLista(int lista) {
     if (lista == 0) {
-      return retornoParticipantes;
+      return retornoIntegrantes;
     }else if (lista == 1) {
-      return retornoParticipantesExcluido;
+      return retornoIntegrantesExcluido;
     }else if (lista == 2) {
-      return retornoParticipantesIncluido;
+      return retornoIntegrantesIncluido;
     }
   }
 

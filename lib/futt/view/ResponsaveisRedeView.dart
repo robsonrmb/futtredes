@@ -2,11 +2,7 @@ import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
-import 'package:futt/futt/model/utils/PaisModel.dart';
-import 'package:futt/futt/service/PaisService.dart';
-import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
-import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -169,10 +165,10 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 1),
-                        child: Text("Responsável: ROBSON MELO DE BRITO",
+                        child: Text("Responsável: ${widget.redeModel.nomeResponsavelRede}",
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -216,7 +212,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      labelText: "Subresponsável da rede",
+                      labelText: "${_tituloSub1}",
                       labelStyle: TextStyle(
                         color: Colors.grey[600],
                       ),
@@ -238,7 +234,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      labelText: "Subresponsável da rede",
+                      labelText: "${_tituloSub2}",
                       labelStyle: TextStyle(
                         color: Colors.grey[600],
                       ),
@@ -260,7 +256,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      labelText: "Subresponsável da rede",
+                      labelText: "${_tituloSub3}",
                       labelStyle: TextStyle(
                         color: Colors.grey[600],
                       ),

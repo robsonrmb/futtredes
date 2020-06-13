@@ -4,7 +4,7 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/service/RedeService.dart';
 import 'package:futt/futt/view/JogosView.dart';
-import 'package:futt/futt/view/ParticipantesView.dart';
+import 'package:futt/futt/view/IntegrantesView.dart';
 import 'package:futt/futt/view/RankingView.dart';
 
 class RedesSubView extends StatefulWidget {
@@ -100,12 +100,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                     ),
                                     onTap: (){
                                       Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => ParticipantesView(idRede: rede.id,
-                                              nomeRede: rede.nome,
-                                              paisRede: rede.pais,
-                                              cidadeRede: rede.cidade,
-                                              localRede: rede.local,
-                                              donoRede: false)
+                                          builder: (context) => IntegrantesView(redeModel: rede, donoRede: false)
                                       ));
                                     },
                                   ),

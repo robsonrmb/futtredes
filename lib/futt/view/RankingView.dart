@@ -1,9 +1,5 @@
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
-import 'package:futt/futt/model/RankingEntidadeModel.dart';
-import 'package:futt/futt/service/RankingEntidadeService.dart';
-import 'package:futt/futt/view/subview/RankingSubView.dart';
-import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/subview/RankingSubView.dart';
 
 class RankingView extends StatefulWidget {
 
@@ -23,11 +19,6 @@ class _RankingViewState extends State<RankingView> {
   String _ano = "0";
   int _idRankingEntidade = 0;
 
-  Future<List<RankingEntidadeModel>> _listaRankingEntidade() async {
-    RankingEntidadeService rankingEntidadeService = RankingEntidadeService();
-    return rankingEntidadeService.listaTodos(ConstantesConfig.SERVICO_FIXO);
-  }
-
   _pesquisarRanking() {
     setState(() {
       _ano = "0";
@@ -41,19 +32,7 @@ class _RankingViewState extends State<RankingView> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Color(0xff093352),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
-        title: Text("Ranking"),
-      ),
-      body: Column(
+    return new Column(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(1),
@@ -92,19 +71,6 @@ class _RankingViewState extends State<RankingView> {
                                   ),
                                   maxLength: 4,
                                   controller: _controllerAno,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: FindDropdown<RankingEntidadeModel>(
-                                    label: "Ranking",
-                                    showSearchBox: false,
-                                    onFind: (String filter) => _listaRankingEntidade(),
-                                    searchBoxDecoration: InputDecoration(
-                                      hintText: "Search",
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    onChanged: (RankingEntidadeModel data) => _controllerRankingEntidade = data.id,
-                                  ),
                                 ),
                               ],
                             ),
@@ -149,10 +115,9 @@ class _RankingViewState extends State<RankingView> {
             ),
           ),
           Expanded(
-            child: RankingSubView(int.parse(_ano), _idRankingEntidade, widget.anoDefault, widget.idRankingDefault),
+            child: RankingSubView(1,1,1,1),
           )
         ],
-      ),
-    );
+      );
   }
 }

@@ -1,24 +1,24 @@
-import 'package:futt/futt/model/ParticipanteModel.dart';
+import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class NovoParticipanteView extends StatefulWidget {
+class NovoIntegranteView extends StatefulWidget {
 
   int idTorneio;
-  NovoParticipanteView(this.idTorneio);
+  NovoIntegranteView(this.idTorneio);
 
   @override
-  _NovoParticipanteViewState createState() => _NovoParticipanteViewState();
+  _NovoIntegranteViewState createState() => _NovoIntegranteViewState();
 }
 
-class _NovoParticipanteViewState extends State<NovoParticipanteView> {
+class _NovoIntegranteViewState extends State<NovoIntegranteView> {
 
   String _mensagem = "";
   int _idTorneio;
   TextEditingController _controllerEmail = TextEditingController();
 
-  _inserirParticipante(id) async {
+  _inserirIntegrante(id) async {
 
     String _msg = "";
     if (_controllerEmail.text == "") {
@@ -26,9 +26,9 @@ class _NovoParticipanteViewState extends State<NovoParticipanteView> {
 
     }else {
       try {
-        ParticipanteModel participanteModel = ParticipanteModel.Novo(id, _controllerEmail.text);
+        IntegranteModel integranteModel = IntegranteModel.Novo(id, _controllerEmail.text);
         //TorneioService torneioService = TorneioService();
-        //torneioService.adicionaParticipante(participanteModel, ConstantesConfig.SERVICO_FIXO);
+        //torneioService.adicionaIntegrante(integranteModel, ConstantesConfig.SERVICO_FIXO);
 
         http.Response response = await http.post(
             "https://jsonplaceholder.typicode.com/posts",
@@ -43,10 +43,10 @@ class _NovoParticipanteViewState extends State<NovoParticipanteView> {
             })
         );
         if (response.statusCode >= 200 && response.statusCode < 300) {
-          if (_mensagem == "Participante inserido com sucesso!!!") {
-            _mensagem = "Novo participante inserido com sucesso!!!";
+          if (_mensagem == "Integrante inserido com sucesso!!!") {
+            _mensagem = "Novo integrante inserido com sucesso!!!";
           }else{
-            _mensagem = "Participante inserido com sucesso!!!";
+            _mensagem = "Integrante inserido com sucesso!!!";
           }
           _msg = _mensagem;
           setState(() {
@@ -87,7 +87,7 @@ class _NovoParticipanteViewState extends State<NovoParticipanteView> {
                   fontSize: 20
               )
           ),
-          title: Text("Novo participante"),
+          title: Text("Novo integrante"),
         ),
         body: Container(
             padding: EdgeInsets.all(16),
@@ -118,13 +118,13 @@ class _NovoParticipanteViewState extends State<NovoParticipanteView> {
                   textColor: Colors.white,
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    "Cadastrar novo participante",
+                    "Cadastrar novo integrante",
                     style: TextStyle(
                         fontSize: 20
                     ),
                   ),
                   onPressed: () {
-                    _inserirParticipante(widget.idTorneio);
+                    _inserirIntegrante(widget.idTorneio);
                   },
                 ),
                 Container(

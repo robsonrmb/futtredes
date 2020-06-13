@@ -1,37 +1,81 @@
-import 'package:futt/futt/view/subview/ParticipantesSubView.dart';
+import 'package:futt/futt/constantes/ConstantesConfig.dart';
+import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
+import 'package:futt/futt/model/IntegranteModel.dart';
+import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/view/subview/IntegrantesSubView.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ParticipantesView extends StatefulWidget {
+class IntegrantesView extends StatefulWidget {
 
-  int idRede;
-  String nomeRede;
-  String paisRede;
-  String cidadeRede;
-  String localRede;
+  RedeModel redeModel;
   bool donoRede;
-  ParticipantesView({this.idRede, this.nomeRede, this.paisRede, this.cidadeRede, this.localRede, this.donoRede});
+  IntegrantesView({this.redeModel, this.donoRede});
 
   @override
-  _ParticipantesViewState createState() => _ParticipantesViewState();
+  _IntegrantesViewState createState() => _IntegrantesViewState();
 }
 
-class _ParticipantesViewState extends State<ParticipantesView> {
+class _IntegrantesViewState extends State<IntegrantesView> {
 
   int _inclui = 0;
   String _mensagem = "";
   TextEditingController _controllerEmail = TextEditingController();
 
-  _adicionaParticipante() async {
-    if (_controllerEmail.text == "") {
+  _adicionaIntegrante() async {
+    try {
+      if (_controllerEmail.text == "") {
+        setState(() {
+          _mensagem = "Informe o email do atleta.";
+        });
+      }else{
+        IntegranteModel integranteModel = IntegranteModel.Novo(widget.redeModel.id, _controllerEmail.text);
+
+        var _url = "${ConstantesRest.URL_REDE}/adicionaintegrante";
+        var _dados = integranteModel.toJson();
+
+        if (ConstantesConfig.SERVICO_FIXO == true) {
+          _url = "https://jsonplaceholder.typicode.com/posts";
+          _dados = jsonEncode({ 'userId': 1, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        }
+
+        final prefs = await SharedPreferences.getInstance();
+        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+        http.Response response = await http.post(_url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': token,
+            },
+            body: jsonEncode(_dados)
+        );
+
+        if (response.statusCode == 201) {
+          setState(() {
+            _mensagem = "Atleta inserido com sucesso!!!";
+          });
+          Navigator.pop(context);
+
+        }else{
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          setState(() {
+            _mensagem = exceptionModel.msg;
+          });
+        }
+      }
+    } on Exception catch (exception) {
+      print(exception.toString());
       setState(() {
-        _mensagem = "Informe o email do atleta.";
+        _mensagem = exception.toString();
       });
-    }else{
-      //enviar mensagem
+    } catch (error) {
       setState(() {
-        _inclui = 2;
+        _mensagem = error.toString();
       });
-      Navigator.pop(context);
     }
   }
 
@@ -48,11 +92,13 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                 fontSize: 20
             )
         ),
-        title: Text("Participantes"),
+        title: Text("Integrantes"),
       ),
       floatingActionButton: widget.donoRede ? FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
+          _mensagem = "";
+          _controllerEmail.text = "";
           showDialog(context: context, builder: (context){
             return AlertDialog(
               title: Text("Adicione um atleta"),
@@ -60,6 +106,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                 child: Column(
                   children: <Widget>[
                     TextField(
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Email",
                       ),
@@ -90,7 +137,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                     ),
                   ),
                   onPressed: () {
-                    _adicionaParticipante();
+                    _adicionaIntegrante();
                   },
                 ),
               ],
@@ -106,10 +153,6 @@ class _ParticipantesViewState extends State<ParticipantesView> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                /*image: DecorationImage(
-                    image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),
-                    fit: BoxFit.cover
-                ),*/
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.orangeAccent,
               ),
@@ -117,7 +160,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                    child: Text("${widget.nomeRede}",
+                    child: Text("${widget.redeModel.nome}",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -127,7 +170,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 1),
-                    child: Text("${widget.paisRede} - ${widget.cidadeRede}",
+                    child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 12,
@@ -136,7 +179,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                    child: Text("${widget.localRede}",
+                    child: Text("${widget.redeModel.local}",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 12,
@@ -147,7 +190,7 @@ class _ParticipantesViewState extends State<ParticipantesView> {
               ),
             ),
             Expanded(
-              child: ParticipantesSubView(widget.idRede, widget.donoRede, _inclui),
+              child: IntegrantesSubView(widget.redeModel, widget.donoRede, _inclui),
             )
           ],
         ),

@@ -1,52 +1,55 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
-import 'package:futt/futt/model/ParticipanteModel.dart';
-import 'package:futt/futt/service/ParticipanteService.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
+import 'package:futt/futt/model/IntegranteModel.dart';
+import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/service/IntegranteService.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ParticipantesSubView extends StatefulWidget {
+class IntegrantesSubView extends StatefulWidget {
 
-  int idRede;
+  RedeModel redeModel;
   bool donoRede;
   int inclui;
-  ParticipantesSubView(this.idRede, this.donoRede, this.inclui);
+  IntegrantesSubView(this.redeModel, this.donoRede, this.inclui);
 
   @override
-  _ParticipantesSubViewState createState() => _ParticipantesSubViewState();
+  _IntegrantesSubViewState createState() => _IntegrantesSubViewState();
 }
 
-class _ParticipantesSubViewState extends State<ParticipantesSubView> {
+class _IntegrantesSubViewState extends State<IntegrantesSubView> {
 
   String _mensagem = "";
 
-  Future<List<ParticipanteModel>> _listaParticipantes(int lista) async {
-    ParticipanteService resultadoService = ParticipanteService();
-    return resultadoService.listaParticipantesDaRede(widget.idRede, ConstantesConfig.SERVICO_FIXO, lista);
+  Future<List<IntegranteModel>> _listaIntegrantes(int lista) async {
+    IntegranteService resultadoService = IntegranteService();
+    return resultadoService.listaIntegrantesDaRede(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO, lista);
   }
 
-  _showModalRemoveParticipante(BuildContext context, int idRede, int idParticipante){
+  _showModalRemoveIntegrante(BuildContext context, int idRede, int idIntegrante){
     return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext) {
           return AlertDialog(
-            title: Text("Remove participante da rede"),
+            title: Text("Remove integrante da rede"),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text("Deseja realmente remover o participante?"),
+                  Text("Deseja realmente remover o integrante?"),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                onPressed: () => _remove(context, idRede, idParticipante, false),
+                onPressed: () => _remove(context, idRede, idIntegrante, false),
                 child: Text("Não"),
               ),
               FlatButton(
-                onPressed: () => _remove(context, idRede, idParticipante, true),
+                onPressed: () => _remove(context, idRede, idIntegrante, true),
                 child: Text("Sim"),
               )
             ],
@@ -55,50 +58,51 @@ class _ParticipantesSubViewState extends State<ParticipantesSubView> {
     );
   }
 
-  _remove(BuildContext context, int idRede, int idParticipante, bool resposta) async {
+  _remove(BuildContext context, int idRede, int idIntegrante, bool resposta) async {
     if (resposta) {
-      _removendo(context, idRede, idParticipante);
+      _removendo(context, idRede, idIntegrante);
       Navigator.pop(context);
-      /*
-      DialogFutt dialogFutt = new DialogFutt();
-      dialogFutt.waiting(context, "Remove participante", "Participante excluído com sucesso!!!");
-      await Future.delayed(Duration(seconds: 3));
-      Navigator.pop(context);
-      */
 
     }else{
       Navigator.pop(context);
     }
   }
 
-  _removendo(BuildContext context, int idRede, int idParticipante) async {
+  _removendo(BuildContext context, int idRede, int idAtleta) async {
     try {
-      String _msg = "";
-      //RedeService redeService = RedeService();
-      //redeService.inclui(redeModel, ConstantesConfig.SERVICO_FIXO);
+      IntegranteModel integranteModel = IntegranteModel.Remove(idRede, idAtleta);
 
-      var _url = "${ConstantesRest.URL_REDE}/${idRede}/removeintegrante";
-      var _dados = "";
+      var _url = "${ConstantesRest.URL_REDE}/removeintegrante";
+      var _dados = integranteModel.toJson();
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        _url = "https://jsonplaceholder.typicode.com/posts";
+        _dados = jsonEncode({ 'userId': 1, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
       }
 
-      http.Response response = await http.put(_url,
-          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-          body: _dados
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.post(_url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token,
+          },
+          body: jsonEncode(_dados)
       );
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        _msg = "Participante excluído!!!";
-        _listaParticipantes(1);
+      if (response.statusCode == 201) {
+        setState(() {
+          _mensagem = "Atleta inserido com sucesso!!!";
+        });
+
       }else{
-        _msg = "Falha durante o processamento!!!";
+        setState(() {
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          _mensagem = exceptionModel.msg;
+        });
       }
-      setState(() {
-        _mensagem = _msg;
-      });
 
     } on Exception catch (exception) {
       print(exception.toString());
@@ -114,8 +118,8 @@ class _ParticipantesSubViewState extends State<ParticipantesSubView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ParticipanteModel>>(
-      future: _listaParticipantes(widget.inclui),
+    return FutureBuilder<List<IntegranteModel>>(
+      future: _listaIntegrantes(widget.inclui),
       builder: (context, snapshot) {
         switch( snapshot.connectionState ) {
           case ConnectionState.none :
@@ -131,8 +135,8 @@ class _ParticipantesSubViewState extends State<ParticipantesSubView> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
 
-                  List<ParticipanteModel> participantes = snapshot.data;
-                  ParticipanteModel participante = participantes[index];
+                  List<IntegranteModel> integrantes = snapshot.data;
+                  IntegranteModel integrante = integrantes[index];
 
                   return Container(
                     margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -142,13 +146,13 @@ class _ParticipantesSubViewState extends State<ParticipantesSubView> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage('${participante.nomeFoto}'),
+                        backgroundImage: NetworkImage('${integrante.nomeFoto}'),
                         radius: 30.0,
                       ),
                       title: Row(
                         children: <Widget>[
                           Text(
-                            "${participante.nome}",
+                            "${integrante.nome}",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -159,7 +163,7 @@ class _ParticipantesSubViewState extends State<ParticipantesSubView> {
                       subtitle: Row(
                         children: <Widget>[
                           Text(
-                            "${participante.pais} - ${participante.cidade}",
+                            "${integrante.pais} - ${integrante.cidade}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -173,7 +177,7 @@ class _ParticipantesSubViewState extends State<ParticipantesSubView> {
                             widget.donoRede ? new GestureDetector(
                               child: Icon(Icons.delete),
                               onTap: (){
-                                _showModalRemoveParticipante(context, widget.idRede, participante.idUsuario);
+                                _showModalRemoveIntegrante(context, widget.redeModel.id, integrante.idUsuario);
                               },
                             ) : new Padding(
                               padding: EdgeInsets.all(1),

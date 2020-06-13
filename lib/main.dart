@@ -6,7 +6,7 @@ import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/LoginView.dart';
 import 'package:futt/futt/view/MinhasRedesView.dart';
 import 'package:futt/futt/view/NovaRedeView.dart';
-import 'package:futt/futt/view/ParticipantesView.dart';
+import 'package:futt/futt/view/IntegrantesView.dart';
 import 'package:futt/futt/view/PerfilView.dart';
 
 void main() {
@@ -16,7 +16,7 @@ void main() {
       "/cadastro" : (context) => CadastroView(),
       "/home" : (context) => HomeView(),
       "/jogos" : (context) => JogosView(),
-      "/participantes" : (context) => ParticipantesView(),
+      "/participantes" : (context) => IntegrantesView(),
       "/novarede" : (context) => NovaRedeView(),
       "/edicaorede" : (context) => EdicaoRedeView(),
       "/minhasredes" : (context) => MinhasRedesView(),

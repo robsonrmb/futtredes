@@ -1,16 +1,13 @@
+import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/subview/JogosSubView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class JogosView extends StatefulWidget {
 
-  int idRede;
-  String nomeRede;
-  String paisRede;
-  String cidadeRede;
-  String localRede;
+  RedeModel redeModel;
   bool donoRede;
-  JogosView({this.idRede, this.nomeRede, this.paisRede, this.cidadeRede, this.localRede, this.donoRede});
+  JogosView({this.redeModel, this.donoRede});
 
   @override
   _JogosViewState createState() => _JogosViewState();
@@ -49,35 +46,35 @@ class _JogosViewState extends State<JogosView> {
                     fit: BoxFit.cover
                 ),*/
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.orangeAccent,
+                color: Colors.grey[400],
               ),
               child: Column(
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                    child: Text("${widget.nomeRede}",
+                    child: Text("${widget.redeModel.nome}",
                       style: TextStyle(
-                          color: Colors.black,
                           fontSize: 18,
-                          fontFamily: 'Candal'
+                          fontFamily: 'Candal',
+                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 1),
-                    child: Text("${widget.paisRede} - ${widget.cidadeRede}",
+                    child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
                       style: TextStyle(
-                        color: Colors.black,
                         fontSize: 12,
+                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                    child: Text("${widget.localRede}",
+                    child: Text("${widget.redeModel.local}",
                       style: TextStyle(
-                        color: Colors.black,
                         fontSize: 12,
+                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                       ),
                     ),
                   ),
@@ -85,7 +82,7 @@ class _JogosViewState extends State<JogosView> {
               ),
             ),
             Expanded(
-              child: JogosSubView(widget.idRede, false),
+              child: JogosSubView(widget.redeModel, widget.donoRede),
             )
           ],
         ),

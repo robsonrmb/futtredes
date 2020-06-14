@@ -94,7 +94,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
         ),
         title: Text("Integrantes"),
       ),
-      floatingActionButton: widget.donoRede ? FloatingActionButton(
+      floatingActionButton: widget.donoRede && (widget.redeModel.status == 1 || widget.redeModel.status == 2) ? FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
           _mensagem = "";
@@ -154,7 +154,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.orangeAccent,
+                color: Colors.grey[400],
               ),
               child: Column(
                 children: <Widget>[
@@ -162,9 +162,9 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                     padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
                     child: Text("${widget.redeModel.nome}",
                       style: TextStyle(
-                          color: Colors.black,
                           fontSize: 18,
-                          fontFamily: 'Candal'
+                          fontFamily: 'Candal',
+                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                       ),
                     ),
                   ),
@@ -172,8 +172,8 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                     padding: EdgeInsets.only(top: 1),
                     child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
                       style: TextStyle(
-                        color: Colors.black,
                         fontSize: 12,
+                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                       ),
                     ),
                   ),
@@ -181,8 +181,8 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                     padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
                     child: Text("${widget.redeModel.local}",
                       style: TextStyle(
-                        color: Colors.black,
                         fontSize: 12,
+                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                       ),
                     ),
                   ),

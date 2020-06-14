@@ -1,16 +1,17 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
-import 'package:futt/futt/model/JogoModel.dart';
-import 'package:futt/futt/service/JogoService.dart';
+import 'package:futt/futt/model/JogoRedeModel.dart';
+import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/service/JogoRedeService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class JogosSubView extends StatefulWidget {
 
-  int idTorneio;
+  RedeModel redeModel;
   bool donoRede;
-  JogosSubView(this.idTorneio, this.donoRede);
+  JogosSubView(this.redeModel, this.donoRede);
 
   @override
   _JogosSubViewState createState() => _JogosSubViewState();
@@ -23,16 +24,16 @@ class _JogosSubViewState extends State<JogosSubView> {
   bool _atualizaJogos = false;
   String _mensagem = "";
 
-  Future<List<JogoModel>> _listaJogos(_atualizaJogos) async {
-    JogoService jogoService = JogoService();
-    return jogoService.listaPorTorneios(widget.idTorneio, 2, _atualizaJogos, ConstantesConfig.SERVICO_FIXO);
+  Future<List<JogoRedeModel>> _listaJogosDaRede() async {
+    JogoRedeService jogoService = JogoRedeService();
+    return jogoService.listaPorRede(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO);
   }
 
   _atualizaPlacar(int idJogo, int idNumeroJogo) async {
     try {
-      JogoModel jogoModel = JogoModel.NovoPlacar(idJogo, idNumeroJogo, int.parse(_controllerPontuacao1.text), int.parse(_controllerPontuacao2.text));
+      JogoRedeModel jogoModel = JogoRedeModel.NovoPlacar(idJogo, idNumeroJogo, int.parse(_controllerPontuacao1.text), int.parse(_controllerPontuacao2.text));
 
-      var _url = "${ConstantesRest.URL_JOGO}/atualizaplacar";
+      var _url = "${ConstantesRest.URL_JOGO_REDE}/atualizaplacar";
       var _dados = jogoModel.toJsonNovoPlacar();
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
@@ -86,10 +87,20 @@ class _JogosSubViewState extends State<JogosSubView> {
     Scaffold.of(context).showSnackBar(snackbar);
   }
 
+  bool _alteraPlacar(JogoRedeModel jogo) {
+    if (widget.donoRede == true &&
+        (widget.redeModel.status == 1 || widget.redeModel.status == 2) &&
+        (jogo.pontuacao1 == 0 && jogo.pontuacao2 == 0)) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<JogoModel>>(
-      future: _listaJogos(_atualizaJogos),
+    return FutureBuilder<List<JogoRedeModel>>(
+      future: _listaJogosDaRede(),
       builder: (context, snapshot) {
         switch( snapshot.connectionState ) {
           case ConnectionState.none :
@@ -105,8 +116,8 @@ class _JogosSubViewState extends State<JogosSubView> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
 
-                  List<JogoModel> paticipantes = snapshot.data;
-                  JogoModel jogo = paticipantes[index];
+                  List<JogoRedeModel> paticipantes = snapshot.data;
+                  JogoRedeModel jogo = paticipantes[index];
 
                   return Container(
                     margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -118,7 +129,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                       leading: Container(
                         height: 40, width: 40,
                         decoration: BoxDecoration(
-                          color: Color(0xff093352),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: Column(
@@ -130,7 +141,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                               style: TextStyle(
                                 fontSize: 36,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.orange,
+                                color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
                               ),
                             ),
                           ]
@@ -139,7 +150,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                       title: Row(
                         children: <Widget>[
                           Text(
-                            "${jogo.nomeJogador1} e ${jogo.nomeJogador2}",
+                            "${jogo.apelidoFormatadoJogador1} e ${jogo.apelidoFormatadoJogador2}",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -150,7 +161,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                       subtitle: Row(
                         children: <Widget>[
                           Text(
-                            "${jogo.nomeJogador3} e ${jogo.nomeJogador4}",
+                            "${jogo.apelidoFormatadoJogador3} e ${jogo.apelidoFormatadoJogador4}",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -164,7 +175,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                             Container(
                               height: 40, width: 40,
                               decoration: BoxDecoration(
-                                color: Color(0xff093352),
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Column(
@@ -176,13 +187,13 @@ class _JogosSubViewState extends State<JogosSubView> {
                                       style: TextStyle(
                                         fontSize: 36,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.orangeAccent,
+                                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
                                       ),
                                     ),
                                   ]
                               ),
                             ),
-                            widget.donoRede == true ? new GestureDetector(
+                            _alteraPlacar(jogo) ? new GestureDetector(
                               child: Padding(
                                 padding: EdgeInsets.only(left: 20),
                                 child: Icon(Icons.edit,

@@ -165,6 +165,20 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
+  _getSubTitulo(int status, String data) {
+    if (status == 1) {
+      return "EM APROVAÇÃO";
+    }else if (status == 2) {
+      return data;
+    }else if (status == 3) {
+      return "Rede fechada.";
+    }else if (status == 4) {
+      return "DESATIVADA";
+    }else{
+      return "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<RedeModel>>(
@@ -191,12 +205,16 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
-                        height: 100,
+                        height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
+                          color: Colors.grey[300].withOpacity(0.5),
                           image: DecorationImage(
                               image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
                               fit: BoxFit.fill
+                          ),
+                          border: Border.all(
+                            width: 1.0,
+                            color: Colors.grey[300],
                           ),
                         ),
                       ),
@@ -220,11 +238,11 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                 ),
                               ],
                             ),
-                            subtitle: Text(
-                              "${rede.pais} - ${rede.cidade}",
+                            subtitle: Text(_getSubTitulo(rede.status, rede.disponibilidade),
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
                               ),
                             ),
                             trailing: Row(
@@ -233,8 +251,21 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                   GestureDetector(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 1),
+                                      child: Icon(Icons.play_circle_outline,
+                                          color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => JogosView(redeModel: rede, donoRede: true),
+                                      ));
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.people,
-                                        //color: Colors.black,
+                                          color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
                                       ),
                                     ),
                                     onTap: (){
@@ -246,7 +277,9 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                   GestureDetector(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.smartphone,),
+                                      child: Icon(Icons.smartphone,
+                                        color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                      ),
                                     ),
                                     onTap: (){
                                       Navigator.push(context, MaterialPageRoute(
@@ -257,7 +290,8 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                   (rede.status == 1 || rede.status == 2) ? GestureDetector(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.delete_forever,),
+                                      child: Icon(Icons.delete_forever,
+                                        color: rede.status == 1 ? Colors.lightBlue : Colors.green,),
                                     ),
                                     onTap: (){
                                       _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
@@ -268,7 +302,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                   (rede.status == 3 || rede.status == 4) ? GestureDetector(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 10),
-                                      child: Icon(Icons.local_activity,),
+                                      child: Icon(Icons.done,),
                                     ),
                                     onTap: (){
                                       _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
@@ -281,42 +315,13 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                           ),
                           onTap: (){
                             Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => JogosView(idRede: rede.id,
-                                  nomeRede: rede.nome,
-                                  paisRede: rede.pais,
-                                  cidadeRede: rede.cidade,
-                                  localRede: rede.local,
-                                  donoRede: true),
-                            ));
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                        color: Colors.grey[300],
-                        child: RaisedButton(
-                          color: Color(0xff086ba4),
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(15),
-                          child: Text(
-                            "Atualiza dados da rede",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'Candal',
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
                               builder: (context) => EdicaoRedeView(redeModel: rede),
                             ));
                           },
                         ),
                       ),
                       Container(
-                        height: 15,
+                        height: 5,
                         color: Colors.white,
                       ),
                     ],

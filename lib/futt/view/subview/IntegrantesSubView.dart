@@ -116,6 +116,18 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
     }
   }
 
+  _retorneSubtitulo(String pais, String cidade) {
+    if (pais == null && cidade == null) {
+      return "";
+    } else if (pais != null && cidade != null) {
+      return pais + " - " + cidade;
+    } else if (pais != null && cidade == null) {
+      return pais;
+    } else if (pais == null && cidade != null) {
+      return cidade;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<IntegranteModel>>(
@@ -146,7 +158,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage('${integrante.nomeFoto}'),
+                        backgroundImage: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}${integrante.nomeFoto}'),
                         radius: 30.0,
                       ),
                       title: Row(
@@ -162,8 +174,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                       ),
                       subtitle: Row(
                         children: <Widget>[
-                          Text(
-                            "${integrante.pais} - ${integrante.cidade}",
+                          Text(_retorneSubtitulo(integrante.pais, integrante.cidade),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -174,8 +185,20 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                       trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            GestureDetector(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 1),
+                                child: Icon(Icons.insert_chart),
+                              ),
+                              onTap: (){
+                                _showModalRemoveIntegrante(context, widget.redeModel.id, integrante.idUsuario);
+                              },
+                            ),
                             widget.donoRede ? new GestureDetector(
-                              child: Icon(Icons.delete),
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Icon(Icons.delete),
+                              ),
                               onTap: (){
                                 _showModalRemoveIntegrante(context, widget.redeModel.id, integrante.idUsuario);
                               },

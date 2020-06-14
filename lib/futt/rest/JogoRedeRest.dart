@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class JogoRedeRest extends BaseRest {
 
-  Future<List<JogoRedeModel>> processaHttpGetList(String url, int dia, bool fixo) async {
+  Future<List<JogoRedeModel>> processaHttpGetList(String url, bool fixo) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -14,17 +14,16 @@ class JogoRedeRest extends BaseRest {
         return _parseListaJogoRedeModel(dadosJson);
 
       } else {
-        throw Exception('Failed to load Tipo Torneio!!!');
+        throw Exception('Falha na busca dos integrantes da rede!!!');
       }
     } on Exception catch (exception) {
-      print(exception.toString());
       if (fixo != null && fixo == true) {
         JogoRedeServiceFixo serviceFixo = JogoRedeServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(dia));
+        var dadosJson = json.decode(serviceFixo.responseLista(1));
         return _parseListaJogoRedeModel(dadosJson);
 
       } else {
-        throw Exception('Falha ao listar participantes!!!');
+        throw Exception('Falha na busca dos integrantes da rede!!!');
       }
 
     } catch (error) {

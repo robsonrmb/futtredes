@@ -153,15 +153,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           });
         },
         type: BottomNavigationBarType.fixed, //este e o padrão
-        fixedColor: Color(0xfff79e07),
+        fixedColor: Colors.green,
         items: [
           BottomNavigationBarItem(
             title: Text("Redes"),
-            icon: Icon(Icons.whatshot),
+            icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
             title: Text("Dashboard"),
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.insert_chart),
           ),
           BottomNavigationBarItem(
             title: Text("Escolinhas"),

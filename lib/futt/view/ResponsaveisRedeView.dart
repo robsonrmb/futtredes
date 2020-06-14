@@ -149,7 +149,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: Colors.orangeAccent,
+                    color: Colors.white
                   ),
                   child: Column(
                     children: <Widget>[
@@ -157,9 +157,9 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                         padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
                         child: Text("Informe o email do responsável",
                           style: TextStyle(
-                              color: Colors.black,
                               fontSize: 18,
-                              fontFamily: 'Candal'
+                              fontFamily: 'Candal',
+                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                           ),
                         ),
                       ),
@@ -167,9 +167,9 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                         padding: EdgeInsets.only(top: 1),
                         child: Text("Responsável: ${widget.redeModel.nomeResponsavelRede}",
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
+                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                           ),
                         ),
                       ),
@@ -177,8 +177,8 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                         padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
                         child: Text("Indique até 3 subresponsáveis.",
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 12,
+                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                           ),
                         ),
                       ),
@@ -276,7 +276,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: Colors.orangeAccent,
+                    color: Colors.white,
                   ),
                   child: Column(
                     children: <Widget>[
@@ -284,8 +284,8 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                         padding: EdgeInsets.only(top: 5),
                         child: Text("Os subresponsáveis podem cadastrar:",
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 12,
+                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                           ),
                         ),
                       ),
@@ -293,8 +293,8 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                         padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
                         child: Text("JOGOS, PLACARES, PARTICIPANTES, ENTRE OUTROS.",
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 12,
+                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
                           ),
                         ),
                       ),
@@ -319,11 +319,11 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
           ),
         ),
       ),
-      bottomNavigationBar: widget.redeModel.status == 2 ? BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Container(
           padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
           color: Colors.grey[300],
-          child: RaisedButton(
+          child: widget.redeModel.status == 1 || widget.redeModel.status == 2 ? RaisedButton(
             color: Color(0xff086ba4),
             textColor: Colors.white,
             padding: EdgeInsets.all(15),
@@ -340,9 +340,23 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
             onPressed: () {
               _atualizaResponsaveis();
             },
+          ) : RaisedButton(
+            textColor: Colors.white,
+            padding: EdgeInsets.all(15),
+            child: Text(
+              "REDE FECHADA OU DESATIVADA",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'Candal',
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2),
+            ),
+            onPressed: () {},
           ),
         ),
-      ) : null,
+      ),
     );
   }
 }

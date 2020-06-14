@@ -99,6 +99,38 @@ class JogoRedeModel {
             '}';
   }
 
+  String get apelidoFormatadoJogador1 {
+    if (this.apelidoJogador1 == null) {
+      return nomeJogador1;
+    }else{
+      return apelidoJogador1;
+    }
+  }
+
+  String get apelidoFormatadoJogador2 {
+    if (this.apelidoJogador2 == null) {
+      return nomeJogador2;
+    }else{
+      return apelidoJogador2;
+    }
+  }
+
+  String get apelidoFormatadoJogador3 {
+    if (this.apelidoJogador3 == null) {
+      return nomeJogador3;
+    }else{
+      return apelidoJogador3;
+    }
+  }
+
+  String get apelidoFormatadoJogador4 {
+    if (this.apelidoJogador4 == null) {
+      return nomeJogador4;
+    }else{
+      return apelidoJogador4;
+    }
+  }
+
   String get apelidoJogador10 => _apelidoJogador10;
 
   set apelidoJogador10(String value) {

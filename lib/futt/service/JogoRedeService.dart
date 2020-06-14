@@ -7,7 +7,7 @@ class JogoRedeService {
 
   inclui(var JogoRedeModel, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO}/adiciona";
+      String url = "${ConstantesRest.URL_JOGO_REDE}/adiciona";
       JogoRedeRest jogoRest = JogoRedeRest();
       jogoRest.processaHttpPost(url, JogoRedeModel);
 
@@ -19,7 +19,7 @@ class JogoRedeService {
 
   atualiza(var JogoRedeModel, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO}/atualiza";
+      String url = "${ConstantesRest.URL_JOGO_REDE}/atualiza";
       JogoRedeRest jogoRest = JogoRedeRest();
       jogoRest.processaHttpPut(url, JogoRedeModel);
 
@@ -31,7 +31,7 @@ class JogoRedeService {
 
   atualizaPlacar(var JogoRedeModel, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO}/atualizaplacar";
+      String url = "${ConstantesRest.URL_JOGO_REDE}/atualizaplacar";
       JogoRedeRest jogoRest = JogoRedeRest();
       jogoRest.processaHttpPut(url, JogoRedeModel);
 
@@ -43,7 +43,7 @@ class JogoRedeService {
 
   remove(String idJogo, {bool fixo}) {
     if (fixo == null || fixo == false) {
-      String url = "${ConstantesRest.URL_JOGO}/remove/${idJogo}";
+      String url = "${ConstantesRest.URL_JOGO_REDE}/remove/${idJogo}";
       JogoRedeRest jogoRest = JogoRedeRest();
       jogoRest.processaHttpDelete(url);
 
@@ -53,14 +53,10 @@ class JogoRedeService {
     }
   }
 
-  Future<List<JogoRedeModel>> listaPorRedes(int idRede, int dia, bool atualizouPlacar, bool fixo) async {
-    String url = "${ConstantesRest.URL_JOGO_REDE}/redes/${idRede}";
+  Future<List<JogoRedeModel>> listaPorRede(int idRede, bool fixo) async {
+    String url = "${ConstantesRest.URL_JOGO_REDE}/rede/${idRede}";
     JogoRedeRest jogoRest = JogoRedeRest();
-    if (!atualizouPlacar) {
-      return jogoRest.processaHttpGetList(url, dia, fixo);
-    }else{
-      return jogoRest.processaHttpGetListPlacarAtualizado(url, dia, atualizouPlacar, fixo);
-    }
+    return jogoRest.processaHttpGetList(url, fixo);
   }
 
 }

@@ -51,13 +51,18 @@ class _RedesSubViewState extends State<RedesSubView> {
                   return Column(
                     children: <Widget>[
                       Container(
-                        height: 100,
+                        height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.orangeAccent,
+                          color: Colors.grey[300].withOpacity(0.5),
                           image: DecorationImage(
                               image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
                               fit: BoxFit.fill
                           ),
+                          //borderRadius: BorderRadius.circular(5.0),
+                          border: Border.all(
+                            width: 1.0,
+                            color: Colors.grey[300],
+                          )
                         ),
                       ),
                       Container(
@@ -93,9 +98,22 @@ class _RedesSubViewState extends State<RedesSubView> {
                                 children: <Widget>[
                                   GestureDetector(
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: EdgeInsets.only(left: 1),
+                                      child: Icon(Icons.play_circle_outline,
+                                          color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => JogosView(redeModel: rede, donoRede: false),
+                                      ));
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.people,
-                                        //color: Colors.black,
+                                          color: Colors.green,
                                       ),
                                     ),
                                     onTap: (){
@@ -106,9 +124,9 @@ class _RedesSubViewState extends State<RedesSubView> {
                                   ),
                                   GestureDetector(
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.star_half,
-                                        //color: Colors.black,
+                                        color: Colors.green,
                                       ),
                                     ),
                                     onTap: (){
@@ -122,18 +140,13 @@ class _RedesSubViewState extends State<RedesSubView> {
                           ),
                           onTap: (){
                             Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => JogosView(idRede: rede.id,
-                                  nomeRede: rede.nome,
-                                  paisRede: rede.pais,
-                                  cidadeRede: rede.cidade,
-                                  localRede: rede.local,
-                                  donoRede: false),
+                              builder: (context) => JogosView(redeModel: rede,donoRede: false),
                             ));
                           },
                         ),
                       ),
                       Container(
-                        height: 15,
+                        height: 5,
                         color: Colors.white,
                       ),
                     ],

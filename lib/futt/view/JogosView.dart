@@ -1,4 +1,5 @@
 import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/view/NovaRedeView.dart';
 import 'package:futt/futt/view/subview/JogosSubView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,14 @@ class _JogosViewState extends State<JogosView> {
         ),
         title: Text("Jogos"),
       ),
+      floatingActionButton: widget.donoRede && (widget.redeModel.status == 1 || widget.redeModel.status == 2) ? FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => NovaRedeView(),
+          ));
+        },
+      ) : null,
       body: Padding(
         padding: EdgeInsets.all(5),
         child: Column(
@@ -40,6 +49,7 @@ class _JogosViewState extends State<JogosView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
               decoration: BoxDecoration(
                 /*image: DecorationImage(
                     image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),

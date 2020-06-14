@@ -90,13 +90,13 @@ class JogoRedeModel {
     );
   }
 
-  String toJsonNovoPlacar() {
-    return '{'
-              '"id": ${_id},'
-              '"numero": ${_numero},'
-              '"pontuacao1": ${_pontuacao1},'
-              '"pontuacao2": ${_pontuacao2},'
-            '}';
+  toJson() {
+    return {
+      'id': _id,
+      'numero': _numero,
+      'pontuacao1': _pontuacao1,
+      'pontuacao2': _pontuacao2,
+    };
   }
 
   String get apelidoFormatadoJogador1 {

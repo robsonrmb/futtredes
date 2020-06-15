@@ -35,6 +35,16 @@ class JogoRedeModel {
   String _apelidoJogador8;
   String _apelidoJogador9;
   String _apelidoJogador10;
+  String _emailJogador1;
+  String _emailJogador2;
+  String _emailJogador3;
+  String _emailJogador4;
+  String _emailJogador5;
+  String _emailJogador6;
+  String _emailJogador7;
+  String _emailJogador8;
+  String _emailJogador9;
+  String _emailJogador10;
 
   JogoRedeModel(this._id, this._numero, this._pontuacao1, this._pontuacao2, this._data,
       this._idRede, this._idJogador1, this._idJogador2,
@@ -45,9 +55,14 @@ class JogoRedeModel {
       this._nomeJogador7, this._nomeJogador8, this._nomeJogador9, this._nomeJogador10,
       this._apelidoJogador1, this._apelidoJogador2,
       this._apelidoJogador3, this._apelidoJogador4, this._apelidoJogador5, this._apelidoJogador6,
-      this._apelidoJogador7, this._apelidoJogador8, this._apelidoJogador9, this._apelidoJogador10);
+      this._apelidoJogador7, this._apelidoJogador8, this._apelidoJogador9, this._apelidoJogador10,
+      this._emailJogador1, this._emailJogador2,
+      this._emailJogador3, this._emailJogador4, this._emailJogador5, this._emailJogador6,
+      this._emailJogador7, this._emailJogador8, this._emailJogador9, this._emailJogador10);
 
+  JogoRedeModel.NovoJogo(this._idRede, this._pontuacao1, this._pontuacao2, this._emailJogador1, this._emailJogador2, this._emailJogador3, this._emailJogador4);
   JogoRedeModel.NovoPlacar(this._id, this._numero, this._pontuacao1, this._pontuacao2);
+  JogoRedeModel.Remove(this._id);
 
   factory JogoRedeModel.fromJson(Map<String, dynamic> json) {
     return JogoRedeModel(
@@ -87,6 +102,16 @@ class JogoRedeModel {
       json["apelidoJogador8"],
       json["apelidoJogador9"],
       json["apelidoJogador10"],
+      json["emailJogador1"],
+      json["emailJogador2"],
+      json["emailJogador3"],
+      json["emailJogador4"],
+      json["emailJogador5"],
+      json["emailJogador6"],
+      json["emailJogador7"],
+      json["emailJogador8"],
+      json["emailJogador9"],
+      json["emailJogador10"],
     );
   }
 
@@ -96,6 +121,11 @@ class JogoRedeModel {
       'numero': _numero,
       'pontuacao1': _pontuacao1,
       'pontuacao2': _pontuacao2,
+      'idRede': _idRede,
+      'emailJogador1': _emailJogador1,
+      'emailJogador2': _emailJogador2,
+      'emailJogador3': _emailJogador3,
+      'emailJogador4': _emailJogador4,
     };
   }
 
@@ -345,6 +375,66 @@ class JogoRedeModel {
 
   set id(int value) {
     _id = value;
+  }
+
+  String get emailJogador10 => _emailJogador10;
+
+  set emailJogador10(String value) {
+    _emailJogador10 = value;
+  }
+
+  String get emailJogador9 => _emailJogador9;
+
+  set emailJogador9(String value) {
+    _emailJogador9 = value;
+  }
+
+  String get emailJogador8 => _emailJogador8;
+
+  set emailJogador8(String value) {
+    _emailJogador8 = value;
+  }
+
+  String get emailJogador7 => _emailJogador7;
+
+  set emailJogador7(String value) {
+    _emailJogador7 = value;
+  }
+
+  String get emailJogador6 => _emailJogador6;
+
+  set emailJogador6(String value) {
+    _emailJogador6 = value;
+  }
+
+  String get emailJogador5 => _emailJogador5;
+
+  set emailJogador5(String value) {
+    _emailJogador5 = value;
+  }
+
+  String get emailJogador4 => _emailJogador4;
+
+  set emailJogador4(String value) {
+    _emailJogador4 = value;
+  }
+
+  String get emailJogador3 => _emailJogador3;
+
+  set emailJogador3(String value) {
+    _emailJogador3 = value;
+  }
+
+  String get emailJogador2 => _emailJogador2;
+
+  set emailJogador2(String value) {
+    _emailJogador2 = value;
+  }
+
+  String get emailJogador1 => _emailJogador1;
+
+  set emailJogador1(String value) {
+    _emailJogador1 = value;
   }
 
 }

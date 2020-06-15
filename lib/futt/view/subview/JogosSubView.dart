@@ -97,6 +97,84 @@ class _JogosSubViewState extends State<JogosSubView> {
     */
   }
 
+  _removeJogo(int idJogo) async {
+    try {
+      JogoRedeModel jogoModel = JogoRedeModel.Remove(idJogo);
+
+      var _url = "${ConstantesRest.URL_JOGO_REDE}/remove/${idJogo}";
+      var _dados = jogoModel.toJson();
+
+      if (ConstantesConfig.SERVICO_FIXO == true) {
+        _url = "https://jsonplaceholder.typicode.com/posts/1";
+        _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.delete(_url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token,
+          },
+      );
+      if (response.statusCode == 201) {
+        setState(() {
+          _mensagem = "Jogo removido com sucesso!!!";
+        });
+        Navigator.pop(context);
+
+      }else {
+        var _dadosJson = jsonDecode(response.body);
+        ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+        setState(() {
+          _mensagem = exceptionModel.msg;
+        });
+      }
+
+    } on Exception catch (exception) {
+      print(exception.toString());
+      setState(() {
+        _mensagem = exception.toString();
+      });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
+      });
+    }
+  }
+
+  _showModalRemoveJogo(BuildContext context, String title, String description, int idJogo){
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(description),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => {
+                  Navigator.pop(context),
+                },
+                child: Text("Não"),
+              ),
+              FlatButton(
+                onPressed: () => _removeJogo(idJogo),
+                child: Text("Sim"),
+              )
+            ],
+          );
+        }
+    );
+  }
+
   bool _alteraPlacar(JogoRedeModel jogo) {
     if (widget.donoRede == true &&
         (widget.redeModel.status == 1 || widget.redeModel.status == 2) &&
@@ -299,7 +377,6 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                           height: 40, width: 40,
                                                           child: TextField(
                                                             keyboardType: TextInputType.number,
-                                                            maxLength: 2,
                                                             controller: _controllerPontuacao1,
                                                           ),
                                                         ),
@@ -308,7 +385,6 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                           height: 40, width: 40,
                                                           child: TextField(
                                                             keyboardType: TextInputType.number,
-                                                            maxLength: 2,
                                                             controller: _controllerPontuacao2,
                                                           ),
                                                         ),
@@ -336,24 +412,6 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                   ],
                                                 ),
                                               ),
-                                              /*
-                                              TextField(
-                                                keyboardType: TextInputType.number,
-                                                decoration: InputDecoration(
-                                                  labelText: "Pontuação (${jogo.nomeJogador1}/${jogo.nomeJogador2})",
-                                                ),
-                                                maxLength: 2,
-                                                controller: _controllerPontuacao1,
-                                              ),
-                                              TextField(
-                                                keyboardType: TextInputType.number,
-                                                decoration: InputDecoration(
-                                                  labelText: "Pontuação (${jogo.nomeJogador3}/${jogo.nomeJogador4})",
-                                                ),
-                                                maxLength: 2,
-                                                controller: _controllerPontuacao2,
-                                              ),
-                                              */
                                               RaisedButton(
                                                 color: Color(0xff086ba4),
                                                 textColor: Colors.white,
@@ -410,7 +468,9 @@ class _JogosSubViewState extends State<JogosSubView> {
                                       //color: Colors.black
                                     ),
                                   ),
-                                  onTap: (){},
+                                  onTap: (){
+                                    _showModalRemoveJogo(context, "Remove jogo", "Deseja realmente remover o jogo?", jogo.id);
+                                  },
                                 ) : new Padding(
                                   padding: EdgeInsets.all(1),
                                 ),

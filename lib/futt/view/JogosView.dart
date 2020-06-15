@@ -1,5 +1,5 @@
 import 'package:futt/futt/model/RedeModel.dart';
-import 'package:futt/futt/view/NovaRedeView.dart';
+import 'package:futt/futt/view/NovoJogoView.dart';
 import 'package:futt/futt/view/subview/JogosSubView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class _JogosViewState extends State<JogosView> {
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(
-              builder: (context) => NovaRedeView(),
+              builder: (context) => NovoJogoView(widget.redeModel),
           ));
         },
       ) : null,

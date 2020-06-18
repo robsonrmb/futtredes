@@ -3,7 +3,7 @@ class JogoRedeModel {
   int _numero;
   int _pontuacao1;
   int _pontuacao2;
-  DateTime _data;
+  String _data;
   int _idRede;
   int _idJogador1;
   int _idJogador2;
@@ -347,9 +347,9 @@ class JogoRedeModel {
     _idRede = value;
   }
 
-  DateTime get data => _data;
+  String get data => _data;
 
-  set data(DateTime value) {
+  set data(String value) {
     _data = value;
   }
 

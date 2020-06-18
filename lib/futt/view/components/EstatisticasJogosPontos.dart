@@ -6,6 +6,11 @@ import 'package:futt/futt/service/EstatisticaService.dart';
 import 'package:futt/futt/view/components/Estatistica.dart';
 
 class EstatisticasJogosPontos extends StatefulWidget {
+
+  int idUsuario;
+  int idRede;
+  EstatisticasJogosPontos(this.idUsuario, this.idRede);
+
   @override
   _EstatisticasJogosPontosState createState() => _EstatisticasJogosPontosState();
 }
@@ -16,7 +21,7 @@ class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
 
   Future<List<RespostaModel>> _getValoresJogosEPontos() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getJogosEPontos(2020, ConstantesEstatisticas.JOGOSEPONTOS, ConstantesConfig.SERVICO_FIXO);
+    Future<List<RespostaModel>> respostas = estatisticaService.getJogosEPontos(widget.idUsuario, widget.idRede, 0, ConstantesConfig.SERVICO_FIXO);
     return respostas;
   }
 

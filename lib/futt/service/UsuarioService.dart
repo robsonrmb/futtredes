@@ -53,13 +53,19 @@ class UsuarioService {
     }
   }
 
-  Future<UsuarioModel> buscaPorId(String idUsuario, {bool fixo}) {
+  Future<UsuarioModel> buscaPorId(String idUsuario, bool fixo) {
     String url = "${ConstantesRest.URL_USUARIOS}/${idUsuario}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetObject(url, fixo);
   }
 
-  Future<List<UsuarioModel>> listaTodos({bool fixo}) {
+  Future<UsuarioModel> buscaLogado(bool fixo) {
+    String url = "${ConstantesRest.URL_USUARIOS}/logado";
+    UsuarioRest usuarioRest = UsuarioRest();
+    return usuarioRest.processaHttpGetObject(url, fixo);
+  }
+
+  Future<List<UsuarioModel>> listaTodos(bool fixo) {
     String url = "${ConstantesRest.URL_USUARIOS}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetList(url, fixo);

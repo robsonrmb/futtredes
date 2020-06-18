@@ -33,7 +33,6 @@ class RedeRest extends BaseRest {
     } catch (error) {
       print(error.toString());
     }
-
   }
 
   Future<List<RedeModel>> processaHttpGetListToken(String url, String tipo, bool fixo) async {

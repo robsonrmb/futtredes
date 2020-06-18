@@ -17,7 +17,8 @@ class UsuarioModel {
   String _nomeFoto;
 
   UsuarioModel.Novo(this._id);
-
+  UsuarioModel.Atualiza(this._nome, this._apelido,
+      this._pais, this._cidade, this._ondeJoga);
   UsuarioModel(this._id, this._nome, this._email, this._senha, this._apelido,
       this._dataNascimento, this._ondeJoga, this._tipo, this._nivel, this._cidade,
       this._estado, this._pais, this._status, this._sexo, this._professor,
@@ -42,6 +43,24 @@ class UsuarioModel {
       json["professor"],
       json["nomeFoto"],
     );
+  }
+
+  toJson() {
+    return {
+      'id': _id,
+      'nome': _nome,
+      'email': _email,
+      'senha': _senha,
+      'apelido': _apelido,
+      'dataNascimento': _dataNascimento,
+      'ondeJoga': _ondeJoga,
+      'tipo': _tipo,
+      'nivel': _nivel,
+      'cidade': _cidade,
+      'estado': _estado,
+      'cidade': _cidade,
+      'nomeFoto': _nomeFoto,
+    };
   }
 
   String get nomeFoto => _nomeFoto;

@@ -1,9 +1,11 @@
+import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/QuantidadeModel.dart';
 import 'package:futt/futt/model/RespPerformanceModel.dart';
 import 'package:futt/futt/model/RespQuantidadeModel.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
 import 'package:futt/futt/service/fixo/EstatisticaServiceFixo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -92,13 +94,22 @@ class EstatisticaRest extends BaseRest {
 
   Future<List<RespostaModel>> processaHttpGetListResposta(String url, int tipo, bool fixo) async {
     try {
-      http.Response response = await http.get(url);
+      //http.Response response = await http.get(url);
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.get(url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': token,
+          },
+      );
       if (response.statusCode == 200) {
         var dadosJson = json.decode(response.body);
         return _parseListaRespostaModel(dadosJson);
 
       } else {
-        throw Exception('Failed to load Tipo Torneio!!!');
+        throw Exception('Falha ao buscar estatísticas!!!');
       }
     } on Exception catch (exception) {
       print(exception.toString());
@@ -108,7 +119,7 @@ class EstatisticaRest extends BaseRest {
         return _parseListaRespostaModel(dadosJson);
 
       } else {
-        throw Exception('Falha ao listar resultados!!!');
+        throw Exception('Falha ao buscar estatísticas!!!');
       }
 
     } catch (error) {

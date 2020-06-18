@@ -1,13 +1,17 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
-import 'package:futt/futt/constantes/ConstantesEstatisticas.dart';
 import 'package:futt/futt/model/RespPerformanceModel.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/service/EstatisticaService.dart';
 import 'package:futt/futt/view/graphics/DonutAutoChart.dart';
 
 class EstatisticasQuantitativas extends StatefulWidget {
+
+  int idUsuario;
+  int idRede;
+  EstatisticasQuantitativas(this.idUsuario, this.idRede);
+
   @override
   _EstatisticasQuantitativasState createState() => _EstatisticasQuantitativasState();
 }
@@ -18,7 +22,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
 
   Future<List<RespostaModel>> _getValoresQuantitativos() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getQuantitativas(2020, ConstantesEstatisticas.QUANTITATIVOS, ConstantesConfig.SERVICO_FIXO);
+    Future<List<RespostaModel>> respostas = estatisticaService.getQuantitativas(widget.idUsuario, widget.idRede, 0, ConstantesConfig.SERVICO_FIXO);
     return respostas;
   }
 
@@ -45,35 +49,13 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
   }
 
   /*
-   ESTATÍSTICAS QUANTITATIVAS - TIE BREAKS
-   */
-  List<charts.Series<RespPerformanceModel, String>> _createGraphicsTIE() {
-
-    final dataTIE = [
-      new RespPerformanceModel.Grafico("Tiebreaks vencidos", int.parse(_valoresQuantitativos[2])),
-      new RespPerformanceModel.Grafico("Tiebreaks perdidos", int.parse(_valoresQuantitativos[3])),
-    ];
-
-    return [
-      new charts.Series<RespPerformanceModel, String>(
-        id: 'TIE',
-        domainFn: (RespPerformanceModel resp, _) => resp.descricao,
-        measureFn:  (RespPerformanceModel resp, _) => resp.valor,
-        data: dataTIE,
-        colorFn: (RespPerformanceModel resp, _) => charts.ColorUtil.fromDartColor(Colors.orangeAccent),
-        labelAccessorFn: (RespPerformanceModel resp, _) => '${resp.descricao} : ${resp.valor.toString()}',
-      )
-    ];
-  }
-
-  /*
    ESTATÍSTICAS QUANTITATIVAS - CAPOTE
    */
   List<charts.Series<RespPerformanceModel, String>> _createGraphicsCapote() {
 
     final dataCapote = [
-      new RespPerformanceModel.Grafico("Capotes vencidos", int.parse(_valoresQuantitativos[4])),
-      new RespPerformanceModel.Grafico("Capotes perdidos", int.parse(_valoresQuantitativos[5])),
+      new RespPerformanceModel.Grafico("Capotes vencidos", int.parse(_valoresQuantitativos[2])),
+      new RespPerformanceModel.Grafico("Capotes perdidos", int.parse(_valoresQuantitativos[3])),
     ];
 
     return [
@@ -94,8 +76,8 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
   List<charts.Series<RespPerformanceModel, String>> _createGraphicsA2() {
 
     final dataA2 = [
-      new RespPerformanceModel.Grafico("Jogos A2 vencidos", int.parse(_valoresQuantitativos[6])),
-      new RespPerformanceModel.Grafico("Jogos A2 perdidos", int.parse(_valoresQuantitativos[7])),
+      new RespPerformanceModel.Grafico("Jogos A2 vencidos", int.parse(_valoresQuantitativos[4])),
+      new RespPerformanceModel.Grafico("Jogos A2 perdidos", int.parse(_valoresQuantitativos[5])),
     ];
 
     return [
@@ -144,10 +126,6 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
                           Container(
                             height: _tam,
                             child: DonutAutoChart(_createGraphicsVD(), true),
-                          ),
-                          Container(
-                            height: _tam,
-                            child: DonutAutoChart(_createGraphicsTIE(), true),
                           ),
                           Container(
                             height: _tam,

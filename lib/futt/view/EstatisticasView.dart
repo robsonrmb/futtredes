@@ -4,14 +4,17 @@ import 'package:futt/futt/view/components/EstatisticasSequenciais.dart';
 import 'package:flutter/material.dart';
 
 class EstatisticasView extends StatefulWidget {
+
+  int idUsuario;
+  int idRede;
+  EstatisticasView(this.idUsuario, this.idRede);
+
   @override
   _EstatisticasViewState createState() => _EstatisticasViewState();
 }
 
 class _EstatisticasViewState extends State<EstatisticasView> {
 
-
-  
   @override
   Widget build(BuildContext context) {
 
@@ -60,11 +63,11 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                     ),
                   ),
                 ),
-                EstatisticasSequenciais(),
+                EstatisticasSequenciais(widget.idUsuario, widget.idRede),
                 Padding(padding: EdgeInsets.all(3),),
-                EstatisticasJogosPontos(),
+                EstatisticasJogosPontos(widget.idUsuario, widget.idRede),
                 Padding(padding: EdgeInsets.all(3),),
-                EstatisticasQuantitativas(),
+                EstatisticasQuantitativas(widget.idUsuario, widget.idRede),
               ],
             ),
           ),

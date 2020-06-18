@@ -32,44 +32,33 @@ class EstatisticaService {
     return estatisticaRest.processaHttpGetListRespQuantidade(url, 1, fixo);
   }
 
-  Future<List<RespPerformanceModel>> avaliativa(String idUsuario, String tipo, String ano, bool fixo) {
-    String url = "${ConstantesRest.URL_ESTATISTICAS}/avaliativa/usuario/${idUsuario}/${tipo}?ano=${ano}";
-    EstatisticaRest estatisticaRest = EstatisticaRest();
-    return estatisticaRest.processaHttpGetListRespPerformance(url, 0, fixo);
-  }
-
   Future<List<QuantidadeModel>> quantitativa(String idUsuario, String tipoestatistica, String ano, String id, String tipo, bool fixo) async {
     String url = "${ConstantesRest.URL_ESTATISTICAS}/qtd/usuario/${idUsuario}/${tipoestatistica}?ano=${ano}&&id=${id}&&tipo=${tipo}";
     EstatisticaRest estatisticaRest = EstatisticaRest();
     return estatisticaRest.processaHttpGetListQuantidade(url, 0, fixo);
   }
 
-  Future<List<RespostaModel>> getPerformanceTecnica(int idUsuario, int ano, bool fixo) {
-    String url = "${ConstantesRest.URL_ESTATISTICAS}/performancetecnica/${idUsuario}?ano=${ano}";
-    EstatisticaRest estatisticaRest = EstatisticaRest();
-    return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.TECNICA, fixo); //tecnicas
-  }
-
-  Future<List<RespostaModel>> getPerformanceTatica(int idUsuario, int ano, bool fixo) {
-    String url = "${ConstantesRest.URL_ESTATISTICAS}/performancetatica/${idUsuario}?ano=${ano}";
-    EstatisticaRest estatisticaRest = EstatisticaRest();
-    return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.TATICA, fixo); //táticas
-  }
-
-  Future<List<RespostaModel>> getQuantitativas(int idUsuario, int ano, bool fixo) {
-    String url = "${ConstantesRest.URL_ESTATISTICAS}/quantitativas/${idUsuario}?ano=${ano}";
+  /* CONSULTAS NOVAS PARA FLUTTER */
+  Future<List<RespostaModel>> getQuantitativas(int idUsuario, int idRede, int ano, bool fixo) {
+    String url = "${ConstantesRest.URL_ESTATISTICAS}/quantitativas/${idUsuario}?tipo='R'";
+    if (ano != 0) { url = "${url}&&ano=${ano}"; }
+    if (idRede != 0) { url = "${url}&&id=${idRede}"; }
     EstatisticaRest estatisticaRest = EstatisticaRest();
     return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.QUANTITATIVOS, fixo); //quantitativas
   }
 
-  Future<List<RespostaModel>> getJogosEPontos(int idUsuario, int ano, bool fixo) {
-    String url = "${ConstantesRest.URL_ESTATISTICAS}/jogosepontos/${idUsuario}?ano=${ano}";
+  Future<List<RespostaModel>> getJogosEPontos(int idUsuario, int idRede, int ano, bool fixo) {
+    String url = "${ConstantesRest.URL_ESTATISTICAS}/jogosepontos/${idUsuario}?tipo='R'";
+    if (ano != 0) { url = "${url}&&ano=${ano}"; }
+    if (idRede != 0) { url = "${url}&&id=${idRede}"; }
     EstatisticaRest estatisticaRest = EstatisticaRest();
     return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.JOGOSEPONTOS, fixo); //jogos e pontos
   }
 
-  Future<List<RespostaModel>> getSequenciais(int idUsuario, int ano, bool fixo) {
-    String url = "${ConstantesRest.URL_ESTATISTICAS}/sequenciais/${idUsuario}?ano=${ano}";
+  Future<List<RespostaModel>> getSequenciais(int idUsuario, int idRede, int ano, bool fixo) {
+    String url = "${ConstantesRest.URL_ESTATISTICAS}/sequenciais/${idUsuario}?tipo='R'";
+    if (ano != 0) { url = "${url}&&ano=${ano}"; }
+    if (idRede != 0) { url = "${url}&&id=${idRede}"; }
     EstatisticaRest estatisticaRest = EstatisticaRest();
     return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.SEQUENCIAIS, fixo); //jogos e pontos
   }

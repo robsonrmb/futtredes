@@ -224,6 +224,27 @@ class _JogosSubViewState extends State<JogosSubView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
+                            Container(
+                              height: 40, width: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "${jogo.pontuacao1}",
+                                      style: TextStyle(
+                                          fontSize: 36,
+                                          fontWeight: FontWeight.bold,
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                      ),
+                                    ),
+                                  ]
+                              ),
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -243,52 +264,25 @@ class _JogosSubViewState extends State<JogosSubView> {
                                 ),
                               ],
                             ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 40, width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          "${jogo.pontuacao1}",
-                                          style: TextStyle(
-                                              fontSize: 36,
-                                              fontWeight: FontWeight.bold,
-                                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
-                                          ),
-                                        ),
-                                      ]
-                                  ),
-                                ),
-                                Text(" X "),
-                                Container(
-                                  height: 40, width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          "${jogo.pontuacao2}",
-                                          style: TextStyle(
-                                              fontSize: 36,
-                                              fontWeight: FontWeight.bold,
-                                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
-                                          ),
-                                        ),
-                                      ]
-                                  ),
-                                ),
-                              ],
+                            Container(
+                              height: 40, width: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text("X",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          //color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                      ),
+                                    ),
+                                  ]
+                              ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -309,6 +303,27 @@ class _JogosSubViewState extends State<JogosSubView> {
                                 ),
                               ],
                             ),
+                            Container(
+                              height: 40, width: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "${jogo.pontuacao2}",
+                                      style: TextStyle(
+                                          fontSize: 36,
+                                          fontWeight: FontWeight.bold,
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                      ),
+                                    ),
+                                  ]
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -326,7 +341,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 20),
                                     child: Icon(Icons.edit,
-                                      //color: Colors.black
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
                                     ),
                                   ),
                                   onTap: (){
@@ -465,7 +480,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 20),
                                     child: Icon(Icons.delete_forever,
-                                      //color: Colors.black
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
                                     ),
                                   ),
                                   onTap: (){

@@ -26,7 +26,18 @@ class _PerfilViewState extends State<PerfilView> {
         ),
         title: Text("Perfil"),
       ),
-      body: PerfilSubView(),
+      body: Container(
+        color: Colors.grey[300],
+        padding: EdgeInsets.all(1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: PerfilSubView(),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

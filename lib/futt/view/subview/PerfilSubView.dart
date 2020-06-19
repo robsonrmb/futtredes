@@ -56,7 +56,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.put(_url,
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,

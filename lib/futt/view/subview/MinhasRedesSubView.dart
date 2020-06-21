@@ -10,7 +10,9 @@ import 'package:futt/futt/view/ResponsaveisRedeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
+import 'dart:io';
 
 class MinhasRedesSubView extends StatefulWidget {
   @override
@@ -20,6 +22,72 @@ class MinhasRedesSubView extends StatefulWidget {
 class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   String _mensagem = "";
+  File _imagem;
+  bool _subindoImagem = false;
+
+  _showModalAtualizaImagem(BuildContext context, String title, String description, int idRede){
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(description),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => {
+                  _recuperaImagem("galeria"),
+                  Navigator.pop(context),
+                },
+                child: Text("Galeria"),
+              ),
+              FlatButton(
+                onPressed: () => {
+                  _recuperaImagem("camera"),
+                  Navigator.pop(context),
+                },
+                child: Text("Câmera"),
+              ),
+              FlatButton(
+                onPressed: () => {
+                  Navigator.pop(context),
+                },
+                child: Text("Cancelar"),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  _recuperaImagem(String origemImagem) async {
+    File _imagemSelecionada;
+    switch (origemImagem) {
+      case "camera" :
+        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.camera);
+        break;
+      case "galeria" :
+        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery);
+        break;
+    }
+    setState(() {
+      _imagem = _imagemSelecionada;
+      if (_imagem != null) {
+        _uploadImagem();
+      }
+    });
+  }
+
+  Future<List<RedeModel>> _uploadImagem() {
+    // Implementar chamada upload
+    _listaMinhasRedes();
+  }
 
   Future<List<RedeModel>> _listaMinhasRedes() async {
     RedeService redeService = RedeService();
@@ -204,19 +272,27 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300].withOpacity(0.5),
-                          image: DecorationImage(
-                              image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
-                              fit: BoxFit.fill
-                          ),
-                          border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey[300],
+                      _subindoImagem
+                          ? CircularProgressIndicator()
+                          : GestureDetector(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300].withOpacity(0.5),
+                              image: DecorationImage(
+                                  image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
+                                  fit: BoxFit.fill
+                              ),
+                              //borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(
+                                width: 1.0,
+                                color: Colors.grey[300],
+                              )
                           ),
                         ),
+                        onTap: () {
+                          _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", rede.id);
+                        },
                       ),
                       Container(
                         decoration: BoxDecoration(

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/ResponsaveisRedeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:multipart_request/multipart_request.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
@@ -42,14 +43,14 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             actions: <Widget>[
               FlatButton(
                 onPressed: () => {
-                  _recuperaImagem("galeria"),
+                  _recuperaImagem("galeria", idRede),
                   Navigator.pop(context),
                 },
                 child: Text("Galeria"),
               ),
               FlatButton(
                 onPressed: () => {
-                  _recuperaImagem("camera"),
+                  _recuperaImagem("camera", idRede),
                   Navigator.pop(context),
                 },
                 child: Text("Câmera"),
@@ -66,7 +67,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     );
   }
 
-  _recuperaImagem(String origemImagem) async {
+  _recuperaImagem(String origemImagem, int idRede) async {
     File _imagemSelecionada;
     switch (origemImagem) {
       case "camera" :
@@ -79,14 +80,49 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     setState(() {
       _imagem = _imagemSelecionada;
       if (_imagem != null) {
-        _uploadImagem();
+        _uploadImagem(idRede);
       }
     });
   }
 
-  Future<List<RedeModel>> _uploadImagem() {
-    // Implementar chamada upload
-    _listaMinhasRedes();
+  Future<List<RedeModel>> _uploadImagem(int idRede) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    var _url = "${ConstantesRest.URL_REDE}/${idRede}/imagem";
+    _sendRequest(_url, token);
+  }
+
+  void _sendRequest(_url, token) {
+
+    var request = MultipartRequest();
+
+    request.setUrl(_url);
+    request.addFile("file", _imagem.path);
+    request.addHeaders({
+      //'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    });
+
+    Response response = request.send();
+    try {
+      print(response);
+    } on Exception catch (exception) {
+      print(exception);
+    } catch (error) {
+      print(error);
+    }
+
+    response.onError = () {
+      print("Error");
+    };
+
+    response.onComplete = (response) {
+      _listaMinhasRedes();
+    };
+
+    response.progress.listen((int progress) {
+      print("progress from response object " + progress.toString());
+    });
   }
 
   Future<List<RedeModel>> _listaMinhasRedes() async {

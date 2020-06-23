@@ -95,7 +95,7 @@ class UsuarioService {
     return usuarioRest.processaHttpGetList(url, fixo);
   }
 
-  Future<UsuarioModel> listaPorEmail(String email, {bool fixo}) {
+  Future<UsuarioModel> buscaPorEmail(String email, bool fixo) {
     String url = "${ConstantesRest.URL_USUARIOS}/filterEmail/${email}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetObject(url, fixo);

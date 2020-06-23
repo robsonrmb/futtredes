@@ -139,4 +139,38 @@ class RedeRest extends BaseRest {
     return lista;
   }
 
+  Future<RedeModel> processaHttpGetObject(String url, bool fixo) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.get(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token,
+        },
+      );
+      if (response.statusCode == 200) {
+        var dadosJson = json.decode(response.body);
+        return RedeModel.fromJson(dadosJson);
+
+      } else {
+        throw Exception('Falha ao listar redes!!!');
+      }
+    } on Exception catch (exception) {
+      print(exception.toString());
+      if (fixo != null && fixo == true) {
+        RedeServiceFixo serviceFixo = RedeServiceFixo();
+        var dadosJson = json.decode(serviceFixo.responseObject());
+        return RedeModel.fromJson(dadosJson);
+
+      } else {
+        throw Exception('Falha ao listar usuários!!!');
+      }
+
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
 }

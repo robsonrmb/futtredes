@@ -190,4 +190,24 @@ class RedeServiceFixo {
     return _retornoIntegrantes;
   }
 
+  String responseObject() {
+    return '{'
+        '"id": 5, '
+        '"nome": "Rede do Candango", '
+        '"nomeFoto": "semImagem.png", '
+        '"status": 4, '
+        '"pais": "Brasil", '
+        '"estado": null, '
+        '"cidade": "Brasília", '
+        '"local": "Parque da Cidade", '
+        '"info": "Dados gerais da rede", '
+        '"disponibilidade": "2020-06-01", '
+        '"qtdIntegrantes": 50, '
+        '"responsavelRede": 1, '
+        '"responsavelJogos1": 0, '
+        '"responsavelJogos2": 0, '
+        '"responsavelJogos3": 0 '
+        '}';
+  }
+
 }

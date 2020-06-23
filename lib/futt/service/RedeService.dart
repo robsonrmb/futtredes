@@ -96,4 +96,10 @@ class RedeService {
     return redeRest.processaHttpGetListIntegrantes(url, fixo);
   }
 
+  Future<RedeModel> buscaRedePorId(int idRede, bool fixo) {
+    String url = "${ConstantesRest.URL_REDE}/${idRede}";
+    RedeRest redeRest = RedeRest();
+    return redeRest.processaHttpGetObject(url, fixo);
+  }
+
 }

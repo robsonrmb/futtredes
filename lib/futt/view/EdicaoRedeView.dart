@@ -4,13 +4,17 @@ import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/service/RedeService.dart';
 import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:multipart_request/multipart_request.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
 
 class EdicaoRedeView extends StatefulWidget {
 
@@ -30,6 +34,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   TextEditingController _controllerLocal = TextEditingController();
   TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
+
+  File _imagem;
+  bool _subindoImagem = false;
 
   _atualizaRede() async {
     try {
@@ -120,6 +127,123 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     _controllerMais.text = redeOrigem.info;
   }
 
+  Future<RedeModel> _atualizaImagem(int idRede) async {
+    RedeService redeService = RedeService();
+    return redeService.buscaRedePorId(idRede, ConstantesConfig.SERVICO_FIXO);
+  }
+
+  _showModalAtualizaImagem(BuildContext context, String title, String description, int idRede){
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(description),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => {
+                  _recuperaImagem("galeria", idRede),
+                  Navigator.pop(context),
+                },
+                child: Text("Galeria"),
+              ),
+              FlatButton(
+                onPressed: () => {
+                  _recuperaImagem("camera", idRede),
+                  Navigator.pop(context),
+                },
+                child: Text("Câmera"),
+              ),
+              FlatButton(
+                onPressed: () => {
+                  Navigator.pop(context),
+                },
+                child: Text("Cancelar"),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  _recuperaImagem(String origemImagem, int idRede) async {
+    File _imagemSelecionada;
+    switch (origemImagem) {
+      case "camera" :
+        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.camera);
+        break;
+      case "galeria" :
+        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery);
+        break;
+    }
+    setState(() {
+      _imagem = _imagemSelecionada;
+      if (_imagem != null) {
+        _subindoImagem = true;
+        _uploadImagem(idRede);
+      }
+    });
+  }
+
+  Future<List<RedeModel>> _uploadImagem(int idRede) async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    var _url = "${ConstantesRest.URL_REDE}/${idRede}/imagem";
+    _sendRequest(_url, token);
+  }
+
+  void _sendRequest(_url, token) {
+
+    var request = MultipartRequest();
+
+    request.setUrl(_url);
+    request.addFile("file", _imagem.path);
+    request.addHeaders({
+      //'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
+    });
+
+    Response response = request.send();
+    try {
+      print(response);
+    } on Exception catch (exception) {
+      print(exception);
+    } catch (error) {
+      print(error);
+    }
+
+    response.onError = () {
+      setState(() {
+        _subindoImagem = false;
+      });
+    };
+
+    response.onComplete = (response) {
+      setState(() {
+        _subindoImagem = false;
+        _atualizaImagem(widget.redeModel.id);
+      });
+      print("Buscar imagem via http");
+    };
+
+    response.progress.listen((int progress) {
+      setState(() {
+        _subindoImagem = true;
+      });
+    });
+
+    setState(() {
+      _subindoImagem = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -152,15 +276,59 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 5),
                   child: Text(
-                    "Altere os dados do rede para atualizar",
+                    "Atualização de dados",
                     style: TextStyle(
                         fontSize: 12
                     ),
                   ),
                 ),
-                CircleAvatar(
-                  backgroundImage: NetworkImage('https://pbs.twimg.com/media/Dk0iKh4XoAERLOB.jpg'),
-                  radius: 30.0,
+                _subindoImagem
+                    ? CircularProgressIndicator()
+                    : Container(),
+                FutureBuilder<RedeModel>(
+                  future: _atualizaImagem(widget.redeModel.id),
+                  builder: (context, snapshot) {
+                    switch( snapshot.connectionState ) {
+                      case ConnectionState.none :
+                      case ConnectionState.waiting :
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                        break;
+                      case ConnectionState.active :
+                      case ConnectionState.done :
+                        if( snapshot.hasData ) {
+
+                          RedeModel redeRetorno = snapshot.data;
+
+                          return GestureDetector(
+                            child: Container(
+                              height: redeRetorno.nomeFoto == "semImagem.png" ? 50 : 100,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300].withOpacity(0.5),
+                                  image: DecorationImage(
+                                      image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + redeRetorno.nomeFoto),
+                                      fit: BoxFit.fill
+                                  ),
+                                  //borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    width: 1.0,
+                                    color: Colors.grey[300],
+                                  )
+                              ),
+                            ),
+                            onTap: () {
+                              _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
+                            },
+                          );
+                        }else{
+                          return Center(
+                            child: Text("Sem valores!!!"),
+                          );
+                        }
+                        break;
+                    }
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 5),

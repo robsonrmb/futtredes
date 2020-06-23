@@ -9,11 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/ResponsaveisRedeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:multipart_request/multipart_request.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
-import 'dart:io';
 
 class MinhasRedesSubView extends StatefulWidget {
   @override
@@ -23,107 +20,6 @@ class MinhasRedesSubView extends StatefulWidget {
 class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   String _mensagem = "";
-  File _imagem;
-  bool _subindoImagem = false;
-
-  _showModalAtualizaImagem(BuildContext context, String title, String description, int idRede){
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext) {
-          return AlertDialog(
-            title: Text(title),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(description),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => {
-                  _recuperaImagem("galeria", idRede),
-                  Navigator.pop(context),
-                },
-                child: Text("Galeria"),
-              ),
-              FlatButton(
-                onPressed: () => {
-                  _recuperaImagem("camera", idRede),
-                  Navigator.pop(context),
-                },
-                child: Text("Câmera"),
-              ),
-              FlatButton(
-                onPressed: () => {
-                  Navigator.pop(context),
-                },
-                child: Text("Cancelar"),
-              )
-            ],
-          );
-        }
-    );
-  }
-
-  _recuperaImagem(String origemImagem, int idRede) async {
-    File _imagemSelecionada;
-    switch (origemImagem) {
-      case "camera" :
-        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.camera);
-        break;
-      case "galeria" :
-        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery);
-        break;
-    }
-    setState(() {
-      _imagem = _imagemSelecionada;
-      if (_imagem != null) {
-        _uploadImagem(idRede);
-      }
-    });
-  }
-
-  Future<List<RedeModel>> _uploadImagem(int idRede) async {
-    final prefs = await SharedPreferences.getInstance();
-    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
-    var _url = "${ConstantesRest.URL_REDE}/${idRede}/imagem";
-    _sendRequest(_url, token);
-  }
-
-  void _sendRequest(_url, token) {
-
-    var request = MultipartRequest();
-
-    request.setUrl(_url);
-    request.addFile("file", _imagem.path);
-    request.addHeaders({
-      //'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': token,
-    });
-
-    Response response = request.send();
-    try {
-      print(response);
-    } on Exception catch (exception) {
-      print(exception);
-    } catch (error) {
-      print(error);
-    }
-
-    response.onError = () {
-      print("Error");
-    };
-
-    response.onComplete = (response) {
-      _listaMinhasRedes();
-    };
-
-    response.progress.listen((int progress) {
-      print("progress from response object " + progress.toString());
-    });
-  }
 
   Future<List<RedeModel>> _listaMinhasRedes() async {
     RedeService redeService = RedeService();
@@ -308,27 +204,20 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      _subindoImagem
-                          ? CircularProgressIndicator()
-                          : GestureDetector(
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300].withOpacity(0.5),
-                              image: DecorationImage(
-                                  image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
-                                  fit: BoxFit.fill
-                              ),
-                              //borderRadius: BorderRadius.circular(5.0),
-                              border: Border.all(
-                                width: 1.0,
-                                color: Colors.grey[300],
-                              )
-                          ),
+                      Container(
+                        height: rede.nomeFoto == "semImagem.png" ? 50 : 100,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300].withOpacity(0.5),
+                            image: DecorationImage(
+                                image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
+                                fit: BoxFit.fill
+                            ),
+                            //borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(
+                              width: 1.0,
+                              color: Colors.grey[300],
+                            )
                         ),
-                        onTap: () {
-                          _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", rede.id);
-                        },
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -433,7 +322,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                         ),
                       ),
                       Container(
-                        height: 5,
+                        height: 10,
                         color: Colors.white,
                       ),
                     ],

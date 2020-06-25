@@ -3,121 +3,66 @@ import 'package:futt/futt/view/subview/RankingSubView.dart';
 
 class RankingView extends StatefulWidget {
 
-  int anoDefault;
-  int idRankingDefault;
-  RankingView(this.anoDefault, this.idRankingDefault);
+  int idRede;
+  int ano;
+  RankingView(this.idRede, this.ano);
 
   @override
   _RankingViewState createState() => _RankingViewState();
 }
 
-class _RankingViewState extends State<RankingView> {
+class _RankingViewState extends State<RankingView> with TickerProviderStateMixin {
 
-  TextEditingController _controllerAno = TextEditingController();
-  int _controllerRankingEntidade = 0;
+  TabController _controllerRanking;
+  int _currentIndex = 0;
 
-  String _ano = "0";
-  int _idRankingEntidade = 0;
-
-  _pesquisarRanking() {
-    setState(() {
-      _ano = "0";
-      if(_controllerAno.text != "") {
-        _ano = _controllerAno.text;
-      }
-      _idRankingEntidade = _controllerRankingEntidade;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _controllerRanking = TabController(
+      length: 3, vsync: this, initialIndex: 0,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
 
-    return new Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: GestureDetector(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.find_in_page,
-                          color: Color(0xff086ba4),
-                        ),
-                        Text("PESQUISA RANKING DE OUTRAS ENTIDADES",
-                          style: TextStyle(
-                            color: Color(0xff086ba4),
-                            fontSize: 12,
-                            fontFamily: 'Candal',
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      showDialog(context: context, builder: (context){
-                        return AlertDialog(
-                          title: Text("Pesquisa de ranking"),
-                          content: SingleChildScrollView(
-                            child: Column(
-                              children: <Widget>[
-                                TextField(
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    labelText: "Ano",
-                                  ),
-                                  maxLength: 4,
-                                  controller: _controllerAno,
-                                ),
-                              ],
-                            ),
-                          ),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: RaisedButton(
-                                color: Color(0xff086ba4),
-                                textColor: Colors.white,
-                                padding: EdgeInsets.all(15),
-                                child: Text(
-                                  "Pesquisar",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'Candal',
-                                  ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
-                              ),
-                              onPressed: () {
-                                _pesquisarRanking();
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                    },
-                  ),
-                ),
-                Text(
-                  "CBFv - Profissional!",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Candal'
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: RankingSubView(1,1,1,1),
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          opacity: 1,
+        ),
+        backgroundColor: Color(0xff093352),
+        textTheme: TextTheme(
+            title: TextStyle(
+                color: Colors.white,
+                fontSize: 20
+            )
+        ),
+        title: Text("Ranking"),
+        bottom: TabBar(
+            controller: _controllerRanking,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            tabs: <Widget>[
+              Tab(text: "Vitórias",),
+              Tab(text: "Jogos",),
+              Tab(text: "Pontos",),
+            ],
           )
+      ),
+      body: TabBarView(
+        controller: _controllerRanking,
+        children: <Widget>[
+          RankingSubView(widget.idRede, widget.ano, 1),
+          RankingSubView(widget.idRede, widget.ano, 2),
+          RankingSubView(widget.idRede, widget.ano, 3),
         ],
-      );
+      ),
+    );
   }
 }

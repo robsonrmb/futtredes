@@ -2,12 +2,13 @@ class RankingModel {
   int _id;
   int _ano;
   int _pontuacao;
+  int _pontuacao2;
   int _idUsuario;
   String _nomeUsuario;
   String _apelidoUsuario;
   String _fotoUsuario;
 
-  RankingModel(this._id, this._ano, this._pontuacao, this._idUsuario,
+  RankingModel(this._id, this._ano, this._pontuacao, this._pontuacao2, this._idUsuario,
       this._nomeUsuario, this._apelidoUsuario, this._fotoUsuario);
 
   factory RankingModel.fromJson(Map<String, dynamic> json) {
@@ -15,11 +16,28 @@ class RankingModel {
       json["id"],
       json["ano"],
       json["pontuacao"],
+      json["pontuacao2"],
       json["idUsuario"],
       json["nomeUsuario"],
       json["apelidoUsuario"],
       json["fotoUsuario"],
     );
+  }
+
+  String getApelidoFormatado() {
+    if (apelidoUsuario == null) {
+      return nomeUsuario;
+    }else{
+      return apelidoUsuario;
+    }
+  }
+
+  String getNomeFormatado() {
+    if (apelidoUsuario == null) {
+      return "";
+    }else{
+      return nomeUsuario;
+    }
   }
 
   String get fotoUsuario => _fotoUsuario;
@@ -62,6 +80,12 @@ class RankingModel {
 
   set id(int value) {
     _id = value;
+  }
+
+  int get pontuacao2 => _pontuacao2;
+
+  set pontuacao2(int value) {
+    _pontuacao2 = value;
   }
 
 }

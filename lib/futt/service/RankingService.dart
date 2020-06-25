@@ -4,14 +4,15 @@ import 'package:futt/futt/rest/RankingRest.dart';
 
 class RankingService {
 
-  Future<List<RankingModel>> listaRanking(int ano, int idRanking, bool fixo) {
-    String url = "${ConstantesRest.URL_RANKING}/${ano}/${idRanking}";
-    RankingRest rankingRest = RankingRest();
-    bool _filtro = true;
-    if (ano%2 == 0) {
-      _filtro = false;
+  Future<List<RankingModel>> listaRankingRede(int idRede, int ano, int tipo, bool fixo) {
+    String url = "${ConstantesRest.URL_ESTATISTICAS}/rankingvitorias/${idRede}";
+    if (tipo == 2) {
+      url = "${ConstantesRest.URL_ESTATISTICAS}/rankingjogos/${idRede}";
+    }else if (tipo == 3) {
+      url = "${ConstantesRest.URL_ESTATISTICAS}/rankingpontos/${idRede}";
     }
-    return rankingRest.processaHttpGetList(url, _filtro, fixo);
+    RankingRest rankingRest = RankingRest();
+    return rankingRest.processaHttpGetList(url, fixo);
   }
 
 }

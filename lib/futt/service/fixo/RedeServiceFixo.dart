@@ -194,7 +194,7 @@ class RedeServiceFixo {
     return '{'
         '"id": 5, '
         '"nome": "Rede do Candango", '
-        '"nomeFoto": "semImagem.png", '
+        '"nomeFoto": "logoFutt.png", '
         '"status": 4, '
         '"pais": "Brasil", '
         '"estado": null, '

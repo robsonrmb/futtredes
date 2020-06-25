@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class RankingRest extends BaseRest {
 
-  Future<List<RankingModel>> processaHttpGetList(String url, bool filtro, bool fixo) async {
+  Future<List<RankingModel>> processaHttpGetList(String url, bool fixo) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -20,7 +20,7 @@ class RankingRest extends BaseRest {
       print(exception.toString());
       if (fixo != null && fixo == true) {
         RankingServiceFixo serviceFixo = RankingServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(filtro));
+        var dadosJson = json.decode(serviceFixo.responseLista(true));
         return _parseListaRankingModel(dadosJson);
 
       } else {
@@ -31,7 +31,7 @@ class RankingRest extends BaseRest {
       print(error.toString());
       if (fixo != null && fixo == true) {
         RankingServiceFixo serviceFixo = RankingServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(filtro));
+        var dadosJson = json.decode(serviceFixo.responseLista(true));
         return _parseListaRankingModel(dadosJson);
 
       } else {

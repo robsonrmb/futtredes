@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
+import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RankingModel.dart';
 import 'package:futt/futt/service/RankingService.dart';
 
 class RankingSubView extends StatefulWidget {
 
+  int idRede;
   int ano;
-  int idRankingEntidade;
-  int anoDefault;
-  int idRankingEntidadeDefault;
-  RankingSubView(this.ano, this.idRankingEntidade, this.anoDefault, this.idRankingEntidadeDefault);
+  int tipo;
+  RankingSubView(this.idRede, this.ano, this.tipo);
 
   @override
   _RankingSubViewState createState() => _RankingSubViewState();
@@ -18,17 +18,13 @@ class RankingSubView extends StatefulWidget {
 class _RankingSubViewState extends State<RankingSubView> {
 
   Future<List<RankingModel>> _listaRanking() async {
-    if (widget.ano == 0 || widget.idRankingEntidade == 0) {
-      RankingService rankingService = RankingService();
-      return rankingService.listaRanking(
-          widget.anoDefault, widget.idRankingEntidadeDefault,
-          ConstantesConfig.SERVICO_FIXO);
-    }else{
-      RankingService rankingService = RankingService();
-      return rankingService.listaRanking(
-          widget.ano, widget.idRankingEntidade,
-          ConstantesConfig.SERVICO_FIXO);
+    RankingService rankingService = RankingService();
+    int ano = widget.ano;
+    if (ano == 0) {
+      var now = new DateTime.now();
+      ano = now.year;
     }
+    return rankingService.listaRankingRede(widget.idRede, widget.ano, widget.tipo, ConstantesConfig.SERVICO_FIXO);
   }
 
   @override
@@ -61,7 +57,7 @@ class _RankingSubViewState extends State<RankingSubView> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage('${resultado.fotoUsuario}'),
+                        backgroundImage: NetworkImage(ConstantesRest.URL_BASE_AMAZON + resultado.fotoUsuario),
                         radius: 30.0,
                       ),
                       title: Row(
@@ -84,7 +80,7 @@ class _RankingSubViewState extends State<RankingSubView> {
                           ),
                           Flexible(
                             child: Text(
-                              " ${resultado.nomeUsuario}",
+                              " ${resultado.getApelidoFormatado()}",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -110,13 +106,13 @@ class _RankingSubViewState extends State<RankingSubView> {
                               ),
                             ),
                           ),
-                          Text(
-                            "  ${resultado.apelidoUsuario}",
+                          /*Text(
+                            "  ${resultado.getNomeFormatado()}",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                       trailing: Row(
@@ -124,7 +120,7 @@ class _RankingSubViewState extends State<RankingSubView> {
                           children: <Widget>[
                             Container(
                               decoration: BoxDecoration(
-                                color: Color(0xff093352),
+                                //color: Color(0xff093352),
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Center(
@@ -132,7 +128,7 @@ class _RankingSubViewState extends State<RankingSubView> {
                                   " ${resultado.pontuacao} ",
                                   style: TextStyle(
                                     fontFamily: 'Candal',
-                                    color: Colors.orange,
+                                    color: Color(0xff093352),
                                     fontSize: 25,
                                   ),
                                 ),

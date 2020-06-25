@@ -170,7 +170,7 @@ class _LoginViewState extends State<LoginView> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 20),
-                  child: Image.asset("images/logoFutt.png", height: 100, width: 75),
+                  child: Image.asset("images/logoFuttRedes.png", height: 100, width: 75),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 5),
@@ -178,7 +178,7 @@ class _LoginViewState extends State<LoginView> {
                       "Olá!",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 40,
+                        fontSize: 20,
                         fontFamily: 'Candal'
                       ),
                   ),
@@ -186,7 +186,7 @@ class _LoginViewState extends State<LoginView> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 30),
                   child: Text(
-                    "Faça seu login para saber mais sobre os torneios.",
+                    "Faça seu login e participe de uma rede.",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,

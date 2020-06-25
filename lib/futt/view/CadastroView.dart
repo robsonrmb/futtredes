@@ -122,7 +122,7 @@ class _CadastroViewState extends State<CadastroView> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 20),
-                  child: Image.asset("images/logoFutt.png", height: 60, width: 15),
+                  child: Image.asset("images/logoFuttRedes.png", height: 60, width: 15),
                 ),
                 Center(
                   child: Container(

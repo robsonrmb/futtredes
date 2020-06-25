@@ -205,7 +205,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
-                        height: rede.nomeFoto == "semImagem.png" ? 50 : 100,
+                        height: 100,
                         decoration: BoxDecoration(
                             color: Colors.grey[300].withOpacity(0.5),
                             image: DecorationImage(

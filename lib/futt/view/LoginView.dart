@@ -1,6 +1,5 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
-import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/LoginModel.dart';
 import 'package:futt/futt/view/HomeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';

@@ -14,7 +14,6 @@ class RankingView extends StatefulWidget {
 class _RankingViewState extends State<RankingView> with TickerProviderStateMixin {
 
   TabController _controllerRanking;
-  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -43,11 +42,7 @@ class _RankingViewState extends State<RankingView> with TickerProviderStateMixin
         title: Text("Ranking"),
         bottom: TabBar(
             controller: _controllerRanking,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
+            onTap: (index) {},
             tabs: <Widget>[
               Tab(text: "Vitórias",),
               Tab(text: "Jogos",),

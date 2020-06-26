@@ -5,6 +5,7 @@ import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/service/IntegranteService.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/EstatisticasAtletasView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -29,7 +30,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
     return resultadoService.listaIntegrantesDaRede(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO, lista);
   }
 
-  _showModalRemoveIntegrante(BuildContext context, int idRede, int idIntegrante){
+  _showModalRemoveIntegrante(BuildContext context, int idIntegrante, int idRede){
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -191,7 +192,9 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 child: Icon(Icons.insert_chart),
                               ),
                               onTap: (){
-                                _showModalRemoveIntegrante(context, widget.redeModel.id, integrante.idUsuario);
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => EstatisticasAtletasView(integrante.idUsuario, widget.redeModel.id, integrante.nome, integrante.nomeFoto),
+                                ));
                               },
                             ),
                             widget.donoRede ? new GestureDetector(
@@ -200,7 +203,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 child: Icon(Icons.delete),
                               ),
                               onTap: (){
-                                _showModalRemoveIntegrante(context, widget.redeModel.id, integrante.idUsuario);
+                                _showModalRemoveIntegrante(context, integrante.idUsuario, widget.redeModel.id);
                               },
                             ) : new Padding(
                               padding: EdgeInsets.all(1),

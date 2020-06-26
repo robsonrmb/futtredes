@@ -1,3 +1,4 @@
+import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/view/components/EstatisticasJogosPontos.dart';
 import 'package:futt/futt/view/components/EstatisticasQuantitativas.dart';
 import 'package:futt/futt/view/components/EstatisticasSequenciais.dart';
@@ -7,7 +8,9 @@ class EstatisticasView extends StatefulWidget {
 
   int idUsuario;
   int idRede;
-  EstatisticasView(this.idUsuario, this.idRede);
+  String nome;
+  String nomeFoto;
+  EstatisticasView(this.idUsuario, this.idRede, this.nome, this.nomeFoto);
 
   @override
   _EstatisticasViewState createState() => _EstatisticasViewState();
@@ -40,13 +43,12 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                   ),
                 ),
                 CircleAvatar(
-                  backgroundImage: NetworkImage('https://pbs.twimg.com/media/Dk0iKh4XoAERLOB.jpg'),
+                  backgroundImage: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}${widget.nomeFoto}'),
                   radius: 30.0,
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                  child: Text(
-                    "Anderson Águia",
+                  child: Text(widget.nome,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

@@ -1,4 +1,7 @@
+import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/UsuarioModel.dart';
+import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/view/components/EstatisticasJogosPontos.dart';
 import 'package:futt/futt/view/components/EstatisticasQuantitativas.dart';
 import 'package:futt/futt/view/components/EstatisticasSequenciais.dart';
@@ -18,6 +21,23 @@ class EstatisticasView extends StatefulWidget {
 
 class _EstatisticasViewState extends State<EstatisticasView> {
 
+  String nome;
+  String nomeFoto;
+
+  @override
+  void initState() {
+    nome = widget.nome;
+    nomeFoto = widget.nomeFoto;
+  }
+
+  /*
+  Future<UsuarioModel> _buscaUsuarioLogado() async {
+    UsuarioService usuarioService = UsuarioService();
+    Future<UsuarioModel> usuario = usuarioService.buscaLogado(ConstantesConfig.SERVICO_FIXO);
+    return usuario;
+  }
+  */
+
   @override
   Widget build(BuildContext context) {
 
@@ -34,34 +54,25 @@ class _EstatisticasViewState extends State<EstatisticasView> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(5),
-                  child: Text("Confire suas estatísticas",
+                  child: Text("Confire as estatísticas",
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 12,
                         fontFamily: 'Candal'
                     ),
                   ),
                 ),
                 CircleAvatar(
-                  backgroundImage: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}${widget.nomeFoto}'),
+                  backgroundImage: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}${nomeFoto}'),
                   radius: 30.0,
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                  child: Text(widget.nome,
+                  child: Text(nome,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Text("Veja as estatísticas de outros atletas",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontFamily: 'Candal'
+                      fontFamily: 'Candal'
                     ),
                   ),
                 ),

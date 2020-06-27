@@ -3,6 +3,7 @@ import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RankingModel.dart';
 import 'package:futt/futt/service/RankingService.dart';
+import 'package:futt/futt/view/EstatisticasAtletasView.dart';
 
 class RankingSubView extends StatefulWidget {
 
@@ -133,6 +134,17 @@ class _RankingSubViewState extends State<RankingSubView> {
                                   ),
                                 ),
                               ),
+                            ),
+                            GestureDetector(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 1),
+                                child: Icon(Icons.insert_chart),
+                              ),
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => EstatisticasAtletasView(resultado.idUsuario, widget.idRede, resultado.nomeUsuario, resultado.fotoUsuario),
+                                ));
+                              },
                             ),
                           ]),
                     ),

@@ -17,7 +17,7 @@ class _DashboardViewState extends State<DashboardView> {
           children: <Widget>[
             Expanded(
               child: Container(
-                child: EstatisticasView(0, 0, "Robsonnn", "semFoto.jpg"),
+                child: EstatisticasView(0, 0, "-", "semFoto.jpg"),
               ),
             ),
           ],

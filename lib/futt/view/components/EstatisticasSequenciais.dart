@@ -20,7 +20,7 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
 
   Future<List<RespostaModel>> _getValoresSequenciais() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(widget.idUsuario, widget.idRede, 0, ConstantesConfig.SERVICO_FIXO);
+    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(widget.idUsuario, widget.idRede, 0, true);
     return respostas;
   }
 
@@ -58,15 +58,15 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              new Estatistica().jogo(this._valoresSequenciais[0]),
+                              new Estatistica().resultadoJogo(this._valoresSequenciais[0]),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().jogo(this._valoresSequenciais[1]),
+                              new Estatistica().resultadoJogo(this._valoresSequenciais[1]),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().jogo(this._valoresSequenciais[2]),
+                              new Estatistica().resultadoJogo(this._valoresSequenciais[2]),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().jogo(this._valoresSequenciais[3]),
+                              new Estatistica().resultadoJogo(this._valoresSequenciais[3]),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().jogo(this._valoresSequenciais[4]),
+                              new Estatistica().resultadoJogo(this._valoresSequenciais[4]),
                             ],
                           ),
                         ],

@@ -86,7 +86,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
         domainFn: (RespPerformanceModel resp, _) => resp.descricao,
         measureFn:  (RespPerformanceModel resp, _) => resp.valor,
         data: dataA2,
-        colorFn: (RespPerformanceModel resp, _) => charts.ColorUtil.fromDartColor(Colors.orangeAccent),
+        //colorFn: (RespPerformanceModel resp, _) => charts.ColorUtil.fromDartColor(Colors.orangeAccent),
         labelAccessorFn: (RespPerformanceModel resp, _) => '${resp.descricao} : ${resp.valor.toString()}',
       )
     ];

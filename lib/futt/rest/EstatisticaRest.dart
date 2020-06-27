@@ -105,8 +105,14 @@ class EstatisticaRest extends BaseRest {
           },
       );
       if (response.statusCode == 200) {
-        var dadosJson = json.decode(response.body);
-        return _parseListaRespostaModel(dadosJson);
+        if (fixo != null && fixo == false) {
+          var dadosJson = json.decode(response.body);
+          return _parseListaRespostaModel(dadosJson);
+        }else{
+          EstatisticaServiceFixo serviceFixo = EstatisticaServiceFixo();
+          var dadosJson = json.decode(serviceFixo.responseEstatisticas(tipo));
+          return _parseListaRespostaModel(dadosJson);
+        }
 
       } else {
         throw Exception('Falha ao buscar estatísticas!!!');

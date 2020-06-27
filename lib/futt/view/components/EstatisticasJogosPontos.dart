@@ -59,11 +59,11 @@ class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              new Estatistica().jogos(int.parse(_valoresJogosEPontos[0]), int.parse(_valoresJogosEPontos[1])),
+                              new Estatistica().jogosPontos(int.parse(_valoresJogosEPontos[0]), int.parse(_valoresJogosEPontos[1]), 0),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().jogos(int.parse(_valoresJogosEPontos[2]), int.parse(_valoresJogosEPontos[3])),
+                              new Estatistica().jogosPontos(int.parse(_valoresJogosEPontos[2]), int.parse(_valoresJogosEPontos[3]), 1),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().jogos(int.parse(_valoresJogosEPontos[4]), int.parse(_valoresJogosEPontos[5])),
+                              new Estatistica().jogosPontos(int.parse(_valoresJogosEPontos[4]), int.parse(_valoresJogosEPontos[5]), 2),
                             ],
                           ),
                         ],
@@ -82,11 +82,11 @@ class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              new Estatistica().pontos(int.parse(_valoresJogosEPontos[6]), int.parse(_valoresJogosEPontos[7])),
+                              new Estatistica().jogosPontos(int.parse(_valoresJogosEPontos[6]), int.parse(_valoresJogosEPontos[7]), 0),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().pontos(int.parse(_valoresJogosEPontos[8]), int.parse(_valoresJogosEPontos[9])),
+                              new Estatistica().jogosPontos(int.parse(_valoresJogosEPontos[8]), int.parse(_valoresJogosEPontos[9]), 1),
                               Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().pontos(int.parse(_valoresJogosEPontos[10]), int.parse(_valoresJogosEPontos[11])),
+                              new Estatistica().jogosPontos(int.parse(_valoresJogosEPontos[10]), int.parse(_valoresJogosEPontos[11]), 2),
                             ],
                           ),
                         ],

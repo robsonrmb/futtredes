@@ -4,8 +4,10 @@ import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
+import 'package:futt/futt/model/utils/GeneroModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
-import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/model/utils/PosicionamentoModel.dart';
+import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,9 +26,15 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerApelido = TextEditingController();
   TextEditingController _controllerDataNascimento = TextEditingController();
+  String _controllerPosicionamento = "";
+  String _controllerSexo = "";
   String _controllerPais = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
+
+  PaisModel paisModelSelecionado;
+  GeneroModel generoModelSelecionado;
+  PosicionamentoModel posicionamentoModelSelecionado;
 
   void _atualizar() async {
     try {
@@ -42,8 +50,8 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       }
 
       UsuarioModel usuarioModel = UsuarioModel.Atualiza(_controllerNome.text,
-          _controllerApelido.text, _controllerPais, _controllerCidade.text,
-          _controllerLocal.text);
+          _controllerApelido.text, _controllerSexo, _controllerPosicionamento,
+          _controllerPais, _controllerCidade.text, _controllerLocal.text);
 
       var _url = "${ConstantesRest.URL_USUARIOS}";
       var _dados = usuarioModel.toJson();
@@ -64,9 +72,9 @@ class _PerfilSubViewState extends State<PerfilSubView> {
           body: jsonEncode(_dados)
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 204) {
         setState(() {
-          _mensagem = "Usuário incluído com sucesso!!!";
+          _mensagem = "Usuário alterado com sucesso!!!";
         });
 
         DialogFutt dialogFutt = new DialogFutt();
@@ -100,9 +108,19 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     }
   }
 
+  Future<List<GeneroModel>> _listaGeneros() async {
+    UtilService utilService = UtilService();
+    return utilService.listaGeneros();
+  }
+
+  Future<List<PosicionamentoModel>> _listaPosicionamentos() async {
+    UtilService utilService = UtilService();
+    return utilService.listaPosiconamentos();
+  }
+
   Future<List<PaisModel>> _listaPaises() async {
-    PaisService paisService = PaisService();
-    return paisService.listaPaises();
+    UtilService utilService = UtilService();
+    return utilService.listaPaises();
   }
 
   Future<UsuarioModel> _buscaUsuarioLogado() async {
@@ -136,9 +154,15 @@ class _PerfilSubViewState extends State<PerfilSubView> {
               _controllerNome.text = usuarioModel.nome;
               _controllerApelido.text = usuarioModel.apelido;
               //_controllerDataNascimento.text = usuarioModel.dataNascimento;
+              _controllerSexo = usuarioModel.sexo;
+              _controllerPosicionamento = usuarioModel.posicao;
               _controllerPais = usuarioModel.pais;
               _controllerCidade.text = usuarioModel.cidade;
               _controllerLocal.text = usuarioModel.ondeJoga;
+
+              paisModelSelecionado = new PaisModel(_controllerPais, _controllerPais);
+              generoModelSelecionado = new GeneroModel(_controllerSexo, _controllerSexo == "M" ? "Masculino" : "Feminino");
+              posicionamentoModelSelecionado = new PosicionamentoModel(_controllerPosicionamento, _controllerPosicionamento != "A" ? _controllerPosicionamento != "D" ? "Esquerda" : "Direita" : "Ambas");
 
               return Container(
                 color: Colors.grey[300],
@@ -234,7 +258,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                       Icons.done_all,
                                       color: Colors.black,
                                     ),
-                                    hintText: "Data Início",
+                                    hintText: "Data de nascimento",
                                     hintStyle: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[400],
@@ -254,6 +278,32 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(bottom: 10),
+                                child: FindDropdown<PosicionamentoModel>(
+                                  showSearchBox: false,
+                                  onFind: (String filter) => _listaPosicionamentos(),
+                                  searchBoxDecoration: InputDecoration(
+                                    hintText: "Search",
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (PosicionamentoModel data) => _controllerPosicionamento = data.id,
+                                  selectedItem: posicionamentoModelSelecionado,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10),
+                                child: FindDropdown<GeneroModel>(
+                                  showSearchBox: false,
+                                  onFind: (String filter) => _listaGeneros(),
+                                  searchBoxDecoration: InputDecoration(
+                                    hintText: "Search",
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (GeneroModel data) => _controllerSexo = data.id,
+                                  selectedItem: generoModelSelecionado,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10),
                                 child: FindDropdown<PaisModel>(
                                   showSearchBox: false,
                                   onFind: (String filter) => _listaPaises(),
@@ -262,6 +312,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (PaisModel data) => _controllerPais = data.id,
+                                  selectedItem: paisModelSelecionado,
                                 ),
                               ),
                               TextField(

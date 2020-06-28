@@ -3,7 +3,7 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
-import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
@@ -104,8 +104,8 @@ class _NovaRedeViewState extends State<NovaRedeView> {
   }
 
   Future<List<PaisModel>> _listaPaises() async {
-    PaisService paisService = PaisService();
-    return paisService.listaPaises();
+    UtilService utilService = UtilService();
+    return utilService.listaPaises();
   }
 
   @override

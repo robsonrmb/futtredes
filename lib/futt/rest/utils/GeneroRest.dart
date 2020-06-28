@@ -1,4 +1,3 @@
-
 import 'package:futt/futt/model/utils/GeneroModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
 import 'package:futt/futt/service/fixo/utils/GeneroServiceFixo.dart';

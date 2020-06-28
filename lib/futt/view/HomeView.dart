@@ -1,6 +1,6 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
-import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/DashboardView.dart';
 import 'package:futt/futt/view/EscolinhasView.dart';
 import 'package:futt/futt/view/LoginView.dart';
@@ -41,8 +41,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   }
 
   Future<List<PaisModel>> _listaPaises() async {
-    PaisService paisService = PaisService();
-    return paisService.listaPaises();
+    UtilService utilService = UtilService();
+    return utilService.listaPaises();
   }
 
   @override

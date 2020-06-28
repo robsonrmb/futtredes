@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/service/EstatisticaService.dart';
 import 'package:futt/futt/view/components/Estatistica.dart';

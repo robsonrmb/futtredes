@@ -2,16 +2,12 @@ class GeneroServiceFixo {
 
   String retornoGeneros = '['
         '{'
-          '"id": "1",'
+          '"id": "M",'
           '"nome": "Masculino"'
         '},'
         '{'
-          '"id": "2",'
+          '"id": "F",'
           '"nome": "Feminino"'
-        '},'
-        '{'
-          '"id": "3",'
-          '"nome": "Misto"'
         '}'
       ']';
 

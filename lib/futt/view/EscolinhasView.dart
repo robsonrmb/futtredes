@@ -1,5 +1,5 @@
 import 'package:futt/futt/model/utils/PaisModel.dart';
-import 'package:futt/futt/service/PaisService.dart';
+import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/subview/EscolinhaSubView.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,8 +30,8 @@ class _EscolinhasViewState extends State<EscolinhasView> {
   }
 
   Future<List<PaisModel>> _listaPaises() async {
-    PaisService paisService = PaisService();
-    return paisService.listaPaises();
+    UtilService utilService = UtilService();
+    return utilService.listaPaises();
   }
 
   @override

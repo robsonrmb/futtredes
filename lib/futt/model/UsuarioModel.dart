@@ -13,15 +13,16 @@ class UsuarioModel {
   String _pais;
   String _status;
   String _sexo;
+  String _posicao;
   String _professor;
   String _nomeFoto;
 
   UsuarioModel.Novo(this._id);
-  UsuarioModel.Atualiza(this._nome, this._apelido,
+  UsuarioModel.Atualiza(this._nome, this._apelido, this._sexo, this._posicao,
       this._pais, this._cidade, this._ondeJoga);
   UsuarioModel(this._id, this._nome, this._email, this._senha, this._apelido,
       this._dataNascimento, this._ondeJoga, this._tipo, this._nivel, this._cidade,
-      this._estado, this._pais, this._status, this._sexo, this._professor,
+      this._estado, this._pais, this._status, this._sexo, this._posicao, this._professor,
       this._nomeFoto);
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +41,7 @@ class UsuarioModel {
       json["pais"],
       json["status"],
       json["sexo"],
+      json["posicao"],
       json["professor"],
       json["nomeFoto"],
     );
@@ -56,9 +58,11 @@ class UsuarioModel {
       'ondeJoga': _ondeJoga,
       'tipo': _tipo,
       'nivel': _nivel,
-      'cidade': _cidade,
+      'pais': _pais,
       'estado': _estado,
       'cidade': _cidade,
+      'sexo': _sexo,
+      'posicao': _posicao,
       'nomeFoto': _nomeFoto,
     };
   }
@@ -157,6 +161,12 @@ class UsuarioModel {
 
   set id(int value) {
     _id = value;
+  }
+
+  String get posicao => _posicao;
+
+  set posicao(String value) {
+    _posicao = value;
   }
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/service/EstatisticaService.dart';
 import 'package:futt/futt/view/components/Estatistica.dart';
@@ -19,7 +20,7 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
 
   Future<List<RespostaModel>> _getValoresSequenciais() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(widget.idUsuario, widget.idRede, 0, true);
+    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(widget.idUsuario, widget.idRede, 0, ConstantesConfig.SERVICO_FIXO);
     return respostas;
   }
 
@@ -75,8 +76,22 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
                 ],
               );
             }else{
-              return Center(
-                child: Text("Sem valores!!!"),
+              return Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          Text("ÚLTIMOS JOGOS",style: TextStyle(fontWeight: FontWeight.bold),),
+                          Padding(padding: EdgeInsets.all(3),),
+                          Text("Sem valores"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               );
             }
             break;

@@ -47,7 +47,7 @@ class _DashboardViewState extends State<DashboardView> {
                         UsuarioModel usuario = snapshot.data;
 
                         return Container(
-                          child: EstatisticasView(0, 0, usuario.nome, usuario.nomeFoto),
+                          child: EstatisticasView(0, 0, null, usuario.nome, usuario.nomeFoto),
                         );
                       }else{
                         return Container();

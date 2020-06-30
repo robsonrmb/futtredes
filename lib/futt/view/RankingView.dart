@@ -4,8 +4,9 @@ import 'package:futt/futt/view/subview/RankingSubView.dart';
 class RankingView extends StatefulWidget {
 
   int idRede;
+  String nomeRede;
   int ano;
-  RankingView(this.idRede, this.ano);
+  RankingView(this.idRede, this.nomeRede, this.ano);
 
   @override
   _RankingViewState createState() => _RankingViewState();
@@ -53,9 +54,9 @@ class _RankingViewState extends State<RankingView> with TickerProviderStateMixin
       body: TabBarView(
         controller: _controllerRanking,
         children: <Widget>[
-          RankingSubView(widget.idRede, widget.ano, 1),
-          RankingSubView(widget.idRede, widget.ano, 2),
-          RankingSubView(widget.idRede, widget.ano, 3),
+          RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 1),
+          RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 2),
+          RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 3),
         ],
       ),
     );

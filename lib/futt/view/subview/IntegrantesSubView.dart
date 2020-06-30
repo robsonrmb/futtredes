@@ -193,7 +193,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                               ),
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => EstatisticasAtletasView(integrante.idUsuario, widget.redeModel.id, integrante.nome, integrante.nomeFoto),
+                                  builder: (context) => EstatisticasAtletasView(integrante.idUsuario, widget.redeModel.id, widget.redeModel.nome, integrante.nome, integrante.nomeFoto),
                                 ));
                               },
                             ),

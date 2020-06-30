@@ -5,9 +5,10 @@ class EstatisticasAtletasView extends StatefulWidget {
 
   int idUsuario;
   int idRede;
+  String nomeRede;
   String nome;
   String nomeFoto;
-  EstatisticasAtletasView(this.idUsuario, this.idRede, this.nome, this.nomeFoto);
+  EstatisticasAtletasView(this.idUsuario, this.idRede, this.nomeRede, this.nome, this.nomeFoto);
 
   @override
   _EstatisticasAtletasViewState createState() => _EstatisticasAtletasViewState();
@@ -38,7 +39,7 @@ class _EstatisticasAtletasViewState extends State<EstatisticasAtletasView> {
             children: <Widget>[
               Expanded(
                 child: Container(
-                  child: EstatisticasView(widget.idUsuario, widget.idRede, widget.nome, widget.nomeFoto),
+                  child: EstatisticasView(widget.idUsuario, widget.idRede, widget.nomeRede, widget.nome, widget.nomeFoto),
                 ),
               ),
             ],

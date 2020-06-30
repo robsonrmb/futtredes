@@ -8,9 +8,10 @@ class EstatisticasView extends StatefulWidget {
 
   int idUsuario;
   int idRede;
+  String nomeRede;
   String nome;
   String nomeFoto;
-  EstatisticasView(this.idUsuario, this.idRede, this.nome, this.nomeFoto);
+  EstatisticasView(this.idUsuario, this.idRede, this.nomeRede, this.nome, this.nomeFoto);
 
   @override
   _EstatisticasViewState createState() => _EstatisticasViewState();
@@ -53,6 +54,19 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Candal'
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  color: Colors.orangeAccent,
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text(widget.nomeRede == null ? "ESTATÍSTICAS DE TODAS AS REDES" : "REDE: ${widget.nomeRede.toUpperCase()}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -8,9 +8,10 @@ import 'package:futt/futt/view/EstatisticasAtletasView.dart';
 class RankingSubView extends StatefulWidget {
 
   int idRede;
+  String nomeRede;
   int ano;
   int tipo;
-  RankingSubView(this.idRede, this.ano, this.tipo);
+  RankingSubView(this.idRede, this.nomeRede, this.ano, this.tipo);
 
   @override
   _RankingSubViewState createState() => _RankingSubViewState();
@@ -142,7 +143,7 @@ class _RankingSubViewState extends State<RankingSubView> {
                               ),
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => EstatisticasAtletasView(resultado.idUsuario, widget.idRede, resultado.nomeUsuario, resultado.fotoUsuario),
+                                  builder: (context) => EstatisticasAtletasView(resultado.idUsuario, widget.idRede, widget.nomeRede, resultado.nomeUsuario, resultado.fotoUsuario),
                                 ));
                               },
                             ),

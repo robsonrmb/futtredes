@@ -131,7 +131,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                     ),
                                     onTap: (){
                                       Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => RankingView(rede.id, 0),
+                                          builder: (context) => RankingView(rede.id, rede.nome, 0),
                                       ));
                                     },
                                   ),

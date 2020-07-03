@@ -20,8 +20,20 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
 
   Future<List<RespostaModel>> _getValoresSequenciais() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(widget.idUsuario, widget.idRede, 0, ConstantesConfig.SERVICO_FIXO);
+    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(widget.idUsuario, widget.idRede, ConstantesConfig.SERVICO_FIXO);
     return respostas;
+  }
+
+  Widget _retornaEstatistica(var _vs, int _indice) {
+    return (_vs.length >= _indice+1 && _vs[_indice] != "")
+        ? new Estatistica().resultadoJogo(_vs[_indice])
+        : new Container(padding: EdgeInsets.only(top: 1),);
+  }
+
+  Widget _retornaEstatisticaVazia(var _vs, int _indice) {
+    return (_vs.length >= _indice+1 && _vs[_indice] != "")
+        ? new Padding(padding: EdgeInsets.all(3),)
+        : new Padding(padding: EdgeInsets.only(top: 1),);
   }
 
   @override
@@ -45,56 +57,79 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
               RespostaModel resultado = estatisticas[0];
               _valoresSequenciais = resultado.resposta.split("#");
 
-              return Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        children: <Widget>[
-                          Text("ÚLTIMOS JOGOS",style: TextStyle(fontWeight: FontWeight.bold),),
-                          Padding(padding: EdgeInsets.all(3),),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Estatistica().resultadoJogo(this._valoresSequenciais[0]),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().resultadoJogo(this._valoresSequenciais[1]),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().resultadoJogo(this._valoresSequenciais[2]),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().resultadoJogo(this._valoresSequenciais[3]),
-                              Padding(padding: EdgeInsets.all(3),),
-                              new Estatistica().resultadoJogo(this._valoresSequenciais[4]),
-                            ],
-                          ),
-                        ],
+              if (_valoresSequenciais != "" && _valoresSequenciais[0] != "") {
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      color: Colors.white,
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[
+                            Text("ÚLTIMOS JOGOS", style: TextStyle(
+                                fontWeight: FontWeight.bold),),
+                            Padding(padding: EdgeInsets.all(3),),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _retornaEstatistica(this._valoresSequenciais, 0),
+                                _retornaEstatisticaVazia(this._valoresSequenciais, 0),
+                                _retornaEstatistica(this._valoresSequenciais, 1),
+                                _retornaEstatisticaVazia(this._valoresSequenciais, 1),
+                                _retornaEstatistica(this._valoresSequenciais, 2),
+                                _retornaEstatisticaVazia(this._valoresSequenciais, 2),
+                                _retornaEstatistica(this._valoresSequenciais, 3),
+                                _retornaEstatisticaVazia(this._valoresSequenciais, 3),
+                                _retornaEstatistica(this._valoresSequenciais, 4),
+                                _retornaEstatisticaVazia(this._valoresSequenciais, 4),
+                                _retornaEstatistica(this._valoresSequenciais, 5),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            }else{
-              return Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        children: <Widget>[
-                          Text("ÚLTIMOS JOGOS",style: TextStyle(fontWeight: FontWeight.bold),),
-                          Padding(padding: EdgeInsets.all(3),),
-                          Text("Sem valores"),
-                        ],
+                  ],
+                );
+              }else{
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      color: Colors.white,
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[
+                            Text("ÚLTIMOS JOGOS",style: TextStyle(fontWeight: FontWeight.bold),),
+                            Padding(padding: EdgeInsets.all(3),),
+                            Text("Sem valores"),
+                          ],
+                        ),
                       ),
                     ),
+                  ],
+                );
+              }
+          }else{
+            return Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  color: Colors.white,
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text("ÚLTIMOS JOGOS",style: TextStyle(fontWeight: FontWeight.bold),),
+                        Padding(padding: EdgeInsets.all(3),),
+                        Text("Sem valores"),
+                      ],
+                    ),
                   ),
-                ],
-              );
-            }
-            break;
+                ),
+              ],
+            );
+          }
+          break;
         }
       },
     );

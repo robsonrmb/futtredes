@@ -1,7 +1,6 @@
 import 'package:futt/futt/constantes/ConstantesEstatisticas.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/QuantidadeModel.dart';
-import 'package:futt/futt/model/RespPerformanceModel.dart';
 import 'package:futt/futt/model/RespQuantidadeModel.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/rest/EstatisticaRest.dart';
@@ -55,12 +54,11 @@ class EstatisticaService {
     return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.JOGOSEPONTOS, fixo); //jogos e pontos
   }
 
-  Future<List<RespostaModel>> getSequenciais(int idUsuario, int idRede, int ano, bool fixo) {
+  Future<List<RespostaModel>> getSequenciais(int idUsuario, int idRede, bool fixo) {
     String url = "${ConstantesRest.URL_ESTATISTICAS}/sequenciais/${idUsuario}?tipo='R'";
-    if (ano != 0) { url = "${url}&&ano=${ano}"; }
-    if (idRede != 0) { url = "${url}&&id=${idRede}"; }
+    if (idRede != 0) { url = "${url}&&idRede=${idRede}"; }
     EstatisticaRest estatisticaRest = EstatisticaRest();
-    return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.SEQUENCIAIS, fixo); //jogos e pontos
+    return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.SEQUENCIAIS, fixo); //sequenciais
   }
 
 }

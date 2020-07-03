@@ -8,20 +8,20 @@ class Estatistica {
         vitoria = false;
       }
       return new Container(
-        height: 50, width: 50,
+        height: 40, width: 40,
         decoration: vitoria ? BoxDecoration(
           color: Color(0xff093352),
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(40),
         ) : BoxDecoration(
           color: Colors.amberAccent,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(40),
         ),
         child: vitoria ? Center(
           child: Text(" V ",
             style: TextStyle(
               fontFamily: 'Candal',
               color: Colors.white,
-              fontSize: 25,
+              fontSize: 18,
             ),
           ),
         ) : Center(
@@ -29,7 +29,7 @@ class Estatistica {
             style: TextStyle(
               fontFamily: 'Candal',
               color: Colors.white,
-              fontSize: 25,
+              fontSize: 18,
             ),
           ),
         ),

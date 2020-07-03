@@ -3,6 +3,7 @@ class UsuarioModel {
   String _nome;
   String _email;
   String _senha;
+  String _novaSenha;
   String _apelido;
   DateTime _dataNascimento;
   String _ondeJoga;
@@ -20,6 +21,7 @@ class UsuarioModel {
   UsuarioModel.Novo(this._id);
   UsuarioModel.Atualiza(this._nome, this._apelido, this._sexo, this._posicao,
       this._pais, this._cidade, this._ondeJoga);
+  UsuarioModel.AtualizaSenha(this._email, this._senha, this._novaSenha);
   UsuarioModel(this._id, this._nome, this._email, this._senha, this._apelido,
       this._dataNascimento, this._ondeJoga, this._tipo, this._nivel, this._cidade,
       this._estado, this._pais, this._status, this._sexo, this._posicao, this._professor,
@@ -64,6 +66,7 @@ class UsuarioModel {
       'sexo': _sexo,
       'posicao': _posicao,
       'nomeFoto': _nomeFoto,
+      'novaSenha': _novaSenha,
     };
   }
 

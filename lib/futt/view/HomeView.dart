@@ -153,7 +153,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           });
         },
         type: BottomNavigationBarType.fixed, //este e o padrão
-        fixedColor: Colors.green,
+        fixedColor: Colors.blue,
         items: [
           BottomNavigationBarItem(
             title: Text("Redes"),

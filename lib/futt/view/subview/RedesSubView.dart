@@ -100,7 +100,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 1),
                                       child: Icon(Icons.play_circle_outline,
-                                          color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                          color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
                                       ),
                                     ),
                                     onTap: (){
@@ -113,7 +113,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.people,
-                                          color: Colors.green,
+                                          color: Colors.lightBlue,
                                       ),
                                     ),
                                     onTap: (){
@@ -126,7 +126,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.star_half,
-                                        color: Colors.green,
+                                        color: Colors.lightBlue,
                                       ),
                                     ),
                                     onTap: (){

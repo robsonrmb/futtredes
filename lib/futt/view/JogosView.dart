@@ -56,7 +56,7 @@ class _JogosViewState extends State<JogosView> {
                     fit: BoxFit.cover
                 ),*/
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.grey[400],
+                color: Colors.grey[200],
               ),
               child: Column(
                 children: <Widget>[
@@ -66,7 +66,7 @@ class _JogosViewState extends State<JogosView> {
                       style: TextStyle(
                           fontSize: 18,
                           fontFamily: 'Candal',
-                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
+                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                       ),
                     ),
                   ),
@@ -75,7 +75,7 @@ class _JogosViewState extends State<JogosView> {
                     child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
                       style: TextStyle(
                         fontSize: 12,
-                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
+                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                       ),
                     ),
                   ),
@@ -84,7 +84,7 @@ class _JogosViewState extends State<JogosView> {
                     child: Text("${widget.redeModel.local}",
                       style: TextStyle(
                         fontSize: 12,
-                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
+                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                       ),
                     ),
                   ),

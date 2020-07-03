@@ -243,7 +243,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                  color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
                               ),
                             ),
                             trailing: Row(
@@ -253,7 +253,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 1),
                                       child: Icon(Icons.play_circle_outline,
-                                          color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                          color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
                                       ),
                                     ),
                                     onTap: (){
@@ -266,7 +266,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.people,
-                                          color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                          color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
                                       ),
                                     ),
                                     onTap: (){
@@ -279,7 +279,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.smartphone,
-                                        color: rede.status < 3 ? (rede.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                        color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
                                       ),
                                     ),
                                     onTap: (){
@@ -292,7 +292,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 20),
                                       child: Icon(Icons.delete_forever,
-                                        color: rede.status == 1 ? Colors.lightBlue : Colors.green,),
+                                        color: rede.status == 1 ? Color(0xff093352) : Colors.lightBlue,),
                                     ),
                                     onTap: (){
                                       _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");

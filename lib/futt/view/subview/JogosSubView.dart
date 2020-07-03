@@ -239,7 +239,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                       style: TextStyle(
                                           fontSize: 36,
                                           fontWeight: FontWeight.bold,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                                       ),
                                     ),
                                   ]
@@ -318,7 +318,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                       style: TextStyle(
                                           fontSize: 36,
                                           fontWeight: FontWeight.bold,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                                       ),
                                     ),
                                   ]
@@ -341,7 +341,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 20),
                                     child: Icon(Icons.edit,
-                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey
                                     ),
                                   ),
                                   onTap: (){
@@ -480,7 +480,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 20),
                                     child: Icon(Icons.delete_forever,
-                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey
                                     ),
                                   ),
                                   onTap: (){

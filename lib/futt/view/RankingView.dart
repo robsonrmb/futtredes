@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:futt/futt/view/subview/RankingSubView.dart';
 
@@ -40,7 +41,7 @@ class _RankingViewState extends State<RankingView> with TickerProviderStateMixin
                 fontSize: 20
             )
         ),
-        title: Text("Ranking"),
+        title: Text("Outros rankings"),
         bottom: TabBar(
             controller: _controllerRanking,
             onTap: (index) {},

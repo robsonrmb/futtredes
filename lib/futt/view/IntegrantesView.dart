@@ -3,6 +3,7 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/view/components/CabecalhoLista.dart';
 import 'package:futt/futt/view/subview/IntegrantesSubView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -151,44 +152,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.grey[200],
-              ),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                    child: Text("${widget.redeModel.nome}",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Candal',
-                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 1),
-                    child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                    child: Text("${widget.redeModel.local}",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
             Expanded(
               child: IntegrantesSubView(widget.redeModel, widget.donoRede, _inclui),
             )

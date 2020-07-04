@@ -10,6 +10,8 @@ class RankingService {
       url = "${ConstantesRest.URL_ESTATISTICAS}/rankingjogos/${idRede}";
     }else if (tipo == 3) {
       url = "${ConstantesRest.URL_ESTATISTICAS}/rankingpontos/${idRede}";
+    }else if (tipo == 4) {
+      url = "${ConstantesRest.URL_ESTATISTICAS}/rankingmedia/${idRede}";
     }
     RankingRest rankingRest = RankingRest();
     return rankingRest.processaHttpGetList(url, fixo);

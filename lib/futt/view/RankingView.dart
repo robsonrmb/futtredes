@@ -6,8 +6,9 @@ class RankingView extends StatefulWidget {
 
   int idRede;
   String nomeRede;
+  int statusRede;
   int ano;
-  RankingView(this.idRede, this.nomeRede, this.ano);
+  RankingView(this.idRede, this.nomeRede, this.statusRede, this.ano);
 
   @override
   _RankingViewState createState() => _RankingViewState();

@@ -212,9 +212,11 @@ class _JogosSubViewState extends State<JogosSubView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                        padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(5),
                           border: Border.all(
                             width: 1.0,
                             color: Colors.grey[300],

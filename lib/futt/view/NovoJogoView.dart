@@ -5,6 +5,7 @@ import 'package:futt/futt/model/JogoRedeModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/components/SearchDelegateUsuariosDaRede.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,6 +26,10 @@ class _NovoJogoViewState extends State<NovoJogoView> {
   TextEditingController _controllerEmailJogador2 = TextEditingController();
   TextEditingController _controllerEmailJogador3 = TextEditingController();
   TextEditingController _controllerEmailJogador4 = TextEditingController();
+  String _resultadoJogador1 = "";
+  String _resultadoJogador2 = "";
+  String _resultadoJogador3 = "";
+  String _resultadoJogador4 = "";
 
   _cadastraJogo() async {
     try {
@@ -99,10 +104,10 @@ class _NovoJogoViewState extends State<NovoJogoView> {
   @override
   Widget build(BuildContext context) {
 
-    _controllerEmailJogador1.text = "robson.rmb@gmail.com";
-    _controllerEmailJogador2.text = "lucas@gmail.com";
-    _controllerEmailJogador3.text = "pedro@gmail.com";
-    _controllerEmailJogador4.text = "iuca@gmail.com";
+    _controllerEmailJogador1.text = _resultadoJogador1;
+    _controllerEmailJogador2.text = _resultadoJogador2;
+    _controllerEmailJogador3.text = _resultadoJogador3;
+    _controllerEmailJogador4.text = _resultadoJogador4;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -133,9 +138,9 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
                   decoration: BoxDecoration(
                     /*image: DecorationImage(
-                    image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),
-                    fit: BoxFit.cover
-                ),*/
+                        image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),
+                        fit: BoxFit.cover
+                    ),*/
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.grey[400],
                   ),
@@ -172,48 +177,64 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                     ],
                   ),
                 ),
-                Padding(
+                Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "Email do jogador 1",
-                      labelStyle: TextStyle(
-                        color: Colors.grey[600],
+                  child: GestureDetector(
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Email do jogador 1",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[300],
+                        border: OutlineInputBorder(
+                          gapPadding: 10,
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(
-                        gapPadding: 10,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black
                       ),
+                      controller: _controllerEmailJogador1,
                     ),
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black
-                    ),
-                    controller: _controllerEmailJogador1,
+                    onDoubleTap: () async {
+                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
+                      setState(() {
+                        _resultadoJogador1 = valor;
+                      });
+                    },
                   ),
                 ),
-                Padding(
+                Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "Email do jogador 2",
-                      labelStyle: TextStyle(
-                        color: Colors.grey[600],
+                  child: GestureDetector(
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Email do jogador 2",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[300],
+                        border: OutlineInputBorder(
+                          gapPadding: 10,
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(
-                        gapPadding: 10,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black
                       ),
+                      controller: _controllerEmailJogador2,
                     ),
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black
-                    ),
-                    controller: _controllerEmailJogador2,
+                    onDoubleTap: () async {
+                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
+                      setState(() {
+                        _resultadoJogador2 = valor;
+                      });
+                    },
                   ),
                 ),
                 Container(
@@ -238,48 +259,64 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                     ),
                   ),
                 ),
-                Padding(
+                Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "Email do jogador 3",
-                      labelStyle: TextStyle(
-                        color: Colors.grey[600],
+                  child: GestureDetector(
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Email do jogador 3",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[300],
+                        border: OutlineInputBorder(
+                          gapPadding: 10,
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(
-                        gapPadding: 10,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black
                       ),
+                      controller: _controllerEmailJogador3,
                     ),
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black
-                    ),
-                    controller: _controllerEmailJogador3,
+                    onDoubleTap: () async {
+                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
+                      setState(() {
+                        _resultadoJogador3 = valor;
+                      });
+                    },
                   ),
                 ),
-                Padding(
+                Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: "Email do jogador 4",
-                      labelStyle: TextStyle(
-                        color: Colors.grey[600],
+                  child: GestureDetector(
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Email do jogador 4",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[300],
+                        border: OutlineInputBorder(
+                          gapPadding: 10,
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      border: OutlineInputBorder(
-                        gapPadding: 10,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black
                       ),
+                      controller: _controllerEmailJogador4,
                     ),
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black
-                    ),
-                    controller: _controllerEmailJogador4,
+                    onDoubleTap: () async {
+                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
+                      setState(() {
+                        _resultadoJogador4 = valor;
+                      });
+                    },
                   ),
                 ),
                 Padding(

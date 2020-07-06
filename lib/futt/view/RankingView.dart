@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/components/TopoInterno.dart';
 import 'package:futt/futt/view/subview/RankingSubView.dart';
 
 class RankingView extends StatefulWidget {
@@ -53,12 +54,21 @@ class _RankingViewState extends State<RankingView> with TickerProviderStateMixin
             ],
           )
       ),
-      body: TabBarView(
-        controller: _controllerRanking,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 1),
-          RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 2),
-          RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 3),
+          TopoInterno().getTopo(widget.nomeRede, widget.statusRede),
+          Expanded(
+            child: TabBarView(
+              controller: _controllerRanking,
+              children: <Widget>[
+                RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 1),
+                RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 2),
+                RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 3),
+              ],
+            ),
+          )
         ],
       ),
     );

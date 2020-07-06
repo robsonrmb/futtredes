@@ -91,54 +91,40 @@ class _RankingSubViewState extends State<RankingSubView> {
                           ),
                         ],
                       ),
-                      subtitle: Row(
+                      /* subtitle: Row(
                         children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Center(
-                              child: Text(
-                                " ${index+1} ",
-                                style: TextStyle(
-                                  fontFamily: 'Candal',
-                                  color: Colors.grey[300],
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                          /*Text(
-                            "  ${resultado.getNomeFormatado()}",
+                          Text(
+                            "  ${resultado.pontuacao} vitórias",
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),*/
+                          ),
                         ],
-                      ),
+                      ),*/
                       trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Container(
+                              width: 50,
                               decoration: BoxDecoration(
-                                //color: Color(0xff093352),
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Center(
                                 child: Text(
                                   " ${resultado.pontuacao} ",
                                   style: TextStyle(
-                                    fontFamily: 'Candal',
-                                    color: Color(0xff093352),
-                                    fontSize: 25,
+                                    color: Colors.blue,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                             ),
                             GestureDetector(
                               child: Padding(
-                                padding: EdgeInsets.only(left: 1),
+                                padding: EdgeInsets.only(left: 20),
                                 child: Icon(Icons.insert_chart),
                               ),
                               onTap: (){

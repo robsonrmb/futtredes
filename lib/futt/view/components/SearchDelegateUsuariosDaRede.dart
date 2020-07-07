@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class SearchDelegateUsuariosDaRede extends SearchDelegate<String> {
 
+  List<String> integrantes;
+  SearchDelegateUsuariosDaRede(this.integrantes);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -32,28 +35,22 @@ class SearchDelegateUsuariosDaRede extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> lista = List();
-    if (query.isNotEmpty) {
-      lista = [
-        "Robson Brito", "Pedro Brito", "Luquibas", "Luquibas Brito", "Luquibas Faria"
-      ].where(
-          (texto) => texto.toLowerCase().startsWith( query.toLowerCase() )
-      ).toList();
+    List<String> lf = List();
+    lf = integrantes.where(
+            (texto) => texto.toLowerCase().startsWith( query.toLowerCase() )
+    ).toList();
 
-      return ListView.builder(
-          itemCount: lista.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              onTap: () {
-                close(context, lista[index]);
-              },
-              title: Text( lista[index]),
-            );
-          }
-      );
-    }else{
-      return Center(child: Text("Nnhum resultado disponível."),);
-    }
+    return ListView.builder(
+        itemCount: lf.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () {
+              close(context, lf[index]);
+            },
+            title: Text( lf[index]),
+          );
+        }
+    );
   }
 
 }

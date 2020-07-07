@@ -1,8 +1,10 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
+import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/model/JogoRedeModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/service/IntegranteService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:flutter/material.dart';
 import 'package:futt/futt/view/components/SearchDelegateUsuariosDaRede.dart';
@@ -30,6 +32,23 @@ class _NovoJogoViewState extends State<NovoJogoView> {
   String _resultadoJogador2 = "";
   String _resultadoJogador3 = "";
   String _resultadoJogador4 = "";
+  Future<List<IntegranteModel>> _integrantes;
+
+  Future<List<IntegranteModel>> _listaIntegrantes() async {
+    IntegranteService resultadoService = IntegranteService();
+    return resultadoService.listaIntegrantesDaRede(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO, 0); //0 para retorno fixo (jogar fora)
+  }
+
+  String _buscaEmailDaLista(String valor, List<IntegranteModel> lista) {
+    String retorno = "";
+    for (IntegranteModel _im in lista) {
+      if (_im.nome == valor) {
+        retorno = _im.email;
+        break;
+      }
+    }
+    return retorno;
+  }
 
   _cadastraJogo() async {
     try {
@@ -130,210 +149,244 @@ class _NovoJogoViewState extends State<NovoJogoView> {
         child: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  decoration: BoxDecoration(
-                    /*image: DecorationImage(
-                        image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),
-                        fit: BoxFit.cover
-                    ),*/
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.grey[400],
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                        child: Text("${widget.redeModel.nome}",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'Candal',
-                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 1),
-                        child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                        child: Text("${widget.redeModel.local}",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: GestureDetector(
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: "Email do jogador 1",
-                        labelStyle: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(
-                          gapPadding: 10,
-                        ),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                      ),
-                      controller: _controllerEmailJogador1,
-                    ),
-                    onDoubleTap: () async {
-                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
-                      setState(() {
-                        _resultadoJogador1 = valor;
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: GestureDetector(
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: "Email do jogador 2",
-                        labelStyle: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(
-                          gapPadding: 10,
-                        ),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                      ),
-                      controller: _controllerEmailJogador2,
-                    ),
-                    onDoubleTap: () async {
-                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
-                      setState(() {
-                        _resultadoJogador2 = valor;
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  height: 40, width: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Center(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("X",
-                            style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                                color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+            child: FutureBuilder<List<IntegranteModel>>(
+                future: _listaIntegrantes(),
+                builder: (context, snapshot) {
+                  switch( snapshot.connectionState ) {
+                    case ConnectionState.none :
+                    case ConnectionState.waiting :
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      break;
+                    case ConnectionState.active :
+                    case ConnectionState.done :
+                      if( snapshot.hasData ) {
+
+                        List<IntegranteModel> integrantes = snapshot.data;
+                        List<String> _integrantes = List();
+
+                        for (IntegranteModel _im in integrantes) {
+                          _integrantes.add(_im.nome);
+                        }
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                              decoration: BoxDecoration(
+                                /*image: DecorationImage(
+                                        image: NetworkImage('${ConstantesRest.URL_BASE_AMAZON}semImagem.png'),
+                                        fit: BoxFit.cover
+                                    ),*/
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey[400],
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+                                    child: Text("${widget.redeModel.nome}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: 'Candal',
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1),
+                                    child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                                    child: Text("${widget.redeModel.local}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xff1D691D) : Colors.grey[800]
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ]
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: GestureDetector(
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: "Email do jogador 3",
-                        labelStyle: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(
-                          gapPadding: 10,
-                        ),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                      ),
-                      controller: _controllerEmailJogador3,
-                    ),
-                    onDoubleTap: () async {
-                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
-                      setState(() {
-                        _resultadoJogador3 = valor;
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: GestureDetector(
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: "Email do jogador 4",
-                        labelStyle: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        border: OutlineInputBorder(
-                          gapPadding: 10,
-                        ),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                      ),
-                      controller: _controllerEmailJogador4,
-                    ),
-                    onDoubleTap: () async {
-                      String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede());
-                      setState(() {
-                        _resultadoJogador4 = valor;
-                      });
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Center(
-                    child: Text(
-                      _mensagem,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Candal'
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: GestureDetector(
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    labelText: "Email do jogador 1",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey[300],
+                                    border: OutlineInputBorder(
+                                      gapPadding: 10,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black
+                                  ),
+                                  controller: _controllerEmailJogador1,
+                                ),
+                                onDoubleTap: () async {
+                                  String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                                  valor = _buscaEmailDaLista(valor, integrantes);
+                                  setState(() {
+                                    _resultadoJogador1 = valor;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: GestureDetector(
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    labelText: "Email do jogador 2",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey[300],
+                                    border: OutlineInputBorder(
+                                      gapPadding: 10,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black
+                                  ),
+                                  controller: _controllerEmailJogador2,
+                                ),
+                                onDoubleTap: () async {
+                                  String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                                  valor = _buscaEmailDaLista(valor, integrantes);
+                                  setState(() {
+                                    _resultadoJogador2 = valor;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              height: 40, width: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Center(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text("X",
+                                        style: TextStyle(
+                                            fontSize: 36,
+                                            fontWeight: FontWeight.bold,
+                                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                        ),
+                                      ),
+                                    ]
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: GestureDetector(
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    labelText: "Email do jogador 3",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey[300],
+                                    border: OutlineInputBorder(
+                                      gapPadding: 10,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black
+                                  ),
+                                  controller: _controllerEmailJogador3,
+                                ),
+                                onDoubleTap: () async {
+                                  String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                                  valor = _buscaEmailDaLista(valor, integrantes);
+                                  setState(() {
+                                    _resultadoJogador3 = valor;
+                                  });
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: GestureDetector(
+                                child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    labelText: "Email do jogador 4",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey[300],
+                                    border: OutlineInputBorder(
+                                      gapPadding: 10,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black
+                                  ),
+                                  controller: _controllerEmailJogador4,
+                                ),
+                                onDoubleTap: () async {
+                                  String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                                  valor = _buscaEmailDaLista(valor, integrantes);
+                                  setState(() {
+                                    _resultadoJogador4 = valor;
+                                  });
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Center(
+                                child: Text(
+                                  _mensagem,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontFamily: 'Candal'
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }else{
+                        return Center(
+                          child: Text("Sem valores!!!"),
+                        );
+                      }
+                      break;
+                  }
+                },
+              ),
           ),
         ),
       ),

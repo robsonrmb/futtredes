@@ -37,7 +37,7 @@ class _RankingRedeViewState extends State<RankingRedeView> {
         title: Text("Ranking"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.star_half),
+        child: Icon(Icons.menu),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) => RankingView(widget.idRede, widget.nomeRede, widget.statusRede, widget.ano),

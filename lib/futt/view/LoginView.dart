@@ -1,5 +1,7 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/EmailModel.dart';
+import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/LoginModel.dart';
 import 'package:futt/futt/view/HomeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
@@ -19,6 +21,8 @@ class _LoginViewState extends State<LoginView> {
   String _mensagem = "";
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
+  TextEditingController _controllerEmailParaTrocaDeSenha = TextEditingController();
+  TextEditingController _controllerAnoNascimentoParaTrocaDeSenha = TextEditingController();
 
   @override
   void initState() {
@@ -26,6 +30,8 @@ class _LoginViewState extends State<LoginView> {
     _iniciar();
     _controllerEmail.text = "robson.rmb@gmail.com";
     _controllerSenha.text = "123";
+    _controllerEmailParaTrocaDeSenha.text = "robson.rmb@gmail.com";
+    _controllerAnoNascimentoParaTrocaDeSenha.text = "1978";
   }
 
   void _iniciar() async {
@@ -150,6 +156,51 @@ class _LoginViewState extends State<LoginView> {
     Navigator.pushNamed(context, "/cadastro");
   }
 
+  _enviaNovaSenha() async {
+    try {
+      Navigator.pop(context);
+      String _msg = "Senha enviada com sucesso!!!";
+      if (_controllerEmailParaTrocaDeSenha.text == "" || _controllerAnoNascimentoParaTrocaDeSenha.text == "") {
+        _msg = "Dados para solicitação de senha incompletos.";
+      }
+      EmailModel emailModel = new EmailModel(_controllerEmailParaTrocaDeSenha.text, int.parse(_controllerAnoNascimentoParaTrocaDeSenha.text));
+      var _url = "${ConstantesRest.URL_USUARIOS}/novasenha";
+      var _dados = emailModel.toJson();
+
+      if (ConstantesConfig.SERVICO_FIXO == true) {
+        _url = "https://jsonplaceholder.typicode.com/posts";
+        _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
+      }
+
+      http.Response response = await http.post(_url,
+          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
+          body: jsonEncode(_dados)
+      );
+
+      if (response.statusCode == 204) {
+        setState(() {
+          _mensagem = _msg;
+        });
+      }else{
+        setState(() {
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          _mensagem = exceptionModel.msg;
+        });
+      }
+
+    } on Exception catch (exception) {
+      print(exception.toString());
+      setState(() {
+        _mensagem = exception.toString();
+      });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -264,14 +315,57 @@ class _LoginViewState extends State<LoginView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              Text(
-                                "Esqueci a senha!!!",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontFamily: 'Candal'
+                              GestureDetector(
+                                child: Text("Esqueci a senha!!!",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontFamily: 'Candal'
+                                  ),
                                 ),
-                              ),
+                                onTap: () {
+                                  return showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext) {
+                                        return AlertDialog(
+                                          title: Text("Esqueci a senha!!!"),
+                                          content: SingleChildScrollView(
+                                            child: ListBody(
+                                              children: <Widget>[
+                                                TextField(
+                                                  keyboardType: TextInputType.emailAddress,
+                                                  decoration: InputDecoration(
+                                                    hintText: "Email",
+                                                  ),
+                                                  controller: _controllerEmailParaTrocaDeSenha,
+                                                ),
+                                                TextField(
+                                                  keyboardType: TextInputType.number,
+                                                  decoration: InputDecoration(
+                                                    hintText: "Ano de nascimento",
+                                                  ),
+                                                  maxLength: 4,
+                                                  controller: _controllerAnoNascimentoParaTrocaDeSenha,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              onPressed: () => _enviaNovaSenha(),
+                                              child: Text("Enviar nova senha"),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              child: Text("Fechar"),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                  );
+                                },
+                              )
                             ],
                           )
                         ),

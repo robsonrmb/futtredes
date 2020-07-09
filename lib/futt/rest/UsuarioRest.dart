@@ -50,7 +50,7 @@ class UsuarioRest extends BaseRest {
         return UsuarioModel.fromJson(dadosJson);
 
       } else {
-        throw Exception('Falha ao listar redes!!!');
+        throw Exception('Falha ao listar usuário!!!');
       }
     } on Exception catch (exception) {
       print(exception.toString());

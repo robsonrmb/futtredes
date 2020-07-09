@@ -19,7 +19,7 @@ class UsuarioModel {
   String _nomeFoto;
 
   UsuarioModel.Novo(this._id);
-  UsuarioModel.Atualiza(this._nome, this._apelido, this._sexo, this._posicao,
+  UsuarioModel.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,
       this._pais, this._cidade, this._ondeJoga);
   UsuarioModel.AtualizaSenha(this._email, this._senha, this._novaSenha);
   UsuarioModel(this._id, this._nome, this._email, this._senha, this._apelido,
@@ -28,13 +28,22 @@ class UsuarioModel {
       this._nomeFoto);
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
+    String data = json['dataNascimento'];
+    DateTime dateTime = new DateTime.now();
+    if (data != "") {
+      dateTime = new DateTime(
+          int.parse(data.substring(0, 4)),
+          int.parse(data.substring(5, 7)),
+          int.parse(data.substring(8)));
+    }
+
     return UsuarioModel(
       json["id"],
       json["nome"],
       json["email"],
       json["senha"],
       json["apelido"],
-      json["dataNascimento"],
+      dateTime,
       json["ondeJoga"],
       json["tipo"],
       json["nivel"],
@@ -56,7 +65,7 @@ class UsuarioModel {
       'email': _email,
       'senha': _senha,
       'apelido': _apelido,
-      'dataNascimento': _dataNascimento,
+      'dataNascimento': _getDateJson(),
       'ondeJoga': _ondeJoga,
       'tipo': _tipo,
       'nivel': _nivel,
@@ -68,6 +77,12 @@ class UsuarioModel {
       'nomeFoto': _nomeFoto,
       'novaSenha': _novaSenha,
     };
+  }
+  String _getDateJson() {
+    if (_dataNascimento != null && _dataNascimento != "") {
+      return _dataNascimento.toString().substring(0,10);
+    }
+    return "";
   }
 
   String get nomeFoto => _nomeFoto;

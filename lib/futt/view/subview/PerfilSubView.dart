@@ -12,6 +12,7 @@ import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 class PerfilSubView extends StatefulWidget {
@@ -49,8 +50,14 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         throw Exception(_mensagem);
       }
 
+      DateTime _dataNasc = new DateTime(
+          int.parse(_controllerDataNascimento.text.substring(6)),
+          int.parse(_controllerDataNascimento.text.substring(3,5)),
+          int.parse(_controllerDataNascimento.text.substring(0,2))
+      );
+
       UsuarioModel usuarioModel = UsuarioModel.Atualiza(_controllerNome.text,
-          _controllerApelido.text, _controllerSexo, _controllerPosicionamento,
+          _controllerApelido.text, _dataNasc, _controllerSexo, _controllerPosicionamento,
           _controllerPais, _controllerCidade.text, _controllerLocal.text);
 
       var _url = "${ConstantesRest.URL_USUARIOS}";
@@ -153,7 +160,15 @@ class _PerfilSubViewState extends State<PerfilSubView> {
               UsuarioModel usuarioModel = snapshot.data;
               _controllerNome.text = usuarioModel.nome;
               _controllerApelido.text = usuarioModel.apelido;
-              //_controllerDataNascimento.text = usuarioModel.dataNascimento;
+
+              _controllerDataNascimento.text = "";
+              if (usuarioModel.dataNascimento != null && usuarioModel.dataNascimento != "") {
+                var formatter = new DateFormat('dd/MM/yyyy');
+                String formatted = formatter.format(
+                    usuarioModel.dataNascimento);
+                _controllerDataNascimento.text = formatted;
+              }
+
               _controllerSexo = usuarioModel.sexo;
               _controllerPosicionamento = usuarioModel.posicao;
               _controllerPais = usuarioModel.pais;

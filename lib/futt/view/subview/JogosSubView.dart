@@ -175,10 +175,98 @@ class _JogosSubViewState extends State<JogosSubView> {
     );
   }
 
+  _zeraJogo(int idJogo) async {
+    try {
+      JogoRedeModel jogoModel = JogoRedeModel.Remove(idJogo);
+
+      var _url = "${ConstantesRest.URL_JOGO_REDE}/zeraplacar/${idJogo}";
+      var _dados = jogoModel.toJson();
+
+      if (ConstantesConfig.SERVICO_FIXO == true) {
+        _url = "https://jsonplaceholder.typicode.com/posts/1";
+        _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.put(_url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token,
+        },
+      );
+      if (response.statusCode == 201) {
+        setState(() {
+          _mensagem = "Placar do jogo zerado com sucesso!!!";
+        });
+        Navigator.pop(context);
+
+      }else {
+        var _dadosJson = jsonDecode(response.body);
+        ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+        setState(() {
+          _mensagem = exceptionModel.msg;
+        });
+      }
+
+    } on Exception catch (exception) {
+      print(exception.toString());
+      setState(() {
+        _mensagem = exception.toString();
+      });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
+      });
+    }
+  }
+
+  _showModalZeraJogo(BuildContext context, String title, String description, int idJogo){
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(description),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => {
+                  Navigator.pop(context),
+                },
+                child: Text("Não"),
+              ),
+              FlatButton(
+                onPressed: () => _zeraJogo(idJogo),
+                child: Text("Sim"),
+              )
+            ],
+          );
+        }
+    );
+  }
+
   bool _alteraPlacar(JogoRedeModel jogo) {
     if (widget.donoRede == true &&
         (widget.redeModel.status == 1 || widget.redeModel.status == 2) &&
         (jogo.pontuacao1 == 0 && jogo.pontuacao2 == 0)) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  bool _zeraPlacar(JogoRedeModel jogo) {
+    if (widget.donoRede == true &&
+        (widget.redeModel.status == 1 || widget.redeModel.status == 2) &&
+        (jogo.pontuacao1 != 0 || jogo.pontuacao2 != 0)) {
       return true;
     }else{
       return false;
@@ -211,123 +299,128 @@ class _JogosSubViewState extends State<JogosSubView> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                        padding: EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            width: 1.0,
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
                             color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              width: 1.0,
+                              color: Colors.grey[300],
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              height: 40, width: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "${jogo.pontuacao1}",
-                                      style: TextStyle(
-                                          fontSize: 36,
-                                          fontWeight: FontWeight.bold,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: 40, width: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        "${jogo.pontuacao1}",
+                                        style: TextStyle(
+                                            fontSize: 36,
+                                            fontWeight: FontWeight.bold,
+                                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
+                                        ),
                                       ),
+                                    ]
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "${jogo.apelidoFormatadoJogador1}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ]
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "${jogo.apelidoFormatadoJogador1}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                Text(
-                                  "${jogo.apelidoFormatadoJogador2}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                                  Text(
+                                    "${jogo.apelidoFormatadoJogador2}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: 40, width: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(50),
+                                ],
                               ),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text("X",
-                                      style: TextStyle(
+                              Container(
+                                height: 40, width: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text("X",
+                                        style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           //color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                                        ),
                                       ),
+                                    ]
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    "${jogo.apelidoFormatadoJogador3}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ]
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "${jogo.apelidoFormatadoJogador3}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                Text(
-                                  "${jogo.apelidoFormatadoJogador4}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                                  Text(
+                                    "${jogo.apelidoFormatadoJogador4}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: 40, width: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50),
+                                ],
                               ),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "${jogo.pontuacao2}",
-                                      style: TextStyle(
-                                          fontSize: 36,
-                                          fontWeight: FontWeight.bold,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
+                              Container(
+                                height: 40, width: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        "${jogo.pontuacao2}",
+                                        style: TextStyle(
+                                            fontSize: 36,
+                                            fontWeight: FontWeight.bold,
+                                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
+                                        ),
                                       ),
-                                    ),
-                                  ]
+                                    ]
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                        onTap: (){
+                          _zeraPlacar(jogo) ? _showModalZeraJogo(context, "Zerar placar do jogo", "Deseja realmente zerar o placar do jogo?", jogo.id) : print("");
+                        },
                       ),
                       _alteraPlacar(jogo) ? Container(
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),

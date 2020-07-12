@@ -152,7 +152,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                   IntegranteModel integrante = integrantes[index];
 
                   return Container(
-                    margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(5),

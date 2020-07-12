@@ -4,6 +4,7 @@ import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/components/CabecalhoLista.dart';
+import 'package:futt/futt/view/components/TopoInterno.dart';
 import 'package:futt/futt/view/subview/IntegrantesSubView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -146,19 +147,17 @@ class _IntegrantesViewState extends State<IntegrantesView> {
           });
         },
       ) : null,
-      body: Padding(
-        padding: EdgeInsets.all(5),
-        child: Column(
+      body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
+            //CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
+            TopoInterno().getTopo(widget.redeModel.nome, widget.redeModel.status),
             Expanded(
               child: IntegrantesSubView(widget.redeModel, widget.donoRede, _inclui),
             )
           ],
         ),
-      ),
     );
   }
 }

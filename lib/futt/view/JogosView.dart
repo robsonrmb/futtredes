@@ -1,6 +1,7 @@
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/NovoJogoView.dart';
 import 'package:futt/futt/view/components/CabecalhoLista.dart';
+import 'package:futt/futt/view/components/TopoInterno.dart';
 import 'package:futt/futt/view/subview/JogosSubView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,19 +44,17 @@ class _JogosViewState extends State<JogosView> {
           ));
         },
       ) : null,
-      body: Padding(
-        padding: EdgeInsets.all(5),
-        child: Column(
+      body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
+            //CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
+            TopoInterno().getTopo(widget.redeModel.nome, widget.redeModel.status),
             Expanded(
               child: JogosSubView(widget.redeModel, widget.donoRede),
             )
           ],
         ),
-      ),
     );
   }
 }

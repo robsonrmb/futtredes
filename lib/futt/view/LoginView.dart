@@ -62,6 +62,7 @@ class _LoginViewState extends State<LoginView> {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString(ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
           await prefs.setString(ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
+          await prefs.setString(ConstantesConfig.PREFERENCES_TOKEN, response.headers['authorization']);
 
           Navigator.pushAndRemoveUntil(
             context,
@@ -222,7 +223,7 @@ class _LoginViewState extends State<LoginView> {
                   padding: EdgeInsets.only(top: 20),
                   child: Image.asset("images/logoFuttRedes.png", height: 100, width: 75),
                 ),
-                Padding(
+                /*Padding(
                   padding: EdgeInsets.only(bottom: 5),
                   child: Text(
                       "Olá!",
@@ -243,7 +244,7 @@ class _LoginViewState extends State<LoginView> {
                         fontFamily: 'Candal'
                     ),
                   ),
-                ),
+                ),*/
                 Center(
                   child: Container(
                     padding: EdgeInsets.all(20),
@@ -265,7 +266,7 @@ class _LoginViewState extends State<LoginView> {
                             decoration: InputDecoration(
                                 filled: false,
                                 fillColor: Colors.white,
-                                prefixIcon: Icon(Icons.email),
+                                prefixIcon: Icon(Icons.email, color: Colors.white,),
                                 // icon: new Icon(Icons.email),
                                 // prefixText: "E-mail",
                                 // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
@@ -295,7 +296,7 @@ class _LoginViewState extends State<LoginView> {
                             decoration: InputDecoration(
                               filled: false,
                               fillColor: Colors.white,
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: Icon(Icons.lock, color: Colors.white,),
                               hintText: "Senha",
                               hintStyle: TextStyle(
                                 fontSize: 16,

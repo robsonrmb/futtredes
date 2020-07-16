@@ -59,4 +59,10 @@ class JogoRedeService {
     return jogoRest.processaHttpGetList(url, fixo);
   }
 
+  Future<List<JogoRedeModel>> listaPorRedeUsuario(int idRede, bool fixo) async {
+    String url = "${ConstantesRest.URL_JOGO_REDE}/usuario/0/${idRede}";
+    JogoRedeRest jogoRest = JogoRedeRest();
+    return jogoRest.processaHttpGetListToken(url, fixo);
+  }
+
 }

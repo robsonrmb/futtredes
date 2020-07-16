@@ -37,6 +37,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   File _imagem;
   bool _subindoImagem = false;
+  String _nomeImagem = "";
 
   _atualizaRede() async {
     try {
@@ -129,7 +130,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   Future<RedeModel> _atualizaImagem(int idRede) async {
     RedeService redeService = RedeService();
-    return redeService.buscaRedePorId(idRede, ConstantesConfig.SERVICO_FIXO);
+    return redeService.buscaRedePorId(idRede, false); //ConstantesConfig.SERVICO_FIXO
   }
 
   _showModalAtualizaImagem(BuildContext context, String title, String description, int idRede){
@@ -199,7 +200,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     _sendRequest(_url, token);
   }
 
-  void _sendRequest(_url, token) {
+  void _sendRequest(_url, token) async {
 
     var request = MultipartRequest();
 
@@ -226,9 +227,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     };
 
     response.onComplete = (response) {
+      _atualizaImagem(widget.redeModel.id);
       setState(() {
         _subindoImagem = false;
-        _atualizaImagem(widget.redeModel.id);
       });
       print("Buscar imagem via http");
     };
@@ -284,8 +285,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                 ),
                 _subindoImagem
                     ? CircularProgressIndicator()
-                    : Container(),
-                FutureBuilder<RedeModel>(
+                    : FutureBuilder<RedeModel>(
                   future: _atualizaImagem(widget.redeModel.id),
                   builder: (context, snapshot) {
                     switch( snapshot.connectionState ) {
@@ -300,6 +300,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         if( snapshot.hasData ) {
 
                           RedeModel redeRetorno = snapshot.data;
+                          _nomeImagem = ConstantesRest.URL_BASE_AMAZON + redeRetorno.nomeFoto;
 
                           return GestureDetector(
                             child: Container(
@@ -307,7 +308,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               decoration: BoxDecoration(
                                   color: Colors.grey[300].withOpacity(0.5),
                                   image: DecorationImage(
-                                      image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + redeRetorno.nomeFoto),
+                                      image: NetworkImage(_nomeImagem),
                                       fit: BoxFit.fill
                                   ),
                                   //borderRadius: BorderRadius.circular(5.0),

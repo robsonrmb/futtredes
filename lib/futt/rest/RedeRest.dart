@@ -150,6 +150,11 @@ class RedeRest extends BaseRest {
           'Authorization': token,
         },
       );
+      if (fixo != null && fixo == true) {
+        RedeServiceFixo serviceFixo = RedeServiceFixo();
+        var dadosJson = json.decode(serviceFixo.responseObject());
+        return RedeModel.fromJson(dadosJson);
+      }
       if (response.statusCode == 200) {
         var dadosJson = json.decode(response.body);
         return RedeModel.fromJson(dadosJson);

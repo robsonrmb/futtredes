@@ -1,6 +1,5 @@
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/NovoJogoView.dart';
-import 'package:futt/futt/view/components/CabecalhoLista.dart';
 import 'package:futt/futt/view/components/TopoInterno.dart';
 import 'package:futt/futt/view/subview/JogosSubView.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +16,8 @@ class JogosView extends StatefulWidget {
 }
 
 class _JogosViewState extends State<JogosView> {
+
+  bool _meusJogos = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +52,32 @@ class _JogosViewState extends State<JogosView> {
             //CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
             TopoInterno().getTopo(widget.redeModel.nome, widget.redeModel.status),
             Expanded(
-              child: JogosSubView(widget.redeModel, widget.donoRede),
+              child: JogosSubView(widget.redeModel, widget.donoRede, _meusJogos),
             )
           ],
         ),
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+            color: Colors.grey[100],
+            child: CheckboxListTile(
+              title:
+                Text("Exibir somente meus jogos.",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              //subtitle: Text("Exibição dos últimos 50 jogos."),
+              activeColor: Colors.lightBlue,
+              value: _meusJogos,
+              onChanged: (bool valor) {
+                setState(() {
+                  _meusJogos = valor;
+                });
+              },
+            ),
+          ),
+        )
     );
   }
 }

@@ -13,7 +13,8 @@ class JogosSubView extends StatefulWidget {
 
   RedeModel redeModel;
   bool donoRede;
-  JogosSubView(this.redeModel, this.donoRede);
+  bool meusJogos;
+  JogosSubView(this.redeModel, this.donoRede, this.meusJogos);
 
   @override
   _JogosSubViewState createState() => _JogosSubViewState();
@@ -28,7 +29,11 @@ class _JogosSubViewState extends State<JogosSubView> {
 
   Future<List<JogoRedeModel>> _listaJogosDaRede() async {
     JogoRedeService jogoService = JogoRedeService();
-    return jogoService.listaPorRede(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO);
+    if (widget.meusJogos) {
+      return jogoService.listaPorRedeUsuario(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO);
+    }else{
+      return jogoService.listaPorRede(widget.redeModel.id, ConstantesConfig.SERVICO_FIXO);
+    }
   }
 
   _atualizaPlacar(int idJogo, int idNumeroJogo) async {

@@ -169,9 +169,15 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     if (status == 1) {
       return "EM APROVAÇÃO";
     }else if (status == 2) {
-      return data;
+      if (data != null && data.length>=10) {
+        return data.substring(8) + "-" + data.substring(5, 7) + "-" + data.substring(0, 4);
+      }else if (data == null) {
+        return "-";
+      }else{
+        return data;
+      }
     }else if (status == 3) {
-      return "Rede fechada.";
+      return "FECHADA";
     }else if (status == 4) {
       return "DESATIVADA";
     }else{

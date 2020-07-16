@@ -1,3 +1,5 @@
+import 'Dart:math';
+
 class RedeServiceFixo {
 
   String _retornoRedesQParticipo = '[ '
@@ -191,23 +193,34 @@ class RedeServiceFixo {
   }
 
   String responseObject() {
+    String image = "logoFuttRedes.png";
+    var rng = new Random();
+    int valor = rng.nextInt(100);
+    if (valor < 25) {
+      image = "semFoto.jpg";
+    }else if (valor < 50) {
+      image = "logoFutt.png";
+    }else if (valor < 75) {
+      image = "foto_imagem_1.jpg";
+    }
+
     return '{'
-        '"id": 5, '
-        '"nome": "Rede do Candango", '
-        '"nomeFoto": "logoFuttRedes.png", '
-        '"status": 4, '
-        '"pais": "Brasil", '
-        '"estado": null, '
-        '"cidade": "Brasília", '
-        '"local": "Parque da Cidade", '
-        '"info": "Dados gerais da rede", '
-        '"disponibilidade": "2020-06-01", '
-        '"qtdIntegrantes": 50, '
-        '"responsavelRede": 1, '
-        '"responsavelJogos1": 0, '
-        '"responsavelJogos2": 0, '
-        '"responsavelJogos3": 0 '
-        '}';
+              '"id": 5, '
+              '"nome": "Rede do Candango", '
+              '"nomeFoto": "${image}", '
+              '"status": 4, '
+              '"pais": "Brasil", '
+              '"estado": null, '
+              '"cidade": "Brasília", '
+              '"local": "Parque da Cidade", '
+              '"info": "Dados gerais da rede", '
+              '"disponibilidade": "2020-06-01", '
+              '"qtdIntegrantes": 50, '
+              '"responsavelRede": 1, '
+              '"responsavelJogos1": 0, '
+              '"responsavelJogos2": 0, '
+              '"responsavelJogos3": 0 '
+            '}';
   }
 
 }

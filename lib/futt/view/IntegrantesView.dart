@@ -4,6 +4,7 @@ import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/components/CabecalhoLista.dart';
+import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:futt/futt/view/components/TopoInterno.dart';
 import 'package:futt/futt/view/subview/IntegrantesSubView.dart';
 import 'package:flutter/material.dart';
@@ -55,18 +56,20 @@ class _IntegrantesViewState extends State<IntegrantesView> {
             body: jsonEncode(_dados)
         );
 
+        Navigator.pop(context);
         if (response.statusCode == 201) {
-          setState(() {
-            _mensagem = "Atleta inserido com sucesso!!!";
-          });
+          DialogFutt dialogFutt = new DialogFutt();
+          dialogFutt.waiting(context, "Inclusão de atleta", "Atleta inserido com sucesso!!!");
+          await Future.delayed(Duration(seconds: 3));
           Navigator.pop(context);
 
         }else{
           var _dadosJson = jsonDecode(response.body);
           ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
-          setState(() {
-            _mensagem = exceptionModel.msg;
-          });
+          DialogFutt dialogFutt = new DialogFutt();
+          dialogFutt.waiting(context, "Inclusão de atleta", exceptionModel.msg);
+          await Future.delayed(Duration(seconds: 4));
+          Navigator.pop(context);
         }
       }
     } on Exception catch (exception) {
@@ -117,7 +120,13 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                     new Padding(
                       padding: EdgeInsets.all(5),
                     ),
-                    Text(_mensagem),
+                    Text(_mensagem,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontFamily: 'Candal',
+                      ),
+                    ),
                   ],
                 ),
               ),

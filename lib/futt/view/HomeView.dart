@@ -85,9 +85,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       if (indice == 0) {
         _titleAppBar = "Redes";
 
-      }else if (indice == 2) {
+      }/*else if (indice == 2) {
         _titleAppBar = "Escolinhas";
-      }
+      }*/
       return _titleAppBar;
     }
 
@@ -133,17 +133,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               ],
             ) : null,
         ),
-      body: _indiceAtual > 0 ?
-              (_indiceAtual == 1) ?
-                DashboardView() : EscolinhasView("","")
-
-      : TabBarView(
-        controller: _controllerTorneios,
-        children: <Widget>[
-          RedesView(),
-          MinhasRedesView(),
-        ],
-      ),
+      body: _indiceAtual == 1 ? DashboardView() //_indiceAtual > 0 ? (_indiceAtual == 1) ? DashboardView() : EscolinhasView("","")
+        : TabBarView(
+          controller: _controllerTorneios,
+          children: <Widget>[
+            RedesView(),
+            MinhasRedesView(),
+          ],
+        ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         onTap: (indice){
@@ -163,10 +160,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             title: Text("Dashboard"),
             icon: Icon(Icons.insert_chart),
           ),
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
             title: Text("Escolinhas"),
             icon: Icon(Icons.school),
-          )
+          )*/
         ],
       ),
     );

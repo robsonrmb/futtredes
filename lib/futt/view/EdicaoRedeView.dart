@@ -184,24 +184,20 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
         _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery);
         break;
     }
-    setState(() {
-      _imagem = _imagemSelecionada;
-      if (_imagem != null) {
+
+    _imagem = _imagemSelecionada;
+    if (_imagem != null) {
+      setState(() {
         _subindoImagem = true;
-        _uploadImagem(idRede);
-      }
-    });
+      });
+      _uploadImagem(idRede);
+    }
   }
 
   Future<List<RedeModel>> _uploadImagem(int idRede) async {
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
     var _url = "${ConstantesRest.URL_REDE}/${idRede}/imagem";
-    _sendRequest(_url, token);
-  }
-
-  void _sendRequest(_url, token) async {
-
     var request = MultipartRequest();
 
     request.setUrl(_url);
@@ -227,22 +223,23 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     };
 
     response.onComplete = (response) {
-      _atualizaImagem(widget.redeModel.id);
+      //_atualizaImagem(widget.redeModel.id);
+      print("Buscar imagem via http");
       setState(() {
         _subindoImagem = false;
       });
-      print("Buscar imagem via http");
     };
 
     response.progress.listen((int progress) {
-      setState(() {
+      print("Buscar imagem via http");
+      /*setState(() {
         _subindoImagem = true;
-      });
+      });*/
     });
 
-    setState(() {
+    /*setState(() {
       _subindoImagem = true;
-    });
+    });*/
   }
 
   @override
@@ -319,7 +316,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               ),
                             ),
                             onTap: () {
-                              _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
+                              //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
                             },
                           );
                         }else{
@@ -437,6 +434,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         padding: EdgeInsets.all(5),
                       ),
                       TextField(
+                        enabled: false,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           filled: true,
@@ -460,9 +458,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         //maxLengthEnforced: true,
                         controller: _controllerQtdIntegrantes,
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(
+                          /*Navigator.push(context, MaterialPageRoute(
                             builder: (context) => MensalidadeView(),
-                          ))
+                          ))*/
                         },
                       ),
                       Padding(

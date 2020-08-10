@@ -1,4 +1,4 @@
-package br.com.futt
+package br.com.futtredesid
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

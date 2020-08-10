@@ -110,6 +110,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
   @override
   Widget build(BuildContext context) {
+    _controllerQtdIntegrantes.text = "50";
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -251,6 +252,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         padding: EdgeInsets.all(5),
                       ),
                       TextField(
+                        enabled: false,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           filled: true,
@@ -274,9 +276,9 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         //maxLengthEnforced: true,
                         controller: _controllerQtdIntegrantes,
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(
+                          /*Navigator.push(context, MaterialPageRoute(
                             builder: (context) => MensalidadeView(),
-                          ))
+                          ))*/
                         },
                       ),
                       Padding(

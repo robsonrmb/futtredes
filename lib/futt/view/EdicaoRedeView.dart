@@ -187,6 +187,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
     _imagem = _imagemSelecionada;
     if (_imagem != null) {
+      imageCache.clear();
       setState(() {
         _subindoImagem = true;
       });
@@ -245,6 +246,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   @override
   Widget build(BuildContext context) {
 
+    imageCache.clear();
     _atualizaValoresIniciais(widget.redeModel);
 
     return Scaffold(

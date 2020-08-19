@@ -178,10 +178,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     File _imagemSelecionada;
     switch (origemImagem) {
       case "camera" :
-        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.camera);
+        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.camera); //, maxHeight: 500, maxWidth: 500
         break;
       case "galeria" :
-        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery);
+        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery); //, maxHeight: 500, maxWidth: 500
         break;
     }
 
@@ -318,7 +318,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               ),
                             ),
                             onTap: () {
-                              //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
+                              _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
                             },
                           );
                         }else{

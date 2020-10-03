@@ -4,7 +4,6 @@ import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/UtilService.dart';
-import 'package:futt/futt/view/MensalidadeView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +52,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
       RedeModel redeModel = RedeModel.Novo(
           _controllerNome.text, _controllerPaisRede, _controllerCidade.text,
-          _controllerLocal.text, int.parse(_controllerQtdIntegrantes.text), _controllerMais.text
+          _controllerLocal.text, int.parse('50'), _controllerMais.text
       );
 
       var _url = "${ConstantesRest.URL_REDE}/adiciona";
@@ -110,7 +109,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
   @override
   Widget build(BuildContext context) {
-    _controllerQtdIntegrantes.text = "50";
+    _controllerQtdIntegrantes.text = "Integrantes por rede: 50";
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -143,6 +142,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                     ),
                   ),
                 ),
+                /*
                 CircleAvatar(
                   backgroundImage: NetworkImage('https://pbs.twimg.com/media/Dk0iKh4XoAERLOB.jpg'),
                   radius: 30.0,
@@ -157,6 +157,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                     ),
                   ),
                 ),
+                */
                 Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -212,7 +213,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "Lisboa",
+                          hintText: "Cidade",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
@@ -236,7 +237,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "Cascais - Praia dos pescadores",
+                          hintText: "Local",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
@@ -253,20 +254,20 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                       ),
                       TextField(
                         enabled: false,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
+                          fillColor: Colors.black12,
                           hintText: "20",
                           hintStyle: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[400],
                           ),
                           // icon: new Icon(Icons.monetization_on),
-                          suffixIcon: Icon(
-                            Icons.monetization_on,
-                            color: Colors.black,
-                          ),
+                          // suffixIcon: Icon(
+                          //  Icons.monetization_on,
+                          //  color: Colors.black,
+                          //),
                         ),
                         style: TextStyle(
                             fontSize: 14,

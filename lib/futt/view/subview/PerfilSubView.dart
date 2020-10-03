@@ -312,12 +312,13 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 5),
                           child: Text(
-                            "Atualize seus dados e mantenha sua foto atualizada",
+                            "Atualize seus dados", // e mantenha sua foto atualizada
                             style: TextStyle(
                                 fontSize: 12
                             ),
                           ),
                         ),
+                        /*
                         GestureDetector(
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(_nomeImagem),
@@ -328,6 +329,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                             //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", usuarioModel.id);
                           },
                         ),
+                        */
                         /*
                         Padding(
                           padding: EdgeInsets.only(top: 5),
@@ -339,7 +341,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                             ),
                           ),
                         ),
-                         */
+                        */
                         Center(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,

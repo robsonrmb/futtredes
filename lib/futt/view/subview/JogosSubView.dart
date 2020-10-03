@@ -339,7 +339,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                         Text(
                                           "${jogo.pontuacao1}",
                                           style: TextStyle(
-                                              fontSize: 36,
+                                              fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                                           ),
@@ -418,7 +418,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                         Text(
                                           "${jogo.pontuacao2}",
                                           style: TextStyle(
-                                              fontSize: 36,
+                                              fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Colors.blue : Colors.grey[800]
                                           ),

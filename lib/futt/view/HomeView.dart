@@ -1,11 +1,14 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
+import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
+import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/DashboardView.dart';
 import 'package:futt/futt/view/EscolinhasView.dart';
 import 'package:futt/futt/view/LoginView.dart';
 import 'package:futt/futt/view/MinhasRedesView.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/PerfilUserView.dart';
 import 'package:futt/futt/view/RedesView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,6 +70,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       Navigator.pushNamed(context, "/perfil");
     }
 
+    _abrirPerfil_(UsuarioModel usuarioModel) {
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => PerfilUserView(usuarioModel: usuarioModel,)
+      ));
+    }
+
     _sairApp() async {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(ConstantesConfig.PREFERENCES_EMAIL);
@@ -91,81 +100,115 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       return _titleAppBar;
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(
-            color: Colors.white,
-            opacity: 1,
-          ),
-          backgroundColor: Color(0xff093352),
-          textTheme: TextTheme(
-            title: TextStyle(
-              color: Colors.white,
-              fontSize: 20
-            )
-          ),
-          title: Text(_titleAppBar),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: _novaRede,
-            ),
-            IconButton(
-              icon: Icon(Icons.person),
-              onPressed: _abrirPerfil,
-            ),
-            IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: _sairApp,
-            ),
-          ],
-          bottom:
-            _indiceAtual == 0 ? TabBar(
-              controller: _controllerTorneios,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              tabs: <Widget>[
-                Tab(text: "Participante",),
-                Tab(text: "Dono",),
-              ],
-            ) : null,
-        ),
-      body: _indiceAtual == 1 ? DashboardView() //_indiceAtual > 0 ? (_indiceAtual == 1) ? DashboardView() : EscolinhasView("","")
-        : TabBarView(
-          controller: _controllerTorneios,
-          children: <Widget>[
-            RedesView(),
-            MinhasRedesView(),
-          ],
-        ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _indiceAtual,
-        onTap: (indice){
-          setState(() {
-            _indiceAtual = indice;
-            _titleAppBar = _getTitleAppBar(indice);
-          });
-        },
-        type: BottomNavigationBarType.fixed, //este e o padrão
-        fixedColor: Colors.blue,
-        items: [
-          BottomNavigationBarItem(
-            title: Text("Redes"),
-            icon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            title: Text("Dashboard"),
-            icon: Icon(Icons.insert_chart),
-          ),
-          /*BottomNavigationBarItem(
-            title: Text("Escolinhas"),
-            icon: Icon(Icons.school),
-          )*/
-        ],
-      ),
+    Future<UsuarioModel> _buscaUsuarioLogado() async {
+      UsuarioService usuarioService = UsuarioService();
+      return usuarioService.buscaLogado(ConstantesConfig.SERVICO_FIXO);
+    }
+
+    return FutureBuilder<UsuarioModel>(
+      future: _buscaUsuarioLogado(),
+      builder: (context, snapshot) {
+        switch( snapshot.connectionState ) {
+          case ConnectionState.none :
+            return Center(
+              child: Text("None!!!"),
+            );
+          case ConnectionState.waiting :
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+            break;
+          case ConnectionState.active :
+            return Center(
+              child: Text("Active!!!"),
+            );
+          case ConnectionState.done :
+            if( snapshot.hasData ) {
+
+              UsuarioModel usuarioModel = snapshot.data;
+
+              return Scaffold(
+                appBar: AppBar(
+                  iconTheme: IconThemeData(
+                    color: Colors.white,
+                    opacity: 1,
+                  ),
+                  backgroundColor: Color(0xff093352),
+                  textTheme: TextTheme(
+                      title: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20
+                      )
+                  ),
+                  title: Text(_titleAppBar),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: _novaRede,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.person),
+                      onPressed: _abrirPerfil, //_(usuarioModel),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.exit_to_app),
+                      onPressed: _sairApp,
+                    ),
+                  ],
+                  bottom:
+                  _indiceAtual == 0 ? TabBar(
+                    controller: _controllerTorneios,
+                    onTap: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    tabs: <Widget>[
+                      Tab(text: "Participante",),
+                      Tab(text: "Dono",),
+                    ],
+                  ) : null,
+                ),
+                body: _indiceAtual == 1 ? DashboardView() //_indiceAtual > 0 ? (_indiceAtual == 1) ? DashboardView() : EscolinhasView("","")
+                    : TabBarView(
+                  controller: _controllerTorneios,
+                  children: <Widget>[
+                    RedesView(),
+                    MinhasRedesView(),
+                  ],
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: _indiceAtual,
+                  onTap: (indice){
+                    setState(() {
+                      _indiceAtual = indice;
+                      _titleAppBar = _getTitleAppBar(indice);
+                    });
+                  },
+                  type: BottomNavigationBarType.fixed, //este e o padrão
+                  fixedColor: Colors.blue,
+                  items: [
+                    BottomNavigationBarItem(
+                      title: Text("Redes"),
+                      icon: Icon(Icons.home),
+                    ),
+                    BottomNavigationBarItem(
+                      title: Text("Dashboard"),
+                      icon: Icon(Icons.insert_chart),
+                    ),
+                    /*BottomNavigationBarItem(
+                      title: Text("Escolinhas"),
+                      icon: Icon(Icons.school),
+                    )*/
+                  ],
+                ),
+              );
+            }else{
+              return Container();
+            }
+            break;
+        }
+      },
     );
   }
 }

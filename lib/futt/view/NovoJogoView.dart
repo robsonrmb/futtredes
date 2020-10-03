@@ -308,7 +308,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                     children: <Widget>[
                                       Text("X",
                                         style: TextStyle(
-                                            fontSize: 36,
+                                            fontSize: 24,
                                             fontWeight: FontWeight.bold,
                                             color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
                                         ),

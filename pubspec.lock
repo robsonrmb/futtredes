@@ -44,7 +44,7 @@ packages:
     source: hosted
     version: "0.9.0"
   charts_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: charts_flutter
       url: "https://pub.dartlang.org"
@@ -86,7 +86,7 @@ packages:
     source: hosted
     version: "5.2.1"
   find_dropdown:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: find_dropdown
       url: "https://pub.dartlang.org"
@@ -97,6 +97,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_launcher_icons:
+    dependency: "direct dev"
+    description:
+      name: flutter_launcher_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -115,7 +122,7 @@ packages:
     source: sdk
     version: "0.0.0"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -136,7 +143,7 @@ packages:
     source: hosted
     version: "2.1.4"
   image_picker:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
@@ -150,7 +157,7 @@ packages:
     source: hosted
     version: "1.1.0"
   intl:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"
@@ -178,7 +185,7 @@ packages:
     source: hosted
     version: "1.1.8"
   multipart_request:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: multipart_request
       url: "https://pub.dartlang.org"
@@ -262,7 +269,7 @@ packages:
     source: hosted
     version: "1.1.0"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
@@ -371,6 +378,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.5.0"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
 sdks:
   dart: ">=2.6.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"

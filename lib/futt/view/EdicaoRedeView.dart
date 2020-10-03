@@ -39,6 +39,13 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   bool _subindoImagem = false;
   String _nomeImagem = "";
 
+  _showModalIndisponivel() async {
+    DialogFutt dialogFutt = new DialogFutt();
+    dialogFutt.waiting(context, "Mensagem", "Opção indisponível!!!");
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.pop(context);
+  }
+
   _atualizaRede() async {
     try {
       _mensagem = "";
@@ -318,7 +325,8 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               ),
                             ),
                             onTap: () {
-                              _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
+                              _showModalIndisponivel();
+                              //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.redeModel.id);
                             },
                           );
                         }else{

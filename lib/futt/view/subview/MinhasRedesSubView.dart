@@ -7,7 +7,9 @@ import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/IntegrantesView.dart';
 import 'package:flutter/material.dart';
 import 'package:futt/futt/view/ResponsaveisRedeView.dart';
+import 'package:futt/futt/view/components/Apresentacao.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
+import 'package:futt/futt/view/components/Passos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -199,7 +201,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             break;
           case ConnectionState.active :
           case ConnectionState.done :
-            if( snapshot.hasData ) {
+          if( snapshot.hasData && snapshot.data.length > 0 ) {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
@@ -336,9 +338,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                 },
               );
             }else{
-              return Center(
-                child: Text("Sem valores!!!"),
-              );
+              return Apresentacao().getApresentacao(1);
             }
             break;
         }

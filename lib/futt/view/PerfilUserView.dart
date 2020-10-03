@@ -7,26 +7,31 @@ import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/model/utils/GeneroModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/model/utils/PosicionamentoModel.dart';
-import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
+import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
 import 'package:multipart_request/multipart_request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-class PerfilSubView extends StatefulWidget {
+class PerfilUserView extends StatefulWidget {
+
+  UsuarioModel usuarioModel;
+  PerfilUserView({this.usuarioModel});
 
   @override
-  _PerfilSubViewState createState() => _PerfilSubViewState();
+  _PerfilUserViewState createState() => _PerfilUserViewState();
 }
 
-class _PerfilSubViewState extends State<PerfilSubView> {
+class _PerfilUserViewState extends State<PerfilUserView> {
 
   String _mensagem = "";
+  TextEditingController _controllerSenha = TextEditingController();
+  TextEditingController _controllerConfirmSenha = TextEditingController();
+
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerApelido = TextEditingController();
   TextEditingController _controllerDataNascimento = TextEditingController();
@@ -43,6 +48,65 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   File _imagem;
   bool _subindoImagem = false;
   String _nomeImagem = "";
+
+  _salvaNovaSenha() async {
+    try {
+      if (_controllerSenha.text == "" || _controllerConfirmSenha.text == "" || _controllerSenha.text != _controllerConfirmSenha.text) {
+        setState(() {
+          _mensagem = "Senha e confirmação da senha devem ser iguais.";
+        });
+      }else{
+        final prefs = await SharedPreferences.getInstance();
+        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+        String email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
+
+        UsuarioModel usuarioModel = UsuarioModel.AtualizaSenha(email, _controllerSenha.text, _controllerSenha.text);
+
+        var _url = "${ConstantesRest.URL_USUARIOS}/atualizaSenha";
+        var _dados = usuarioModel.toJson();
+
+        if (ConstantesConfig.SERVICO_FIXO == true) {
+          _url = "https://jsonplaceholder.typicode.com/posts";
+          _dados = jsonEncode({
+            'userId': 1,
+            'id': 200,
+            'title': 'Título',
+            'body': 'Corpo da mensagem'
+          });
+        }
+
+        http.Response response = await http.put(_url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': token,
+            },
+            body: jsonEncode(_dados)
+        );
+
+        if (response.statusCode == 204) {
+          setState(() {
+            _mensagem = "Senha alterada com sucesso!!!";
+          });
+          Navigator.pop(context);
+        } else {
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          setState(() {
+            _mensagem = exceptionModel.msg;
+          });
+        }
+      }
+    } on Exception catch (exception) {
+      print(exception.toString());
+      setState(() {
+        _mensagem = exception.toString();
+      });
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
+      });
+    }
+  }
 
   void _atualizar() async {
     try {
@@ -137,9 +201,9 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     return utilService.listaPaises();
   }
 
-  Future<UsuarioModel> _buscaUsuarioLogado() async {
+  Future<UsuarioModel> _atualizaImagem(int idUsuario) async {
     UsuarioService usuarioService = UsuarioService();
-    return usuarioService.buscaLogado(ConstantesConfig.SERVICO_FIXO);
+    return usuarioService.buscaPorId(idUsuario.toString(), false); //ConstantesConfig.SERVICO_FIXO
   }
 
   _showModalIndisponivel() async {
@@ -227,10 +291,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     Response response = request.send();
     try {
       print(response);
-      setState(() {
-        _buscaUsuarioLogado();
-      });
-
     } on Exception catch (exception) {
       print(exception);
     } catch (error) {
@@ -258,50 +318,115 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UsuarioModel>(
-      future: _buscaUsuarioLogado(),
-      builder: (context, snapshot) {
-        switch( snapshot.connectionState ) {
-          case ConnectionState.none :
-            return Center(
-              child: Text("None!!!"),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          opacity: 1,
+        ),
+        backgroundColor: Color(0xff093352),
+        textTheme: TextTheme(
+            title: TextStyle(
+                color: Colors.white,
+                fontSize: 20
+            )
+        ),
+        title: Text("Perfil"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.lock_outline),
+        onPressed: () {
+          _mensagem = "";
+          showDialog(context: context, builder: (context){
+            return AlertDialog(
+              title: Text("Alteração de senha"),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Nova senha",
+                      ),
+                      obscureText: true,
+                      controller: _controllerSenha,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.all(5),
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Confirmação da nova senha",
+                      ),
+                      obscureText: true,
+                      controller: _controllerConfirmSenha,
+                    ),
+                    Text(_mensagem,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Candal',
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: RaisedButton(
+                    color: Color(0xff086ba4),
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      "Alterar",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Candal',
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  onPressed: () {
+                    _salvaNovaSenha();
+                  },
+                ),
+                FlatButton(
+                  child: RaisedButton(
+                    color: Color(0xff086ba4),
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      "Fechar",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Candal',
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  onPressed: () {
+                   Navigator.pop(context);
+                  },
+                ),
+              ],
             );
-          case ConnectionState.waiting :
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-            break;
-          case ConnectionState.active :
-            return Center(
-              child: Text("Active!!!"),
-            );
-          case ConnectionState.done :
-            if( snapshot.hasData ) {
-
-              UsuarioModel usuarioModel = snapshot.data;
-              _controllerNome.text = usuarioModel.nome;
-              _controllerApelido.text = usuarioModel.apelido;
-              _nomeImagem = ConstantesRest.URL_BASE_AMAZON + usuarioModel.nomeFoto;
-
-              _controllerDataNascimento.text = "";
-              if (usuarioModel.dataNascimento != null && usuarioModel.dataNascimento != "") {
-                var formatter = new DateFormat('dd/MM/yyyy');
-                String formatted = formatter.format(
-                    usuarioModel.dataNascimento);
-                _controllerDataNascimento.text = formatted;
-              }
-
-              _controllerSexo = usuarioModel.sexo;
-              _controllerPosicionamento = usuarioModel.posicao;
-              _controllerPais = usuarioModel.pais;
-              _controllerCidade.text = usuarioModel.cidade;
-              _controllerLocal.text = usuarioModel.ondeJoga;
-
-              paisModelSelecionado = new PaisModel(_controllerPais, _controllerPais);
-              generoModelSelecionado = new GeneroModel(_controllerSexo, _controllerSexo == "M" ? "Masculino" : "Feminino");
-              posicionamentoModelSelecionado = new PosicionamentoModel(_controllerPosicionamento, _controllerPosicionamento != "A" ? _controllerPosicionamento != "D" ? "Esquerda" : "Direita" : "Ambas");
-
-              return Container(
+          });
+        },
+      ),
+      body: Container(
+        color: Colors.grey[300],
+        padding: EdgeInsets.all(1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: Container(
                 color: Colors.grey[300],
                 child: Center(
                   child: SingleChildScrollView(
@@ -318,6 +443,44 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                             ),
                           ),
                         ),
+                        _subindoImagem
+                            ? CircularProgressIndicator()
+                            : FutureBuilder<UsuarioModel>(
+                          future: _atualizaImagem(widget.usuarioModel.id),
+                          builder: (context, snapshot) {
+                            switch( snapshot.connectionState ) {
+                              case ConnectionState.none :
+                              case ConnectionState.waiting :
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                                break;
+                              case ConnectionState.active :
+                              case ConnectionState.done :
+                                if( snapshot.hasData ) {
+
+                                  UsuarioModel usuarioRetorno = snapshot.data;
+                                  _nomeImagem = ConstantesRest.URL_BASE_AMAZON + usuarioRetorno.nomeFoto;
+
+                                  return GestureDetector(
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(_nomeImagem), //usuarioRetorno.nomeFoto == "semImagem.png" ? 50 : 100,
+                                      radius: 30.0,
+                                    ),
+                                    onTap: () {
+                                      _showModalIndisponivel();
+                                      //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.usuarioModel.id);
+                                    },
+                                  );
+                                }else{
+                                  return Center(
+                                    child: Text("Sem valores!!!"),
+                                  );
+                                }
+                                break;
+                            }
+                          },
+                        ),
                         GestureDetector(
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(_nomeImagem),
@@ -325,21 +488,19 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           ),
                           onTap: () {
                             _showModalIndisponivel();
-                            //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", usuarioModel.id);
+                            //_showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.usuarioModel.id);
                           },
                         ),
-                        /*
                         Padding(
                           padding: EdgeInsets.only(top: 5),
                           child: Text(
-                            "Foto de perfil",
+                            " ", //Foto de perfil
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                         */
                         Center(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -542,15 +703,11 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                     ),
                   ),
                 ),
-              );
-            }else{
-              return Center(
-                child: Text("Sem valores!!!"),
-              );
-            }
-            break;
-        }
-      },
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

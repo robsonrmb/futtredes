@@ -6,6 +6,8 @@ import 'package:futt/futt/service/RedeService.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/IntegrantesView.dart';
 import 'package:futt/futt/view/RankingRedeView.dart';
+import 'package:futt/futt/view/components/Apresentacao.dart';
+import 'package:futt/futt/view/components/Passos.dart';
 
 class RedesSubView extends StatefulWidget {
 
@@ -40,7 +42,7 @@ class _RedesSubViewState extends State<RedesSubView> {
               child: Text("Active!!!"),
             );
           case ConnectionState.done :
-            if( snapshot.hasData ) {
+            if( snapshot.hasData && snapshot.data.length > 0 ) {
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
@@ -154,9 +156,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                 },
               );
             }else{
-              return Center(
-                child: Text("Sem valores!!!"),
-              );
+              return Apresentacao().getApresentacao(1);
             }
             break;
         }

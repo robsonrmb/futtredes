@@ -62,6 +62,9 @@ class _IntegrantesViewState extends State<IntegrantesView> {
           dialogFutt.waiting(context, "Inclusão de atleta", "Atleta inserido com sucesso!!!");
           await Future.delayed(Duration(seconds: 3));
           Navigator.pop(context);
+          setState(() {
+            _inclui = 0;
+          });
 
         }else{
           var _dadosJson = jsonDecode(response.body);

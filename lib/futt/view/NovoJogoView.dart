@@ -55,22 +55,27 @@ class _NovoJogoViewState extends State<NovoJogoView> {
   _cadastraJogo() async {
     try {
       _mensagem = "";
-      if (_controllerEmailJogador1.text == "") {
+      if (_controllerEmailJogador1.text == "" ||
+          _controllerEmailJogador2.text == "" ||
+          _controllerEmailJogador3.text == "" ||
+          _controllerEmailJogador4.text == "") {
         _mensagem = 'Informe o email dos jogadores.';
-      }
-      HashMap<String, String> hashMap = new HashMap<String, String>();
-      Map<String, String> map = {
-        _controllerEmailJogador1.text: '_controllerEmailJogador1.text',
-        _controllerEmailJogador2.text: '_controllerEmailJogador2.text',
-        _controllerEmailJogador3.text: '_controllerEmailJogador3.text',
-        _controllerEmailJogador4.text: '_controllerEmailJogador4.text',
-      };
-      if (map.length < 4) {
-        _resultadoJogador1 = _controllerEmailJogador1.text;
-        _resultadoJogador2 = _controllerEmailJogador2.text;
-        _resultadoJogador3 = _controllerEmailJogador3.text;
-        _resultadoJogador4 = _controllerEmailJogador4.text;
-        _mensagem = 'Atleta duplicado. Confira os jogos!!!';
+
+      }else {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        Map<String, String> map = {
+          _controllerEmailJogador1.text: '_controllerEmailJogador1.text',
+          _controllerEmailJogador2.text: '_controllerEmailJogador2.text',
+          _controllerEmailJogador3.text: '_controllerEmailJogador3.text',
+          _controllerEmailJogador4.text: '_controllerEmailJogador4.text',
+        };
+        if (map.length < 4) {
+          _resultadoJogador1 = _controllerEmailJogador1.text;
+          _resultadoJogador2 = _controllerEmailJogador2.text;
+          _resultadoJogador3 = _controllerEmailJogador3.text;
+          _resultadoJogador4 = _controllerEmailJogador4.text;
+          _mensagem = 'Atleta duplicado. Confira os jogos!!!';
+        }
       }
 
       if (_mensagem != "") {

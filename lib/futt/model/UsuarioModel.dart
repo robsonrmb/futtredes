@@ -30,7 +30,7 @@ class UsuarioModel {
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
     String data = json['dataNascimento'];
     DateTime dateTime = new DateTime.now();
-    if (data != "") {
+    if (data != null && data != "" && data.length == 8) {
       dateTime = new DateTime(
           int.parse(data.substring(0, 4)),
           int.parse(data.substring(5, 7)),

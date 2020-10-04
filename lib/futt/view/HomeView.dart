@@ -4,7 +4,6 @@ import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/DashboardView.dart';
-import 'package:futt/futt/view/EscolinhasView.dart';
 import 'package:futt/futt/view/LoginView.dart';
 import 'package:futt/futt/view/MinhasRedesView.dart';
 import 'package:flutter/material.dart';

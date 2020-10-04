@@ -47,7 +47,8 @@ class UsuarioRest extends BaseRest {
       );
       if (response.statusCode == 200) {
         var dadosJson = json.decode(response.body);
-        return UsuarioModel.fromJson(dadosJson);
+        UsuarioModel usuarioModel = UsuarioModel.fromJson(dadosJson);
+        return usuarioModel;
 
       } else {
         throw Exception('Falha ao listar usuário!!!');

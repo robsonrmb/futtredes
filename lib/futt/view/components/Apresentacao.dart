@@ -7,7 +7,7 @@ class Apresentacao {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("images/imgHome.jpg"),
+              image: AssetImage("images/imgHome1.png"),
               fit: BoxFit.fill
           )
       ),

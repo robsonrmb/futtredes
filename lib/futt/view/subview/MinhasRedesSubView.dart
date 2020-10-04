@@ -338,7 +338,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                 },
               );
             }else{
-              return Apresentacao().getApresentacao(1);
+              return Apresentacao().getApresentacao(2);
             }
             break;
         }

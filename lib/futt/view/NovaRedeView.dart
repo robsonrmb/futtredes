@@ -37,9 +37,9 @@ class _NovaRedeViewState extends State<NovaRedeView> {
         _mensagem = "Informe o país de onde se realizará o rede.";
       }else if (_controllerCidade.text == "") {
         _mensagem = "Informe a cidade de onde se realizará o rede.";
-      }else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
+      }/*else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
         _mensagem = "Qtd de integrantes incorreto.";
-      }
+      }*/
 
       if (_mensagem != "") {
         DialogFutt dialogFutt = new DialogFutt();
@@ -201,7 +201,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                           searchBoxDecoration: InputDecoration(
                             hintText: "Search",
                             border: OutlineInputBorder(),
-                            icon: new Icon(Icons.monetization_on),
+                            // icon: new Icon(Icons.monetization_on),
                             labelText: "País",
                           ),
                           onChanged: (PaisModel data) => _controllerPaisRede = data.id,

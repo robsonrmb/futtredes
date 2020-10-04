@@ -76,7 +76,7 @@ flutter:
     - images/setaMaior.jpg
     - images/logoTorneios.png
     - images/logoFuttRedes.png
-    - images/imgHome.jpg
+    - images/imgHome1.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -209,7 +209,7 @@ class _LoginViewState extends State<LoginView> {
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("images/fundo.jpg"),
+                image: AssetImage("images/fundo2.jpg"),
                 fit: BoxFit.fill
             )
         ),
@@ -220,7 +220,7 @@ class _LoginViewState extends State<LoginView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.only(top: 1),
                   child: Image.asset("images/logoFuttRedes.png", height: 100, width: 75),
                 ),
                 /*Padding(
@@ -249,7 +249,7 @@ class _LoginViewState extends State<LoginView> {
                   child: Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Color(0xff086ba4).withOpacity(0.5),
+                      color: Color(0xff086ba4).withOpacity(0.9),
                       borderRadius: BorderRadius.circular(5.0),
                       border: Border.all(
                         width: 1.0

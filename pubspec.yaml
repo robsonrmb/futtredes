@@ -68,6 +68,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - images/fundo.jpg
+    - images/fundo2.jpg
     - images/logo.png
     - images/torneios.png
     - images/camera.png

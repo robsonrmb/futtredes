@@ -130,7 +130,7 @@ class JogoRedeModel {
   }
 
   String get apelidoFormatadoJogador1 {
-    if (this.apelidoJogador1 == null) {
+    if (this.apelidoJogador1 == null || this.apelidoJogador1.trim() == "") {
       return nomeJogador1;
     }else{
       return apelidoJogador1;
@@ -138,7 +138,7 @@ class JogoRedeModel {
   }
 
   String get apelidoFormatadoJogador2 {
-    if (this.apelidoJogador2 == null) {
+    if (this.apelidoJogador2 == null || this.apelidoJogador2.trim() == "") {
       return nomeJogador2;
     }else{
       return apelidoJogador2;
@@ -146,7 +146,7 @@ class JogoRedeModel {
   }
 
   String get apelidoFormatadoJogador3 {
-    if (this.apelidoJogador3 == null) {
+    if (this.apelidoJogador3 == null || this.apelidoJogador3.trim() == "") {
       return nomeJogador3;
     }else{
       return apelidoJogador3;
@@ -154,7 +154,7 @@ class JogoRedeModel {
   }
 
   String get apelidoFormatadoJogador4 {
-    if (this.apelidoJogador4 == null) {
+    if (this.apelidoJogador4 == null || this.apelidoJogador4.trim() == "") {
       return nomeJogador4;
     }else{
       return apelidoJogador4;

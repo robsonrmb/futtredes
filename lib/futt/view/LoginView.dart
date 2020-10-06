@@ -28,10 +28,10 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     _iniciar();
-    _controllerEmail.text = "robson.rmb@gmail.com";
-    _controllerSenha.text = "123";
-    _controllerEmailParaTrocaDeSenha.text = "robson.rmb@gmail.com";
-    _controllerAnoNascimentoParaTrocaDeSenha.text = "1978";
+    _controllerEmail.text = ""; //robson.rmb@gmail.com
+    _controllerSenha.text = ""; //123
+    _controllerEmailParaTrocaDeSenha.text = ""; //robson.rmb@gmail.com
+    _controllerAnoNascimentoParaTrocaDeSenha.text = ""; //1978
   }
 
   void _iniciar() async {

@@ -13,6 +13,9 @@ import 'dart:convert';
 
 class LoginView extends StatefulWidget {
   @override
+  bool exibeLogin;
+  LoginView({this.exibeLogin});
+
   _LoginViewState createState() => _LoginViewState();
 }
 
@@ -27,53 +30,68 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    _iniciar();
+    _iniciar(widget.exibeLogin);
   }
 
-  void _iniciar() async {
+  void _iniciar(bool exibeLogin) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      String email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
-      String senha = await prefs.getString(ConstantesConfig.PREFERENCES_SENHA);
+      if (exibeLogin) {
+        _controllerEmail.text = "";
+        _controllerSenha.text = "";
 
-      if (email != null && senha != null && email != "" && senha != "") {
-        _mensagem = "";
-        LoginModel loginModel = LoginModel(email, senha);
+      }else{
+        final prefs = await SharedPreferences.getInstance();
+        String email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
+        String senha = await prefs.getString(ConstantesConfig.PREFERENCES_SENHA);
 
-        var _url = "${ConstantesRest.URL_LOGIN}";
-        var _dados = loginModel.toJson();
+        if (email != null && senha != null && email != "" && senha != "") {
+          _mensagem = "";
+          LoginModel loginModel = LoginModel(email, senha);
 
-        if (ConstantesConfig.SERVICO_FIXO == true) {
-          _url = "https://jsonplaceholder.typicode.com/posts";
-          _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
-        }
+          var _url = "${ConstantesRest.URL_LOGIN}";
+          var _dados = loginModel.toJson();
 
-        http.Response response = await http.post(_url,
-            headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-            body: jsonEncode(_dados)
-        );
+          if (ConstantesConfig.SERVICO_FIXO == true) {
+            _url = "https://jsonplaceholder.typicode.com/posts";
+            _dados = jsonEncode({
+              'userId': 200,
+              'id': null,
+              'title': 'Título',
+              'body': 'Corpo da mensagem'
+            });
+          }
 
-        if (response.statusCode == 200) {
-          //Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString(ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
-          await prefs.setString(ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
-          await prefs.setString(ConstantesConfig.PREFERENCES_TOKEN, response.headers['authorization']);
-
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeView()),
-                (Route<dynamic> route) => false,
+          http.Response response = await http.post(_url,
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(_dados)
           );
 
-        }else{
-          setState(() {
-            _mensagem = "";
-            _controllerEmail.text = ""; //robson.rmb@gmail.com
-            _controllerSenha.text = ""; //123
-            _controllerEmailParaTrocaDeSenha.text = ""; //robson.rmb@gmail.com
-            _controllerAnoNascimentoParaTrocaDeSenha.text = ""; //1978
-          });
+          if (response.statusCode == 200) {
+            //Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString(
+                ConstantesConfig.PREFERENCES_EMAIL, _controllerEmail.text);
+            await prefs.setString(
+                ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
+            await prefs.setString(ConstantesConfig.PREFERENCES_TOKEN,
+                response.headers['authorization']);
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomeView()),
+                  (Route<dynamic> route) => false,
+            );
+          } else {
+            setState(() {
+              _mensagem = "";
+              _controllerEmail.text = ""; //robson.rmb@gmail.com
+              _controllerSenha.text = ""; //123
+              _controllerEmailParaTrocaDeSenha.text = ""; //robson.rmb@gmail.com
+              _controllerAnoNascimentoParaTrocaDeSenha.text = ""; //1978
+            });
+          }
         }
       }
     } on Exception catch (exception) {

@@ -76,14 +76,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     }
 
     _sairApp() async {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(ConstantesConfig.PREFERENCES_EMAIL);
-      await prefs.remove(ConstantesConfig.PREFERENCES_SENHA);
+      //final prefs = await SharedPreferences.getInstance();
+      //await prefs.remove(ConstantesConfig.PREFERENCES_EMAIL);
+      //await prefs.remove(ConstantesConfig.PREFERENCES_SENHA);
 
       //Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => LoginView()),
+        MaterialPageRoute(builder: (context) => LoginView(exibeLogin: true)),
             (Route<dynamic> route) => false,
       );
     }

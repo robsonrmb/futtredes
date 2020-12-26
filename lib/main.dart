@@ -22,7 +22,7 @@ void main() {
       "/minhasredes" : (context) => MinhasRedesView(),
       "/perfil" : (context) => PerfilView(),
     },
-    home: LoginView(),
+    home: LoginView(exibeLogin: false),
     theme: ThemeData(
       primaryColor: Colors.black,
       accentColor: Colors.black,

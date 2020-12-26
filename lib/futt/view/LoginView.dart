@@ -28,10 +28,6 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     _iniciar();
-    _controllerEmail.text = ""; //robson.rmb@gmail.com
-    _controllerSenha.text = ""; //123
-    _controllerEmailParaTrocaDeSenha.text = ""; //robson.rmb@gmail.com
-    _controllerAnoNascimentoParaTrocaDeSenha.text = ""; //1978
   }
 
   void _iniciar() async {
@@ -42,7 +38,7 @@ class _LoginViewState extends State<LoginView> {
 
       if (email != null && senha != null && email != "" && senha != "") {
         _mensagem = "";
-        LoginModel loginModel = LoginModel(_controllerEmail.text, _controllerSenha.text);
+        LoginModel loginModel = LoginModel(email, senha);
 
         var _url = "${ConstantesRest.URL_LOGIN}";
         var _dados = loginModel.toJson();
@@ -73,6 +69,10 @@ class _LoginViewState extends State<LoginView> {
         }else{
           setState(() {
             _mensagem = "";
+            _controllerEmail.text = ""; //robson.rmb@gmail.com
+            _controllerSenha.text = ""; //123
+            _controllerEmailParaTrocaDeSenha.text = ""; //robson.rmb@gmail.com
+            _controllerAnoNascimentoParaTrocaDeSenha.text = ""; //1978
           });
         }
       }

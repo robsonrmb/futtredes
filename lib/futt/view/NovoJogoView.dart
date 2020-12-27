@@ -244,7 +244,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                 child: TextField(
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                    labelText: "Email do jogador 1",
+                                    labelText: "Email do jogador 1 (CLIQUE 2X)",
                                     labelStyle: TextStyle(
                                       color: Colors.grey[600],
                                     ),
@@ -275,7 +275,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                 child: TextField(
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                    labelText: "Email do jogador 2",
+                                    labelText: "Email do jogador 2 (CLIQUE 2X)",
                                     labelStyle: TextStyle(
                                       color: Colors.grey[600],
                                     ),
@@ -328,7 +328,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                 child: TextField(
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                    labelText: "Email do jogador 3",
+                                    labelText: "Email do jogador 3 (CLIQUE 2X)",
                                     labelStyle: TextStyle(
                                       color: Colors.grey[600],
                                     ),
@@ -359,7 +359,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                 child: TextField(
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                    labelText: "Email do jogador 4",
+                                    labelText: "Email do jogador 4 (CLIQUE 2X)",
                                     labelStyle: TextStyle(
                                       color: Colors.grey[600],
                                     ),

@@ -160,6 +160,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       setState(() {
         _mensagem = exception.toString();
       });
+      
     } catch (error) {
       setState(() {
         _mensagem = error.toString();

@@ -3,6 +3,7 @@ import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/service/RedeService.dart';
+import 'package:futt/futt/view/HomeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/IntegrantesView.dart';
 import 'package:futt/futt/view/RankingRedeView.dart';
@@ -157,6 +158,16 @@ class _RedesSubViewState extends State<RedesSubView> {
               );
             }else{
               return Apresentacao().getApresentacao(1);
+              /*
+              return GestureDetector(
+                child: Apresentacao().getApresentacao(1),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => HomeView(),
+                  ));
+                },
+              );
+              */
             }
             break;
         }

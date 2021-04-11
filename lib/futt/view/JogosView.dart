@@ -1,6 +1,7 @@
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/view/NovoJogoView.dart';
 import 'package:futt/futt/view/components/TopoInterno.dart';
+import 'package:futt/futt/view/style/colors.dart';
 import 'package:futt/futt/view/subview/JogosSubView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,17 +29,27 @@ class _JogosViewState extends State<JogosView> {
           color: Colors.white,
           opacity: 1,
         ),
-        backgroundColor: Color(0xff093352),
         textTheme: TextTheme(
             title: TextStyle(
                 color: Colors.white,
                 fontSize: 20
             )
         ),
-        title: Text("Jogos"),
+        title: Text("Jogos",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,
+        ),),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: <Color>[AppColors.colorFundoClaroApp,AppColors.colorFundoEscuroApp])),
+        ),
       ),
       floatingActionButton: widget.donoRede && (widget.redeModel.status == 1 || widget.redeModel.status == 2) ? FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: AppColors.colorIconFloatButton),
+        backgroundColor: AppColors.colorFloatButton,
+
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(
               builder: (context) => NovoJogoView(widget.redeModel),

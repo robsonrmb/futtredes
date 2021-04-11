@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
@@ -10,9 +11,13 @@ import 'package:futt/futt/view/ResponsaveisRedeView.dart';
 import 'package:futt/futt/view/components/Apresentacao.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:futt/futt/view/components/Passos.dart';
+import 'package:futt/futt/view/components/animation.dart';
+import 'package:futt/futt/view/style/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:shimmer/shimmer.dart';
 
 class MinhasRedesSubView extends StatefulWidget {
   @override
@@ -96,13 +101,13 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         _mensagem = "Rede desativada com sucesso!!!";
 
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waiting(context, "Rede", "${_mensagem}");
+        dialogFutt.waitingSucess(context, "Rede", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
 
       }else{
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waiting(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
+        dialogFutt.waitingError(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
       }
@@ -144,13 +149,13 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         _mensagem = "Rede desativada com sucesso!!!";
 
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waiting(context, "Rede", "${_mensagem}");
+        dialogFutt.waitingSucess(context, "Rede", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
 
       }else{
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waiting(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
+        dialogFutt.waitingError(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
       }
@@ -176,7 +181,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       }else if (data == null) {
         return "-";
       }else{
-        return data;
+        return data??'';
       }
     }else if (status == 3) {
       return "FECHADA";
@@ -195,9 +200,113 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         switch( snapshot.connectionState ) {
           case ConnectionState.none :
           case ConnectionState.waiting :
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+          return ListView.builder(
+            itemCount: 3,
+            itemBuilder: (context, index) {
+
+              return new FadeAnimation(0.5*index, Column(
+                children: <Widget>[
+                  Shimmer.fromColors(
+                      baseColor: Colors.grey.withOpacity(0.5),
+                      highlightColor: Colors.white,
+                      child: new Container(
+                        height: 140,
+                        decoration: new BoxDecoration(
+                          color: Colors.grey.withOpacity(0.5),
+                        ),
+                      )),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      //borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: GestureDetector(
+                      child: ListTile(
+                        title: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 30,
+                                    width: 100,
+                                    decoration: new BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                        subtitle: Shimmer.fromColors(
+                            baseColor: Colors.grey.withOpacity(0.5),
+                            highlightColor: Colors.white,
+                            child: new Container(
+                              height: 30,
+                              width: 100,
+                              decoration: new BoxDecoration(
+                                color: Colors.grey.withOpacity(0.5),
+                              ),
+                            )),
+                        trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                              Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                              Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                              Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                            ]),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 5,
+                    color: Colors.white,
+                  ),
+                ],
+              ),horizontal: true,);
+            },
+          );
             break;
           case ConnectionState.active :
           case ConnectionState.done :
@@ -206,134 +315,260 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
 
+                  String validade = '';
+
                   List<RedeModel> redes = snapshot.data;
                   RedeModel rede = redes[index];
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300].withOpacity(0.5),
-                            image: DecorationImage(
-                                image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
-                                fit: BoxFit.fill
-                            ),
-                            //borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(
-                              width: 1.0,
-                              color: Colors.grey[300],
-                            )
-                        ),
+                  if(rede.disponibilidade != null){
+                    validade = redeValidadeFormatada(rede.disponibilidade);
+                  }
+
+                  return new Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                          border: Border.all(width: 2,color: Colors.white),
+                          borderRadius: BorderRadius.circular(4)
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          //borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: GestureDetector(
-                          child: ListTile(
-                            title: Row(
-                              children: <Widget>[
-                                Flexible(
-                                  child: Text(
-                                    "${rede.nome}",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            subtitle: Text(_getSubTitulo(rede.status, rede.disponibilidade),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
+                      child:
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          new Hero(tag: 'imageRede$index', child: Container(
+                            height: 140,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300].withOpacity(0.5),
+                              image: DecorationImage(
+                                  image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
+                                  fit: BoxFit.fill
+                              ),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
                               ),
                             ),
-                            trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 1),
-                                      child: Icon(Icons.play_circle_outline,
-                                          color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
+                          ),),
+                          new Container(height: 2,width: double.infinity,color: Colors.white,),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(4.0),
+                                bottomLeft: Radius.circular(4.0),
+                              ),
+                              gradient: LinearGradient(
+                                colors: <Color>[AppColors.colorFundoCardClaro, AppColors.colorFundoCardEscuro],
+                              ),
+                              //borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: GestureDetector(
+                              child: ListTile(
+                                title: Row(
+                                  children: <Widget>[
+                                    Flexible(
+                                      child: Text(
+                                        "${rede.nome}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.colorTextTitle,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => JogosView(redeModel: rede, donoRede: true),
-                                      ));
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.people,
-                                          color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
+                                  ],
+                                ),
+                                subtitle:
+                                rede.disponibilidade != null?
+                                    rede.status == 2?
+                                    new Column(
+                                      children: [
+                                        Text(
+                                          "Validade: $validade",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.colorSubTitle,
+                                              fontWeight: FontWeight.w600
+                                          ),
+                                        ),
+                                        Text(
+                                          _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.colorSubTitle,
+                                              fontWeight: FontWeight.w600
+                                          ),
+                                        ),
+                                      ],
+                                    ):
+                                new Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(_getSubTitulo(rede.status, rede.disponibilidade),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                       ),
                                     ),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)
-                                      ));
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.smartphone,
-                                        color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
+                                    rede.status == 4?
+                                        new Container():
+                                    validade != null?
+                                    Text(
+                                      "Validade: $validade",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.colorSubTitle,
+                                          fontWeight: FontWeight.w600
+                                      ),
+                                    ):new Container(),
+                                    Text(
+                                      _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.colorSubTitle,
+                                          fontWeight: FontWeight.w600
                                       ),
                                     ),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => ResponsaveisRedeView(redeModel: rede,)
-                                      ));
-                                    },
+                                  ],
+                                ):Text(_getSubTitulo(rede.status, rede.disponibilidade),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                   ),
-                                  (rede.status == 1 || rede.status == 2) ? GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.delete_forever,
-                                        color: rede.status == 1 ? Color(0xff093352) : Colors.lightBlue,),
-                                    ),
-                                    onTap: (){
-                                      _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
-                                    },
-                                  ) : new Padding(
-                                    padding: EdgeInsets.all(1),
-                                  ),
-                                  (rede.status == 3 || rede.status == 4) ? GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Icon(Icons.done,),
-                                    ),
-                                    onTap: (){
-                                      _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
-                                    },
-                                  ) : new Padding(
-                                    padding: EdgeInsets.all(1),
-                                  ),
-                                ]
+                                ),
+                                trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        decoration: new BoxDecoration(
+                                            gradient: LinearGradient(begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: <Color>[
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                ]),
+                                            shape: BoxShape.circle),
+                                        child: GestureDetector(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 1),
+                                            child: Icon(Icons.play_circle_outline,
+                                                color: AppColors.colorIconCardRede
+                                            ),
+                                          ),
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(
+                                              builder: (context) => JogosView(redeModel: rede, donoRede: true),
+                                            ));
+                                          },
+                                        ),
+                                      ),
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.only(left: 6),
+                                        decoration: new BoxDecoration(
+                                            gradient: LinearGradient(begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: <Color>[
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                ]),
+                                            shape: BoxShape.circle),
+                                        child:  GestureDetector(
+                                          child: Icon(Icons.people,
+                                              color:  AppColors.colorIconCardRede
+                                          ),
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(
+                                                builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)
+                                            ));
+                                          },
+                                        ),
+                                      ),
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.only(left: 6),
+                                        decoration: new BoxDecoration(
+                                            gradient: LinearGradient(begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: <Color>[
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                ]),
+                                            shape: BoxShape.circle),
+                                        child: GestureDetector(
+                                          child:Icon(Icons.smartphone,
+                                              color:  AppColors.colorIconCardRede
+                                          ),
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(
+                                                builder: (context) => ResponsaveisRedeView(redeModel: rede,)
+                                            ));
+                                          },
+                                        ),
+                                      ),
+
+                                      (rede.status == 1 || rede.status == 2) ?
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.only(left: 6),
+                                        decoration: new BoxDecoration(
+                                            gradient: LinearGradient(begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: <Color>[
+                                                  AppColors.colorEspecialPrimario1,
+                                                  AppColors.colorEspecialPrimario2
+                                                ]),
+                                            shape: BoxShape.circle),
+                                        child: GestureDetector(
+                                          child: Icon(Icons.delete_forever,
+                                            color: rede.status == 1 ? Color(0xff093352) :  AppColors.colorIconCardRede,),
+                                          onTap: (){
+                                            _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
+                                          },
+                                        )
+                                      )
+                                       : new Padding(
+                                        padding: EdgeInsets.all(1),
+                                      ),
+                                      (rede.status == 3 || rede.status == 4) ? GestureDetector(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Icon(Icons.done,),
+                                        ),
+                                        onTap: (){
+                                          _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
+                                        },
+                                      ) : new Padding(
+                                        padding: EdgeInsets.all(1),
+                                      ),
+                                    ]
+                                ),
+                              ),
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto,),
+                                ));
+                              },
                             ),
                           ),
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => EdicaoRedeView(redeModel: rede),
-                            ));
-                          },
-                        ),
+                        ],
                       ),
-                      Container(
-                        height: 10,
-                        color: Colors.white,
-                      ),
-                    ],
+                    )
                   );
                 },
               );
@@ -342,7 +577,62 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             }
             break;
         }
+        return new Container();
       },
     );
+  }
+
+  String redeValidadeFormatada(String value){
+    String dataFormatada = '${value.split('-')[2]}/${value.split('-')[1]}/${value.split('-')[0]}';
+    return dataFormatada;
+
+  }
+
+
+  _retorneSubtitulo(String pais, String cidade,String local) {
+    if(pais ==""){
+      pais = null;
+    }
+    if(cidade ==""){
+      cidade = null;
+    }
+    if(local ==""){
+      local = null;
+    }
+    if (pais == null && cidade == null && local == null) {
+      return "";
+    }
+    //
+    // else if (pais != null && cidade != null) {
+    //   return pais + " - " + cidade;
+    // } else if (pais != null && cidade == null) {
+    //   return pais;
+    // } else if (pais == null && cidade != null) {
+    //   return cidade;
+    // }
+    else if(pais != null && cidade == null && local == null){
+      String value = pais;
+      return value;
+    }
+    else if(pais != null && cidade != null && local == null){
+      String value = "${pais == 'Brasil'?'':'$pais - '}${pais == 'Brasil'?'$cidade':''}";
+      return value;
+    }
+    else if(pais != null && cidade != null && local != null){
+      String value = "${pais == 'Brasil'?'':'$pais - '}${pais == 'Brasil'?'$cidade -':''} $local";
+      return value;
+    }
+    else if(pais == null && cidade == null && local != null){
+      String value = local;
+      return value;
+    }
+    else if(pais == null && cidade != null && local != null){
+      String value = "$cidade - $local";
+      return value;
+    }
+    else if(pais != null && cidade == null && local != null){
+      String value = "${pais == 'Brasil'?'':'$pais - '} $local";
+      return value;
+    }
   }
 }

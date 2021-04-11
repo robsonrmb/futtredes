@@ -10,6 +10,7 @@ import 'package:futt/futt/model/utils/PosicionamentoModel.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
+import 'package:futt/futt/view/style/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:multipart_request/multipart_request.dart';
 import 'package:image_picker/image_picker.dart';
@@ -156,7 +157,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
         });
 
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waiting(context, "Usuário", "${_mensagem}");
+        dialogFutt.waitingSucess(context, "Usuário", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
 
@@ -335,7 +336,9 @@ class _PerfilUserViewState extends State<PerfilUserView> {
         title: Text("Perfil"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.lock_outline),
+        backgroundColor: AppColors.colorFloatButton,
+
+        child: Icon(Icons.lock_outline,color: AppColors.colorIconFloatButton),
         onPressed: () {
           _mensagem = "";
           showDialog(context: context, builder: (context){

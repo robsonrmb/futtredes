@@ -6,14 +6,20 @@ class IntegranteModel {
   String _pais;
   String _estado;
   String _cidade;
+  String _local;
+  String _apelido;
   int _idRede;
+  String _user;
+  String _integrante;
 
-  IntegranteModel(this._idUsuario, this._email, this._nome, this._nomeFoto, this._pais, this._estado, this._cidade, this._idRede);
-  IntegranteModel.Novo(this._idRede, this._email);
+  IntegranteModel(this._apelido,this._local,this._idUsuario, this._email, this._nome, this._nomeFoto, this._pais, this._estado, this._cidade, this._idRede,this._user,this._integrante);
+  IntegranteModel.Novo(this._idRede, this._integrante);
   IntegranteModel.Remove(this._idRede, this._idUsuario);
 
   factory IntegranteModel.fromJson(Map<String, dynamic> json) {
     return IntegranteModel(
+      json['apelido'],
+      json['local'],
       json["idUsuario"],
       json["email"],
       json["nome"],
@@ -22,11 +28,15 @@ class IntegranteModel {
       json["estado"],
       json["cidade"],
       json["idRede"],
+      json["user"],
+      json["integrante"]
     );
   }
 
   toJson() {
     return {
+      'apelido': _apelido,
+      'local': _local,
       'idUsuario': _idUsuario,
       'email': _email,
       'nome': _nome,
@@ -35,8 +45,24 @@ class IntegranteModel {
       'estado': _estado,
       'cidade': _cidade,
       'idRede': _idRede,
+      'user': _user,
+      'integrante': _integrante
     };
   }
+
+  String get apelido => _apelido;
+
+  set apelido(String value) {
+    _apelido = value;
+  }
+
+
+  String get local => _local;
+
+  set local(String value) {
+    _local = value;
+  }
+
 
   String get estado => _estado;
 
@@ -84,6 +110,12 @@ class IntegranteModel {
 
   set email(String value) {
     _email = value;
+  }
+
+  String get user => _user;
+
+  set user(String value) {
+    _user = value;
   }
 
 }

@@ -20,5 +20,7 @@ class ConstantesRest {
   static const URL_REDE = "${URL_BASE}/redes";
   static const URL_TIPO_AVALIACOES = "${URL_BASE}/tipoavaliacoes";
   static const URL_USUARIOS = "${URL_BASE}/usuarios";
+  static const URL_PAISES = "${URL_BASE}/utils/paises";
+  static const URL_ESTADOS = "${URL_BASE}/utils/estados";
 
 }

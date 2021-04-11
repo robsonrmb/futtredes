@@ -17,6 +17,8 @@ class UsuarioModel {
   String _posicao;
   String _professor;
   String _nomeFoto;
+  int qtdRedePromocional;
+  String _user;
 
   UsuarioModel.Novo(this._id);
   UsuarioModel.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,
@@ -25,7 +27,7 @@ class UsuarioModel {
   UsuarioModel(this._id, this._nome, this._email, this._senha, this._apelido,
       this._dataNascimento, this._ondeJoga, this._tipo, this._nivel, this._cidade,
       this._estado, this._pais, this._status, this._sexo, this._posicao, this._professor,
-      this._nomeFoto);
+      this._nomeFoto,this.qtdRedePromocional,this._user);
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
     String data = json['dataNascimento'];
@@ -55,6 +57,8 @@ class UsuarioModel {
       json["posicao"],
       json["professor"],
       json["nomeFoto"],
+      json['qtdRedePromocional'],
+      json['user']
     );
   }
 
@@ -76,6 +80,8 @@ class UsuarioModel {
       'posicao': _posicao,
       'nomeFoto': _nomeFoto,
       'novaSenha': _novaSenha,
+      'qtdRedePromocional':qtdRedePromocional,
+      'user': _user
     };
   }
   String _getDateJson() {
@@ -185,6 +191,13 @@ class UsuarioModel {
 
   set posicao(String value) {
     _posicao = value;
+  }
+
+
+  String get user => _user;
+
+  set user(String value) {
+    _user = value;
   }
 
 }

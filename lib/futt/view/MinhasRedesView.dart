@@ -9,15 +9,17 @@ class MinhasRedesView extends StatefulWidget {
 class _MinhasRedesViewState extends State<MinhasRedesView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: MinhasRedesSubView(),
-          )
-        ],
+    return new Scaffold(
+      body: Container(
+        padding: EdgeInsets.all(5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: MinhasRedesSubView(),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -3,9 +3,10 @@ import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
-import 'package:futt/futt/view/components/CabecalhoLista.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:futt/futt/view/components/TopoInterno.dart';
+import 'package:futt/futt/view/style/colors.dart';
+import 'package:futt/futt/view/style/font-family.dart';
 import 'package:futt/futt/view/subview/IntegrantesSubView.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,9 +33,10 @@ class _IntegrantesViewState extends State<IntegrantesView> {
     try {
       if (_controllerEmail.text == "") {
         setState(() {
-          _mensagem = "Informe o email do atleta.";
+          _mensagem = "Informe o email ou username do atleta.";
         });
       }else{
+        circularProgress(context);
         IntegranteModel integranteModel = IntegranteModel.Novo(widget.redeModel.id, _controllerEmail.text);
 
         var _url = "${ConstantesRest.URL_REDE}/adicionaintegrante";
@@ -59,18 +61,20 @@ class _IntegrantesViewState extends State<IntegrantesView> {
         Navigator.pop(context);
         if (response.statusCode == 201) {
           DialogFutt dialogFutt = new DialogFutt();
-          dialogFutt.waiting(context, "Inclusão de atleta", "Atleta inserido com sucesso!!!");
+          dialogFutt.waitingSucess(context, "Inclusão de atleta", "Atleta inserido com sucesso!!!");
           await Future.delayed(Duration(seconds: 3));
+          Navigator.pop(context);
           Navigator.pop(context);
           setState(() {
             _inclui = 0;
           });
 
         }else{
-          var _dadosJson = jsonDecode(response.body);
+          String source = Utf8Decoder().convert(response.bodyBytes);
+          var _dadosJson = json.decode(source);
           ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
           DialogFutt dialogFutt = new DialogFutt();
-          dialogFutt.waiting(context, "Inclusão de atleta", exceptionModel.msg);
+          dialogFutt.waitingError(context, "Erro", exceptionModel.msg);
           await Future.delayed(Duration(seconds: 4));
           Navigator.pop(context);
         }
@@ -89,37 +93,47 @@ class _IntegrantesViewState extends State<IntegrantesView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xff093352),
         textTheme: TextTheme(
             title: TextStyle(
                 color: Colors.white,
                 fontSize: 20
             )
         ),
-        title: Text("Integrantes"),
+        centerTitle: true,
+        title: Text("Integrantes",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,
+        ),),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: <Color>[AppColors.colorFundoClaroApp,AppColors.colorFundoEscuroApp])),
+        ),
       ),
       floatingActionButton: widget.donoRede && (widget.redeModel.status == 1 || widget.redeModel.status == 2) ? FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: AppColors.colorIconFloatButton,),
+        backgroundColor: AppColors.colorFloatButton,
         onPressed: () {
           _mensagem = "";
           _controllerEmail.text = "";
           showDialog(context: context, builder: (context){
             return AlertDialog(
               title: Text("Adicione um atleta"),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               content: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                      ),
-                      controller: _controllerEmail,
-                    ),
+                    rows('Email/Usuário','Digite o email ou usuário',_controllerEmail),
+                    // TextField(
+                    //   keyboardType: TextInputType.emailAddress,
+                    //   decoration: InputDecoration(
+                    //     labelText: "Email",
+                    //   ),
+                    //   controller: _controllerEmail,
+                    // ),
                     new Padding(
                       padding: EdgeInsets.all(5),
                     ),
@@ -127,49 +141,118 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 12,
-                        fontFamily: 'Candal',
+                          fontFamily: FontFamily.fontSpecial,
                       ),
                     ),
                   ],
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
-                  child: RaisedButton(
-                    color: Color(0xff086ba4),
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(15),
-                    child: Text(
-                      "Incluir",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'Candal',
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
+                new Container(
+                  margin: const EdgeInsets.only(right: 6),
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    color: AppColors.colorButtonDialog,
+                    onPressed: () {
+                      _adicionaIntegrante();
+                    },
+                    child: Text('Incluir',style: new TextStyle(color: Colors.white),),
                   ),
-                  onPressed: () {
-                    _adicionaIntegrante();
-                  },
-                ),
+                )
               ],
             );
           });
         },
       ) : null,
-      body: Column(
+      body: new SingleChildScrollView(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             //CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
             TopoInterno().getTopo(widget.redeModel.nome, widget.redeModel.status),
-            Expanded(
-              child: IntegrantesSubView(widget.redeModel, widget.donoRede, _inclui),
-            )
+            IntegrantesSubView(widget.redeModel, widget.donoRede, _inclui),
           ],
         ),
+      )
     );
   }
+
+  Widget rows(String title, String hint, TextEditingController controller) {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        new Expanded(
+            child: new Container(
+              //height: 60,
+              //width: MediaQuery.of(context).size.width,
+
+              margin: const EdgeInsets.only(top: 16),
+              // padding: const EdgeInsets.only(left: 6),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Container(
+                    //color: Colors.red,
+                    margin: const EdgeInsets.only(
+                      top: 4,
+                      bottom: 4,
+                    ),
+                    child: new Text(
+                      title,
+                      style: TextStyle(
+                          color: Color(0xff112841),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12),
+                    ),
+                  ),
+                  Container(
+                    //width: MediaQuery.of(context).size.width/1.2,
+                    height: 40,
+                    padding:
+                    EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            // color: Colors.black12,
+                              color: Colors.black12,
+                              blurRadius: 5)
+                        ]),
+                    child: TextField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: hint,
+                        hintStyle: new TextStyle(fontSize: 14)
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ))
+      ],
+    );
+  }
+
+  void circularProgress(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext bc) {
+          return Center(
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
 }

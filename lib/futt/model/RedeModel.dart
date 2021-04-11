@@ -22,21 +22,50 @@ class RedeModel {
   String _emailResponsavelJogos1;
   String _emailResponsavelJogos2;
   String _emailResponsavelJogos3;
+  String _subresponsavel1;
+  String _subresponsavel2;
+  String _subresponsavel3;
 
-  RedeModel(this._id, this._nome, this._nomeFoto, this._status, this._pais, this._estado,
-      this._cidade, this._local, this._info, this._disponibilidade, this._qtdIntegrantes,
-      this._responsavelRede, this._responsavelJogos1, this._responsavelJogos2, this._responsavelJogos3,
-      this._nomeResponsavelRede, this._nomeResponsavelJogos1, this._nomeResponsavelJogos2, this._nomeResponsavelJogos3,
-      this._emailResponsavelRede, this._emailResponsavelJogos1, this._emailResponsavelJogos2, this._emailResponsavelJogos3);
+  RedeModel(
+      this._id,
+      this._nome,
+      this._nomeFoto,
+      this._status,
+      this._pais,
+      this._estado,
+      this._cidade,
+      this._local,
+      this._info,
+      this._disponibilidade,
+      this._qtdIntegrantes,
+      this._responsavelRede,
+      this._responsavelJogos1,
+      this._responsavelJogos2,
+      this._responsavelJogos3,
+      this._nomeResponsavelRede,
+      this._nomeResponsavelJogos1,
+      this._nomeResponsavelJogos2,
+      this._nomeResponsavelJogos3,
+      this._emailResponsavelRede,
+      this._emailResponsavelJogos1,
+      this._emailResponsavelJogos2,
+      this._emailResponsavelJogos3,
+      this._subresponsavel1,
+      this._subresponsavel2,
+      this._subresponsavel3);
 
-  RedeModel.Novo(this._nome, this._pais, this._cidade,
-      this._local, this._qtdIntegrantes, this._info);
+  RedeModel.Novo(this._nome, this._pais, this._cidade, this._local,
+      this._qtdIntegrantes, this._info);
 
-  RedeModel.Edita(this._id, this._nome, this._pais, this._cidade,
-      this._local, this._qtdIntegrantes, this._info);
+  RedeModel.Edita(this._id, this._nome, this._pais, this._cidade, this._local,
+      this._qtdIntegrantes, this._info);
 
-  RedeModel.Responsaveis(this._id, this._emailResponsavelRede,
-      this._emailResponsavelJogos1, this._emailResponsavelJogos2, this._emailResponsavelJogos3);
+  RedeModel.Responsaveis(
+      this._id,
+      this._emailResponsavelRede,
+      this._subresponsavel1,
+      this._subresponsavel2,
+      this._subresponsavel3);
 
   factory RedeModel.fromJson(Map<String, dynamic> json) {
     return RedeModel(
@@ -63,6 +92,10 @@ class RedeModel {
       json["emailResponsavelJogos1"],
       json["emailResponsavelJogos2"],
       json["emailResponsavelJogos3"],
+      json["subresponsavel1"],
+      json["subresponsavel2"],
+      json["subresponsavel3"],
+
     );
   }
 
@@ -79,6 +112,11 @@ class RedeModel {
       'emailResponsavelJogos1': _emailResponsavelJogos1,
       'emailResponsavelJogos2': _emailResponsavelJogos2,
       'emailResponsavelJogos3': _emailResponsavelJogos3,
+
+      'subresponsavel1': _subresponsavel1,
+      'subresponsavel2': _subresponsavel2,
+      'subresponsavel3': _subresponsavel3,
+
     };
   }
 
@@ -220,16 +258,15 @@ class RedeModel {
     _nomeResponsavelRede = value;
   }
 
-  String getStatusFormatado () {
+  String getStatusFormatado() {
     if (status == 10) {
       return "NOVA";
-    }else if (status == 20) {
+    } else if (status == 20) {
       return "ABERTA";
-    }else if (status == 30) {
+    } else if (status == 30) {
       return "FECHADA";
-    }else if (status == 40) {
+    } else if (status == 40) {
       return "DESATIVADA";
     }
   }
-
 }

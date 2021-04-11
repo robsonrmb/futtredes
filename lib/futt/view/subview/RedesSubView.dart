@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
@@ -8,15 +9,18 @@ import 'package:futt/futt/view/IntegrantesView.dart';
 import 'package:futt/futt/view/RankingRedeView.dart';
 import 'package:futt/futt/view/components/Apresentacao.dart';
 import 'package:futt/futt/view/components/Passos.dart';
+import 'package:futt/futt/view/components/animation.dart';
+import 'package:futt/futt/view/style/colors.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../RankingView.dart';
 
 class RedesSubView extends StatefulWidget {
-
   @override
   _RedesSubViewState createState() => _RedesSubViewState();
 }
 
 class _RedesSubViewState extends State<RedesSubView> {
-
   Future<List<RedeModel>> _listaRedesQueParticipo() async {
     RedeService redeService = RedeService();
     return redeService.listaRedesQueParticipo(ConstantesConfig.SERVICO_FIXO);
@@ -27,124 +31,99 @@ class _RedesSubViewState extends State<RedesSubView> {
     return FutureBuilder<List<RedeModel>>(
       future: _listaRedesQueParticipo(),
       builder: (context, snapshot) {
-        switch( snapshot.connectionState ) {
-          case ConnectionState.none :
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
             return Center(
               child: Text("None!!!"),
             );
-          case ConnectionState.waiting :
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-            break;
-          case ConnectionState.active :
-            return Center(
-              child: Text("Active!!!"),
-            );
-          case ConnectionState.done :
-            if( snapshot.hasData && snapshot.data.length > 0 ) {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-
-                  List<RedeModel> redes = snapshot.data;
-                  RedeModel rede = redes[index];
-
-                  return Column(
+          case ConnectionState.waiting:
+            return ListView.builder(
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return new FadeAnimation(
+                  0.5 * index,
+                  Column(
                     children: <Widget>[
-                      Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300].withOpacity(0.5),
-                          image: DecorationImage(
-                              image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
-                              fit: BoxFit.fill
-                          ),
-                          //borderRadius: BorderRadius.circular(5.0),
-                          border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey[300],
-                          )
-                        ),
-                      ),
+                      Shimmer.fromColors(
+                          baseColor: Colors.grey.withOpacity(0.5),
+                          highlightColor: Colors.white,
+                          child: new Container(
+                            height: 140,
+                            decoration: new BoxDecoration(
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                          )),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
                           //borderRadius: BorderRadius.circular(5),
                         ),
                         child: GestureDetector(
-                          child:
-                          ListTile(
+                          child: ListTile(
                             title: Row(
                               children: <Widget>[
                                 Flexible(
-                                  child: Text(
-                                    "${rede.nome}",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  child: Shimmer.fromColors(
+                                      baseColor: Colors.grey.withOpacity(0.5),
+                                      highlightColor: Colors.white,
+                                      child: new Container(
+                                        height: 30,
+                                        width: 100,
+                                        decoration: new BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.5),
+                                        ),
+                                      )),
                                 ),
                               ],
                             ),
-                            subtitle: Text(
-                              "${rede.pais} - ${rede.cidade} - ${rede.local}",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            subtitle: Shimmer.fromColors(
+                                baseColor: Colors.grey.withOpacity(0.5),
+                                highlightColor: Colors.white,
+                                child: new Container(
+                                  height: 30,
+                                  width: 150,
+                                  decoration: new BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.5),
+                                  ),
+                                )),
                             trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 1),
-                                      child: Icon(Icons.play_circle_outline,
-                                          color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): Colors.lightBlue : Colors.grey
-                                      ),
-                                    ),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => JogosView(redeModel: rede, donoRede: false),
-                                      ));
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.people,
-                                          color: Colors.lightBlue,
-                                      ),
-                                    ),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => IntegrantesView(redeModel: rede, donoRede: false)
-                                      ));
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.star_half,
-                                        color: Colors.lightBlue,
-                                      ),
-                                    ),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(
-                                          builder: (context) => RankingRedeView(rede.id, rede.nome, rede.status, 0),
-                                      ));
-                                    },
-                                  ),
-                                ]
-                            ),
+                                  Shimmer.fromColors(
+                                      baseColor: Colors.grey.withOpacity(0.5),
+                                      highlightColor: Colors.white,
+                                      child: new Container(
+                                        height: 30,
+                                        width: 30,
+                                        decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey.withOpacity(0.5),
+                                        ),
+                                      )),
+                                  Shimmer.fromColors(
+                                      baseColor: Colors.grey.withOpacity(0.5),
+                                      highlightColor: Colors.white,
+                                      child: new Container(
+                                        height: 30,
+                                        width: 30,
+                                        decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey.withOpacity(0.5),
+                                        ),
+                                      )),
+                                  Shimmer.fromColors(
+                                      baseColor: Colors.grey.withOpacity(0.5),
+                                      highlightColor: Colors.white,
+                                      child: new Container(
+                                        height: 30,
+                                        width: 30,
+                                        decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey.withOpacity(0.5),
+                                        ),
+                                      )),
+                                ]),
                           ),
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => JogosView(redeModel: rede,donoRede: false),
-                            ));
-                          },
                         ),
                       ),
                       Container(
@@ -152,15 +131,305 @@ class _RedesSubViewState extends State<RedesSubView> {
                         color: Colors.white,
                       ),
                     ],
+                  ),
+                  horizontal: true,
+                );
+              },
+            );
+            break;
+          case ConnectionState.active:
+            return Center(
+              child: Text("Active!!!"),
+            );
+          case ConnectionState.done:
+            if (snapshot.hasData && snapshot.data.length > 0) {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  List<RedeModel> redes = snapshot.data;
+                  RedeModel rede = redes[index];
+
+                  return new Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                        border: Border.all(width: 2,color: Colors.white),
+                        borderRadius: BorderRadius.circular(4)
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 140,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300].withOpacity(0.5),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        ConstantesRest.URL_BASE_AMAZON +
+                                            rede.nomeFoto),
+                                    fit: BoxFit.fill),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(4.0),
+                                  topRight: Radius.circular(4.0),
+                                ),                               //borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          new Container(height: 2,width: double.infinity,color: Colors.white,),
+                          Container(
+                            decoration: BoxDecoration(
+                              // color: Colors.grey[300],
+                              // border: Border(
+                              //   left: BorderSide(
+                              //     width: 2,
+                              //     //                   <--- left side
+                              //     color: Colors.white,
+                              //   ),
+                              //   right: BorderSide(
+                              //     width: 2,
+                              //     //                   <--- left side
+                              //     color: Colors.white,
+                              //   ),
+                              //   bottom: BorderSide(
+                              //     width: 2,
+                              //     //                   <--- left side
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(4.0),
+                                bottomLeft: Radius.circular(4.0),
+                              ),
+                              gradient: LinearGradient(
+                                colors: <Color>[AppColors.colorFundoCardClaro, AppColors.colorFundoCardEscuro],
+                              ),
+                              //borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: GestureDetector(
+                              child: ListTile(
+                                title: Row(
+                                  children: <Widget>[
+                                    Flexible(
+                                      child: Text(
+                                        "${rede.nome}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.colorTextTitle,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle:
+                                Text(
+                                  _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.colorSubTitle,
+                                    fontWeight: FontWeight.w600
+                                  ),
+                                ),
+
+                                // Text(
+                                //   "${rede.pais == 'Brasil'?'':'${rede.pais} - '}${rede.pais == 'Brasil'?'${rede.cidade} -':''} ${rede.local}",
+                                //   style: TextStyle(
+                                //     fontSize: 14,
+                                //     color: AppColors.colorSubTitle,
+                                //     fontWeight: FontWeight.w600
+                                //   ),
+                                // ),
+                                trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          gradient: LinearGradient(begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: <Color>[
+                                                rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                              ]),
+                                        ),
+                                        child: GestureDetector(
+                                          child: new Center(
+                                            child:new Container(
+                                              decoration: new BoxDecoration(
+                                                //color: Colors.black,
+                                                shape: BoxShape.circle
+                                              ),
+                                              child:  FaIcon(FontAwesomeIcons.futbol,color: AppColors.colorIconCardRede,size: 17,),
+                                            )
+                                          ),
+                                          // Padding(
+                                          //   //padding: EdgeInsets.only(left: 1),
+                                          //   child: new  Container(
+                                          //     height: 30,
+                                          //     width: 30,
+                                          //     decoration: BoxDecoration(
+                                          //         color: Colors.red,
+                                          //
+                                          //         image: DecorationImage(
+                                          //             image: AssetImage("images/match.png"), fit: BoxFit.fill)),
+                                          //   )
+                                          //
+                                          //   // Icon(Icons.play_circle_outline,
+                                          //   //     color: rede.status < 3
+                                          //   //         ? (rede.status == 1)
+                                          //   //             ? Color(0xff093352)
+                                          //   //             : Colors.lightBlue
+                                          //   //         : Colors.grey),
+                                          // ),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => JogosView(
+                                                      redeModel: rede,
+                                                      donoRede: false),
+                                                ));
+                                          },
+                                        ),
+                                      ),
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.only(left: 6),
+                                        decoration: new BoxDecoration(
+                                            gradient: LinearGradient(begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: <Color>[
+                                                  AppColors.colorEspecialPrimario1,
+                                                  AppColors.colorEspecialPrimario2
+                                                ]),
+                                            shape: BoxShape.circle),
+                                        child: GestureDetector(
+                                          child: new Center(child: FaIcon(FontAwesomeIcons.userFriends,color:  AppColors.colorIconCardRede,size: 17,),),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        IntegrantesView(
+                                                            redeModel: rede,
+                                                            donoRede: false)));
+                                          },
+                                        ),
+                                      ),
+                                      new Container(
+                                        height: 40,
+                                        width: 40,
+                                        //padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.only(left: 6),
+                                        decoration: new BoxDecoration(
+                                            gradient: LinearGradient(begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: <Color>[
+                                                  AppColors.colorEspecialPrimario1,
+                                                  AppColors.colorEspecialPrimario2
+                                                ]),
+                                            shape: BoxShape.circle),
+                                        child: GestureDetector(
+                                          child: new Center(
+                                            child: new FaIcon(FontAwesomeIcons.trophy,color:  AppColors.colorIconCardRede,size: 17,),
+                                          ),
+                                          onTap: () {
+                                            // Navigator.push(context, MaterialPageRoute(
+                                            //     builder: (context) => RankingRedeView(rede.id, rede.nome, rede.status, 0),
+                                            // ));
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RankingView(
+                                                          rede.id,
+                                                          rede.nome,
+                                                          rede.status,
+                                                          0,rede.cidade),
+                                                ));
+                                          },
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => JogosView(
+                                          redeModel: rede, donoRede: false),
+                                    ));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 },
               );
-            }else{
+            } else {
               return Apresentacao().getApresentacao(1);
             }
             break;
         }
+        return Container();
       },
     );
+  }
+
+
+  _retorneSubtitulo(String pais, String cidade,String local) {
+    if(pais ==""){
+      pais = null;
+    }
+    if(cidade ==""){
+      cidade = null;
+    }
+    if(local ==""){
+      local = null;
+    }
+    if (pais == null && cidade == null && local == null) {
+      return "";
+    }
+    //
+    // else if (pais != null && cidade != null) {
+    //   return pais + " - " + cidade;
+    // } else if (pais != null && cidade == null) {
+    //   return pais;
+    // } else if (pais == null && cidade != null) {
+    //   return cidade;
+    // }
+    else if(pais != null && cidade == null && local == null){
+      String value = pais;
+      return value;
+    }
+    else if(pais != null && cidade != null && local == null){
+      String value = "${pais == 'Brasil'?'':'$pais - '}${pais == 'Brasil'?'$cidade':''}";
+      return value;
+    }
+    else if(pais != null && cidade != null && local != null){
+      String value = "${pais == 'Brasil'?'':'$pais - '}${pais == 'Brasil'?'$cidade -':''} $local";
+      return value;
+    }
+    else if(pais == null && cidade == null && local != null){
+      String value = local;
+      return value;
+    }
+    else if(pais == null && cidade != null && local != null){
+      String value = "$cidade - $local";
+      return value;
+    }
+    else if(pais != null && cidade == null && local != null){
+      String value = "${pais == 'Brasil'?'':'$pais - '} $local";
+      return value;
+    }
   }
 }

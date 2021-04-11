@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:futt/futt/view/RankingView.dart';
 import 'package:futt/futt/view/components/TopoInterno.dart';
+import 'package:futt/futt/view/style/colors.dart';
 import 'package:futt/futt/view/subview/RankingRedeSubView.dart';
 
 class RankingRedeView extends StatefulWidget {
@@ -37,11 +38,13 @@ class _RankingRedeViewState extends State<RankingRedeView> {
         title: Text("Ranking"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.menu),
+        backgroundColor: AppColors.colorFloatButton,
+
+        child: Icon(Icons.menu,color: AppColors.colorIconFloatButton),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => RankingView(widget.idRede, widget.nomeRede, widget.statusRede, widget.ano),
-            ));
+            // Navigator.push(context, MaterialPageRoute(
+            //   builder: (context) => RankingView(widget.idRede, widget.nomeRede, widget.statusRede, widget.ano),
+            // ));
         },
       ),
       body: Column(

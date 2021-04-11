@@ -5,6 +5,8 @@ import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/view/LoginView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:flutter/material.dart';
+import 'package:futt/futt/view/style/colors.dart';
+import 'package:futt/futt/view/style/font-family.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -14,39 +16,43 @@ class CadastroView extends StatefulWidget {
 }
 
 class _CadastroViewState extends State<CadastroView> {
-
   String _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerNickName = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
   TextEditingController _controllerSenhaConfirmacao = TextEditingController();
+  bool obscureText = true;
+  bool obscureTextConfirmar = true;
 
   void _cadastrar() async {
+    DialogFutt dialogFutt = new DialogFutt();
+    circularProgress(context);
     try {
       _mensagem = "";
       CadastroLoginModel cadastroLoginModel = CadastroLoginModel();
       cadastroLoginModel.email = _controllerEmail.text;
       cadastroLoginModel.senha = _controllerSenha.text;
-      cadastroLoginModel.nome = _controllerNome.text;
+      cadastroLoginModel.nome = '1${_controllerNome.text}';
+      cadastroLoginModel.user = _controllerNickName.text;
+
 
       if (_controllerNome.text == "") {
         _mensagem = "Informe seu nome!!!";
-
-      }else if (_controllerEmail.text == "") {
+      } else if (_controllerEmail.text == "") {
+        _mensagem = "Informe seu username!!!";
+      }else if (_controllerNickName.text == "") {
         _mensagem = "Informe seu email!!!";
-
-      }else if (_controllerSenha.text == "") {
+      } else if (_controllerSenha.text == "") {
         _mensagem = "Informe a senha!!!";
-
-      }else if (_controllerSenhaConfirmacao.text == "") {
+      } else if (_controllerSenhaConfirmacao.text == "") {
         _mensagem = "Confirme a senha!!!";
-
-      }else if (_controllerSenha.text != _controllerSenhaConfirmacao.text) {
+      } else if (_controllerSenha.text != _controllerSenhaConfirmacao.text) {
         _mensagem = "Confirme a senha corretamente!!!";
       }
 
       if (_mensagem != "") {
-        DialogFutt dialogFutt = new DialogFutt();
+        Navigator.pop(context);
         dialogFutt.waiting(context, "Mensagem", "${_mensagem}");
         await Future.delayed(Duration(seconds: 2));
         Navigator.pop(context);
@@ -59,25 +65,39 @@ class _CadastroViewState extends State<CadastroView> {
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
         _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({ 'userId': 200, 'id': null, 'title': 'Título', 'body': 'Corpo da mensagem' });
+        _dados = jsonEncode({
+          'userId': 200,
+          'id': null,
+          'title': 'Título',
+          'body': 'Corpo da mensagem'
+        });
       }
 
       http.Response response = await http.post(_url,
-          headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
-          body: jsonEncode(_dados)
-      );
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(_dados));
 
       if (response.statusCode == 201) {
-        Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
-
-      }else{
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waitingSucess(context, "Concluído", "Cadastro Realizado com sucesso!");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginView()),
+              (Route<dynamic> route) => false,
+        );
+      } else {
+        dialogFutt.waitingError(context, "Erro", "Ocorreu algum erro ao realizar o cadastro");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
         setState(() {
           var _dadosJson = jsonDecode(response.body);
           ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
           _mensagem = exceptionModel.msg;
         });
       }
-
     } on Exception catch (exception) {
       print(exception.toString());
       setState(() {
@@ -91,80 +111,108 @@ class _CadastroViewState extends State<CadastroView> {
   }
 
   void _voltar() {
-    Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
+    Navigator.pop(
+        context, MaterialPageRoute(builder: (context) => LoginView()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: Text(
-            "Tela de cadastro",
-            style: TextStyle(
-              color: Colors.white
-            ),
-        ),
-        backgroundColor: Color(0xff086ba4),
-      ),
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("images/fundo.jpg"),
-                fit: BoxFit.fill
-            )
-        ),
+                image: AssetImage("images/fundo.jpg"), fit: BoxFit.fill)),
         child: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                // new Row(
+                //   children: [
+                //     new IconButton(
+                //         icon: Icon(Icons.arrow_back,color: Colors.white,),
+                //         onPressed: () {
+                //           Navigator.pop(context);
+                //         })
+                //   ],
+                // ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 20),
-                  child: Image.asset("images/logoFuttRedes.png", height: 60, width: 15),
+                  child: Image.asset("images/logoFuttRedesNovo.png",
+                      height: 60, width: 15),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 5, left: 20, top: 16),
+                  child: Text(
+                    "Olá!",
+                    style: TextStyle(
+                        color: AppColors.colorTextLogCad,
+                        fontSize: 26,
+                      fontFamily: FontFamily.fontSpecial,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10, left: 20),
+                  child: Text(
+                    "Vamos fazer o seu cadastro?",
+                    style: TextStyle(
+                      color: AppColors.colorTextLogCad,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
                 Center(
                   child: Container(
                     padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: Color(0xff086ba4).withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(5.0),
-                        border: Border.all(
-                            width: 1.0
-                        )
-                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
+                        new Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: new Text(
+                            'Nome',
+                            style: new TextStyle(
+                                color: AppColors.colorTextLogCad, fontSize: 12),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: TextField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              filled: false,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                  Icons.person,
-                                  color: Colors.white,
+                              prefixIcon: new Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  Icons.person_outline,
+                                  color: AppColors.colorIconLogCad,
+                                  size: 20,
+                                ),
                               ),
-                              // icon: new Icon(Icons.person),
-                              // prefixText: "Nome",
-                              // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
-                              // labelText: "Informe seu nome",
-                              hintText: "Nome",
+                              isDense: true,
+                              prefixIconConstraints:
+                                  BoxConstraints(minWidth: 23, maxHeight: 20),
+                              hintText: "Digite seu nome",
                               hintStyle: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white,
+                                color: AppColors.colorTextLogCad,
                               ),
                             ),
                             style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white
+                              fontSize: 16,
+                              color: AppColors.colorTextLogCad,
                             ),
-                            //maxLength: 5,
-                            //maxLengthEnforced: true,
                             controller: _controllerNome,
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.only(bottom: 10, top: 16),
+                          child: new Text(
+                            'Usuário',
+                            style: new TextStyle(
+                                color: AppColors.colorTextLogCad, fontSize: 12),
                           ),
                         ),
                         Padding(
@@ -172,122 +220,257 @@ class _CadastroViewState extends State<CadastroView> {
                           child: TextField(
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              filled: false,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: Colors.white,
+                              prefixIcon: new Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  Icons.perm_contact_cal,
+                                  color: AppColors.colorIconLogCad,
+                                  size: 20,
+                                ),
                               ),
-                              hintText: "Email",
+                              isDense: true,
+                              prefixIconConstraints:
+                              BoxConstraints(minWidth: 23, maxHeight: 20),
+                              hintText: "Digite seu Usuário",
                               hintStyle: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xffffffff),
+                                color: AppColors.colorTextLogCad,
                               ),
                             ),
                             style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.colorTextLogCad,
+                            ),
+                            controller: _controllerNickName,
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.only(bottom: 10, top: 16),
+                          child: new Text(
+                            'Email',
+                            style: new TextStyle(
+                                color: AppColors.colorTextLogCad, fontSize: 12),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: TextField(
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              prefixIcon: new Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  Icons.email_outlined,
+                                  color: AppColors.colorIconLogCad,
+                                  size: 20,
+                                ),
+                              ),
+                              isDense: true,
+                              prefixIconConstraints:
+                                  BoxConstraints(minWidth: 23, maxHeight: 20),
+                              hintText: "Digite seu email",
+                              hintStyle: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white
+                                color: AppColors.colorTextLogCad,
+                              ),
+                            ),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.colorTextLogCad,
                             ),
                             controller: _controllerEmail,
                           ),
                         ),
+                        new Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          child: new Text(
+                            'Senha',
+                            style: new TextStyle(
+                                color: AppColors.colorTextLogCad, fontSize: 12),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: TextField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(top: 20),
+                              isDense: true,
+                              prefixIconConstraints:
+                                  BoxConstraints(minWidth: 23, maxHeight: 10),
                               filled: false,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
+                              fillColor: AppColors.colorTextLogCad,
+                              prefixIcon: new Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  Icons.lock_outline_rounded,
+                                  color: AppColors.colorIconLogCad,
+                                  size: 20,
+                                ),
                               ),
-                              hintText: "Senha",
+                              suffixIcon: new GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    obscureText = !obscureText;
+                                  });
+                                },
+                                child: new Container(
+                                  // margin: const EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    obscureText
+                                        ? Icons.visibility_off_outlined
+                                        : Icons.visibility_outlined,
+                                    color: AppColors.colorIconLogCad,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                              hintText: "Digite sua senha",
                               hintStyle: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xffffffff),
+                                color: AppColors.colorTextLogCad,
                               ),
                             ),
                             style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white
+                              fontSize: 16,
+                              color: AppColors.colorTextLogCad,
                             ),
-                            obscureText: true,
+                            obscureText: obscureText,
                             controller: _controllerSenha,
                           ),
                         ),
+                        new Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          child: new Text(
+                            'Confirmar Senha',
+                            style: new TextStyle(
+                                color: AppColors.colorTextLogCad, fontSize: 12),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: TextField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(top: 20),
+                              isDense: true,
+                              prefixIconConstraints:
+                                  BoxConstraints(minWidth: 23, maxHeight: 10),
                               filled: false,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
+                              fillColor: AppColors.colorTextLogCad,
+                              prefixIcon: new Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  Icons.lock_outline_rounded,
+                                  color: AppColors.colorIconLogCad,
+                                  size: 20,
+                                ),
                               ),
-                              hintText: "Confirmação da senha",
+                              suffixIcon: new GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    obscureTextConfirmar =
+                                        !obscureTextConfirmar;
+                                  });
+                                },
+                                child: new Container(
+                                  // margin: const EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    obscureTextConfirmar
+                                        ? Icons.visibility_off_outlined
+                                        : Icons.visibility_outlined,
+                                    color: AppColors.colorIconLogCad,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                              hintText: "Digite sua senha",
                               hintStyle: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xffffffff),
+                                color: AppColors.colorTextLogCad,
                               ),
                             ),
                             style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white
+                              fontSize: 16,
+                              color: AppColors.colorTextLogCad,
                             ),
-                            obscureText: true,
+                            obscureText: obscureTextConfirmar,
                             controller: _controllerSenhaConfirmacao,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 1),
-                          child: RaisedButton(
-                            color: Color(0xff2c7ce7),
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(15),
-                            child: Text(
-                              "Cadastrar",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Candal',
+                        new Container(
+                          height: 30,
+                        ),
+                        RaisedButton(
+                          onPressed: _cadastrar,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          padding: const EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              constraints: const BoxConstraints(
+                                  minWidth: 88.0, minHeight: 36.0),
+                              // min sizes for Material buttons
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Cadastrar",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.colorTextLogCad,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            onPressed: _cadastrar,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                          child: RaisedButton(
-                            color: Colors.orange,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(15),
-                            child: Text(
-                              "Já sou cadastrado",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Candal',
+                        new Container(
+                          height: 4,
+                        ),
+                        RaisedButton(
+                          onPressed: _voltar,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          padding: const EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: <Color>[AppColors.colorEspecialSecundario1, AppColors.colorEspecialSecundario2],
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              constraints: const BoxConstraints(
+                                  minWidth: 88.0, minHeight: 36.0),
+                              // min sizes for Material buttons
+                              alignment: Alignment.center,
+                              child:  Text(
+                                "Já sou cadastrado",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.colorTextLogCad,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            onPressed: _voltar,
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: Center(
                             child: Text(
-                              _mensagem,
+                              _mensagem??'',
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: AppColors.colorTextLogCad,
                                   fontSize: 12,
-                                  fontFamily: 'Candal'
+                                fontFamily: FontFamily.fontSpecial,
                               ),
                             ),
                           ),
@@ -302,5 +485,22 @@ class _CadastroViewState extends State<CadastroView> {
         ),
       ),
     );
+  }
+  void circularProgress(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext bc) {
+          return Center(
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+              ],
+            ),
+          );
+        });
   }
 }

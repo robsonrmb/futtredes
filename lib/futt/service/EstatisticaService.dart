@@ -40,8 +40,13 @@ class EstatisticaService {
   /* CONSULTAS NOVAS PARA FLUTTER */
   Future<List<RespostaModel>> getQuantitativas(int idUsuario, int idRede, int ano, bool fixo) {
     String url = "${ConstantesRest.URL_ESTATISTICAS}/quantitativas/${idUsuario}?tipo='R'";
-    if (ano != 0) { url = "${url}&&ano=${ano}"; }
-    if (idRede != 0) { url = "${url}&&id=${idRede}"; }
+    // if (ano != 0) {
+    //   url = "${url}&&ano=${ano}";
+    // }
+    // if (idRede != 0) {
+    //   url = "${url}&&id=${idRede}";
+    // }
+    url = "$url&&ano=$ano&&id=$idRede";
     EstatisticaRest estatisticaRest = EstatisticaRest();
     return estatisticaRest.processaHttpGetListResposta(url, ConstantesEstatisticas.QUANTITATIVOS, fixo); //quantitativas
   }

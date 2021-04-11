@@ -15,6 +15,16 @@ class JogoRedeModel {
   int _idJogador8;
   int _idJogador9;
   int _idJogador10;
+  String _nomeFotoJogador1;
+  String _nomeFotoJogador2;
+  String _nomeFotoJogador3;
+  String _nomeFotoJogador4;
+  String _nomeFotoJogador5;
+  String _nomeFotoJogador6;
+  String _nomeFotoJogador7;
+  String _nomeFotoJogador8;
+  String _nomeFotoJogador9;
+  String _nomeFotoJogador10;
   String _nomeJogador1;
   String _nomeJogador2;
   String _nomeJogador3;
@@ -46,22 +56,76 @@ class JogoRedeModel {
   String _emailJogador9;
   String _emailJogador10;
 
-  JogoRedeModel(this._id, this._numero, this._pontuacao1, this._pontuacao2, this._data,
-      this._idRede, this._idJogador1, this._idJogador2,
-      this._idJogador3, this._idJogador4, this._idJogador5, this._idJogador6,
-      this._idJogador7, this._idJogador8, this._idJogador9, this._idJogador10,
-      this._nomeJogador1, this._nomeJogador2,
-      this._nomeJogador3, this._nomeJogador4, this._nomeJogador5, this._nomeJogador6,
-      this._nomeJogador7, this._nomeJogador8, this._nomeJogador9, this._nomeJogador10,
-      this._apelidoJogador1, this._apelidoJogador2,
-      this._apelidoJogador3, this._apelidoJogador4, this._apelidoJogador5, this._apelidoJogador6,
-      this._apelidoJogador7, this._apelidoJogador8, this._apelidoJogador9, this._apelidoJogador10,
-      this._emailJogador1, this._emailJogador2,
-      this._emailJogador3, this._emailJogador4, this._emailJogador5, this._emailJogador6,
-      this._emailJogador7, this._emailJogador8, this._emailJogador9, this._emailJogador10);
+  JogoRedeModel(
+      this._id,
+      this._numero,
+      this._pontuacao1,
+      this._pontuacao2,
+      this._data,
+      this._idRede,
+      this._idJogador1,
+      this._idJogador2,
+      this._idJogador3,
+      this._idJogador4,
+      this._idJogador5,
+      this._idJogador6,
+      this._idJogador7,
+      this._idJogador8,
+      this._idJogador9,
+      this._idJogador10,
+      this._nomeFotoJogador1,
+      this._nomeFotoJogador2,
+      this._nomeFotoJogador3,
+      this._nomeFotoJogador4,
+      this._nomeFotoJogador5,
+      this._nomeFotoJogador6,
+      this._nomeFotoJogador7,
+      this._nomeFotoJogador8,
+      this._nomeFotoJogador9,
+      this._nomeFotoJogador10,
+      this._nomeJogador1,
+      this._nomeJogador2,
+      this._nomeJogador3,
+      this._nomeJogador4,
+      this._nomeJogador5,
+      this._nomeJogador6,
+      this._nomeJogador7,
+      this._nomeJogador8,
+      this._nomeJogador9,
+      this._nomeJogador10,
+      this._apelidoJogador1,
+      this._apelidoJogador2,
+      this._apelidoJogador3,
+      this._apelidoJogador4,
+      this._apelidoJogador5,
+      this._apelidoJogador6,
+      this._apelidoJogador7,
+      this._apelidoJogador8,
+      this._apelidoJogador9,
+      this._apelidoJogador10,
+      this._emailJogador1,
+      this._emailJogador2,
+      this._emailJogador3,
+      this._emailJogador4,
+      this._emailJogador5,
+      this._emailJogador6,
+      this._emailJogador7,
+      this._emailJogador8,
+      this._emailJogador9,
+      this._emailJogador10);
 
-  JogoRedeModel.NovoJogo(this._idRede, this._pontuacao1, this._pontuacao2, this._emailJogador1, this._emailJogador2, this._emailJogador3, this._emailJogador4);
-  JogoRedeModel.NovoPlacar(this._id, this._numero, this._pontuacao1, this._pontuacao2);
+  JogoRedeModel.NovoJogo(
+      this._idRede,
+      this._pontuacao1,
+      this._pontuacao2,
+      this._emailJogador1,
+      this._emailJogador2,
+      this._emailJogador3,
+      this._emailJogador4);
+
+  JogoRedeModel.NovoPlacar(
+      this._id, this._numero, this._pontuacao1, this._pontuacao2);
+
   JogoRedeModel.Remove(this._id);
 
   factory JogoRedeModel.fromJson(Map<String, dynamic> json) {
@@ -82,6 +146,16 @@ class JogoRedeModel {
       json["idJogador8"],
       json["idJogador9"],
       json["idJogador10"],
+      json["nomeFotoJogador1"],
+      json["nomeFotoJogador2"],
+      json["nomeFotoJogador3"],
+      json["nomeFotoJogador4"],
+      json["nomeFotoJogador5"],
+      json["nomeFotoJogador6"],
+      json["nomeFotoJogador7"],
+      json["nomeFotoJogador8"],
+      json["nomeFotoJogador9"],
+      json["nomeFotoJogador10"],
       json["nomeJogador1"],
       json["nomeJogador2"],
       json["nomeJogador3"],
@@ -132,7 +206,7 @@ class JogoRedeModel {
   String get apelidoFormatadoJogador1 {
     if (this.apelidoJogador1 == null || this.apelidoJogador1.trim() == "") {
       return nomeJogador1;
-    }else{
+    } else {
       return apelidoJogador1;
     }
   }
@@ -140,7 +214,7 @@ class JogoRedeModel {
   String get apelidoFormatadoJogador2 {
     if (this.apelidoJogador2 == null || this.apelidoJogador2.trim() == "") {
       return nomeJogador2;
-    }else{
+    } else {
       return apelidoJogador2;
     }
   }
@@ -148,7 +222,7 @@ class JogoRedeModel {
   String get apelidoFormatadoJogador3 {
     if (this.apelidoJogador3 == null || this.apelidoJogador3.trim() == "") {
       return nomeJogador3;
-    }else{
+    } else {
       return apelidoJogador3;
     }
   }
@@ -156,7 +230,7 @@ class JogoRedeModel {
   String get apelidoFormatadoJogador4 {
     if (this.apelidoJogador4 == null || this.apelidoJogador4.trim() == "") {
       return nomeJogador4;
-    }else{
+    } else {
       return apelidoJogador4;
     }
   }
@@ -279,6 +353,67 @@ class JogoRedeModel {
 
   set nomeJogador1(String value) {
     _nomeJogador1 = value;
+  }
+
+
+  String get nomeFotoJogador1 => _nomeFotoJogador1;
+
+  set nomeFotoJogador1(String value) {
+    _nomeFotoJogador1 = value;
+  }
+
+  String get nomeFotoJogador2 => _nomeFotoJogador2;
+
+  set nomeFotoJogador2(String value) {
+    _nomeFotoJogador2 = value;
+  }
+
+  String get nomeFotoJogador3 => _nomeFotoJogador3;
+
+  set nomeFotoJogador3(String value) {
+    _nomeFotoJogador3 = value;
+  }
+
+  String get nomeFotoJogador4 => _nomeFotoJogador4;
+
+  set nomeFotoJogador4(String value) {
+    _nomeFotoJogador4 = value;
+  }
+
+  String get nomeFotoJogador5 => _nomeFotoJogador5;
+
+  set nomeFotoJogador5(String value) {
+    _nomeFotoJogador5 = value;
+  }
+
+  String get nomeFotoJogador6 => _nomeFotoJogador6;
+
+  set nomeFotoJogador6(String value) {
+    _nomeFotoJogador6 = value;
+  }
+
+  String get nomeFotoJogador7 => _nomeFotoJogador7;
+
+  set nomeFotoJogador7(String value) {
+    _nomeFotoJogador7 = value;
+  }
+
+  String get nomeFotoJogador8 => _nomeFotoJogador8;
+
+  set nomeFotoJogador8(String value) {
+    _nomeFotoJogador8 = value;
+  }
+
+  String get nomeFotoJogador9 => _nomeFotoJogador9;
+
+  set nomeFotoJogador9(String value) {
+    _nomeFotoJogador9 = value;
+  }
+
+  String get nomeFotoJogador10 => _nomeFotoJogador10;
+
+  set nomeFotoJogador10(String value) {
+    _nomeFotoJogador10 = value;
   }
 
   int get idJogador10 => _idJogador10;
@@ -436,5 +571,4 @@ class JogoRedeModel {
   set emailJogador1(String value) {
     _emailJogador1 = value;
   }
-
 }

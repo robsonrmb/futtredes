@@ -1,4 +1,7 @@
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/EstadoModel.dart';
+import 'package:futt/futt/model/PaisesModel.dart';
+import 'package:futt/futt/model/UsuarioAssinanteModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/rest/UsuarioRest.dart';
 import 'package:futt/futt/rest/fixo/BaseRestFixo.dart';
@@ -107,4 +110,21 @@ class UsuarioService {
     return usuarioRest.processaHttpGetList(url, fixo);
   }
 
+  Future<List<PaisesModel>> listaPaises() {
+    String url = "${ConstantesRest.URL_PAISES}";
+    UsuarioRest usuarioRest = UsuarioRest();
+    return usuarioRest.processaHttpGetListPaises(url);
+  }
+
+  Future<List<EstadosModel>> listaEstados() {
+    String url = "${ConstantesRest.URL_ESTADOS}";
+    UsuarioRest usuarioRest = UsuarioRest();
+    return usuarioRest.processaHttpGetListEstados(url);
+  }
+
+  Future<UsuarioAssinanteModel> buscaUsuarioAssinante() {
+    String url = "${ConstantesRest.URL_USUARIOS}/assinatura/futtredes";
+    UsuarioRest usuarioRest = UsuarioRest();
+    return usuarioRest.processaHttpGetAssinante(url);
+  }
 }

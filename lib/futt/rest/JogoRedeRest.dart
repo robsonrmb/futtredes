@@ -12,7 +12,8 @@ class JogoRedeRest extends BaseRest {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
-        var dadosJson = json.decode(response.body);
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        var dadosJson = json.decode(source);
         return _parseListaJogoRedeModel(dadosJson);
 
       } else {

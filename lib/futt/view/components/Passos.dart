@@ -8,74 +8,78 @@ import 'package:futt/futt/view/style/font-family.dart';
 class Passos {
 
   Widget getPassos(int passo) {
-    return Center(
-        child: Column(children: <Widget>[
-          FadeAnimation(0.8, avisos("Cadastre sua rede",'Pode indicar até 3 responsáveis!'),),
-          FadeAnimation(1.1, avisos("Cadastre os integrantes",'Disponível até 50 integrantes por rede!'),),
-          FadeAnimation(1.4, avisos("Cadastre os jogos",'Informe os resultados para gerar as estatísticas!'),),
-          FadeAnimation(1.7,  avisos("Veja o ranking e estatísticas",'E confira sua performance!'),),
-          //
-          // new Container(
-          //   child: Text("Cadastre sua rede",
-          //     style: TextStyle(
-          //       color: Colors.white,
-          //       fontSize: 24,
-          //       fontWeight: FontWeight.bold,
-          //     ),),
-          // ),
-          // Text("Pode indicar até 3 responsáveis.",
-          //   style: TextStyle(
-          //     color: Colors.black54,
-          //     fontSize: 16,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-          // Padding(
-          //   padding: EdgeInsets.all(5),
-          // ),
-          // Text("Cadastre os integrantes",
-          //   style: TextStyle(
-          //     color: Colors.white,
-          //     fontSize: 24,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-          // Text("Disponível até 50 integrantes por rede.",
-          //   style: TextStyle(
-          //     color: Colors.black54,
-          //     fontSize: 16,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-          // Padding(
-          //   padding: EdgeInsets.all(5),
-          // ),
-          // Text("Cadastre os jogos",
-          //   style: TextStyle(
-          //     color: Colors.white,
-          //     fontSize: 24,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-          // Text("Informe os resultados para gerar as estatísticas.",
-          //   style: TextStyle(
-          //     color: Colors.black54,
-          //     fontSize: 16,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-          // Padding(
-          //   padding: EdgeInsets.all(5),
-          // ),
-          // Text("Veja o ranking e estatísticas",
-          //   style: TextStyle(
-          //     color: Colors.white,
-          //     fontSize: 24,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-          // Text("E confira sua performance.",
-          //   style: TextStyle(
-          //     color: Colors.black54,
-          //     fontSize: 16,
-          //     fontWeight: FontWeight.bold,
-          //   ),),
-        ],)
-    );
+    if (passo >= 1) {
+      return Center();
+    }else {
+      return Center(
+          child: Column(children: <Widget>[
+            FadeAnimation(0.8, avisos("Cadastre sua rede",'Pode indicar até 3 responsáveis!'),),
+            FadeAnimation(1.1, avisos("Cadastre os integrantes",'Disponível até 50 integrantes por rede!'),),
+            FadeAnimation(1.4, avisos("Cadastre os jogos",'Informe os resultados para gerar as estatísticas!'),),
+            FadeAnimation(1.7,  avisos("Veja o ranking e estatísticas",'E confira sua performance!'),),
+            //
+            // new Container(
+            //   child: Text("Cadastre sua rede",
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 24,
+            //       fontWeight: FontWeight.bold,
+            //     ),),
+            // ),
+            // Text("Pode indicar até 3 responsáveis.",
+            //   style: TextStyle(
+            //     color: Colors.black54,
+            //     fontSize: 16,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            // Padding(
+            //   padding: EdgeInsets.all(5),
+            // ),
+            // Text("Cadastre os integrantes",
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontSize: 24,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            // Text("Disponível até 50 integrantes por rede.",
+            //   style: TextStyle(
+            //     color: Colors.black54,
+            //     fontSize: 16,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            // Padding(
+            //   padding: EdgeInsets.all(5),
+            // ),
+            // Text("Cadastre os jogos",
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontSize: 24,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            // Text("Informe os resultados para gerar as estatísticas.",
+            //   style: TextStyle(
+            //     color: Colors.black54,
+            //     fontSize: 16,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            // Padding(
+            //   padding: EdgeInsets.all(5),
+            // ),
+            // Text("Veja o ranking e estatísticas",
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontSize: 24,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+            // Text("E confira sua performance.",
+            //   style: TextStyle(
+            //     color: Colors.black54,
+            //     fontSize: 16,
+            //     fontWeight: FontWeight.bold,
+            //   ),),
+          ],)
+      );
+    }
   }
   Widget avisos(String title, String subTitle){
     return Container(

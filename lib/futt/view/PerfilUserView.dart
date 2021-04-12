@@ -129,7 +129,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
       );
 
       UsuarioModel usuarioModel = UsuarioModel.Atualiza(_controllerNome.text,
-          _controllerApelido.text, _dataNasc, _controllerSexo, _controllerPosicionamento,
+          _controllerApelido.text, "_dataNasc", _controllerSexo, _controllerPosicionamento,
           _controllerPais, _controllerCidade.text, _controllerLocal.text);
 
       var _url = "${ConstantesRest.URL_USUARIOS}";

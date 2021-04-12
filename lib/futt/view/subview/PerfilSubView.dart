@@ -9,6 +9,7 @@ import 'package:futt/futt/model/EstadoModel.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/PaisesModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
+import 'package:futt/futt/model/UsuarioModelAtualiza.dart';
 import 'package:futt/futt/model/utils/GeneroModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/model/utils/PosicionamentoModel.dart';
@@ -57,7 +58,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   PaisModel paisModelSelecionado;
   GeneroModel generoModelSelecionado;
   PosicionamentoModel posicionamentoModelSelecionado;
-
+  List<EstadosModel> estadosList = [];
   File _imagem;
   bool _subindoImagem = false;
   String _nomeImagem = "";
@@ -111,7 +112,9 @@ class _PerfilSubViewState extends State<PerfilSubView> {
           int.parse(_controllerDataNascimento.text.substring(3, 5)),
           int.parse(_controllerDataNascimento.text.substring(0, 2)));
 
-      UsuarioModel usuarioModel = UsuarioModel.Atualiza(
+//      String _dataNasc = "${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}";
+
+      UsuarioModelAtualiza usuarioModel = UsuarioModelAtualiza.Atualiza(
           _controllerNome.text,
           _controllerApelido.text,
           _dataNasc,
@@ -187,6 +190,11 @@ class _PerfilSubViewState extends State<PerfilSubView> {
           Navigator.pop(context);
           Navigator.pop(context);
         } else {
+          DialogFutt dialogFutt = new DialogFutt();
+          dialogFutt.waitingError(context, "Erro", "${_mensagem}");
+          await Future.delayed(Duration(seconds: 3));
+          Navigator.pop(context);
+          Navigator.pop(context);
           var _dadosJson = jsonDecode(response.body);
           ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
           setState(() {
@@ -561,9 +569,11 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   }
 
   void _buscaEstado() async {
+    listDropEstado.add('');
     UsuarioService usuarioService = UsuarioService();
     List<EstadosModel> estados = await usuarioService.listaEstados();
     if (estados != null) {
+      estadosList = estados;
       for (int i = 0; i < estados.length; i++) {
         listDropEstado.add(estados[i].texto);
       }
@@ -702,16 +712,16 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Shimmer.fromColors(
-                                  baseColor: Colors.grey.withOpacity(0.5),
-                                  highlightColor: Colors.white,
-                                  child: new Container(
-                                    height: 20,
-                                    width: 100,
-                                    decoration: new BoxDecoration(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(8)),
-                                  )),
+                              // Shimmer.fromColors(
+                              //     baseColor: Colors.grey.withOpacity(0.5),
+                              //     highlightColor: Colors.white,
+                              //     child: new Container(
+                              //       height: 20,
+                              //       width: 100,
+                              //       decoration: new BoxDecoration(
+                              //           color: Colors.grey.withOpacity(0.5),
+                              //           borderRadius: BorderRadius.circular(8)),
+                              //     )),
                               new Container(
                                 margin: const EdgeInsets.only(
                                   top: 10,
@@ -728,22 +738,22 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                               BorderRadius.circular(8)),
                                     )),
                               ),
-                              new Container(
-                                margin: const EdgeInsets.only(
-                                  top: 4,
-                                ),
-                                child: Shimmer.fromColors(
-                                    baseColor: Colors.grey.withOpacity(0.5),
-                                    highlightColor: Colors.white,
-                                    child: new Container(
-                                      height: 16,
-                                      width: 80,
-                                      decoration: new BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                    )),
-                              ),
+                              // new Container(
+                              //   margin: const EdgeInsets.only(
+                              //     top: 4,
+                              //   ),
+                              //   child: Shimmer.fromColors(
+                              //       baseColor: Colors.grey.withOpacity(0.5),
+                              //       highlightColor: Colors.white,
+                              //       child: new Container(
+                              //         height: 16,
+                              //         width: 80,
+                              //         decoration: new BoxDecoration(
+                              //             color: Colors.grey.withOpacity(0.5),
+                              //             borderRadius:
+                              //                 BorderRadius.circular(8)),
+                              //       )),
+                              // ),
                               new Container(
                                 height: 10,
                               ),
@@ -752,7 +762,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                               rowsLoad('Local onde joga:'),
                               rowsLoad('Posição:'),
                               rowsLoad('País'),
-                              rowsLoad('Estado'),
+                             // rowsLoad('Estado'),
                               rowsLoad('Cidade'),
                               rowsLoad('Sexo'),
                             ],
@@ -780,14 +790,14 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                         _controllerApelido.text = usuarioModel.apelido;
                         _nomeImagem = ConstantesRest.URL_BASE_AMAZON +
                             usuarioModel.nomeFoto;
-
-                        _controllerDataNascimento.text = "";
+                        _controllerDataNascimento.text = usuarioModel.dataNascimento;
+                        //_controllerDataNascimento.text = "";
                         if (usuarioModel.dataNascimento != null &&
                             usuarioModel.dataNascimento != "") {
                           var formatter = new DateFormat('dd/MM/yyyy');
-                          String formatted =
-                              formatter.format(usuarioModel.dataNascimento);
-                          _controllerDataNascimento.text = formatted;
+                          // String formatted =
+                          //     formatter.format(usuarioModel.dataNascimento);
+                          _controllerDataNascimento.text = '${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}';;
                         }
 
                         _controllerSexo = usuarioModel.sexo;
@@ -818,8 +828,16 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                     : "Ambas");
                         sexoSelecionado = generoModelSelecionado.nome;
                         paisSelecionado = _controllerPais;
-                        if (estado != null && estado != '')
-                          estadoSelecionado = estado;
+                        if (estado != null && estado != ''){
+                          for(int i = 0; i < estadosList.length; i++){
+                            if(estado == estadosList[i].codigo){
+                              estadoSelecionado = estadosList[i].texto;
+                            }
+                          }
+                          if(estadoSelecionado == null || estadoSelecionado == ""){
+                            estadoSelecionado = '';
+                          }
+                        }
                       }
 
                       return Container(
@@ -845,7 +863,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                       style: new TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700,
-                                        color: AppColors.colorTextPerfil,
+                                        color: enableEdit?AppColors.colorTextPerfil:Colors.grey,
                                         fontFamily: FontFamily.fontSpecial,
                                       ),
                                       textAlign: TextAlign.center,
@@ -875,18 +893,18 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                 //         fontWeight: FontWeight.bold),
                                 //   ),
                                 // ),
-                                new Container(
-                                  margin: const EdgeInsets.only(
-                                    top: 4,
-                                  ),
-                                  child: new Text(
-                                    'Professor',
-                                    style: TextStyle(
-                                        color: AppColors.colorTextPerfil,
-                                        fontFamily: FontFamily.fontSpecial,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                                // new Container(
+                                //   margin: const EdgeInsets.only(
+                                //     top: 4,
+                                //   ),
+                                //   child: new Text(
+                                //     'Professor',
+                                //     style: TextStyle(
+                                //         color: AppColors.colorTextPerfil,
+                                //         fontFamily: FontFamily.fontSpecial,
+                                //         fontWeight: FontWeight.bold),
+                                //   ),
+                                // ),
                                 new Container(
                                   height: 10,
                                 ),
@@ -897,7 +915,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                 rowsStringPosicao('Posição:', posicao),
                                 rowsStringPais('País:', _controllerPais ?? ''),
                                 rowsStringEstado('Estado', estado),
-                                rows('Cidade:', _controllerCidade),
+                                rowsCidade('Cidade:', _controllerCidade),
                                 rowsStringSexo(
                                     'Sexo:', generoModelSelecionado.nome),
                                 new Container(height: 16,),
@@ -1342,10 +1360,10 @@ class _PerfilSubViewState extends State<PerfilSubView> {
               _controllerDataNascimento.text = "";
               if (usuarioModel.dataNascimento != null &&
                   usuarioModel.dataNascimento != "") {
-                var formatter = new DateFormat('dd/MM/yyyy');
-                String formatted =
-                    formatter.format(usuarioModel.dataNascimento);
-                _controllerDataNascimento.text = formatted;
+                // var formatter = new DateFormat('dd/MM/yyyy');
+                // String formatted =
+                //     formatter.format(usuarioModel.dataNascimento);
+                //_controllerDataNascimento.text = formatted;
               }
 
               _controllerSexo = usuarioModel.sexo;
@@ -1725,12 +1743,13 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
           margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
           padding: const EdgeInsets.only(left: 6),
-          decoration: new BoxDecoration(
+          decoration: enableEdit?new BoxDecoration(
               border: new Border.all(
                 color: AppColors.colorBorderPerfil,
                 width: 0.5,
               ),
-              borderRadius: BorderRadius.circular(8)),
+              borderRadius: BorderRadius.circular(8)):
+          new BoxDecoration(),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1782,6 +1801,76 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     );
   }
 
+  Widget rowsCidade(String titile, TextEditingController controller) {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        new Expanded(
+            child: new Container(
+              //height: 60,
+              //width: MediaQuery.of(context).size.width,
+
+              margin: EdgeInsets.only(top: paisSelecionado == 'Brasil'?20:14, right: 26, left: 26),
+              padding: const EdgeInsets.only(left: 6),
+              decoration: enableEdit?new BoxDecoration(
+                  border: new Border.all(
+                    color: AppColors.colorBorderPerfil,
+                    width: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(8)):
+              new BoxDecoration(),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Container(
+                    //color: Colors.red,
+                    margin: const EdgeInsets.only(
+                      top: 4,
+                    ),
+                    child: new Text(
+                      titile,
+                      style: TextStyle(
+                          color: AppColors.colorTextPerfil,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 12),
+                    ),
+                  ),
+                  new Container(
+                    //color: Colors.red,
+                      margin: const EdgeInsets.only(top: 4, bottom: 4),
+                      //height: 40,
+                      child: TextField(
+                        cursorColor: AppColors.colorTextPerfil,
+                        enabled: enableEdit,
+                        //keyboardType: inputType,
+                        controller: controller,
+                        style: new TextStyle(
+                            color: AppColors.colorTextPerfil,
+                            fontWeight: FontWeight.bold),
+                        decoration: new InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            isDense: true,
+                            // Added this
+
+                            disabledBorder: InputBorder.none,
+                            hintStyle: new TextStyle(
+                              color: AppColors.colorTextPerfil,
+                            ),
+                            contentPadding: EdgeInsets.all(0),
+                            hintText: ""),
+                      )),
+                ],
+              ),
+            ))
+      ],
+    );
+  }
+
+
   Widget rowsNasc(String titile, TextEditingController controller) {
     final maskCpf = MaskTextInputFormatter(
         mask: '##/##/####', filter: {"#": RegExp(r'[0-9]')});
@@ -1795,12 +1884,13 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
           margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
           padding: const EdgeInsets.only(left: 6),
-          decoration: new BoxDecoration(
-              border: new Border.all(
-                color: AppColors.colorBorderPerfil,
-                width: 0.5,
-              ),
-              borderRadius: BorderRadius.circular(8)),
+              decoration: enableEdit?new BoxDecoration(
+                  border: new Border.all(
+                    color: AppColors.colorBorderPerfil,
+                    width: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(8)):
+              new BoxDecoration(),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1866,12 +1956,13 @@ class _PerfilSubViewState extends State<PerfilSubView> {
             // width: MediaQuery.of(context).size.width*0.8,
             margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
             padding: const EdgeInsets.only(left: 6),
-            decoration: new BoxDecoration(
-                border: new Border.all(
-                  color: AppColors.colorBorderPerfil,
-                  width: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(8)),
+                decoration: enableEdit?new BoxDecoration(
+                    border: new Border.all(
+                      color: AppColors.colorBorderPerfil,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(8)):
+                new BoxDecoration(),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -2018,12 +2109,13 @@ class _PerfilSubViewState extends State<PerfilSubView> {
             // width: MediaQuery.of(context).size.width*0.8,
             margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
             padding: const EdgeInsets.only(left: 6),
-            decoration: new BoxDecoration(
-                border: new Border.all(
-                  color: AppColors.colorBorderPerfil,
-                  width: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(8)),
+                decoration: enableEdit?new BoxDecoration(
+                    border: new Border.all(
+                      color: AppColors.colorBorderPerfil,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(8)):
+                new BoxDecoration(),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -2160,155 +2252,159 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   }
 
   Widget rowsStringEstado(String titile, String value) {
-    if (!enableEdit)
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Expanded(
-              child: new Container(
-            //height: 60,
-            // width: MediaQuery.of(context).size.width*0.8,
-            margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
-            padding: const EdgeInsets.only(left: 6),
-            decoration: new BoxDecoration(
-                border: new Border.all(
-                  color: AppColors.colorBorderPerfil,
-                  width: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(8)),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(
-                    top: 4,
-                  ),
-                  child: new Text(
-                    titile,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12),
-                  ),
-                ),
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  child: new Text(
-                    value,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  ),
-                )
-              ],
-            ),
-          ))
-        ],
-      );
-    return new Stack(
-      children: [
-        new Row(
+    if(paisSelecionado == 'Brasil'){
+      if (!enableEdit)
+        return new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             new Expanded(
                 child: new Container(
-              //height: 60,
-              // width: MediaQuery.of(context).size.width*0.8,
-              margin: const EdgeInsets.only(top: 16, right: 26, left: 26),
-              padding: const EdgeInsets.only(left: 6),
-              decoration: new BoxDecoration(
-                  border: new Border.all(
-                    color: AppColors.colorTextPerfil,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8)),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(
-                      top: 4,
-                    ),
-                    child: new Text(
-                      titile,
-                      style: TextStyle(
-                          color: AppColors.colorTextPerfil,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12),
-                    ),
-                  ),
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(top: 4, bottom: 4),
-                    child: new Text(
-                      value,
-                      style: TextStyle(
-                          color: Colors.transparent,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
-                  )
-                ],
-              ),
-            ))
-          ],
-        ),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 26, top: 26, right: 26),
-                height: 40,
-                padding: EdgeInsets.only(left: 6),
-                child: new Stack(
-                  children: <Widget>[
-                    new Container(
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: Text(
-                            "Selecione o Estado",
-                            style: new TextStyle(
-                                color: AppColors.colorTextPerfil,
-                                fontWeight: FontWeight.normal),
-                          ),
-                          value: estadoSelecionado,
-                          style: new TextStyle(
+                  //height: 60,
+                  // width: MediaQuery.of(context).size.width*0.8,
+                  margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
+                  padding: const EdgeInsets.only(left: 6),
+                  decoration: enableEdit?new BoxDecoration(
+                      border: new Border.all(
+                        color: AppColors.colorBorderPerfil,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(8)):
+                  new BoxDecoration(),
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Container(
+                        //color: Colors.red,
+                        margin: const EdgeInsets.only(
+                          top: 4,
+                        ),
+                        child: new Text(
+                          titile,
+                          style: TextStyle(
+                              color: AppColors.colorTextPerfil,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 12),
+                        ),
+                      ),
+                      new Container(
+                        //color: Colors.red,
+                        margin: const EdgeInsets.only(top: 4, bottom: 4),
+                        child: new Text(
+                          value,
+                          style: TextStyle(
                               color: AppColors.colorTextPerfil,
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
-                          dropdownColor: Color(0xff083251),
-                          //, Color(0xff112841),
-                          onChanged: (newValue) {
-                            setState(() {
-                              estadoSelecionado = newValue;
-                              //controllerNomeCartaoContaBancaria.text = newValue;
-                            });
-                          },
-                          items: listDropEstado.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
+                        ),
+                      )
+                    ],
+                  ),
+                ))
+          ],
+        );
+      return new Stack(
+        children: [
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              new Expanded(
+                  child: new Container(
+                    //height: 60,
+                    // width: MediaQuery.of(context).size.width*0.8,
+                    margin: const EdgeInsets.only(top: 16, right: 26, left: 26),
+                    padding: const EdgeInsets.only(left: 6),
+                    decoration: new BoxDecoration(
+                        border: new Border.all(
+                          color: AppColors.colorTextPerfil,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        new Container(
+                          //color: Colors.red,
+                          margin: const EdgeInsets.only(
+                            top: 4,
+                          ),
+                          child: new Text(
+                            titile,
+                            style: TextStyle(
+                                color: AppColors.colorTextPerfil,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12),
+                          ),
+                        ),
+                        new Container(
+                          //color: Colors.red,
+                          margin: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: new Text(
+                            value,
+                            style: TextStyle(
+                                color: Colors.transparent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          ),
+                        )
+                      ],
+                    ),
+                  ))
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              new Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 26, top: 26, right: 26),
+                  height: 40,
+                  padding: EdgeInsets.only(left: 6),
+                  child: new Stack(
+                    children: <Widget>[
+                      new Container(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            hint: Text(
+                              "Selecione o Estado",
+                              style: new TextStyle(
+                                  color: AppColors.colorTextPerfil,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            value: estadoSelecionado,
+                            style: new TextStyle(
+                                color: AppColors.colorTextPerfil,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                            dropdownColor: Color(0xff083251),
+                            //, Color(0xff112841),
+                            onChanged: (newValue) {
+                              setState(() {
+                                estadoSelecionado = newValue;
+                                //controllerNomeCartaoContaBancaria.text = newValue;
+                              });
+                            },
+                            items: listDropEstado.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
-        )
-      ],
-    );
+              )
+            ],
+          )
+        ],
+      );
+    }
+    return new Container();
   }
 
   Widget rowsStringSexo(String titile, String value) {
@@ -2322,12 +2418,13 @@ class _PerfilSubViewState extends State<PerfilSubView> {
             // width: MediaQuery.of(context).size.width*0.8,
             margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
             padding: const EdgeInsets.only(left: 6),
-            decoration: new BoxDecoration(
-                border: new Border.all(
-                  color: AppColors.colorBorderPerfil,
-                  width: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(8)),
+                decoration: enableEdit?new BoxDecoration(
+                    border: new Border.all(
+                      color: AppColors.colorBorderPerfil,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(8)):
+                new BoxDecoration(),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,

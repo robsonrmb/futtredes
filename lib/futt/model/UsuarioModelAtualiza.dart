@@ -1,11 +1,11 @@
-class UsuarioModel {
+class UsuarioModelAtualiza {
   int _id;
   String _nome;
   String _email;
   String _senha;
   String _novaSenha;
   String _apelido;
-  String _dataNascimento;
+  DateTime _dataNascimento;
   String _ondeJoga;
   String _tipo;
   String _nivel;
@@ -20,32 +20,32 @@ class UsuarioModel {
   int qtdRedePromocional;
   String _user;
 
-  UsuarioModel.Novo(this._id);
-  UsuarioModel.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,
+  UsuarioModelAtualiza.Novo(this._id);
+  UsuarioModelAtualiza.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,
       this._pais, this._cidade, this._ondeJoga);
-  UsuarioModel.AtualizaSenha(this._email, this._senha, this._novaSenha);
-  UsuarioModel(this._id, this._nome, this._email, this._senha, this._apelido,
+  UsuarioModelAtualiza.AtualizaSenha(this._email, this._senha, this._novaSenha);
+  UsuarioModelAtualiza(this._id, this._nome, this._email, this._senha, this._apelido,
       this._dataNascimento, this._ondeJoga, this._tipo, this._nivel, this._cidade,
       this._estado, this._pais, this._status, this._sexo, this._posicao, this._professor,
       this._nomeFoto,this.qtdRedePromocional,this._user);
 
-  factory UsuarioModel.fromJson(Map<String, dynamic> json) {
-    // String data = json['dataNascimento'];
-    // DateTime dateTime = new DateTime.now();
-    // if (data != null && data != "" && data.length == 8) {
-    //   dateTime = new DateTime(
-    //       int.parse(data.substring(0, 4)),
-    //       int.parse(data.substring(5, 7)),
-    //       int.parse(data.substring(8)));
-    // }
+  factory UsuarioModelAtualiza.fromJson(Map<String, dynamic> json) {
+    String data = json['dataNascimento'];
+    DateTime dateTime = new DateTime.now();
+    if (data != null && data != "" && data.length == 8) {
+      dateTime = new DateTime(
+          int.parse(data.substring(0, 4)),
+          int.parse(data.substring(5, 7)),
+          int.parse(data.substring(8)));
+    }
 
-    return UsuarioModel(
+    return UsuarioModelAtualiza(
         json["id"],
         json["nome"],
         json["email"],
         json["senha"],
         json["apelido"],
-        json["dataNascimento"],
+        dateTime,
         json["ondeJoga"],
         json["tipo"],
         json["nivel"],
@@ -69,7 +69,7 @@ class UsuarioModel {
       'email': _email,
       'senha': _senha,
       'apelido': _apelido,
-      'dataNascimento': _dataNascimento,
+      'dataNascimento': _getDateJson(),
       'ondeJoga': _ondeJoga,
       'tipo': _tipo,
       'nivel': _nivel,
@@ -151,9 +151,9 @@ class UsuarioModel {
     _ondeJoga = value;
   }
 
-  String get dataNascimento => _dataNascimento;
+  DateTime get dataNascimento => _dataNascimento;
 
-  set dataNascimento(String value) {
+  set dataNascimento(DateTime value) {
     _dataNascimento = value;
   }
 

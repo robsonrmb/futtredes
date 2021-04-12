@@ -123,25 +123,28 @@ class _PerfilViewState extends State<PerfilView> {
                     content: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: "Nova senha",
-                            ),
-                            obscureText: true,
-                            controller: _controllerSenha,
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.all(5),
-                          ),
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: "Confirmação da nova senha",
-                            ),
-                            obscureText: true,
-                            controller: _controllerConfirmSenha,
-                          ),
+                          rows('Nova Senha', 'Digite a nova senha', _controllerSenha),
+                          // TextField(
+                          //   keyboardType: TextInputType.text,
+                          //   decoration: InputDecoration(
+                          //     labelText: "Nova senha",
+                          //   ),
+                          //   obscureText: true,
+                          //   controller: _controllerSenha,
+                          // ),
+                          // new Padding(
+                          //   padding: EdgeInsets.all(5),
+                          // ),
+                          rows('Confirmar Senha', 'Confirme a nova senha', _controllerConfirmSenha),
+
+                          // TextField(
+                          //   keyboardType: TextInputType.text,
+                          //   decoration: InputDecoration(
+                          //     labelText: "Confirmação da nova senha",
+                          //   ),
+                          //   obscureText: true,
+                          //   controller: _controllerConfirmSenha,
+                          // ),
                           Text(
                             _mensagem,
                             style: TextStyle(
@@ -154,23 +157,6 @@ class _PerfilViewState extends State<PerfilView> {
                       ),
                     ),
                     actions: <Widget>[
-
-                      FlatButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-
-                        color: Color(0xff083251),
-                        child: Text(
-                          "Fechar",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: FontFamily.fontSpecial,
-                            color: Colors.white
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
                       FlatButton(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
 
@@ -187,6 +173,22 @@ class _PerfilViewState extends State<PerfilView> {
                         ),
                         onPressed: () {
                           _salvaNovaSenha();
+                        },
+                      ),
+                      FlatButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+
+                        color: Color(0xff083251),
+                        child: Text(
+                          "Fechar",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: FontFamily.fontSpecial,
+                              color: Colors.white
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
                         },
                       ),
                     ],
@@ -213,4 +215,64 @@ class _PerfilViewState extends State<PerfilView> {
       onWillPop: () => Future.value(false),
     );
   }
+  Widget rows(String title, String hint, TextEditingController controller) {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        new Expanded(
+            child: new Container(
+              //height: 60,
+              //width: MediaQuery.of(context).size.width,
+
+              margin: const EdgeInsets.only(top: 16),
+              // padding: const EdgeInsets.only(left: 6),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Container(
+                    //color: Colors.red,
+                    margin: const EdgeInsets.only(
+                      top: 4,
+                      bottom: 4,
+                    ),
+                    child: new Text(
+                      title,
+                      style: TextStyle(
+                          color: Color(0xff112841),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12),
+                    ),
+                  ),
+                  Container(
+                    //width: MediaQuery.of(context).size.width/1.2,
+                    height: 30,
+                    padding:
+                    EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            // color: Colors.black12,
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 5)
+                        ]),
+                    child: TextField(
+                      controller: controller,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: hint,
+                          hintStyle: new TextStyle(fontSize: 14)
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ))
+      ],
+    );
+  }
+
 }

@@ -85,7 +85,8 @@ class UsuarioRest extends BaseRest {
           },
       );
       if (response.statusCode == 200) {
-        var dadosJson = json.decode(response.body);
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        var dadosJson = json.decode(source);
         UsuarioModel usuarioModel = UsuarioModel.fromJson(dadosJson);
         return usuarioModel;
 
@@ -142,7 +143,8 @@ class UsuarioRest extends BaseRest {
             'Authorization': token,
           });
       if (response.statusCode == 200) {
-        var dadosJson = json.decode(response.body);
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        var dadosJson = json.decode(source);
         return _parseListaUsuarioModel(dadosJson);
 
       } else {

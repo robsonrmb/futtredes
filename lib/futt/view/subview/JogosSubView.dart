@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
@@ -168,33 +169,37 @@ class _JogosSubViewState extends State<JogosSubView> {
 
   _showModalRemoveJogo(
       BuildContext context, String title, String description, int idJogo) {
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext) {
-          return AlertDialog(
-            title: Text(title),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(description),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => {
-                  Navigator.pop(context),
-                },
-                child: Text("Não"),
-              ),
-              FlatButton(
-                onPressed: () => _removeJogo(idJogo),
-                child: Text("Sim"),
-              )
-            ],
-          );
-        });
+    DialogFutt dialogFutt = new DialogFutt();
+    dialogFutt.showAlertDialogActionNoYes(context, title, description, () {
+      _removeJogo(idJogo);
+    });
+    // return showDialog(
+    //     context: context,
+    //     barrierDismissible: true,
+    //     builder: (BuildContext) {
+    //       return AlertDialog(
+    //         title: Text(title),
+    //         content: SingleChildScrollView(
+    //           child: ListBody(
+    //             children: <Widget>[
+    //               Text(description),
+    //             ],
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           FlatButton(
+    //             onPressed: () => {
+    //               Navigator.pop(context),
+    //             },
+    //             child: Text("Não"),
+    //           ),
+    //           FlatButton(
+    //             onPressed: () => _removeJogo(idJogo),
+    //             child: Text("Sim"),
+    //           )
+    //         ],
+    //       );
+    //     });
   }
 
   _zeraJogo(int idJogo) async {
@@ -537,188 +542,557 @@ class _JogosSubViewState extends State<JogosSubView> {
                     return new GestureDetector(
                       onTap: () {
                         _zeraPlacar(jogo)
-                            ?
-                        showZerar(jogo.id)
-                        // _showModalZeraJogo(
-                        //         context,
-                        //         "Zerar placar do jogo",
-                        //         "Deseja realmente zerar o placar do jogo?",
-                        //         jogo.id)
+                            ? showZerar(jogo.id)
+                            // _showModalZeraJogo(
+                            //         context,
+                            //         "Zerar placar do jogo",
+                            //         "Deseja realmente zerar o placar do jogo?",
+                            //         jogo.id)
                             : print("");
                       },
                       child: new Card(
                         elevation: 5,
                         color: AppColors.colorCardFundoJogos,
                         child: new Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 20),
-                          child: new Row(
-                            children: [
-                              new Expanded(
-                                flex: 4,
-                                child: new Column(
+                            margin: const EdgeInsets.only(
+                                left: 16, right: 16, top: 20),
+                            child: new Column(
+                              children: [
+                                new Row(
                                   children: [
-                                    new Row(
-                                      children: [
-                                        Container(
-                                            height: 30,
-                                            width: 30,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.scaleDown,
-                                                    image: NetworkImage(
-                                                        "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador1}")),
-                                                border: Border.all(
-                                                    color: Colors.white))),
-                                        new Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.25,
-                                          child: new Text(
-                                            apelidoOuNome(
-                                                jogo.apelidoFormatadoJogador1,
-                                                jogo.nomeJogador1),
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                color: AppColors
-                                                    .colorNameJogadorJogos),
+                                    new Expanded(
+                                      flex: 4,
+                                      child: new Column(
+                                        children: [
+                                          new Row(
+                                            children: [
+                                              Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.scaleDown,
+                                                          image: NetworkImage(
+                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador1}")),
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.white))),
+                                              new Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.25,
+                                                child: new Text(
+                                                  apelidoOuNome(
+                                                      jogo.apelidoFormatadoJogador1,
+                                                      jogo.nomeJogador1),
+                                                  style: new TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: AppColors
+                                                          .colorNameJogadorJogos),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        )
-                                      ],
+                                          new Row(
+                                            children: [
+                                              Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.scaleDown,
+                                                          image: NetworkImage(
+                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador2}")),
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.white))),
+                                              new Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.25,
+                                                child: new Text(
+                                                  apelidoOuNome(
+                                                      jogo.apelidoFormatadoJogador2,
+                                                      jogo.nomeJogador2),
+                                                  style: new TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: AppColors
+                                                          .colorNameJogadorJogos),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                    new Row(
-                                      children: [
-                                        Container(
-                                            height: 30,
-                                            width: 30,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.scaleDown,
-                                                    image: NetworkImage(
-                                                        "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador2}")),
-                                                border: Border.all(
-                                                    color: Colors.white))),
-                                        new Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.25,
-                                          child: new Text(
-                                            apelidoOuNome(
-                                                jogo.apelidoFormatadoJogador2,
-                                                jogo.nomeJogador2),
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                color: AppColors
-                                                    .colorNameJogadorJogos),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              new Expanded(
-                                flex: 2,
-                                child: new Column(
-                                  children: [
-                                    new Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "${jogo.pontuacao1} X ${jogo.pontuacao2}",
-                                          style: TextStyle(
-                                            color:
-                                                AppColors.colorPontuacaoJogos,
-                                            fontSize: 14,
-                                            fontFamily: FontFamily.fontSpecial,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              new Expanded(
-                                flex: 4,
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    new Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        new Container(
-                                          alignment: Alignment.centerRight,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.25,
-                                          child: new Text(
-                                            apelidoOuNome(
-                                                jogo.apelidoFormatadoJogador3,
-                                                jogo.nomeJogador3),
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                color: AppColors
-                                                    .colorNameJogadorJogos),
-                                          ),
-                                        ),
-                                        Container(
-                                            height: 30,
-                                            width: 30,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.scaleDown,
-                                                    image: NetworkImage(
-                                                        "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador3}")),
-                                                border: Border.all(
-                                                    color: Colors.white))),
-                                      ],
+                                    new Expanded(
+                                      flex: 2,
+                                      child: new Column(
+                                        children: [
+                                          new Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "${jogo.pontuacao1} X ${jogo.pontuacao2}",
+                                                style: TextStyle(
+                                                  color: AppColors
+                                                      .colorPontuacaoJogos,
+                                                  fontSize: 14,
+                                                  fontFamily:
+                                                      FontFamily.fontSpecial,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                    new Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        new Container(
-                                          alignment: Alignment.centerRight,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.25,
-                                          child: new Text(
-                                            apelidoOuNome(
-                                                jogo.apelidoFormatadoJogador4,
-                                                jogo.nomeJogador4),
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                color: AppColors
-                                                    .colorNameJogadorJogos),
+                                    new Expanded(
+                                      flex: 4,
+                                      child: new Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          new Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              new Container(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.25,
+                                                child: new Text(
+                                                  apelidoOuNome(
+                                                      jogo.apelidoFormatadoJogador3,
+                                                      jogo.nomeJogador3),
+                                                  style: new TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: AppColors
+                                                          .colorNameJogadorJogos),
+                                                ),
+                                              ),
+                                              Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.scaleDown,
+                                                          image: NetworkImage(
+                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador3}")),
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.white))),
+                                            ],
                                           ),
-                                        ),
-                                        Container(
-                                            height: 30,
-                                            width: 30,
-                                            decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                    fit: BoxFit.scaleDown,
-                                                    image: NetworkImage(
-                                                        "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador4}")),
-                                                border: Border.all(
-                                                    color: Colors.white))),
-                                      ],
-                                    )
+                                          new Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              new Container(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.25,
+                                                child: new Text(
+                                                  apelidoOuNome(
+                                                      jogo.apelidoFormatadoJogador4,
+                                                      jogo.nomeJogador4),
+                                                  style: new TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: AppColors
+                                                          .colorNameJogadorJogos),
+                                                ),
+                                              ),
+                                              Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.scaleDown,
+                                                          image: NetworkImage(
+                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador4}")),
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.white))),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                _alteraPlacar(jogo)
+                                    ? Container(
+                                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        child: ListTile(
+                                          trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                _alteraPlacar(jogo)
+                                                    ? new Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        //padding: const EdgeInsets.all(8),
+                                                        decoration:
+                                                            new BoxDecoration(
+                                                          color: Colors.white,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          gradient: LinearGradient(
+                                                              begin: Alignment
+                                                                  .topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
+                                                              colors: <Color>[
+                                                                widget.redeModel
+                                                                            .status <
+                                                                        3
+                                                                    ? (widget.redeModel.status ==
+                                                                            1)
+                                                                        ? Color(
+                                                                            0xff093352)
+                                                                        : AppColors
+                                                                            .colorEspecialPrimario1
+                                                                    : Colors
+                                                                        .grey,
+                                                                widget.redeModel
+                                                                            .status <
+                                                                        3
+                                                                    ? (widget.redeModel.status ==
+                                                                            1)
+                                                                        ? Color(
+                                                                            0xff093352)
+                                                                        : AppColors
+                                                                            .colorEspecialPrimario2
+                                                                    : Colors
+                                                                        .grey,
+                                                              ]),
+                                                        ),
+                                                        child: GestureDetector(
+                                                          child: new Center(
+                                                              child: new Container(
+                                                                  decoration: new BoxDecoration(
+                                                                      //color: Colors.black,
+                                                                      shape: BoxShape.circle),
+                                                                  child: Icon(
+                                                                    Icons.edit,
+                                                                    size: 18,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ))),
+                                                          onTap: () {
+                                                            _controllerPontuacao1
+                                                                .text = "";
+                                                            _controllerPontuacao2
+                                                                .text = "";
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return AlertDialog(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20)),
+                                                                    title: Text(
+                                                                        "Informe o placar"),
+                                                                    content:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.stretch,
+                                                                        children: <
+                                                                            Widget>[
+                                                                          Container(
+                                                                            padding:
+                                                                                EdgeInsets.all(5),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: Colors.grey[200],
+                                                                              border: Border.all(
+                                                                                width: 1.0,
+                                                                                color: Colors.grey[300],
+                                                                              ),
+                                                                                  borderRadius: new BorderRadius.circular(8)
+                                                                            ),
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                                              children: <Widget>[
+                                                                                Column(
+                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                  children: <Widget>[
+                                                                                    Text(
+                                                                                      "${jogo.apelidoFormatadoJogador1}",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      "${jogo.apelidoFormatadoJogador2}",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Container(
+                                                                                      height: 40,
+                                                                                      width: 40,
+                                                                                      margin: const EdgeInsets.only(bottom: 10),
+                                                                                      child: TextField(
+                                                                                        keyboardType: TextInputType.number,
+                                                                                        controller: _controllerPontuacao1,
+                                                                                        style: TextStyle(
+                                                                                          color: AppColors
+                                                                                              .colorPontuacaoJogos,
+                                                                                          fontSize: 14,
+                                                                                          fontFamily:
+                                                                                          FontFamily.fontSpecial,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      "X",
+                                                                                      style: TextStyle(
+                                                                                        color: AppColors
+                                                                                            .colorPontuacaoJogos,
+                                                                                        fontSize: 14,
+                                                                                        fontFamily:
+                                                                                        FontFamily.fontSpecial,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Container(
+                                                                                      height: 40,
+                                                                                      width: 40,
+                                                                                      margin: const EdgeInsets.only(bottom: 10),
+                                                                                      child: TextField(
+                                                                                        keyboardType: TextInputType.number,
+                                                                                        textAlign: TextAlign.right,
+                                                                                        controller: _controllerPontuacao2,
+                                                                                        style: TextStyle(
+                                                                                          color: AppColors
+                                                                                              .colorPontuacaoJogos,
+                                                                                          fontSize: 14,
+                                                                                          fontFamily:
+                                                                                          FontFamily.fontSpecial,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                Column(
+                                                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                  children: <Widget>[
+                                                                                    Text(
+                                                                                      "${jogo.apelidoFormatadoJogador3}",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      "${jogo.apelidoFormatadoJogador4}",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          new Container(height: 20,),
+                                                                          RaisedButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              _atualizaPlacar(jogo.id, jogo.numero);
+                                                                            },
+                                                                            shape:
+                                                                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                                                                            padding:
+                                                                                const EdgeInsets.all(0.0),
+                                                                            child:
+                                                                                Ink(
+                                                                              decoration: BoxDecoration(
+                                                                                gradient: LinearGradient(
+                                                                                  colors: <Color>[
+                                                                                    AppColors.colorEspecialSecundario1,
+                                                                                    AppColors.colorEspecialSecundario2
+                                                                                  ],
+                                                                                ),
+                                                                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                                                              ),
+                                                                              child: Container(
+                                                                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                                                                constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
+                                                                                // min sizes for Material buttons
+                                                                                alignment: Alignment.center,
+                                                                                child: Text(
+                                                                                  "Atualiza placar",
+                                                                                  style: TextStyle(fontSize: 16, color: AppColors.colorTextLogCad, fontWeight: FontWeight.bold),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          // RaisedButton(
+                                                                          //   color: Color(0xff086ba4),
+                                                                          //   textColor:
+                                                                          //   Colors.white,
+                                                                          //   padding:
+                                                                          //   EdgeInsets.all(15),
+                                                                          //   child: Text(
+                                                                          //     "Atualiza placar",
+                                                                          //     style:
+                                                                          //     TextStyle(
+                                                                          //       fontSize:
+                                                                          //       16,
+                                                                          //       fontFamily:
+                                                                          //       'Candal',
+                                                                          //     ),
+                                                                          //   ),
+                                                                          //   shape:
+                                                                          //   RoundedRectangleBorder(
+                                                                          //     borderRadius:
+                                                                          //     BorderRadius.circular(
+                                                                          //         2),
+                                                                          //   ),
+                                                                          //   onPressed:
+                                                                          //       () {
+                                                                          //     _atualizaPlacar(
+                                                                          //         jogo.id,
+                                                                          //         jogo.numero);
+                                                                          //   },
+                                                                          // ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      FlatButton(
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                                        color: AppColors.colorButtonDialog,
+                                                                        onPressed: (){
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        child: Text('Fechar',style: new TextStyle(color: Colors.white),),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                });
+                                                          },
+                                                        ),
+                                                      )
+                                                    : new Padding(
+                                                        padding:
+                                                            EdgeInsets.all(1),
+                                                      ),
+                                                _alteraPlacar(jogo)
+                                                    ? new Container(
+                                                        margin: const EdgeInsets
+                                                            .only(left: 6),
+                                                        height: 40,
+                                                        width: 40,
+                                                        //padding: const EdgeInsets.all(8),
+                                                        decoration:
+                                                            new BoxDecoration(
+                                                          color: Colors.white,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          gradient: LinearGradient(
+                                                              begin: Alignment
+                                                                  .topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
+                                                              colors: <Color>[
+                                                                widget.redeModel
+                                                                            .status <
+                                                                        3
+                                                                    ? (widget.redeModel.status ==
+                                                                            1)
+                                                                        ? Color(
+                                                                            0xff093352)
+                                                                        : AppColors
+                                                                            .colorEspecialPrimario1
+                                                                    : Colors
+                                                                        .grey,
+                                                                widget.redeModel
+                                                                            .status <
+                                                                        3
+                                                                    ? (widget.redeModel.status ==
+                                                                            1)
+                                                                        ? Color(
+                                                                            0xff093352)
+                                                                        : AppColors
+                                                                            .colorEspecialPrimario2
+                                                                    : Colors
+                                                                        .grey,
+                                                              ]),
+                                                        ),
+                                                        child: GestureDetector(
+                                                          child: new Center(
+                                                              child: new Container(
+                                                                  decoration: new BoxDecoration(
+                                                                      //color: Colors.black,
+                                                                      shape: BoxShape.circle),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .delete_forever,
+                                                                    size: 20,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ))),
+                                                          onTap: () {
+                                                            _showModalRemoveJogo(
+                                                                context,
+                                                                "Remove jogo",
+                                                                "Deseja realmente remover o jogo?",
+                                                                jogo.id);
+                                                          },
+                                                        ),
+                                                      )
+                                                    : new Padding(
+                                                        padding:
+                                                            EdgeInsets.all(1),
+                                                      ),
+                                              ]),
+                                        ),
+                                      )
+                                    : new Padding(
+                                        padding: EdgeInsets.all(1),
+                                      ),
+                              ],
+                            )),
                       ),
                     );
                     return new Card(
@@ -1158,23 +1532,22 @@ class _JogosSubViewState extends State<JogosSubView> {
       return apelido;
     } else if (nome.split(' ').length == 1) {
       return nome;
-    } else  if (nome.split(' ').length > 1){
+    } else if (nome.split(' ').length > 1) {
       String nomeFormatado = '${nome.split(' ')[0]}';
       return nomeFormatado;
     }
   }
 
-
-  // //APELIDO OU O NOME COMPLETO
-  // String apelidoOuNome(String apelido, String nome) {
-  //   if (apelido != null && apelido != "") {
-  //     return apelido;
-  //   } else if (nome.split(' ').length == 1) {
-  //     return nome;
-  //   } else {
-  //     String nomeFormatado =
-  //         '${nome.split(' ')[0]} ${nome.split(' ')[nome.split(' ').length - 1]}';
-  //     return nomeFormatado;
-  //   }
-  // }
+// //APELIDO OU O NOME COMPLETO
+// String apelidoOuNome(String apelido, String nome) {
+//   if (apelido != null && apelido != "") {
+//     return apelido;
+//   } else if (nome.split(' ').length == 1) {
+//     return nome;
+//   } else {
+//     String nomeFormatado =
+//         '${nome.split(' ')[0]} ${nome.split(' ')[nome.split(' ').length - 1]}';
+//     return nomeFormatado;
+//   }
+// }
 }

@@ -114,12 +114,16 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
 //      String _dataNasc = "${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}";
 
+      if(_controllerPais != 'Brasil'){
+        estadoSelecionado = '';
+      }
       UsuarioModelAtualiza usuarioModel = UsuarioModelAtualiza.Atualiza(
           _controllerNome.text,
           _controllerApelido.text,
           _dataNasc,
           _controllerSexo,
           _controllerPosicionamento,
+          estadoSelecionado,
           _controllerPais,
           _controllerCidade.text,
           _controllerLocal.text);
@@ -2229,6 +2233,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           onChanged: (newValue) {
                             setState(() {
                               paisSelecionado = newValue;
+                              _controllerPais = newValue;
                               //controllerNomeCartaoContaBancaria.text = newValue;
                             });
                           },

@@ -21,7 +21,7 @@ class UsuarioModelAtualiza {
   String _user;
 
   UsuarioModelAtualiza.Novo(this._id);
-  UsuarioModelAtualiza.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,
+  UsuarioModelAtualiza.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,this._estado,
       this._pais, this._cidade, this._ondeJoga);
   UsuarioModelAtualiza.AtualizaSenha(this._email, this._senha, this._novaSenha);
   UsuarioModelAtualiza(this._id, this._nome, this._email, this._senha, this._apelido,

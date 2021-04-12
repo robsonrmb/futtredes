@@ -167,17 +167,17 @@ class CustomDialog extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
 
                     color: AppColors.colorButtonDialog,
-                    onPressed: () {
-                      Navigator.of(context).pop(); // To close the dialog
-                    },
-                    child: Text('Não',style: new TextStyle(color: Colors.white),),
+                    onPressed: actionYes,
+                    child: Text('Sim',style: new TextStyle(color: Colors.white),),
                   ),
                   FlatButton(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
 
                     color: AppColors.colorButtonDialog,
-                    onPressed: actionYes,
-                    child: Text('Sim',style: new TextStyle(color: Colors.white),),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // To close the dialog
+                    },
+                    child: Text('Não',style: new TextStyle(color: Colors.white),),
                   ),
                 ],
               )

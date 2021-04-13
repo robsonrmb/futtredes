@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
@@ -28,38 +31,55 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   String _mensagem = "";
 
+  List<String> choices = <String>[
+    "Integrantes",
+    "Responsáveis",
+    "Exclusão",
+  ];
+
+  List<String> choices2 = <String>[
+    "Integrantes",
+    "Responsáveis",
+    "Ativação"
+  ];
+
   Future<List<RedeModel>> _listaMinhasRedes() async {
     RedeService redeService = RedeService();
     return redeService.listaMinhasRedes(ConstantesConfig.SERVICO_FIXO);
   }
 
   _showModalAtivaDesativa(BuildContext context, String title, String description, int idRede, String acao){
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext) {
-          return AlertDialog(
-            title: Text(title),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(description),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => _realizaAcao(idRede, false, context, acao),
-                child: Text("Não"),
-              ),
-              FlatButton(
-                onPressed: () => _realizaAcao(idRede, true, context, acao),
-                child: Text("Sim"),
-              )
-            ],
-          );
-        }
-    );
+    DialogFutt dialogFutt = new DialogFutt();
+    dialogFutt.showAlertDialogActionNoYes(context, title,
+        description, () {
+          _realizaAcao(idRede, true, context, acao);
+        });
+    // return showDialog(
+    //     context: context,
+    //     barrierDismissible: true,
+    //     builder: (BuildContext) {
+    //       return AlertDialog(
+    //         title: Text(title),
+    //         content: SingleChildScrollView(
+    //           child: ListBody(
+    //             children: <Widget>[
+    //               Text(description),
+    //             ],
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           FlatButton(
+    //             onPressed: () => _realizaAcao(idRede, false, context, acao),
+    //             child: Text("Não"),
+    //           ),
+    //           FlatButton(
+    //             onPressed: () => _realizaAcao(idRede, true, context, acao),
+    //             child: Text("Sim"),
+    //           )
+    //         ],
+    //       );
+    //     }
+    // );
   }
 
   _realizaAcao(int idRede, bool resposta, BuildContext context, acao) async {
@@ -385,6 +405,8 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                 rede.disponibilidade != null?
                                     rede.status == 2?
                                     new Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Validade: $validade",
@@ -407,6 +429,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     ):
                                 new Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(_getSubTitulo(rede.status, rede.disponibilidade),
                                       style: TextStyle(
@@ -420,6 +443,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     validade != null?
                                     Text(
                                       "Validade: $validade",
+                                      textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppColors.colorSubTitle,
@@ -472,61 +496,97 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                           },
                                         ),
                                       ),
+                                      new Container(width: 6,),
+                                      // new Container(
+                                      //   height: 40,
+                                      //   width: 40,
+                                      //   //padding: const EdgeInsets.all(8),
+                                      //   margin: const EdgeInsets.only(left: 6),
+                                      //   decoration: new BoxDecoration(
+                                      //       gradient: LinearGradient(begin: Alignment.topLeft,
+                                      //           end: Alignment.bottomRight,
+                                      //           colors: <Color>[
+                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                      //           ]),
+                                      //       shape: BoxShape.circle),
+                                      //   child:  GestureDetector(
+                                      //     child: Icon(Icons.people,
+                                      //         color:  AppColors.colorIconCardRede
+                                      //     ),
+                                      //     onTap: (){
+                                      //       Navigator.push(context, MaterialPageRoute(
+                                      //           builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)
+                                      //       ));
+                                      //     },
+                                      //   ),
+                                      // ),
+                                      // new Container(
+                                      //   height: 40,
+                                      //   width: 40,
+                                      //   //padding: const EdgeInsets.all(8),
+                                      //   margin: const EdgeInsets.only(left: 6),
+                                      //   decoration: new BoxDecoration(
+                                      //       gradient: LinearGradient(begin: Alignment.topLeft,
+                                      //           end: Alignment.bottomRight,
+                                      //           colors: <Color>[
+                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                      //           ]),
+                                      //       shape: BoxShape.circle),
+                                      //   child: GestureDetector(
+                                      //     child:Icon(Icons.smartphone,
+                                      //         color:  AppColors.colorIconCardRede
+                                      //     ),
+                                      //     onTap: (){
+                                      //       Navigator.push(context, MaterialPageRoute(
+                                      //           builder: (context) => ResponsaveisRedeView(redeModel: rede,)
+                                      //       ));
+                                      //     },
+                                      //   ),
+                                      // ),
+                                      //
+                                      // (rede.status == 1 || rede.status == 2) ?
+                                      // new Container(
+                                      //   height: 40,
+                                      //   width: 40,
+                                      //   //padding: const EdgeInsets.all(8),
+                                      //   margin: const EdgeInsets.only(left: 6),
+                                      //   decoration: new BoxDecoration(
+                                      //       gradient: LinearGradient(begin: Alignment.topLeft,
+                                      //           end: Alignment.bottomRight,
+                                      //           colors: <Color>[
+                                      //             AppColors.colorEspecialPrimario1,
+                                      //             AppColors.colorEspecialPrimario2
+                                      //           ]),
+                                      //       shape: BoxShape.circle),
+                                      //   child: GestureDetector(
+                                      //     child: Icon(Icons.delete_forever,
+                                      //       color: rede.status == 1 ? Color(0xff093352) :  AppColors.colorIconCardRede,),
+                                      //     onTap: (){
+                                      //       _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
+                                      //     },
+                                      //   )
+                                      // )
+                                      //  : new Padding(
+                                      //   padding: EdgeInsets.all(1),
+                                      // ),
+                                      // (rede.status == 3 || rede.status == 4) ? GestureDetector(
+                                      //   child: Padding(
+                                      //     padding: EdgeInsets.only(left: 10),
+                                      //     child: Icon(Icons.done,),
+                                      //   ),
+                                      //   onTap: (){
+                                      //     _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
+                                      //   },
+                                      // ) : new Padding(
+                                      //   padding: EdgeInsets.all(1),
+                                      // ),
+                                      (rede.status == 1 || rede.status == 2)?
                                       new Container(
                                         height: 40,
                                         width: 40,
                                         //padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.only(left: 6),
-                                        decoration: new BoxDecoration(
-                                            gradient: LinearGradient(begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: <Color>[
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
-                                                ]),
-                                            shape: BoxShape.circle),
-                                        child:  GestureDetector(
-                                          child: Icon(Icons.people,
-                                              color:  AppColors.colorIconCardRede
-                                          ),
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(
-                                                builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)
-                                            ));
-                                          },
-                                        ),
-                                      ),
-                                      new Container(
-                                        height: 40,
-                                        width: 40,
-                                        //padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.only(left: 6),
-                                        decoration: new BoxDecoration(
-                                            gradient: LinearGradient(begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: <Color>[
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
-                                                ]),
-                                            shape: BoxShape.circle),
-                                        child: GestureDetector(
-                                          child:Icon(Icons.smartphone,
-                                              color:  AppColors.colorIconCardRede
-                                          ),
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(
-                                                builder: (context) => ResponsaveisRedeView(redeModel: rede,)
-                                            ));
-                                          },
-                                        ),
-                                      ),
-
-                                      (rede.status == 1 || rede.status == 2) ?
-                                      new Container(
-                                        height: 40,
-                                        width: 40,
-                                        //padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.only(left: 6),
                                         decoration: new BoxDecoration(
                                             gradient: LinearGradient(begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
@@ -535,28 +595,75 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                                   AppColors.colorEspecialPrimario2
                                                 ]),
                                             shape: BoxShape.circle),
-                                        child: GestureDetector(
-                                          child: Icon(Icons.delete_forever,
-                                            color: rede.status == 1 ? Color(0xff093352) :  AppColors.colorIconCardRede,),
-                                          onTap: (){
-                                            _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
+                                        child: PopupMenuButton(
+                                          color: Color(0xff083251),
+                                          onSelected: (value) {
+                                            selectedChoice(value,rede);
                                           },
+                                          // shape: RoundedRectangleBorder(
+                                          //     borderRadius: new BorderRadius.circular(20.0)),
+                                          padding: EdgeInsets.zero,
+                                          // initialValue: choices[_selection],
+                                          itemBuilder: (BuildContext context) {
+                                            return choices.map((String choice) {
+                                              return PopupMenuItem<String>(
+                                                value: choice,
+                                                child: new Row(children: [
+                                                  Text(choice,style: new TextStyle(color: Colors.white),),
+                                                ],)
+                                              );
+                                            }).toList();
+                                          },
+                                          icon: FaIcon(
+                                            FontAwesomeIcons.bars,
+                                            color: Colors.white,
+                                            size: 17,
+                                          ),
                                         )
-                                      )
-                                       : new Padding(
-                                        padding: EdgeInsets.all(1),
-                                      ),
-                                      (rede.status == 3 || rede.status == 4) ? GestureDetector(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Icon(Icons.done,),
-                                        ),
-                                        onTap: (){
-                                          _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
-                                        },
-                                      ) : new Padding(
-                                        padding: EdgeInsets.all(1),
-                                      ),
+                                      ):new Padding(
+                                          padding: EdgeInsets.all(1),
+                                        ),(rede.status == 3 || rede.status == 4) ?
+                                      new Container(
+                                          height: 40,
+                                          width: 40,
+                                          //padding: const EdgeInsets.all(8),
+                                          decoration: new BoxDecoration(
+                                              gradient: LinearGradient(begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: <Color>[
+                                                    AppColors.colorRedeDesabilitadaTextICon,
+                                                    AppColors.colorRedeDesabilitadaTextICon
+                                                  ]),
+                                              shape: BoxShape.circle),
+                                          child: PopupMenuButton(
+                                            color: Color(0xff083251),
+                                            onSelected: (value) {
+                                              selectedChoice2(value,rede);
+                                            },
+                                            // shape: RoundedRectangleBorder(
+                                            //     borderRadius: new BorderRadius.circular(20.0)),
+                                            padding: EdgeInsets.zero,
+                                            // initialValue: choices[_selection],
+                                            itemBuilder: (BuildContext context) {
+                                              return choices2.map((String choice) {
+                                                return PopupMenuItem<String>(
+                                                  value: choice,
+                                                  child:
+                                                  Text(choice,style: new TextStyle(color: Colors.white),),
+                                                );
+                                              }).toList();
+                                            },
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.bars,
+                                              color: Colors.white,
+                                              size: 17,
+                                            ),
+                                          )
+                                      ):
+                              new Padding(
+                                  padding: EdgeInsets.all(1),
+                                )
+
                                     ]
                                 ),
                               ),
@@ -574,7 +681,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                 },
               );
             }else{
-              return Apresentacao().getApresentacao(2);
+              return Apresentacao().getApresentacao(2,context);
             }
             break;
         }
@@ -634,6 +741,44 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     else if(pais != null && cidade == null && local != null){
       String value = "${pais == 'Brasil'?'':'$pais - '} $local";
       return value;
+    }
+  }
+
+  void selectedChoice(String value,RedeModel rede) {
+    switch (value) {
+      case "Integrantes":
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)));
+        break;
+      case "Responsáveis":
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ResponsaveisRedeView(redeModel: rede,)
+        ));
+        break;
+      case "Exclusão":
+        _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
+        break;
+      default:
+        break;
+    }
+  }
+
+  void selectedChoice2(String value,RedeModel rede) {
+    switch (value) {
+      case "Integrantes":
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)));
+        break;
+      case "Responsáveis":
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ResponsaveisRedeView(redeModel: rede,)
+        ));
+        break;
+      case "Ativação":
+        _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
+        break;
+      default:
+        break;
     }
   }
 }

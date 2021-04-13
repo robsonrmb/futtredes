@@ -265,7 +265,9 @@ class _RedesSubViewState extends State<RedesSubView> {
                                                 //color: Colors.black,
                                                 shape: BoxShape.circle
                                               ),
-                                              child:  FaIcon(FontAwesomeIcons.futbol,color: AppColors.colorIconCardRede,size: 17,),
+                                              child:   Icon(Icons.play_circle_outline,
+                                                  color: AppColors.colorIconCardRede
+                                              ),
                                             )
                                           ),
                                           // Padding(
@@ -377,7 +379,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                 },
               );
             } else {
-              return Apresentacao().getApresentacao(1);
+              return Apresentacao().getApresentacao(1,context);
               /*
               return GestureDetector(
                 child: Apresentacao().getApresentacao(1),

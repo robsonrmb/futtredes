@@ -188,7 +188,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
     _controllerEmailJogador4.text = _resultadoJogador4;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xfff7f7f7),
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: Colors.white,
@@ -213,417 +213,415 @@ class _NovoJogoViewState extends State<NovoJogoView> {
       ),
       body: Container(
         color: Color(0xfff7f7f7),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
-            child: FutureBuilder<List<IntegranteModel>>(
-                future: _listaIntegrantes(),
-                builder: (context, snapshot) {
-                  List<String> listIntegrantes = [];
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(10),
+          child: FutureBuilder<List<IntegranteModel>>(
+            future: _listaIntegrantes(),
+            builder: (context, snapshot) {
+              List<String> listIntegrantes = [];
 
-                  switch( snapshot.connectionState ) {
-                    case ConnectionState.none :
-                    case ConnectionState.waiting :
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    // color: Colors.black12,
-                                      color: Colors.black.withOpacity(0.5),
+              switch( snapshot.connectionState ) {
+                case ConnectionState.none :
+                case ConnectionState.waiting :
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                // color: Colors.black12,
+                                  color: Colors.black.withOpacity(0.5),
 
-                                      blurRadius: 5
-                                  )
-                                ]
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                new Container(
-                                  height: 5,
-                                  decoration: new BoxDecoration(
-                                    //color: Colors.red,
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8),
-                                      topLeft: Radius.circular(8),
+                                  blurRadius: 5
+                              )
+                            ]
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            new Container(
+                              height: 5,
+                              decoration: new BoxDecoration(
+                                //color: Colors.red,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(8),
+                                  topLeft: Radius.circular(8),
 
-                                    ),
-                                    gradient:  LinearGradient(
-                                      colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
-                                    ),
-                                  ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                                  child: Shimmer.fromColors(
-                                      baseColor: Colors.grey.withOpacity(0.5),
-                                      highlightColor: Colors.white,
-                                      child: new Container(
-                                        height: 20,
-                                        width: 100,
-                                        decoration: new BoxDecoration(
-                                          //shape: BoxShape.circle,
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Colors.grey.withOpacity(0.5),
-                                        ),
-                                      )),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 1),
-                                  child: Shimmer.fromColors(
-                                      baseColor: Colors.grey.withOpacity(0.5),
-                                      highlightColor: Colors.white,
-                                      child: new Container(
-                                        height: 16,
-                                        width: 89,
-                                        decoration: new BoxDecoration(
-                                          //shape: BoxShape.circle,
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Colors.grey.withOpacity(0.5),
-                                        ),
-                                      )),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                                  child:Shimmer.fromColors(
-                                      baseColor: Colors.grey.withOpacity(0.5),
-                                      highlightColor: Colors.white,
-                                      child: new Container(
-                                        height: 16,
-                                        width: 89,
-                                        decoration: new BoxDecoration(
-                                          //shape: BoxShape.circle,
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: Colors.grey.withOpacity(0.5),
-                                        ),
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
-                          rowsLoad('Jogador 1'),
-                          rowsLoad('Jogador 2'),
-                          new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 26),
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(color: Colors.deepOrange),
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                  child:  Text("X",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.deepOrange : Colors.grey[800]
-                                    ),
-                                  ),
+                                gradient:  LinearGradient(
+                                  colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
                                 ),
                               ),
-                            ],
-                          ),
-                          rowsLoadExp('Jogador 3'),
-                          rowsLoad('Jogador 4'),
-                          Padding(
-                            padding: EdgeInsets.only(top: 15),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+                              child: Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 20,
+                                    width: 100,
+                                    decoration: new BoxDecoration(
+                                      //shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 1),
+                              child: Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 16,
+                                    width: 89,
+                                    decoration: new BoxDecoration(
+                                      //shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                              child:Shimmer.fromColors(
+                                  baseColor: Colors.grey.withOpacity(0.5),
+                                  highlightColor: Colors.white,
+                                  child: new Container(
+                                    height: 16,
+                                    width: 89,
+                                    decoration: new BoxDecoration(
+                                      //shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+                      rowsLoad('Jogador 1'),
+                      rowsLoad('Jogador 2'),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 26),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.deepOrange),
+                                shape: BoxShape.circle),
                             child: Center(
-                              child: Text(
-                                _mensagem,
+                              child:  Text("X",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  fontFamily: FontFamily.fontSpecial,
-
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.deepOrange : Colors.grey[800]
                                 ),
                               ),
                             ),
                           ),
                         ],
-                      );
-                      break;
-                    case ConnectionState.active :
-                    case ConnectionState.done :
-                      if( snapshot.hasData ) {
+                      ),
+                      rowsLoadExp('Jogador 3'),
+                      rowsLoad('Jogador 4'),
+                      Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Center(
+                          child: Text(
+                            _mensagem,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontFamily: FontFamily.fontSpecial,
 
-                        List<IntegranteModel> integrantes = snapshot.data;
-                        integrantesList = snapshot.data;
-                        List<String> _integrantes = List();
-
-                        for (IntegranteModel _im in integrantes) {
-                          _integrantes.add(_im.nome);
-                          listIntegrantes.add(_im.user);
-                        }
-
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      // color: Colors.black12,
-                                        color: Colors.black.withOpacity(0.5),
-
-                                        blurRadius: 5
-                                    )
-                                  ]
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  new Container(
-                                    height: 5,
-                                    decoration: new BoxDecoration(
-                                      //color: Colors.red,
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(8),
-                                        topLeft: Radius.circular(8),
-
-                                      ),
-                                      gradient:  LinearGradient(
-                                        colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                                    child: Text("${widget.redeModel.nome}",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: FontFamily.fontSpecial,
-
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1),
-                                    child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1)  : Colors.grey[800]
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                                    child: Text("${widget.redeModel.local}",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
-                            rows('Jogador 1','Usuário 1',_controllerEmailJogador1,listIntegrantes,key1),
-                            rows('Jogador 2','Usuário 2',_controllerEmailJogador2,listIntegrantes,key2),
-                            new Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(top: 26),
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.deepOrange),
-                                      shape: BoxShape.circle),
-                                  child: Center(
-                                    child:  Text("X",
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.deepOrange : Colors.grey[800]
-                                      ),
-                                    ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                  break;
+                case ConnectionState.active :
+                case ConnectionState.done :
+                  if( snapshot.hasData ) {
+
+                    List<IntegranteModel> integrantes = snapshot.data;
+                    integrantesList = snapshot.data;
+                    List<String> _integrantes = List();
+
+                    for (IntegranteModel _im in integrantes) {
+                      _integrantes.add(_im.nome);
+                      listIntegrantes.add(_im.user);
+                    }
+
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  // color: Colors.black12,
+                                    color: Colors.black.withOpacity(0.5),
+
+                                    blurRadius: 5
+                                )
+                              ]
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              new Container(
+                                height: 5,
+                                decoration: new BoxDecoration(
+                                  //color: Colors.red,
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(8),
+                                    topLeft: Radius.circular(8),
+
+                                  ),
+                                  gradient:  LinearGradient(
+                                    colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
                                   ),
                                 ),
-                              ],
-                            ),
-                            rowsExp('Jogador 3','Usuário 3',_controllerEmailJogador3,listIntegrantes,key3),
-                            rows('Jogador 4','Usuário 4',_controllerEmailJogador4,listIntegrantes,key4),
-                            // Container(
-                            //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            //   child: GestureDetector(
-                            //     child: TextField(
-                            //       keyboardType: TextInputType.text,
-                            //       decoration: InputDecoration(
-                            //         labelText: "Email do jogador 1 (CLIQUE 2X)",
-                            //         labelStyle: TextStyle(
-                            //           color: Colors.grey[600],
-                            //         ),
-                            //         filled: true,
-                            //         fillColor: Colors.grey[300],
-                            //         border: OutlineInputBorder(
-                            //           gapPadding: 10,
-                            //         ),
-                            //       ),
-                            //       style: TextStyle(
-                            //           fontSize: 16,
-                            //           color: Colors.black
-                            //       ),
-                            //       controller: _controllerEmailJogador1,
-                            //     ),
-                            //     onDoubleTap: () async {
-                            //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
-                            //       valor = _buscaEmailDaLista(valor, integrantes);
-                            //       setState(() {
-                            //         _resultadoJogador1 = valor;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            // Container(
-                            //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            //   child: GestureDetector(
-                            //     child: TextField(
-                            //       keyboardType: TextInputType.text,
-                            //       decoration: InputDecoration(
-                            //         labelText: "Email do jogador 2 (CLIQUE 2X)",
-                            //         labelStyle: TextStyle(
-                            //           color: Colors.grey[600],
-                            //         ),
-                            //         filled: true,
-                            //         fillColor: Colors.grey[300],
-                            //         border: OutlineInputBorder(
-                            //           gapPadding: 10,
-                            //         ),
-                            //       ),
-                            //       style: TextStyle(
-                            //           fontSize: 16,
-                            //           color: Colors.black
-                            //       ),
-                            //       controller: _controllerEmailJogador2,
-                            //     ),
-                            //     onDoubleTap: () async {
-                            //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
-                            //       valor = _buscaEmailDaLista(valor, integrantes);
-                            //       setState(() {
-                            //         _resultadoJogador2 = valor;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            // Container(
-                            //   height: 40, width: 40,
-                            //   decoration: BoxDecoration(
-                            //     color: Colors.white,
-                            //     borderRadius: BorderRadius.circular(50),
-                            //   ),
-                            //   child: Center(
-                            //     child: Column(
-                            //         crossAxisAlignment: CrossAxisAlignment.center,
-                            //         mainAxisAlignment: MainAxisAlignment.center,
-                            //         children: <Widget>[
-                            //           Text("X",
-                            //             style: TextStyle(
-                            //                 fontSize: 24,
-                            //                 fontWeight: FontWeight.bold,
-                            //                 color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
-                            //             ),
-                            //           ),
-                            //         ]
-                            //     ),
-                            //   ),
-                            // ),
-                            // Container(
-                            //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            //   child: GestureDetector(
-                            //     child: TextField(
-                            //       keyboardType: TextInputType.text,
-                            //       decoration: InputDecoration(
-                            //         labelText: "Email do jogador 3 (CLIQUE 2X)",
-                            //         labelStyle: TextStyle(
-                            //           color: Colors.grey[600],
-                            //         ),
-                            //         filled: true,
-                            //         fillColor: Colors.grey[300],
-                            //         border: OutlineInputBorder(
-                            //           gapPadding: 10,
-                            //         ),
-                            //       ),
-                            //       style: TextStyle(
-                            //           fontSize: 16,
-                            //           color: Colors.black
-                            //       ),
-                            //       controller: _controllerEmailJogador3,
-                            //     ),
-                            //     onDoubleTap: () async {
-                            //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
-                            //       valor = _buscaEmailDaLista(valor, integrantes);
-                            //       setState(() {
-                            //         _resultadoJogador3 = valor;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            // Container(
-                            //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            //   child: GestureDetector(
-                            //     child: TextField(
-                            //       keyboardType: TextInputType.text,
-                            //       decoration: InputDecoration(
-                            //         labelText: "Email do jogador 4 (CLIQUE 2X)",
-                            //         labelStyle: TextStyle(
-                            //           color: Colors.grey[600],
-                            //         ),
-                            //         filled: true,
-                            //         fillColor: Colors.grey[300],
-                            //         border: OutlineInputBorder(
-                            //           gapPadding: 10,
-                            //         ),
-                            //       ),
-                            //       style: TextStyle(
-                            //           fontSize: 16,
-                            //           color: Colors.black
-                            //       ),
-                            //       controller: _controllerEmailJogador4,
-                            //     ),
-                            //     onDoubleTap: () async {
-                            //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
-                            //       valor = _buscaEmailDaLista(valor, integrantes);
-                            //       setState(() {
-                            //         _resultadoJogador4 = valor;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Center(
-                                child: Text(
-                                  _mensagem,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+                                child: Text("${widget.redeModel.nome}",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                    fontFamily: FontFamily.fontSpecial,
+                                      fontSize: 18,
+                                      fontFamily: FontFamily.fontSpecial,
 
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 1),
+                                child: Text("${widget.redeModel.pais} - ${widget.redeModel.cidade}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1)  : Colors.grey[800]
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                                child: Text("${widget.redeModel.local}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        rows('Jogador 1','Usuário 1',_controllerEmailJogador1,listIntegrantes,key1),
+                        rows('Jogador 2','Usuário 2',_controllerEmailJogador2,listIntegrantes,key2),
+                        new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 26),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.deepOrange),
+                                  shape: BoxShape.circle),
+                              child: Center(
+                                child:  Text("X",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.deepOrange : Colors.grey[800]
                                   ),
                                 ),
                               ),
                             ),
                           ],
-                        );
-                      }else{
-                        return Center(
-                          child: Text("Sem valores!!!"),
-                        );
-                      }
-                      break;
+                        ),
+                        rowsExp('Jogador 3','Usuário 3',_controllerEmailJogador3,listIntegrantes,key3),
+                        rows('Jogador 4','Usuário 4',_controllerEmailJogador4,listIntegrantes,key4),
+                        // Container(
+                        //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        //   child: GestureDetector(
+                        //     child: TextField(
+                        //       keyboardType: TextInputType.text,
+                        //       decoration: InputDecoration(
+                        //         labelText: "Email do jogador 1 (CLIQUE 2X)",
+                        //         labelStyle: TextStyle(
+                        //           color: Colors.grey[600],
+                        //         ),
+                        //         filled: true,
+                        //         fillColor: Colors.grey[300],
+                        //         border: OutlineInputBorder(
+                        //           gapPadding: 10,
+                        //         ),
+                        //       ),
+                        //       style: TextStyle(
+                        //           fontSize: 16,
+                        //           color: Colors.black
+                        //       ),
+                        //       controller: _controllerEmailJogador1,
+                        //     ),
+                        //     onDoubleTap: () async {
+                        //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                        //       valor = _buscaEmailDaLista(valor, integrantes);
+                        //       setState(() {
+                        //         _resultadoJogador1 = valor;
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        //   child: GestureDetector(
+                        //     child: TextField(
+                        //       keyboardType: TextInputType.text,
+                        //       decoration: InputDecoration(
+                        //         labelText: "Email do jogador 2 (CLIQUE 2X)",
+                        //         labelStyle: TextStyle(
+                        //           color: Colors.grey[600],
+                        //         ),
+                        //         filled: true,
+                        //         fillColor: Colors.grey[300],
+                        //         border: OutlineInputBorder(
+                        //           gapPadding: 10,
+                        //         ),
+                        //       ),
+                        //       style: TextStyle(
+                        //           fontSize: 16,
+                        //           color: Colors.black
+                        //       ),
+                        //       controller: _controllerEmailJogador2,
+                        //     ),
+                        //     onDoubleTap: () async {
+                        //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                        //       valor = _buscaEmailDaLista(valor, integrantes);
+                        //       setState(() {
+                        //         _resultadoJogador2 = valor;
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 40, width: 40,
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     borderRadius: BorderRadius.circular(50),
+                        //   ),
+                        //   child: Center(
+                        //     child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         children: <Widget>[
+                        //           Text("X",
+                        //             style: TextStyle(
+                        //                 fontSize: 24,
+                        //                 fontWeight: FontWeight.bold,
+                        //                 color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Colors.lightBlue: Colors.green : Colors.grey[800]
+                        //             ),
+                        //           ),
+                        //         ]
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        //   child: GestureDetector(
+                        //     child: TextField(
+                        //       keyboardType: TextInputType.text,
+                        //       decoration: InputDecoration(
+                        //         labelText: "Email do jogador 3 (CLIQUE 2X)",
+                        //         labelStyle: TextStyle(
+                        //           color: Colors.grey[600],
+                        //         ),
+                        //         filled: true,
+                        //         fillColor: Colors.grey[300],
+                        //         border: OutlineInputBorder(
+                        //           gapPadding: 10,
+                        //         ),
+                        //       ),
+                        //       style: TextStyle(
+                        //           fontSize: 16,
+                        //           color: Colors.black
+                        //       ),
+                        //       controller: _controllerEmailJogador3,
+                        //     ),
+                        //     onDoubleTap: () async {
+                        //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                        //       valor = _buscaEmailDaLista(valor, integrantes);
+                        //       setState(() {
+                        //         _resultadoJogador3 = valor;
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        //   child: GestureDetector(
+                        //     child: TextField(
+                        //       keyboardType: TextInputType.text,
+                        //       decoration: InputDecoration(
+                        //         labelText: "Email do jogador 4 (CLIQUE 2X)",
+                        //         labelStyle: TextStyle(
+                        //           color: Colors.grey[600],
+                        //         ),
+                        //         filled: true,
+                        //         fillColor: Colors.grey[300],
+                        //         border: OutlineInputBorder(
+                        //           gapPadding: 10,
+                        //         ),
+                        //       ),
+                        //       style: TextStyle(
+                        //           fontSize: 16,
+                        //           color: Colors.black
+                        //       ),
+                        //       controller: _controllerEmailJogador4,
+                        //     ),
+                        //     onDoubleTap: () async {
+                        //       String valor = await showSearch(context: context, delegate: SearchDelegateUsuariosDaRede(_integrantes));
+                        //       valor = _buscaEmailDaLista(valor, integrantes);
+                        //       setState(() {
+                        //         _resultadoJogador4 = valor;
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Center(
+                            child: Text(
+                              _mensagem,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: FontFamily.fontSpecial,
+
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }else{
+                    return Center(
+                      child: Text("Sem valores!!!"),
+                    );
                   }
-                  return null;
-                },
-              ),
+                  break;
+              }
+              return null;
+            },
           ),
         ),
       ),
@@ -832,7 +830,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                     SimpleAutoCompleteTextField(
                       key: key,
                       controller: controller,
-                      suggestions: integrantes,
+                      suggestions: integrantes,minLength: 0,
                       clearOnSubmit: false,
                       textSubmitted: (sugesstion) {
                         //_view.encontrarIdEspecialidade(sugesstion);

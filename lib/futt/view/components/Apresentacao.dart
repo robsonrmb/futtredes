@@ -3,7 +3,7 @@ import 'package:futt/futt/view/components/Passos.dart';
 
 class Apresentacao {
 
-  Widget getApresentacao(int passo) {
+  Widget getApresentacao(int passo,BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -20,7 +20,7 @@ class Apresentacao {
               padding: EdgeInsets.only(top: 20),
               child: Image.asset("images/logoFuttRedesNovo.png", height: 60, width: 15),
             ),
-            Passos().getPassos(passo),
+            Passos().getPassos(passo,context),
           ],
         ),
       ),

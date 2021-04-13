@@ -1,8 +1,10 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/EstadoModel.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
+import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:find_dropdown/find_dropdown.dart';
@@ -29,6 +31,15 @@ class _NovaRedeViewState extends State<NovaRedeView> {
   TextEditingController _controllerLocal = TextEditingController();
   TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
+  List<String> listDropEstado = new List();
+  List<EstadosModel> estadosList = [];
+  String estadoSelecionado = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _buscaEstado();
+  }
 
   void _cadastraNovaRede(BuildContext context) async {
     try {
@@ -51,9 +62,12 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
         throw Exception(_mensagem);
       }
+      if(_controllerPaisRede != 'Brasil'){
+        estadoSelecionado = '';
+      }
 
       RedeModel redeModel = RedeModel.Novo(
-          _controllerNome.text, _controllerPaisRede, _controllerCidade.text,
+          _controllerNome.text, _controllerPaisRede,estadoSelecionado, _controllerCidade.text,
           _controllerLocal.text, int.parse('50'), _controllerMais.text
       );
 
@@ -215,11 +229,31 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                               // icon: new Icon(Icons.monetization_on),
                               labelText: "País",
                             ),
-                            onChanged: (PaisModel data) => _controllerPaisRede = data.id,
+                            onChanged: (PaisModel data) {
+                              _controllerPaisRede = data.id;
+                              setState(() {});
+                            },
                             showClearButton: false,
                           ),
                         ),
                       ),
+                      _controllerPaisRede == 'Brasil'?
+                      new Container(
+                        //color: Colors.red,
+                        margin: const EdgeInsets.only(
+                          top: 20,
+                          left: 16,
+                          bottom: 4,
+                        ),
+                        child: new Text(
+                          'Estado',
+                          style: TextStyle(
+                              color: Color(0xff112841),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12),
+                        ),
+                      ):new Container(),
+                      _buildDropEstado(),
                       rows('Cidade ', 'Digite a cidade da Rede',
                           _controllerCidade),
                       rows('Local ', 'Digite o local da Rede',
@@ -594,6 +628,72 @@ class _NovaRedeViewState extends State<NovaRedeView> {
             ))
       ],
     );
+  }
+
+  Widget _buildDropEstado(){
+    if(_controllerPaisRede == 'Brasil'){
+      return new Container(
+        height: 40,
+        decoration: BoxDecoration(
+            borderRadius:
+            BorderRadius.all(Radius.circular(4)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                // color: Colors.black12,
+                  color: Colors.black12,
+                  blurRadius: 5)
+            ]),
+        margin:
+        const EdgeInsets.only(right: 16, left: 16),
+        child: new Container(
+          padding: const EdgeInsets.only(left: 16),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              isExpanded: true,
+              hint: Text(
+                "Selecione o Estado",
+                style: new TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal),
+              ),
+              value: estadoSelecionado,
+              style: new TextStyle(
+                  color: Colors.black,
+                  fontSize: 14),
+              dropdownColor: Colors.white,
+              //, Color(0xff112841),
+              onChanged: (newValue) {
+                setState(() {
+                  estadoSelecionado = newValue;
+                  //controllerNomeCartaoContaBancaria.text = newValue;
+                });
+              },
+              items: listDropEstado.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      );
+    }
+    return new Container();
+  }
+
+  void _buscaEstado() async {
+    listDropEstado.add('');
+    UsuarioService usuarioService = UsuarioService();
+    List<EstadosModel> estados = await usuarioService.listaEstados();
+    if (estados != null) {
+      estadosList = estados;
+      for (int i = 0; i < estados.length; i++) {
+        listDropEstado.add(estados[i].texto);
+      }
+    }
+    setState(() {});
   }
 
 }

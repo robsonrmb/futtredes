@@ -136,7 +136,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xfff7f7f7),
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: Colors.white,
@@ -161,264 +161,262 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
       ),
       body: Container(
         color: Color(0xfff7f7f7),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                // new Container(height: 20,),
-                // new Stack(
-                //   alignment: Alignment.center,
-                //   children: [
-                //     new Row(
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       children: [
-                //         IconButton(icon: Icon(Icons.arrow_back,color: Colors.black,), onPressed: (){
-                //           Navigator.pop(context);
-                //         })
-                //       ],
-                //     ),
-                //     new Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         new Container(
-                //           margin: const EdgeInsets.only(bottom: 6),
-                //           child: new Text('Responsáveis da rede',
-                //             style: new TextStyle(
-                //                 fontSize: 18,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: Colors.black,
-                //                 fontFamily: 'Candal'),),
-                //         )
-                //       ],
-                //     )
-                //   ],
-                // ),
-                // new Container(height: 20,),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              // new Container(height: 20,),
+              // new Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     new Row(
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       children: [
+              //         IconButton(icon: Icon(Icons.arrow_back,color: Colors.black,), onPressed: (){
+              //           Navigator.pop(context);
+              //         })
+              //       ],
+              //     ),
+              //     new Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         new Container(
+              //           margin: const EdgeInsets.only(bottom: 6),
+              //           child: new Text('Responsáveis da rede',
+              //             style: new TextStyle(
+              //                 fontSize: 18,
+              //                 fontWeight: FontWeight.bold,
+              //                 color: Colors.black,
+              //                 fontFamily: 'Candal'),),
+              //         )
+              //       ],
+              //     )
+              //   ],
+              // ),
+              // new Container(height: 20,),
 
-                Container(
-                  decoration: BoxDecoration(
+              Container(
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          // color: Colors.black12,
-                            color: Colors.black.withOpacity(0.5),
+                    boxShadow: [
+                      BoxShadow(
+                        // color: Colors.black12,
+                          color: Colors.black.withOpacity(0.5),
 
-                            blurRadius: 5
-                        )
-                      ]
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      new Container(
-                        height: 5,
-                        decoration: new BoxDecoration(
-                          //color: Colors.red,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            topLeft: Radius.circular(8),
+                          blurRadius: 5
+                      )
+                    ]
+                ),
+                child: Column(
+                  children: <Widget>[
+                    new Container(
+                      height: 5,
+                      decoration: new BoxDecoration(
+                        //color: Colors.red,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          topLeft: Radius.circular(8),
 
-                          ),
-                          gradient:  LinearGradient(
-                            colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
-                          ),
+                        ),
+                        gradient:  LinearGradient(
+                          colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-                        child: Text("Informe o email do responsável",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: FontFamily.fontSpecial,
-                              color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
-                          ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+                      child: Text("Informe o email do responsável",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: FontFamily.fontSpecial,
+                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 1),
-                        child: Text("Responsável: ${widget.redeModel.nomeResponsavelRede}",
-                          style: TextStyle(
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 1),
+                      child: Text("Responsável: ${widget.redeModel.nomeResponsavelRede}",
+                        style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
-                          ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                        child: Text("Indique até 3 subresponsáveis.",
-                          style: TextStyle(
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                      child: Text("Indique até 3 subresponsáveis.",
+                        style: TextStyle(
                             fontSize: 12,
                             color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
-                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                //rows('Responsável','Digite o responsável da rede',_controllerResponsavel),
-                rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel1),
-                rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel2),
-                rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel3),
+              ),
+              //rows('Responsável','Digite o responsável da rede',_controllerResponsavel),
+              rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel1),
+              rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel2),
+              rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel3),
 
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //   child: TextField(
-                //     keyboardType: TextInputType.text,
-                //     decoration: InputDecoration(
-                //       labelText: "Responsável da rede",
-                //       labelStyle: TextStyle(
-                //         color: Colors.grey[600],
-                //       ),
-                //       filled: true,
-                //       fillColor: Colors.grey[300],
-                //       border: OutlineInputBorder(
-                //         gapPadding: 10,
-                //       ),
-                //     ),
-                //     style: TextStyle(
-                //         fontSize: 16,
-                //         color: Colors.black
-                //     ),
-                //     controller: _controllerResponsavel,
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //   child: TextField(
-                //     keyboardType: TextInputType.text,
-                //     decoration: InputDecoration(
-                //       labelText: "${_tituloSub1}",
-                //       labelStyle: TextStyle(
-                //         color: Colors.grey[600],
-                //       ),
-                //       filled: true,
-                //       fillColor: Colors.grey[300],
-                //       border: OutlineInputBorder(
-                //         gapPadding: 10,
-                //       ),
-                //     ),
-                //     style: TextStyle(
-                //         fontSize: 16,
-                //         color: Colors.black
-                //     ),
-                //     controller: _controllerSubResponsavel1,
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //   child: TextField(
-                //     keyboardType: TextInputType.text,
-                //     decoration: InputDecoration(
-                //       labelText: "${_tituloSub2}",
-                //       labelStyle: TextStyle(
-                //         color: Colors.grey[600],
-                //       ),
-                //       filled: true,
-                //       fillColor: Colors.grey[300],
-                //       border: OutlineInputBorder(
-                //         gapPadding: 10,
-                //       ),
-                //     ),
-                //     style: TextStyle(
-                //         fontSize: 16,
-                //         color: Colors.black
-                //     ),
-                //     controller: _controllerSubResponsavel2,
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                //   child: TextField(
-                //     keyboardType: TextInputType.text,
-                //     decoration: InputDecoration(
-                //       labelText: "${_tituloSub3}",
-                //       labelStyle: TextStyle(
-                //         color: Colors.grey[600],
-                //       ),
-                //       filled: true,
-                //       fillColor: Colors.grey[300],
-                //       border: OutlineInputBorder(
-                //         gapPadding: 10,
-                //       ),
-                //     ),
-                //     style: TextStyle(
-                //         fontSize: 16,
-                //         color: Colors.black
-                //     ),
-                //     controller: _controllerSubResponsavel3,
-                //   ),
-                // ),
-                Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          // color: Colors.black12,
-                            color: Colors.black.withOpacity(0.5),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              //   child: TextField(
+              //     keyboardType: TextInputType.text,
+              //     decoration: InputDecoration(
+              //       labelText: "Responsável da rede",
+              //       labelStyle: TextStyle(
+              //         color: Colors.grey[600],
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.grey[300],
+              //       border: OutlineInputBorder(
+              //         gapPadding: 10,
+              //       ),
+              //     ),
+              //     style: TextStyle(
+              //         fontSize: 16,
+              //         color: Colors.black
+              //     ),
+              //     controller: _controllerResponsavel,
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              //   child: TextField(
+              //     keyboardType: TextInputType.text,
+              //     decoration: InputDecoration(
+              //       labelText: "${_tituloSub1}",
+              //       labelStyle: TextStyle(
+              //         color: Colors.grey[600],
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.grey[300],
+              //       border: OutlineInputBorder(
+              //         gapPadding: 10,
+              //       ),
+              //     ),
+              //     style: TextStyle(
+              //         fontSize: 16,
+              //         color: Colors.black
+              //     ),
+              //     controller: _controllerSubResponsavel1,
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              //   child: TextField(
+              //     keyboardType: TextInputType.text,
+              //     decoration: InputDecoration(
+              //       labelText: "${_tituloSub2}",
+              //       labelStyle: TextStyle(
+              //         color: Colors.grey[600],
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.grey[300],
+              //       border: OutlineInputBorder(
+              //         gapPadding: 10,
+              //       ),
+              //     ),
+              //     style: TextStyle(
+              //         fontSize: 16,
+              //         color: Colors.black
+              //     ),
+              //     controller: _controllerSubResponsavel2,
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              //   child: TextField(
+              //     keyboardType: TextInputType.text,
+              //     decoration: InputDecoration(
+              //       labelText: "${_tituloSub3}",
+              //       labelStyle: TextStyle(
+              //         color: Colors.grey[600],
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.grey[300],
+              //       border: OutlineInputBorder(
+              //         gapPadding: 10,
+              //       ),
+              //     ),
+              //     style: TextStyle(
+              //         fontSize: 16,
+              //         color: Colors.black
+              //     ),
+              //     controller: _controllerSubResponsavel3,
+              //   ),
+              // ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        // color: Colors.black12,
+                          color: Colors.black.withOpacity(0.5),
 
-                            blurRadius: 5
-                        )
-                      ]
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      new Container(
-                        height: 5,
-                        decoration: new BoxDecoration(
-                          //color: Colors.red,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            topLeft: Radius.circular(8),
+                          blurRadius: 5
+                      )
+                    ]
+                ),
+                child: Column(
+                  children: <Widget>[
+                    new Container(
+                      height: 5,
+                      decoration: new BoxDecoration(
+                        //color: Colors.red,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          topLeft: Radius.circular(8),
 
-                          ),
-                          gradient:  LinearGradient(
-                            colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
-                          ),
+                        ),
+                        gradient:  LinearGradient(
+                          colors: <Color>[AppColors.colorEspecialPrimario1, AppColors.colorEspecialPrimario2],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                        child: Text("Os subresponsáveis podem cadastrar:",
-                          style: TextStyle(
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: Text("Os subresponsáveis podem cadastrar:",
+                        style: TextStyle(
                             fontSize: 12,
                             color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1): Colors.grey[800]
-                          ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                        child: Text("JOGOS, PLACARES, PARTICIPANTES, ENTRE OUTROS.",
-                          style: TextStyle(
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                      child: Text("JOGOS, PLACARES, PARTICIPANTES, ENTRE OUTROS.",
+                        style: TextStyle(
                             fontSize: 12,
                             color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1): Colors.grey[800]
-                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Center(
-                    child: Text(
-                      _mensagem,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                        fontFamily: FontFamily.fontSpecial,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: Center(
+                  child: Text(
+                    _mensagem,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontFamily: FontFamily.fontSpecial,
 
-                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

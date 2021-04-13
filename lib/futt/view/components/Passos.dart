@@ -7,13 +7,13 @@ import 'package:futt/futt/view/style/font-family.dart';
 
 class Passos {
 
-  Widget getPassos(int passo) {
+  Widget getPassos(int passo,BuildContext context) {
     return Center(
         child: Column(children: <Widget>[
-          FadeAnimation(0.8, avisos("Cadastre sua rede",'Pode indicar até 3 responsáveis!'),),
-          FadeAnimation(1.1, avisos("Cadastre os integrantes",'Disponível até 50 integrantes por rede!'),),
-          FadeAnimation(1.4, avisos("Cadastre os jogos",'Informe os resultados para gerar as estatísticas!'),),
-          FadeAnimation(1.7,  avisos("Veja o ranking e estatísticas",'E confira sua performance!'),),
+          FadeAnimation(0.8, avisos("Cadastre sua rede",'Pode indicar até 3 responsáveis!',true,context),),
+          FadeAnimation(1.1, avisos("Cadastre os integrantes",'Disponível até 50 integrantes por rede!',false,context),),
+          FadeAnimation(1.4, avisos("Cadastre os jogos",'Informe os resultados para gerar as estatísticas!',false,context),),
+          FadeAnimation(1.7,  avisos("Veja o ranking e estatísticas",'E confira sua performance!',false,context),),
           //
           // new Container(
           //   child: Text("Cadastre sua rede",
@@ -149,64 +149,74 @@ class Passos {
     //   );
     // }
   }
-  Widget avisos(String title, String subTitle){
-    return Container(
-      margin: const EdgeInsets.only(left: 20,right: 20,top: 20),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              // color: Colors.black12,
-                color: Colors.black.withOpacity(0.5),
+  Widget avisos(String title, String subTitle,bool clickable,BuildContext context){
+    return new GestureDetector(
+      onTap: (){
+        if(clickable){
+          Navigator.pushNamed(context, "/novarede");
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(left: 20,right: 20,top: 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                // color: Colors.black12,
+                  color: Colors.black.withOpacity(0.5),
 
-                blurRadius: 5
-            )
-          ]
-      ),
-      child: Column(
-        children: <Widget>[
-          new Container(
-            height: 10,
-            decoration: new BoxDecoration(
-              //color: Colors.red,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(8),
-                topLeft: Radius.circular(8),
+                  blurRadius: 5
+              )
+            ]
+        ),
+        child: Column(
+          children: <Widget>[
+            new Container(
+              height: 10,
+              decoration: new BoxDecoration(
+                //color: Colors.red,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  topLeft: Radius.circular(8),
 
-              ),
-              gradient:  LinearGradient(
-                colors: <Color>[AppColors.colorEspecialSecundario1, AppColors.colorEspecialSecundario2],
+                ),
+                gradient:  LinearGradient(
+                  colors: <Color>[
+                    clickable?AppColors.colorEspecialSecundario1:Colors.grey,
+                    clickable?AppColors.colorEspecialSecundario2:Colors.grey[100]
+                  ],
+                ),
               ),
             ),
-          ),
-          new Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child: Text(title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: FontFamily.fontSpecial,
-                      color: Color(0xff093352)
+            new Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Text(title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: FontFamily.fontSpecial,
+                        color: Color(0xff093352)
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child: Text(subTitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: FontFamily.fontSpecial,
-                      color: Color(0xff093352)
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  child: Text(subTitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: FontFamily.fontSpecial,
+                        color: Color(0xff093352)
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

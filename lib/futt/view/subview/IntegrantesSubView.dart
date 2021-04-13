@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
@@ -293,7 +294,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 title: Row(
                                   children: <Widget>[
                                     new Container(
-                                      width:widget.donoRede? MediaQuery.of(context).size.width*0.36:MediaQuery.of(context).size.width*0.43,
+                                      width:widget.donoRede? MediaQuery.of(context).size.width*0.32:MediaQuery.of(context).size.width*0.43,
                                       child: Text(
                                         apelidoOuNome(integrante.apelido,integrante.nome),
                                         style: TextStyle(
@@ -308,7 +309,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 subtitle: Row(
                                   children: <Widget>[
                                     new Container(
-                                      width:widget.donoRede? MediaQuery.of(context).size.width*0.36:MediaQuery.of(context).size.width*0.43,
+                                      width:widget.donoRede? MediaQuery.of(context).size.width*0.32:MediaQuery.of(context).size.width*0.43,
                                       child: Text(
                                         _retorneSubtitulo(
                                             integrante.pais, integrante.cidade,integrante.local),
@@ -348,8 +349,11 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                               //     widget.redeModel.id);
                                             },
                                           ),
+                                          new Container(width: 10,),
                                           new GestureDetector(
-                                            child: Icon(Icons.assessment_sharp,color: AppColors.colorTextIconIntegrantes,),
+                                            child: FaIcon(FontAwesomeIcons.chartLine),
+                                            // Icon(Icons.assessment_sharp,color: AppColors.colorTextIconIntegrantes,),
+                                            //child: Icon(Icons.assessment_sharp,color: AppColors.colorTextIconIntegrantes,),
                                             onTap: () {
                                               Navigator.push(
                                                   context,
@@ -372,7 +376,8 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                         ],
                                       )
                                           : new GestureDetector(
-                                        child: Icon(Icons.assessment_sharp,color: AppColors.colorTextIconIntegrantes,),
+                                        child: FaIcon(FontAwesomeIcons.chartLine),
+                                       // Icon(Icons.assessment_sharp,color: AppColors.colorTextIconIntegrantes,),
                                         onTap: () {
                                           Navigator.push(
                                               context,

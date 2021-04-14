@@ -57,7 +57,7 @@ class RedeModel {
   RedeModel.Novo(this._nome, this._pais, this._estado,this._cidade, this._local,
       this._qtdIntegrantes, this._info);
 
-  RedeModel.Edita(this._id, this._nome, this._pais, this._cidade, this._local,
+  RedeModel.Edita(this._id, this._nome, this._pais,this._estado, this._cidade, this._local,
       this._qtdIntegrantes, this._info);
 
   RedeModel.Responsaveis(

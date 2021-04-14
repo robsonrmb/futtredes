@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/EstadoModel.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
+import 'package:futt/futt/model/PaisesModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
+import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/service/RedeService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
@@ -49,6 +52,25 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   bool trocouFoto = false;
 
   File imagemSelecionada;
+  List<String> listDropEstado = new List();
+  List<EstadosModel> estadosList = [];
+  String estadoSelecionado = '';
+  String paisSelecionado = '';
+  List<String> listDropPais = new List();
+  bool carregando = true;
+
+  @override
+  void initState() {
+    super.initState();
+    inicializarTela();
+  }
+
+  void inicializarTela()async{
+    await _buscaPais();
+    await _buscaEstado();
+    imageCache.clear();
+    _atualizaValoresIniciais(widget.redeModel);
+  }
 
   _showModalIndisponivel() async {
     DialogFutt dialogFutt = new DialogFutt();
@@ -92,10 +114,15 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
         throw Exception(_mensagem);
       }
 
+      if(paisSelecionado != "Brasil"){
+        estadoSelecionado = '';
+      }
+
       RedeModel redeModel = RedeModel.Edita(
           widget.redeModel.id,
           _controllerNome.text,
-          _controllerPaisRede,
+            paisSelecionado,
+          estadoSelecionado,
           _controllerCidade.text,
           _controllerLocal.text,
           int.parse(_controllerQtdIntegrantes.text),
@@ -164,6 +191,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   _atualizaValoresIniciais(RedeModel redeOrigem) {
     _controllerNome.text = redeOrigem.nome;
     _controllerPaisRede = redeOrigem.pais;
+    if(redeOrigem.pais != null && redeOrigem.pais != ""){
+      paisSelecionado = redeOrigem.pais;
+    }
+    if(redeOrigem.estado != null && redeOrigem.estado != ""){
+      estadoSelecionado = redeOrigem.estado;
+    }
     PaisModel _paisModel = PaisModel(redeOrigem.pais, redeOrigem.pais);
     _controllerCidade.text = redeOrigem.cidade;
     _controllerLocal.text = redeOrigem.local;
@@ -386,9 +419,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   @override
   Widget build(BuildContext context) {
-    imageCache.clear();
-    _atualizaValoresIniciais(widget.redeModel);
-
     return selecao
         ? Scaffold(
             backgroundColor: Colors.transparent,
@@ -670,41 +700,59 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                     fontSize: 12),
                               ),
                             ),
+                            _buildDropPais(),
+                            // new Container(
+                            //   decoration: BoxDecoration(
+                            //       borderRadius:
+                            //           BorderRadius.all(Radius.circular(8)),
+                            //       color: Colors.white,
+                            //       boxShadow: [
+                            //         BoxShadow(
+                            //             // color: Colors.black12,
+                            //             color: Colors.black12,
+                            //             blurRadius: 5)
+                            //       ]),
+                            //   margin:
+                            //       const EdgeInsets.only(right: 16, left: 16),
+                            //   child: Padding(
+                            //     padding: EdgeInsets.only(),
+                            //     child: FindDropdown<PaisModel>(
+                            //       showSearchBox: true,
+                            //       selectedItem: PaisModel(widget.redeModel.pais,
+                            //           widget.redeModel.pais),
+                            //       onFind: (String filter) => _listaPaises(),
+                            //       searchBoxDecoration: InputDecoration(
+                            //         hintText: "Search",
+                            //         border: OutlineInputBorder(
+                            //           borderRadius:
+                            //               BorderRadius.all(Radius.circular(8)),
+                            //         ),
+                            //         icon: new Icon(Icons.monetization_on),
+                            //         labelText: "País",
+                            //       ),
+                            //       onChanged: (PaisModel data) =>
+                            //           _controllerPaisRede = data.id,
+                            //       showClearButton: false,
+                            //     ),
+                            //   ),
+                            // ),
+                            paisSelecionado == 'Brasil'?
                             new Container(
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        // color: Colors.black12,
-                                        color: Colors.black12,
-                                        blurRadius: 5)
-                                  ]),
-                              margin:
-                                  const EdgeInsets.only(right: 16, left: 16),
-                              child: Padding(
-                                padding: EdgeInsets.only(),
-                                child: FindDropdown<PaisModel>(
-                                  showSearchBox: true,
-                                  selectedItem: PaisModel(widget.redeModel.pais,
-                                      widget.redeModel.pais),
-                                  onFind: (String filter) => _listaPaises(),
-                                  searchBoxDecoration: InputDecoration(
-                                    hintText: "Search",
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                    ),
-                                    icon: new Icon(Icons.monetization_on),
-                                    labelText: "País",
-                                  ),
-                                  onChanged: (PaisModel data) =>
-                                      _controllerPaisRede = data.id,
-                                  showClearButton: false,
-                                ),
+                              //color: Colors.red,
+                              margin: const EdgeInsets.only(
+                                top: 20,
+                                left: 16,
+                                bottom: 4,
                               ),
-                            ),
+                              child: new Text(
+                                'Estado',
+                                style: TextStyle(
+                                    color: Color(0xff112841),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12),
+                              ),
+                            ):new Container(),
+                            _buildDropEstado(),
                             rows('Cidade ', 'Digite a cidade da Rede',
                                 _controllerCidade),
                             rows('Local ', 'Digite o local da Rede',
@@ -804,6 +852,24 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                     fontSize: 12),
                               ),
                             ),
+                            carregando?new Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 1),
+                                child: Shimmer.fromColors(
+                                    baseColor: Colors.grey.withOpacity(0.5),
+                                    highlightColor: Colors.white,
+                                    child: new Container(
+                                      height: 40,
+                                      width: MediaQuery.of(context).size.width*0.9,
+                                      decoration: new BoxDecoration(
+                                        //shape: BoxShape.circle,
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
+                                    )),
+                              ),
+                            ):
                             Container(
                               margin:
                                   const EdgeInsets.only(right: 16, left: 16),
@@ -831,19 +897,19 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                 controller: _controllerMais,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Center(
-                                child: Text(
-                                  _mensagem,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontFamily: FontFamily.fontSpecial,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.only(top: 15),
+                            //   child: Center(
+                            //     child: Text(
+                            //       _mensagem,
+                            //       style: TextStyle(
+                            //         color: Colors.black,
+                            //         fontSize: 12,
+                            //         fontFamily: FontFamily.fontSpecial,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -920,6 +986,56 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   }
 
   Widget rows(String title, String hint, TextEditingController controller) {
+    if(carregando){
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          new Expanded(
+              child: new Container(
+                //height: 60,
+                //width: MediaQuery.of(context).size.width,
+
+                margin: const EdgeInsets.only(top: 16, right: 14, left: 14),
+                // padding: const EdgeInsets.only(left: 6),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new Container(
+                      //color: Colors.red,
+                      margin: const EdgeInsets.only(
+                        top: 4,
+                        bottom: 4,
+                      ),
+                      child: new Text(
+                        title,
+                        style: TextStyle(
+                            color: Color(0xff112841),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 1),
+                      child: Shimmer.fromColors(
+                          baseColor: Colors.grey.withOpacity(0.5),
+                          highlightColor: Colors.white,
+                          child: new Container(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width*0.9,
+                            decoration: new BoxDecoration(
+                              //shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                          )),
+                    )
+                  ],
+                ),
+              ))
+        ],
+      );
+    }
     return new Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -979,6 +1095,56 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   Widget rowsQtInte(
       String title, String hint, TextEditingController controller) {
+    if(carregando){
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          new Expanded(
+              child: new Container(
+                //height: 60,
+                //width: MediaQuery.of(context).size.width,
+
+                margin: const EdgeInsets.only(top: 16, right: 14, left: 14),
+                // padding: const EdgeInsets.only(left: 6),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new Container(
+                      //color: Colors.red,
+                      margin: const EdgeInsets.only(
+                        top: 4,
+                        bottom: 4,
+                      ),
+                      child: new Text(
+                        title,
+                        style: TextStyle(
+                            color: Color(0xff112841),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 1),
+                      child: Shimmer.fromColors(
+                          baseColor: Colors.grey.withOpacity(0.5),
+                          highlightColor: Colors.white,
+                          child: new Container(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width*0.9,
+                            decoration: new BoxDecoration(
+                              //shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                          )),
+                    )
+                  ],
+                ),
+              ))
+        ],
+      );
+    }
     return new Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -1084,5 +1250,158 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
             ),
           );
         });
+  }
+
+  Widget _buildDropPais(){
+    if(carregando){
+      return Padding(
+        padding: EdgeInsets.only(top: 1),
+        child: new Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child:Shimmer.fromColors(
+              baseColor: Colors.grey.withOpacity(0.5),
+              highlightColor: Colors.white,
+              child: new Container(
+                height: 40,
+                //width: MediaQuery.of(context).size.width*0.9,
+                decoration: new BoxDecoration(
+                  //shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+              )),
+        )
+      );
+    }
+    return new Container(
+      height: 40,
+      decoration: BoxDecoration(
+          borderRadius:
+          BorderRadius.all(Radius.circular(4)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              // color: Colors.black12,
+                color: Colors.black12,
+                blurRadius: 5)
+          ]),
+      margin:
+      const EdgeInsets.only(right: 16, left: 16),
+      child: new Container(
+        padding: const EdgeInsets.only(left: 16),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: Text(
+              "Selecione o País",
+              style: new TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
+            ),
+            value: paisSelecionado,
+            style: new TextStyle(
+                color: Colors.black,
+                fontSize: 14),
+            dropdownColor: Colors.white,
+            //, Color(0xff112841),
+            onChanged: (newValue) {
+              setState(() {
+                paisSelecionado = newValue;
+                //controllerNomeCartaoContaBancaria.text = newValue;
+              });
+            },
+            items: listDropPais.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropEstado(){
+    if(carregando){
+      return new Container();
+    }
+    if(paisSelecionado == 'Brasil'){
+      return new Container(
+        height: 40,
+        decoration: BoxDecoration(
+            borderRadius:
+            BorderRadius.all(Radius.circular(4)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                // color: Colors.black12,
+                  color: Colors.black12,
+                  blurRadius: 5)
+            ]),
+        margin:
+        const EdgeInsets.only(right: 16, left: 16),
+        child: new Container(
+          padding: const EdgeInsets.only(left: 16),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              isExpanded: true,
+              hint: Text(
+                "Selecione o Estado",
+                style: new TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal),
+              ),
+              value: estadoSelecionado,
+              style: new TextStyle(
+                  color: Colors.black,
+                  fontSize: 14),
+              dropdownColor: Colors.white,
+              //, Color(0xff112841),
+              onChanged: (newValue) {
+                setState(() {
+                  estadoSelecionado = newValue;
+                  //controllerNomeCartaoContaBancaria.text = newValue;
+                });
+              },
+              items: listDropEstado.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      );
+    }
+    return new Container();
+  }
+
+  Future<void> _buscaEstado() async {
+    listDropEstado.add('');
+    UsuarioService usuarioService = UsuarioService();
+    List<EstadosModel> estados = await usuarioService.listaEstados();
+    if (estados != null) {
+      estadosList = estados;
+      for (int i = 0; i < estados.length; i++) {
+        listDropEstado.add(estados[i].texto);
+      }
+    }
+    setState(() {
+      carregando = false;
+    });
+  }
+
+
+  Future<void> _buscaPais() async {
+    listDropPais.add('');
+    UsuarioService usuarioService = UsuarioService();
+    List<PaisesModel> paises = await usuarioService.listaPaises();
+    if (paises != null) {
+      for (int i = 0; i < paises.length; i++) {
+        listDropPais.add(paises[i].texto);
+      }
+    }
   }
 }

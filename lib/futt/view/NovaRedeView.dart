@@ -2,6 +2,7 @@ import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/EstadoModel.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
+import 'package:futt/futt/model/PaisesModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
@@ -34,10 +35,13 @@ class _NovaRedeViewState extends State<NovaRedeView> {
   List<String> listDropEstado = new List();
   List<EstadosModel> estadosList = [];
   String estadoSelecionado = '';
+  String paisSelecionado = '';
+  List<String> listDropPais = new List();
 
   @override
   void initState() {
     super.initState();
+    _buscaPais();
     _buscaEstado();
   }
 
@@ -46,7 +50,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       _mensagem = "";
       if (_controllerNome.text == "") {
         _mensagem = "Informe o título do rede.";
-      }else if (_controllerPaisRede == "") {
+      }else if (paisSelecionado == "") {
         _mensagem = "Informe o país de onde se realizará o rede.";
       }else if (_controllerCidade.text == "") {
         _mensagem = "Informe a cidade de onde se realizará o rede.";
@@ -62,12 +66,12 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
         throw Exception(_mensagem);
       }
-      if(_controllerPaisRede != 'Brasil'){
+      if(paisSelecionado != 'Brasil'){
         estadoSelecionado = '';
       }
 
       RedeModel redeModel = RedeModel.Novo(
-          _controllerNome.text, _controllerPaisRede,estadoSelecionado, _controllerCidade.text,
+          _controllerNome.text, paisSelecionado,estadoSelecionado, _controllerCidade.text,
           _controllerLocal.text, int.parse('50'), _controllerMais.text
       );
 
@@ -205,39 +209,40 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                               fontSize: 12),
                         ),
                       ),
-                      new Container(
-                        decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(8)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                // color: Colors.black12,
-                                  color: Colors.black12,
-                                  blurRadius: 5)
-                            ]),
-                        margin:
-                        const EdgeInsets.only(right: 16, left: 16),
-                        child: Padding(
-                          padding: EdgeInsets.only(),
-                          child: FindDropdown<PaisModel>(
-                            showSearchBox: true,
-                            onFind: (String filter) => _listaPaises(),
-                            searchBoxDecoration: InputDecoration(
-                              hintText: "Search",
-                              border: OutlineInputBorder(),
-                              // icon: new Icon(Icons.monetization_on),
-                              labelText: "País",
-                            ),
-                            onChanged: (PaisModel data) {
-                              _controllerPaisRede = data.id;
-                              setState(() {});
-                            },
-                            showClearButton: false,
-                          ),
-                        ),
-                      ),
-                      _controllerPaisRede == 'Brasil'?
+                      _buildDropPais(),
+                      // new Container(
+                      //   decoration: BoxDecoration(
+                      //       borderRadius:
+                      //       BorderRadius.all(Radius.circular(8)),
+                      //       color: Colors.white,
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //           // color: Colors.black12,
+                      //             color: Colors.black12,
+                      //             blurRadius: 5)
+                      //       ]),
+                      //   margin:
+                      //   const EdgeInsets.only(right: 16, left: 16),
+                      //   child: Padding(
+                      //     padding: EdgeInsets.only(),
+                      //     child: FindDropdown<PaisModel>(
+                      //       showSearchBox: true,
+                      //       onFind: (String filter) => _listaPaises(),
+                      //       searchBoxDecoration: InputDecoration(
+                      //         hintText: "Search",
+                      //         border: OutlineInputBorder(),
+                      //         // icon: new Icon(Icons.monetization_on),
+                      //         labelText: "País",
+                      //       ),
+                      //       onChanged: (PaisModel data) {
+                      //         _controllerPaisRede = data.id;
+                      //         setState(() {});
+                      //       },
+                      //       showClearButton: false,
+                      //     ),
+                      //   ),
+                      // ),
+                      paisSelecionado == 'Brasil'?
                       new Container(
                         //color: Colors.red,
                         margin: const EdgeInsets.only(
@@ -630,8 +635,58 @@ class _NovaRedeViewState extends State<NovaRedeView> {
     );
   }
 
+  Widget _buildDropPais(){
+    return new Container(
+      height: 40,
+      decoration: BoxDecoration(
+          borderRadius:
+          BorderRadius.all(Radius.circular(4)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              // color: Colors.black12,
+                color: Colors.black12,
+                blurRadius: 5)
+          ]),
+      margin:
+      const EdgeInsets.only(right: 16, left: 16),
+      child: new Container(
+        padding: const EdgeInsets.only(left: 16),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: Text(
+              "Selecione o País",
+              style: new TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
+            ),
+            value: paisSelecionado,
+            style: new TextStyle(
+                color: Colors.black,
+                fontSize: 14),
+            dropdownColor: Colors.white,
+            //, Color(0xff112841),
+            onChanged: (newValue) {
+              setState(() {
+                paisSelecionado = newValue;
+                //controllerNomeCartaoContaBancaria.text = newValue;
+              });
+            },
+            items: listDropPais.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildDropEstado(){
-    if(_controllerPaisRede == 'Brasil'){
+    if(paisSelecionado == 'Brasil'){
       return new Container(
         height: 40,
         decoration: BoxDecoration(
@@ -694,6 +749,18 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       }
     }
     setState(() {});
+  }
+
+
+  void _buscaPais() async {
+    listDropPais.add('');
+    UsuarioService usuarioService = UsuarioService();
+    List<PaisesModel> paises = await usuarioService.listaPaises();
+    if (paises != null) {
+      for (int i = 0; i < paises.length; i++) {
+        listDropPais.add(paises[i].texto);
+      }
+    }
   }
 
 }

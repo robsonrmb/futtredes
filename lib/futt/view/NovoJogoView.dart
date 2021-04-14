@@ -357,7 +357,11 @@ class _NovoJogoViewState extends State<NovoJogoView> {
 
                     for (IntegranteModel _im in integrantes) {
                       _integrantes.add(_im.nome);
-                      listIntegrantes.add(_im.user);
+                      if(_im.apelido != null){
+                        listIntegrantes.add('${_im.apelido??""}(${_im.user??""})');
+                      }else{
+                        listIntegrantes.add(_im.user??"");
+                      }
                     }
 
                     return Column(
@@ -425,8 +429,8 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                             ],
                           ),
                         ),
-                        rows('Jogador 1','Usuário 1',_controllerEmailJogador1,listIntegrantes,key1),
-                        rows('Jogador 2','Usuário 2',_controllerEmailJogador2,listIntegrantes,key2),
+                        rows('Jogador 1','',_controllerEmailJogador1,listIntegrantes,key1),
+                        rows('Jogador 2','',_controllerEmailJogador2,listIntegrantes,key2),
                         new Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -449,8 +453,8 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                             ),
                           ],
                         ),
-                        rowsExp('Jogador 3','Usuário 3',_controllerEmailJogador3,listIntegrantes,key3),
-                        rows('Jogador 4','Usuário 4',_controllerEmailJogador4,listIntegrantes,key4),
+                        rowsExp('Jogador 3','',_controllerEmailJogador3,listIntegrantes,key3),
+                        rows('Jogador 4','',_controllerEmailJogador4,listIntegrantes,key4),
                         // Container(
                         //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                         //   child: GestureDetector(
@@ -597,20 +601,20 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                         //     },
                         //   ),
                         // ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: Center(
-                            child: Text(
-                              _mensagem,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: FontFamily.fontSpecial,
-
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: 15),
+                        //   child: Center(
+                        //     child: Text(
+                        //       _mensagem,
+                        //       style: TextStyle(
+                        //         color: Colors.black,
+                        //         fontSize: 12,
+                        //         fontFamily: FontFamily.fontSpecial,
+                        //
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     );
                   }else{
@@ -753,6 +757,8 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                       key: key,
                       controller: controller,
                       suggestions: integrantes,
+                      minLength: 0,
+                      suggestionsAmount: integrantes.length,
                       clearOnSubmit: false,
                       textSubmitted: (sugesstion) {
                         //_view.encontrarIdEspecialidade(sugesstion);
@@ -832,6 +838,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                       controller: controller,
                       suggestions: integrantes,minLength: 0,
                       clearOnSubmit: false,
+                      suggestionsAmount: integrantes.length,
                       textSubmitted: (sugesstion) {
                         //_view.encontrarIdEspecialidade(sugesstion);
                       },

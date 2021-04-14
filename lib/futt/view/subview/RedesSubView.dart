@@ -216,7 +216,10 @@ class _RedesSubViewState extends State<RedesSubView> {
                                         "${rede.nome}",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: AppColors.colorTextTitle,
+
+                                          color: rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorTextTitle : AppColors.colorRedeDesabilitadaTextICon,
+
+                                          //AppColors.colorTextTitle,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -228,8 +231,8 @@ class _RedesSubViewState extends State<RedesSubView> {
                                   _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: AppColors.colorSubTitle,
-                                    fontWeight: FontWeight.w600
+                                      color: rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                      fontWeight: FontWeight.w600
                                   ),
                                 ),
 
@@ -265,9 +268,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                                 //color: Colors.black,
                                                 shape: BoxShape.circle
                                               ),
-                                              child:   Icon(Icons.play_circle_outline,
-                                                  color: AppColors.colorIconCardRede
-                                              ),
+                                              child:  new FaIcon(FontAwesomeIcons.spellCheck,color:  AppColors.colorIconCardRede,size: 17,)
                                             )
                                           ),
                                           // Padding(
@@ -309,8 +310,8 @@ class _RedesSubViewState extends State<RedesSubView> {
                                             gradient: LinearGradient(begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: <Color>[
-                                                  AppColors.colorEspecialPrimario1,
-                                                  AppColors.colorEspecialPrimario2
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
                                                 ]),
                                             shape: BoxShape.circle),
                                         child: GestureDetector(
@@ -335,13 +336,13 @@ class _RedesSubViewState extends State<RedesSubView> {
                                             gradient: LinearGradient(begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: <Color>[
-                                                  AppColors.colorEspecialPrimario1,
-                                                  AppColors.colorEspecialPrimario2
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
                                                 ]),
                                             shape: BoxShape.circle),
                                         child: GestureDetector(
                                           child: new Center(
-                                            child: new FaIcon(FontAwesomeIcons.trophy,color:  AppColors.colorIconCardRede,size: 17,),
+                                            child: new FaIcon(FontAwesomeIcons.listOl,color:  AppColors.colorIconCardRede,size: 17,),
                                           ),
                                           onTap: () {
                                             // Navigator.push(context, MaterialPageRoute(

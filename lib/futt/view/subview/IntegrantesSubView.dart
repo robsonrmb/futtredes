@@ -522,11 +522,15 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
   String apelidoOuNome(String apelido, String nome) {
     if (apelido != null && apelido != "") {
       return apelido;
-    } else if (nome.split(' ').length == 1) {
-      return nome;
-    } else  if (nome.split(' ').length > 1){
-      String nomeFormatado = '${nome.split(' ')[0]}';
-      return nomeFormatado;
+    } if(nome != null){
+      if (nome.split(' ').length == 1) {
+        return nome;
+      } else if (nome.split(' ').length > 1) {
+        String nomeFormatado = '${nome.split(' ')[0]}';
+        return nomeFormatado;
+      }
+    }else{
+      return '';
     }
   }
 

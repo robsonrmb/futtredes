@@ -294,28 +294,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                       color: Colors.grey.withOpacity(0.5),
                                     ),
                                   )),
-                              Shimmer.fromColors(
-                                  baseColor: Colors.grey.withOpacity(0.5),
-                                  highlightColor: Colors.white,
-                                  child: new Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.grey.withOpacity(0.5),
-                                    ),
-                                  )),
-                              Shimmer.fromColors(
-                                  baseColor: Colors.grey.withOpacity(0.5),
-                                  highlightColor: Colors.white,
-                                  child: new Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.grey.withOpacity(0.5),
-                                    ),
-                                  )),
                             ]),
                       ),
                     ),
@@ -359,20 +337,27 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          new Hero(tag: 'imageRede$index', child: Container(
-                            height: 140,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300].withOpacity(0.5),
-                              image: DecorationImage(
-                                  image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
-                                  fit: BoxFit.fill
+                          new GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto,),
+                              ));
+                            },
+                            child: new Hero(tag: 'imageRede$index', child: Container(
+                              height: 140,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300].withOpacity(0.5),
+                                image: DecorationImage(
+                                    image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
+                                    fit: BoxFit.fill
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(4.0),
+                                  topRight: Radius.circular(4.0),
+                                ),
                               ),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                          ),),
+                            ),),
+                          ),
                           new Container(height: 2,width: double.infinity,color: Colors.white,),
                           Container(
                             decoration: BoxDecoration(
@@ -394,7 +379,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                         "${rede.nome}",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: AppColors.colorTextTitle,
+                                          color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorTextTitle : AppColors.colorRedeDesabilitadaTextICon,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -421,7 +406,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                               fontSize: 14,
-                                              color: AppColors.colorSubTitle,
+                                              color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                               fontWeight: FontWeight.w600
                                           ),
                                         ),
@@ -455,7 +440,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: AppColors.colorSubTitle,
+                                          color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                           fontWeight: FontWeight.w600
                                       ),
                                     ),
@@ -485,9 +470,9 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                         child: GestureDetector(
                                           child: Padding(
                                             padding: EdgeInsets.only(left: 1),
-                                            child: Icon(Icons.play_circle_outline,
-                                                color: AppColors.colorIconCardRede
-                                            ),
+                                            child: new Center(
+                                              child:  new FaIcon(FontAwesomeIcons.spellCheck,color:  AppColors.colorIconCardRede,size: 17,),
+                                            )
                                           ),
                                           onTap: (){
                                             Navigator.push(context, MaterialPageRoute(

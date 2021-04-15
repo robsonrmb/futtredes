@@ -458,20 +458,20 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                       //     controller: _controllerMais,
                       //   ),
                       // ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Center(
-                          child: Text(
-                            _mensagem,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                              fontFamily: FontFamily.fontSpecial,
-
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(top: 15),
+                      //   child: Center(
+                      //     child: Text(
+                      //       _mensagem,
+                      //       style: TextStyle(
+                      //           color: Colors.black,
+                      //           fontSize: 12,
+                      //         fontFamily: FontFamily.fontSpecial,
+                      //
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

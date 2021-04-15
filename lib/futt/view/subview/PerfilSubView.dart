@@ -77,18 +77,17 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   SharedPreferences prefs;
   bool enableEditPencil = false;
 
+
   @override
   void initState() {
     super.initState();
     iniciarShared();
     _buscaPais();
     _buscaEstado();
-
   }
 
-  void iniciarShared()async{
+  void iniciarShared() async {
     prefs = await SharedPreferences.getInstance();
-
   }
 
   void _atualizar(BuildContext context) async {
@@ -114,7 +113,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
 //      String _dataNasc = "${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}";
 
-      if(_controllerPais != 'Brasil'){
+      if (_controllerPais != 'Brasil') {
         estadoSelecionado = '';
       }
       UsuarioModelAtualiza usuarioModel = UsuarioModelAtualiza.Atualiza(
@@ -586,97 +585,100 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("images/fundo.jpg"), fit: BoxFit.cover)),
-      child: SingleChildScrollView(
-        //padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                new Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  child: new IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: AppColors.colorIconPerfil,
-                      ),
-                      onPressed: () => trocouImagem && salvouFotoTrocada
-                          ? Navigator.pop(context,true)
-                          : Navigator.pop(context,false)),
-                ),
-                new Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  child: new IconButton(
-                      icon: Icon(
-                        enableEdit ? Icons.edit_off : Icons.edit_outlined,
-                        color: AppColors.colorIconPerfil,
-                      ),
-                      onPressed: () {
-                        if(enableEditPencil){
-                          setState(() {
-                            enableEdit = !enableEdit;
-                          });
-                        }
-                      }),
-                )
-              ],
-            ),
-            // Padding(
-            //   padding: EdgeInsets.only(bottom: 5),
-            //   child: Text(
-            //     "Atualize seus dados",
-            //     // e mantenha sua foto atualizada
-            //     style: TextStyle(fontSize: 12),
-            //   ),
-            // ),
-            new Hero(
-                tag: 'perfil',
-                child: _imagem == null
-                    ? new Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          new GestureDetector(
-                            onTap: () {
-                              if(enableEdit){
-                                _showModalAtualizaImagem(
-                                    context,
-                                    "Imagem",
-                                    "Buscar imagem de qual origem?",
-                                    widget.usuarioModel.id);
-                              }
-                            },
-                            child: new Container(
-                              margin: const EdgeInsets.all(4),
-                              height: 110,
-                              width: 110,
-                              decoration: new BoxDecoration(
-                                  //color: Colors.red,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: AppColors.colorBorderPerfil)
-                                  // boxShadow: [
-                                  //   BoxShadow(
-                                  //     color: Colors.grey.withOpacity(0.5),
-                                  //     spreadRadius: 2,
-                                  //     blurRadius: 7,
-                                  //     offset: Offset(0, 3), // changes position of shadow
-                                  //   ),
-                                  // ],
-                                  ),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(widget.image),
-                                radius: 30.0,
-                              ),
+    return new Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/fundo.jpg"), fit: BoxFit.cover)),
+        child: SingleChildScrollView(
+          //padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              new Stack(
+                alignment: Alignment.center,
+                children: [
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      new Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: new IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: AppColors.colorIconPerfil,
                             ),
-                          )
-                        ],
+                            onPressed: () => trocouImagem && salvouFotoTrocada
+                                ? Navigator.pop(context, true)
+                                : Navigator.pop(context, false)),
+                      ),
+                      // new Container(
+                      //   margin: const EdgeInsets.only(top: 30),
+                      //   child: new IconButton(
+                      //       icon: Icon(
+                      //         enableEdit ? Icons.edit_off : Icons.edit_outlined,
+                      //         color: AppColors.colorIconPerfil,
+                      //       ),
+                      //       onPressed: () {
+                      //         if (enableEditPencil) {
+                      //           setState(() {
+                      //             enableEdit = !enableEdit;
+                      //           });
+                      //         }
+                      //       }),
+                      // )
+                    ],
+                  ),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      new Center(
+                        child:
+                        new Container(
+                          margin: const EdgeInsets.only(top: 30),
+                            child: new Text('PERFIL',style: new TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.colorTextPerfil,
+                              fontFamily: FontFamily.fontSpecial,
+                            ) ,)
+                        ),
                       )
-                    : new GestureDetector(
+                      // new Container(
+                      //   margin: const EdgeInsets.only(top: 30),
+                      //   child: new IconButton(
+                      //       icon: Icon(
+                      //         enableEdit ? Icons.edit_off : Icons.edit_outlined,
+                      //         color: AppColors.colorIconPerfil,
+                      //       ),
+                      //       onPressed: () {
+                      //         if (enableEditPencil) {
+                      //           setState(() {
+                      //             enableEdit = !enableEdit;
+                      //           });
+                      //         }
+                      //       }),
+                      // )
+                    ],
+                  ),
+                ],
+              ),
+              // Padding(
+              //   padding: EdgeInsets.only(bottom: 5),
+              //   child: Text(
+              //     "Atualize seus dados",
+              //     // e mantenha sua foto atualizada
+              //     style: TextStyle(fontSize: 12),
+              //   ),
+              // ),
+              new Hero(
+                  tag: 'perfil',
+                  child: _imagem == null
+                      ? new Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      new GestureDetector(
                         onTap: () {
                           _showModalAtualizaImagem(
                               context,
@@ -685,300 +687,350 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                               widget.usuarioModel.id);
                         },
                         child: new Container(
+                          margin: const EdgeInsets.all(4),
                           height: 110,
                           width: 110,
                           decoration: new BoxDecoration(
-                              //color: const Color(0xff7c94b6),
-                              image: new DecorationImage(
-                                image: new FileImage(_imagem),
-                                fit: BoxFit.cover,
-                              ),
+                            //color: Colors.red,
                               shape: BoxShape.circle,
                               border: Border.all(
-                                  color: AppColors.colorBorderPerfil)),
-                        ),
-                      )),
-            // _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.usuarioModel.id);
-
-            FutureBuilder<UsuarioModel>(
-              future: _buscaUsuarioLogado(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Center(
-                      child: Text("None!!!"),
-                    );
-                  case ConnectionState.waiting:
-                    return Container(
-                      child: Center(
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              // Shimmer.fromColors(
-                              //     baseColor: Colors.grey.withOpacity(0.5),
-                              //     highlightColor: Colors.white,
-                              //     child: new Container(
-                              //       height: 20,
-                              //       width: 100,
-                              //       decoration: new BoxDecoration(
-                              //           color: Colors.grey.withOpacity(0.5),
-                              //           borderRadius: BorderRadius.circular(8)),
-                              //     )),
-                              new Container(
-                                margin: const EdgeInsets.only(
-                                  top: 10,
-                                ),
-                                child: Shimmer.fromColors(
-                                    baseColor: Colors.grey.withOpacity(0.5),
-                                    highlightColor: Colors.white,
-                                    child: new Container(
-                                      height: 24,
-                                      width: 120,
-                                      decoration: new BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                    )),
-                              ),
-                              // new Container(
-                              //   margin: const EdgeInsets.only(
-                              //     top: 4,
-                              //   ),
-                              //   child: Shimmer.fromColors(
-                              //       baseColor: Colors.grey.withOpacity(0.5),
-                              //       highlightColor: Colors.white,
-                              //       child: new Container(
-                              //         height: 16,
-                              //         width: 80,
-                              //         decoration: new BoxDecoration(
-                              //             color: Colors.grey.withOpacity(0.5),
-                              //             borderRadius:
-                              //                 BorderRadius.circular(8)),
-                              //       )),
-                              // ),
-                              new Container(
-                                height: 10,
-                              ),
-                              rowsLoad('Nome Completo'),
-                              rowsLoad('Data de Nascimento'),
-                              rowsLoad('Local onde joga:'),
-                              rowsLoad('Posição:'),
-                              rowsLoad('País'),
-                             // rowsLoad('Estado'),
-                              rowsLoad('Cidade'),
-                              rowsLoad('Sexo'),
-                            ],
+                                  color: AppColors.colorBorderPerfil)
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.grey.withOpacity(0.5),
+                            //     spreadRadius: 2,
+                            //     blurRadius: 7,
+                            //     offset: Offset(0, 3), // changes position of shadow
+                            //   ),
+                            // ],
+                          ),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(widget.image),
+                            radius: 30.0,
                           ),
                         ),
-                      ),
-                    );
-                    break;
-                  case ConnectionState.active:
-                    return Center(
-                      child: Text("Active!!!"),
-                    );
-                  case ConnectionState.done:
-                    if (snapshot.hasData) {
-                      enableEditPencil = true;
-                      String estado = '';
-                      String posicao = '';
-                      String idUser = '';
+                      )
+                    ],
+                  )
+                      : new GestureDetector(
+                    onTap: () {
+                      _showModalAtualizaImagem(
+                          context,
+                          "Imagem",
+                          "Buscar imagem de qual origem?",
+                          widget.usuarioModel.id);
+                    },
+                    child: new Container(
+                      height: 110,
+                      width: 110,
+                      decoration: new BoxDecoration(
+                        //color: const Color(0xff7c94b6),
+                          image: new DecorationImage(
+                            image: new FileImage(_imagem),
+                            fit: BoxFit.cover,
+                          ),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: AppColors.colorBorderPerfil)),
+                    ),
+                  )),
+              // _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.usuarioModel.id);
 
-                      if (!enableEdit) {
-                        UsuarioModel usuarioModel = snapshot.data;
-                        idUser = usuarioModel.id.toString();
-                        prefs.setString('fotoPerfil', usuarioModel.nomeFoto);
-                        _controllerNome.text = usuarioModel.nome;
-                        _controllerApelido.text = usuarioModel.apelido;
-                        _nomeImagem = ConstantesRest.URL_BASE_AMAZON +
-                            usuarioModel.nomeFoto;
-                        _controllerDataNascimento.text = usuarioModel.dataNascimento;
-                        //_controllerDataNascimento.text = "";
-                        if (usuarioModel.dataNascimento != null &&
-                            usuarioModel.dataNascimento != "") {
-                          var formatter = new DateFormat('dd/MM/yyyy');
-                          // String formatted =
-                          //     formatter.format(usuarioModel.dataNascimento);
-                          _controllerDataNascimento.text = '${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}';;
-                        }
-
-                        _controllerSexo = usuarioModel.sexo;
-                        _controllerPosicionamento = usuarioModel.posicao;
-                        _controllerPais = usuarioModel.pais;
-                        _controllerCidade.text = usuarioModel.cidade;
-                        _controllerLocal.text = usuarioModel.ondeJoga;
-                        estado = usuarioModel.estado ?? '';
-                        posicao = usuarioModel.posicao == 'E'
-                            ? "Esquerda"
-                            : usuarioModel.posicao == 'D'
-                                ? "Direita"
-                                : "Ambas";
-                        posicaoSelecionado = posicao;
-
-                        paisModelSelecionado =
-                            new PaisModel(_controllerPais, _controllerPais);
-                        generoModelSelecionado = new GeneroModel(
-                            _controllerSexo,
-                            _controllerSexo == "M" ? "Masculino" : "Feminino");
-                        posicionamentoModelSelecionado =
-                            new PosicionamentoModel(
-                                _controllerPosicionamento,
-                                _controllerPosicionamento != "A"
-                                    ? _controllerPosicionamento != "D"
-                                        ? "Esquerda"
-                                        : "Direita"
-                                    : "Ambas");
-                        sexoSelecionado = generoModelSelecionado.nome;
-                        paisSelecionado = _controllerPais;
-                        if (estado != null && estado != ''){
-                          for(int i = 0; i < estadosList.length; i++){
-                            if(estado == estadosList[i].codigo){
-                              estadoSelecionado = estadosList[i].texto;
-                            }
-                          }
-                          if(estadoSelecionado == null || estadoSelecionado == ""){
-                            estadoSelecionado = '';
-                          }
-                        }
-                      }
-
+              FutureBuilder<UsuarioModel>(
+                future: _buscaUsuarioLogado(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Center(
+                        child: Text("None!!!"),
+                      );
+                    case ConnectionState.waiting:
                       return Container(
                         child: Center(
                           child: SingleChildScrollView(
-                            //padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
+                                // Shimmer.fromColors(
+                                //     baseColor: Colors.grey.withOpacity(0.5),
+                                //     highlightColor: Colors.white,
+                                //     child: new Container(
+                                //       height: 20,
+                                //       width: 100,
+                                //       decoration: new BoxDecoration(
+                                //           color: Colors.grey.withOpacity(0.5),
+                                //           borderRadius: BorderRadius.circular(8)),
+                                //     )),
                                 new Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    //color: Colors.red,
-                                    margin: const EdgeInsets.only(
-                                        top: 4, bottom: 4),
-                                    //height: 40,
-                                    child: TextField(
-                                      cursorColor: AppColors.colorTextPerfil,
-                                      enabled: enableEdit,
-                                      //keyboardType: inputType,
-                                      controller: _controllerApelido,
-
-                                      style: new TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                        color: enableEdit?AppColors.colorTextPerfil:Colors.grey,
-                                        fontFamily: FontFamily.fontSpecial,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      decoration: new InputDecoration(
-                                          border: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          isDense: true,
-                                          // Added this
-
-                                          disabledBorder: InputBorder.none,
-                                          hintStyle: new TextStyle(
-                                            color: AppColors.colorTextPerfil,
-                                          ),
-                                          contentPadding: EdgeInsets.all(0),
-                                          hintText: ""),
-                                    )),
+                                  margin: const EdgeInsets.only(
+                                    top: 10,
+                                  ),
+                                  child: Shimmer.fromColors(
+                                      baseColor: Colors.grey.withOpacity(0.5),
+                                      highlightColor: Colors.white,
+                                      child: new Container(
+                                        height: 24,
+                                        width: 120,
+                                        decoration: new BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            borderRadius:
+                                            BorderRadius.circular(8)),
+                                      )),
+                                ),
                                 // new Container(
                                 //   margin: const EdgeInsets.only(
                                 //     top: 4,
                                 //   ),
-                                //   child: new Text(
-                                //     '31 anos | Destro',
-                                //     style: TextStyle(
-                                //         color: AppColors.colorTextPerfil,
-                                //         fontWeight: FontWeight.bold),
-                                //   ),
-                                // ),
-                                // new Container(
-                                //   margin: const EdgeInsets.only(
-                                //     top: 4,
-                                //   ),
-                                //   child: new Text(
-                                //     'Professor',
-                                //     style: TextStyle(
-                                //         color: AppColors.colorTextPerfil,
-                                //         fontFamily: FontFamily.fontSpecial,
-                                //         fontWeight: FontWeight.bold),
-                                //   ),
+                                //   child: Shimmer.fromColors(
+                                //       baseColor: Colors.grey.withOpacity(0.5),
+                                //       highlightColor: Colors.white,
+                                //       child: new Container(
+                                //         height: 16,
+                                //         width: 80,
+                                //         decoration: new BoxDecoration(
+                                //             color: Colors.grey.withOpacity(0.5),
+                                //             borderRadius:
+                                //                 BorderRadius.circular(8)),
+                                //       )),
                                 // ),
                                 new Container(
                                   height: 10,
                                 ),
-                                rows('Nome Completo', _controllerNome),
-                                rowsNasc('Data de Nascimento',
-                                    _controllerDataNascimento),
-                                rows('Local onde joga:', _controllerLocal),
-                                rowsStringPosicao('Posição:', posicao),
-                                rowsStringPais('País:', _controllerPais ?? ''),
-                                rowsStringEstado('Estado', estado),
-                                rowsCidade('Cidade:', _controllerCidade),
-                                rowsStringSexo(
-                                    'Sexo:', generoModelSelecionado.nome),
-                                new Container(height: 16,),
-                                new GestureDetector(
-                                  onTap: (){
-                                    dialogDesativarUser(idUser,context);
-                                  },
-                                  child: new Container(
-                                    margin: const EdgeInsets.only(left: 26),
-                                    child: new Row(
-                                      children: [
-                                        new Icon(Icons.exit_to_app,color: Colors.red,),
-                                        new Container(width: 8,),
-                                        new Text('Desativar Conta',style: new TextStyle(color: Colors.red),)
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                rowsLoad('Nome Completo',context),
+                                rowsLoad('Data de Nascimento',context),
+                                rowsLoad('Local onde joga:',context),
+                                rowsLoad('Posição:',context),
+                                rowsLoad('País',context),
+                                // rowsLoad('Estado'),
+                                rowsLoad('Cidade',context),
+                                rowsLoad('Sexo',context),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                      break;
+                    case ConnectionState.active:
+                      return Center(
+                        child: Text("Active!!!"),
+                      );
+                    case ConnectionState.done:
+                      if (snapshot.hasData) {
 
-                                new Container(
-                                  margin: const EdgeInsets.all(26),
-                                  child: RaisedButton(
-                                    onPressed: () {
-                                      _atualizar(context);
+                        enableEditPencil = true;
+                        String estado = '';
+                        String posicao = '';
+                        String idUser = '';
+
+                        if (!enableEdit) {
+                          UsuarioModel usuarioModel = snapshot.data;
+                          idUser = usuarioModel.id.toString();
+                          prefs.setString('fotoPerfil', usuarioModel.nomeFoto);
+                          _controllerNome.text = usuarioModel.nome;
+                          _controllerApelido.text = usuarioModel.apelido;
+                          _nomeImagem = ConstantesRest.URL_BASE_AMAZON +
+                              usuarioModel.nomeFoto;
+                          _controllerDataNascimento.text =
+                              usuarioModel.dataNascimento;
+                          //_controllerDataNascimento.text = "";
+                          if (usuarioModel.dataNascimento != null &&
+                              usuarioModel.dataNascimento != "") {
+                            var formatter = new DateFormat('dd/MM/yyyy');
+                            // String formatted =
+                            //     formatter.format(usuarioModel.dataNascimento);
+                            _controllerDataNascimento.text =
+                            '${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}';
+                            ;
+                          }
+
+                          _controllerSexo = usuarioModel.sexo;
+                          _controllerPosicionamento = usuarioModel.posicao;
+                          _controllerPais = usuarioModel.pais;
+                          _controllerCidade.text = usuarioModel.cidade;
+                          _controllerLocal.text = usuarioModel.ondeJoga;
+                          estado = usuarioModel.estado ?? '';
+                          posicao = usuarioModel.posicao == 'E'
+                              ? "Esquerda"
+                              : usuarioModel.posicao == 'D'
+                              ? "Direita"
+                              : "Ambas";
+                          posicaoSelecionado = posicao;
+
+                          paisModelSelecionado =
+                          new PaisModel(_controllerPais, _controllerPais);
+                          generoModelSelecionado = new GeneroModel(
+                              _controllerSexo,
+                              _controllerSexo == "M" ? "Masculino" : "Feminino");
+                          posicionamentoModelSelecionado =
+                          new PosicionamentoModel(
+                              _controllerPosicionamento,
+                              _controllerPosicionamento != "A"
+                                  ? _controllerPosicionamento != "D"
+                                  ? "Esquerda"
+                                  : "Direita"
+                                  : "Ambas");
+                          sexoSelecionado = generoModelSelecionado.nome;
+                          paisSelecionado = _controllerPais;
+                          if (estado != null && estado != '') {
+                            for (int i = 0; i < estadosList.length; i++) {
+                              if (estado == estadosList[i].codigo) {
+                                estadoSelecionado = estadosList[i].texto;
+                              }
+                            }
+                            if (estadoSelecionado == null ||
+                                estadoSelecionado == "") {
+                              estadoSelecionado = '';
+                            }
+                          }
+                          enableEdit = true;
+                        }
+
+                        return Container(
+                          child: Center(
+                            child: SingleChildScrollView(
+                              //padding: EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  new Container(
+                                      width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                      //color: Colors.red,
+                                      margin: const EdgeInsets.only(
+                                          top: 4, bottom: 4),
+                                      //height: 40,
+                                      child: TextField(
+                                        cursorColor: AppColors.colorTextPerfil,
+                                        //keyboardType: inputType,
+                                        controller: _controllerApelido,
+
+                                        style: new TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.colorTextPerfil,
+                                          fontFamily: FontFamily.fontSpecial,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        decoration: new InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            isDense: true,
+                                            // Added this
+
+                                            disabledBorder: InputBorder.none,
+                                            hintStyle: new TextStyle(
+                                              color: AppColors.colorTextPerfil,
+                                            ),
+                                            contentPadding: EdgeInsets.all(0),
+                                            hintText: ""),
+                                      )),
+                                  // new Container(
+                                  //   margin: const EdgeInsets.only(
+                                  //     top: 4,
+                                  //   ),
+                                  //   child: new Text(
+                                  //     '31 anos | Destro',
+                                  //     style: TextStyle(
+                                  //         color: AppColors.colorTextPerfil,
+                                  //         fontWeight: FontWeight.bold),
+                                  //   ),
+                                  // ),
+                                  // new Container(
+                                  //   margin: const EdgeInsets.only(
+                                  //     top: 4,
+                                  //   ),
+                                  //   child: new Text(
+                                  //     'Professor',
+                                  //     style: TextStyle(
+                                  //         color: AppColors.colorTextPerfil,
+                                  //         fontFamily: FontFamily.fontSpecial,
+                                  //         fontWeight: FontWeight.bold),
+                                  //   ),
+                                  // ),
+                                  new Container(
+                                    height: 10,
+                                  ),
+                                  rows('Nome Completo', _controllerNome),
+                                  rowsNasc('Data de Nascimento',
+                                      _controllerDataNascimento),
+                                  rows('Local onde joga:', _controllerLocal),
+                                  rowsStringPosicao('Posição:', posicao),
+                                  rowsStringPais('País:', _controllerPais ?? ''),
+                                  rowsStringEstado('Estado', estado),
+                                  rowsCidade('Cidade:', _controllerCidade),
+                                  rowsStringSexo(
+                                      'Sexo:', generoModelSelecionado.nome),
+                                  new Container(
+                                    height: 16,
+                                  ),
+                                  new GestureDetector(
+                                    onTap: () {
+                                      dialogDesativarUser(idUser, context);
                                     },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    padding: const EdgeInsets.all(0.0),
-                                    child: Ink(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: <Color>[
-                                            AppColors.colorEspecialSecundario1,
-                                            AppColors.colorEspecialSecundario2
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0)),
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12),
-                                        constraints: const BoxConstraints(
-                                            minWidth: 88.0, minHeight: 36.0),
-                                        // min sizes for Material buttons
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "Atualizar",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.colorTextLogCad,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                    child: new Container(
+                                      margin: const EdgeInsets.only(left: 26,bottom: 30),
+                                      child: new Row(
+                                        children: [
+                                          new Icon(
+                                            Icons.exit_to_app,
+                                            color: Colors.red,
+                                          ),
+                                          new Container(
+                                            width: 8,
+                                          ),
+                                          new Text(
+                                            'Desativar Conta',
+                                            style:
+                                            new TextStyle(color: Colors.red),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                )
-                                /*
+                                  //
+                                  // new Container(
+                                  //   margin: const EdgeInsets.all(26),
+                                  //   child: RaisedButton(
+                                  //     onPressed: () {
+                                  //       _atualizar(context);
+                                  //     },
+                                  //     shape: RoundedRectangleBorder(
+                                  //         borderRadius:
+                                  //         BorderRadius.circular(8.0)),
+                                  //     padding: const EdgeInsets.all(0.0),
+                                  //     child: Ink(
+                                  //       decoration: BoxDecoration(
+                                  //         gradient: LinearGradient(
+                                  //           colors: <Color>[
+                                  //             AppColors.colorEspecialSecundario1,
+                                  //             AppColors.colorEspecialSecundario2
+                                  //           ],
+                                  //         ),
+                                  //         borderRadius: BorderRadius.all(
+                                  //             Radius.circular(8.0)),
+                                  //       ),
+                                  //       child: Container(
+                                  //         padding: const EdgeInsets.symmetric(
+                                  //             vertical: 12),
+                                  //         constraints: const BoxConstraints(
+                                  //             minWidth: 88.0, minHeight: 36.0),
+                                  //         // min sizes for Material buttons
+                                  //         alignment: Alignment.center,
+                                  //         child: Text(
+                                  //           "Atualizar",
+                                  //           style: TextStyle(
+                                  //               fontSize: 16,
+                                  //               color: AppColors.colorTextLogCad,
+                                  //               fontWeight: FontWeight.bold),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // )
+                                  /*
                         GestureDetector(
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(_nomeImagem),
@@ -990,7 +1042,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           },
                         ),
                         */
-                                /*
+                                  /*
                         Padding(
                           padding: EdgeInsets.only(top: 5),
                           child: Text(
@@ -1003,216 +1055,254 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                         ),
                         */
 
-                                //
-                                // Center(
-                                //   child: Column(
-                                //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                                //     children: <Widget>[
-                                //       Padding(
-                                //         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                //         child: TextField(
-                                //           keyboardType: TextInputType.text,
-                                //           decoration: InputDecoration(
-                                //             filled: true,
-                                //             fillColor: Colors.white,
-                                //             prefixIcon: Icon(
-                                //               Icons.done_all,
-                                //               color: Colors.black,
-                                //             ),
-                                //             hintText: "Nome",
-                                //             hintStyle: TextStyle(
-                                //               fontSize: 14,
-                                //               color: Colors.grey[400],
-                                //             ),
-                                //           ),
-                                //           style: TextStyle(
-                                //               fontSize: 16, color: Colors.black),
-                                //           controller: _controllerNome,
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                //         child: TextField(
-                                //           keyboardType: TextInputType.text,
-                                //           decoration: InputDecoration(
-                                //             filled: true,
-                                //             fillColor: Colors.white,
-                                //             prefixIcon: Icon(
-                                //               Icons.done_all,
-                                //               color: Colors.black,
-                                //             ),
-                                //             hintText: "Apelido",
-                                //             hintStyle: TextStyle(
-                                //               fontSize: 14,
-                                //               color: Colors.grey[400],
-                                //             ),
-                                //           ),
-                                //           style: TextStyle(
-                                //               fontSize: 16, color: Colors.black),
-                                //           controller: _controllerApelido,
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.only(bottom: 10),
-                                //         child: TextField(
-                                //           keyboardType: TextInputType.datetime,
-                                //           decoration: InputDecoration(
-                                //             filled: true,
-                                //             fillColor: Colors.white,
-                                //             prefixIcon: Icon(
-                                //               Icons.done_all,
-                                //               color: Colors.black,
-                                //             ),
-                                //             hintText: "Data de nascimento",
-                                //             hintStyle: TextStyle(
-                                //               fontSize: 14,
-                                //               color: Colors.grey[400],
-                                //             ),
-                                //             /* border: OutlineInputBorder(
-                                //             gapPadding: 1,
-                                //           ),*/
-                                //           ),
-                                //           style: TextStyle(
-                                //               fontSize: 14, color: Colors.black),
-                                //           maxLength: 10,
-                                //           //maxLengthEnforced: true,
-                                //           controller: _controllerDataNascimento,
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.only(bottom: 10),
-                                //         child: FindDropdown<PosicionamentoModel>(
-                                //           showSearchBox: false,
-                                //           onFind: (String filter) =>
-                                //               _listaPosicionamentos(),
-                                //           searchBoxDecoration: InputDecoration(
-                                //             hintText: "Search",
-                                //             border: OutlineInputBorder(),
-                                //           ),
-                                //           onChanged: (PosicionamentoModel data) =>
-                                //               _controllerPosicionamento = data.id,
-                                //           selectedItem: posicionamentoModelSelecionado,
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.only(bottom: 10),
-                                //         child: FindDropdown<GeneroModel>(
-                                //           showSearchBox: false,
-                                //           onFind: (String filter) => _listaGeneros(),
-                                //           searchBoxDecoration: InputDecoration(
-                                //             hintText: "Search",
-                                //             border: OutlineInputBorder(),
-                                //           ),
-                                //           onChanged: (GeneroModel data) =>
-                                //               _controllerSexo = data.id,
-                                //           selectedItem: generoModelSelecionado,
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.only(bottom: 10),
-                                //         child: FindDropdown<PaisModel>(
-                                //           showSearchBox: false,
-                                //           onFind: (String filter) => _listaPaises(),
-                                //           searchBoxDecoration: InputDecoration(
-                                //             hintText: "Search",
-                                //             border: OutlineInputBorder(),
-                                //           ),
-                                //           onChanged: (PaisModel data) =>
-                                //               _controllerPais = data.id,
-                                //           selectedItem: paisModelSelecionado,
-                                //         ),
-                                //       ),
-                                //       TextField(
-                                //         keyboardType: TextInputType.text,
-                                //         decoration: InputDecoration(
-                                //           filled: true,
-                                //           fillColor: Colors.white,
-                                //           hintText: "Cidade",
-                                //           hintStyle: TextStyle(
-                                //             fontSize: 14,
-                                //             color: Colors.grey[400],
-                                //           ),
-                                //         ),
-                                //         style: TextStyle(
-                                //             fontSize: 14, color: Colors.black),
-                                //         controller: _controllerCidade,
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.all(5),
-                                //       ),
-                                //       TextField(
-                                //         keyboardType: TextInputType.text,
-                                //         decoration: InputDecoration(
-                                //           filled: true,
-                                //           fillColor: Colors.white,
-                                //           hintText: "Local",
-                                //           hintStyle: TextStyle(
-                                //             fontSize: 14,
-                                //             color: Colors.grey[400],
-                                //           ),
-                                //           /* border: OutlineInputBorder(
-                                //             gapPadding: 1,
-                                //           ),*/
-                                //         ),
-                                //         style: TextStyle(
-                                //             fontSize: 14, color: Colors.black),
-                                //         //maxLength: 100,
-                                //         //maxLengthEnforced: true,
-                                //         controller: _controllerLocal,
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.all(5),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.only(top: 10),
-                                //         child: RaisedButton(
-                                //           color: Color(0xff086ba4),
-                                //           textColor: Colors.white,
-                                //           padding: EdgeInsets.all(15),
-                                //           child: Text(
-                                //             "Atualizar",
-                                //             style: TextStyle(
-                                //               fontSize: 16,
-                                //               fontFamily: 'Candal',
-                                //             ),
-                                //           ),
-                                //           shape: RoundedRectangleBorder(
-                                //             borderRadius: BorderRadius.circular(2),
-                                //           ),
-                                //           onPressed: _atualizar,
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: EdgeInsets.only(top: 15),
-                                //         child: Text(
-                                //           _mensagem,
-                                //           style: TextStyle(
-                                //               color: Colors.black,
-                                //               fontSize: 12,
-                                //               fontFamily: 'Candal'),
-                                //         ),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                              ],
+                                  //
+                                  // Center(
+                                  //   child: Column(
+                                  //     crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  //     children: <Widget>[
+                                  //       Padding(
+                                  //         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                  //         child: TextField(
+                                  //           keyboardType: TextInputType.text,
+                                  //           decoration: InputDecoration(
+                                  //             filled: true,
+                                  //             fillColor: Colors.white,
+                                  //             prefixIcon: Icon(
+                                  //               Icons.done_all,
+                                  //               color: Colors.black,
+                                  //             ),
+                                  //             hintText: "Nome",
+                                  //             hintStyle: TextStyle(
+                                  //               fontSize: 14,
+                                  //               color: Colors.grey[400],
+                                  //             ),
+                                  //           ),
+                                  //           style: TextStyle(
+                                  //               fontSize: 16, color: Colors.black),
+                                  //           controller: _controllerNome,
+                                  //         ),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                  //         child: TextField(
+                                  //           keyboardType: TextInputType.text,
+                                  //           decoration: InputDecoration(
+                                  //             filled: true,
+                                  //             fillColor: Colors.white,
+                                  //             prefixIcon: Icon(
+                                  //               Icons.done_all,
+                                  //               color: Colors.black,
+                                  //             ),
+                                  //             hintText: "Apelido",
+                                  //             hintStyle: TextStyle(
+                                  //               fontSize: 14,
+                                  //               color: Colors.grey[400],
+                                  //             ),
+                                  //           ),
+                                  //           style: TextStyle(
+                                  //               fontSize: 16, color: Colors.black),
+                                  //           controller: _controllerApelido,
+                                  //         ),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.only(bottom: 10),
+                                  //         child: TextField(
+                                  //           keyboardType: TextInputType.datetime,
+                                  //           decoration: InputDecoration(
+                                  //             filled: true,
+                                  //             fillColor: Colors.white,
+                                  //             prefixIcon: Icon(
+                                  //               Icons.done_all,
+                                  //               color: Colors.black,
+                                  //             ),
+                                  //             hintText: "Data de nascimento",
+                                  //             hintStyle: TextStyle(
+                                  //               fontSize: 14,
+                                  //               color: Colors.grey[400],
+                                  //             ),
+                                  //             /* border: OutlineInputBorder(
+                                  //             gapPadding: 1,
+                                  //           ),*/
+                                  //           ),
+                                  //           style: TextStyle(
+                                  //               fontSize: 14, color: Colors.black),
+                                  //           maxLength: 10,
+                                  //           //maxLengthEnforced: true,
+                                  //           controller: _controllerDataNascimento,
+                                  //         ),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.only(bottom: 10),
+                                  //         child: FindDropdown<PosicionamentoModel>(
+                                  //           showSearchBox: false,
+                                  //           onFind: (String filter) =>
+                                  //               _listaPosicionamentos(),
+                                  //           searchBoxDecoration: InputDecoration(
+                                  //             hintText: "Search",
+                                  //             border: OutlineInputBorder(),
+                                  //           ),
+                                  //           onChanged: (PosicionamentoModel data) =>
+                                  //               _controllerPosicionamento = data.id,
+                                  //           selectedItem: posicionamentoModelSelecionado,
+                                  //         ),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.only(bottom: 10),
+                                  //         child: FindDropdown<GeneroModel>(
+                                  //           showSearchBox: false,
+                                  //           onFind: (String filter) => _listaGeneros(),
+                                  //           searchBoxDecoration: InputDecoration(
+                                  //             hintText: "Search",
+                                  //             border: OutlineInputBorder(),
+                                  //           ),
+                                  //           onChanged: (GeneroModel data) =>
+                                  //               _controllerSexo = data.id,
+                                  //           selectedItem: generoModelSelecionado,
+                                  //         ),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.only(bottom: 10),
+                                  //         child: FindDropdown<PaisModel>(
+                                  //           showSearchBox: false,
+                                  //           onFind: (String filter) => _listaPaises(),
+                                  //           searchBoxDecoration: InputDecoration(
+                                  //             hintText: "Search",
+                                  //             border: OutlineInputBorder(),
+                                  //           ),
+                                  //           onChanged: (PaisModel data) =>
+                                  //               _controllerPais = data.id,
+                                  //           selectedItem: paisModelSelecionado,
+                                  //         ),
+                                  //       ),
+                                  //       TextField(
+                                  //         keyboardType: TextInputType.text,
+                                  //         decoration: InputDecoration(
+                                  //           filled: true,
+                                  //           fillColor: Colors.white,
+                                  //           hintText: "Cidade",
+                                  //           hintStyle: TextStyle(
+                                  //             fontSize: 14,
+                                  //             color: Colors.grey[400],
+                                  //           ),
+                                  //         ),
+                                  //         style: TextStyle(
+                                  //             fontSize: 14, color: Colors.black),
+                                  //         controller: _controllerCidade,
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.all(5),
+                                  //       ),
+                                  //       TextField(
+                                  //         keyboardType: TextInputType.text,
+                                  //         decoration: InputDecoration(
+                                  //           filled: true,
+                                  //           fillColor: Colors.white,
+                                  //           hintText: "Local",
+                                  //           hintStyle: TextStyle(
+                                  //             fontSize: 14,
+                                  //             color: Colors.grey[400],
+                                  //           ),
+                                  //           /* border: OutlineInputBorder(
+                                  //             gapPadding: 1,
+                                  //           ),*/
+                                  //         ),
+                                  //         style: TextStyle(
+                                  //             fontSize: 14, color: Colors.black),
+                                  //         //maxLength: 100,
+                                  //         //maxLengthEnforced: true,
+                                  //         controller: _controllerLocal,
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.all(5),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.only(top: 10),
+                                  //         child: RaisedButton(
+                                  //           color: Color(0xff086ba4),
+                                  //           textColor: Colors.white,
+                                  //           padding: EdgeInsets.all(15),
+                                  //           child: Text(
+                                  //             "Atualizar",
+                                  //             style: TextStyle(
+                                  //               fontSize: 16,
+                                  //               fontFamily: 'Candal',
+                                  //             ),
+                                  //           ),
+                                  //           shape: RoundedRectangleBorder(
+                                  //             borderRadius: BorderRadius.circular(2),
+                                  //           ),
+                                  //           onPressed: _atualizar,
+                                  //         ),
+                                  //       ),
+                                  //       Padding(
+                                  //         padding: EdgeInsets.only(top: 15),
+                                  //         child: Text(
+                                  //           _mensagem,
+                                  //           style: TextStyle(
+                                  //               color: Colors.black,
+                                  //               fontSize: 12,
+                                  //               fontFamily: 'Candal'),
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Text("Sem valores!!!"),
-                      );
-                    }
-                    break;
-                }
-                return new Container();
-              },
-            )
-          ],
+                        );
+                      } else {
+                        return Center(
+                          child: Text("Sem valores!!!"),
+                        );
+                      }
+                      break;
+                  }
+                  return new Container();
+                },
+              )
+            ],
+          ),
         ),
       ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.grey[900],
+            child:
+            new Container(
+              margin: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
+              height: 50,
+              child: RaisedButton(
+                onPressed:(){
+                  _atualizar(context);
+                },
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                padding: const EdgeInsets.all(0.0),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient:  LinearGradient(
+                      colors: <Color>[AppColors.colorEspecialSecundario1, AppColors.colorEspecialSecundario2],
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0), // min sizes for Material buttons
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "Atualizar",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+        )
+
     );
 
     FutureBuilder<UsuarioModel>(
@@ -1337,12 +1427,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                       new Container(
                         height: 10,
                       ),
-                      rowsLoad('Nome Completo'),
-                      rowsLoad('Data de Nascimento'),
-                      rowsLoad('Jogos em:'),
-                      rowsLoad('Posição:'),
-                      rowsLoad('País'),
-                      rowsLoad('Cidade'),
                     ],
                   ),
                 ),
@@ -1747,13 +1831,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
           margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
           padding: const EdgeInsets.only(left: 6),
-          decoration: enableEdit?new BoxDecoration(
-              border: new Border.all(
-                color: AppColors.colorBorderPerfil,
-                width: 0.5,
-              ),
-              borderRadius: BorderRadius.circular(8)):
-          new BoxDecoration(),
+          decoration: new BoxDecoration(),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1772,31 +1850,22 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                 ),
               ),
               new Container(
-                  //color: Colors.red,
+                  //padding: const EdgeInsets.only(left: 16),
+                  color: Colors.white.withOpacity(0.4),
                   margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  //height: 40,
-                  child: TextField(
-                    cursorColor: AppColors.colorTextPerfil,
-                    enabled: enableEdit,
-                    //keyboardType: inputType,
-                    controller: controller,
-                    style: new TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.bold),
-                    decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        isDense: true,
-                        // Added this
-
-                        disabledBorder: InputBorder.none,
-                        hintStyle: new TextStyle(
+                  height: 40,
+                  child: new Center(
+                    child: TextField(
+                      cursorColor: AppColors.colorTextPerfil,
+                      //keyboardType: inputType,
+                      controller: controller,
+                      style: new TextStyle(
                           color: AppColors.colorTextPerfil,
-                        ),
-                        contentPadding: EdgeInsets.all(0),
-                        hintText: ""),
+                          fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 16.0, bottom: 8),
+                      ),
+                    ),
                   )),
             ],
           ),
@@ -1811,90 +1880,10 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       children: [
         new Expanded(
             child: new Container(
-              //height: 60,
-              //width: MediaQuery.of(context).size.width,
-
-              margin: EdgeInsets.only(top: paisSelecionado == 'Brasil'?20:14, right: 26, left: 26),
-              padding: const EdgeInsets.only(left: 6),
-              decoration: enableEdit?new BoxDecoration(
-                  border: new Border.all(
-                    color: AppColors.colorBorderPerfil,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8)):
-              new BoxDecoration(),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(
-                      top: 4,
-                    ),
-                    child: new Text(
-                      titile,
-                      style: TextStyle(
-                          color: AppColors.colorTextPerfil,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12),
-                    ),
-                  ),
-                  new Container(
-                    //color: Colors.red,
-                      margin: const EdgeInsets.only(top: 4, bottom: 4),
-                      //height: 40,
-                      child: TextField(
-                        cursorColor: AppColors.colorTextPerfil,
-                        enabled: enableEdit,
-                        //keyboardType: inputType,
-                        controller: controller,
-                        style: new TextStyle(
-                            color: AppColors.colorTextPerfil,
-                            fontWeight: FontWeight.bold),
-                        decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            isDense: true,
-                            // Added this
-
-                            disabledBorder: InputBorder.none,
-                            hintStyle: new TextStyle(
-                              color: AppColors.colorTextPerfil,
-                            ),
-                            contentPadding: EdgeInsets.all(0),
-                            hintText: ""),
-                      )),
-                ],
-              ),
-            ))
-      ],
-    );
-  }
-
-
-  Widget rowsNasc(String titile, TextEditingController controller) {
-    final maskCpf = MaskTextInputFormatter(
-        mask: '##/##/####', filter: {"#": RegExp(r'[0-9]')});
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        new Expanded(
-            child: new Container(
-          //height: 60,
-          //width: MediaQuery.of(context).size.width,
-
-          margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
+          margin: EdgeInsets.only(
+              top: paisSelecionado == 'Brasil' ? 20 : 14, right: 26, left: 26),
           padding: const EdgeInsets.only(left: 6),
-              decoration: enableEdit?new BoxDecoration(
-                  border: new Border.all(
-                    color: AppColors.colorBorderPerfil,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8)):
-              new BoxDecoration(),
+          decoration: new BoxDecoration(),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1913,34 +1902,91 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                 ),
               ),
               new Container(
-                  //color: Colors.red,
+                  color: Colors.white.withOpacity(0.4),
+                  padding: const EdgeInsets.only(left: 16),
                   margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  //height: 40,
-                  child: TextField(
-                    cursorColor: AppColors.colorTextPerfil,
-                    enabled: enableEdit,
-                    inputFormatters: [maskCpf],
-                    keyboardType: TextInputType.number,
-
-                    //keyboardType: inputType,
-                    controller: controller,
-                    style: new TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.bold),
-                    decoration: new InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        isDense: true,
-                        // Added this
-
-                        disabledBorder: InputBorder.none,
-                        hintStyle: new TextStyle(
+                  height: 40,
+                  child: new Center(
+                    child: TextField(
+                      cursorColor: AppColors.colorTextPerfil,
+                      //keyboardType: inputType,
+                      controller: controller,
+                      style: new TextStyle(
                           color: AppColors.colorTextPerfil,
-                        ),
-                        contentPadding: EdgeInsets.all(0),
-                        hintText: ""),
+                          fontWeight: FontWeight.bold),
+                      decoration: new InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          isDense: true,
+                          // Added this
+
+                          disabledBorder: InputBorder.none,
+                          hintStyle: new TextStyle(
+                            color: AppColors.colorTextPerfil,
+                          ),
+                          contentPadding: EdgeInsets.all(0),
+                          hintText: ""),
+                    ),
+                  )),
+            ],
+          ),
+        ))
+      ],
+    );
+  }
+
+  Widget rowsNasc(String titile, TextEditingController controller) {
+    final maskCpf = MaskTextInputFormatter(
+        mask: '##/##/####', filter: {"#": RegExp(r'[0-9]')});
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        new Expanded(
+            child: new Container(
+          //height: 60,
+          //width: MediaQuery.of(context).size.width,
+
+          margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
+          padding: const EdgeInsets.only(left: 6),
+          decoration: new BoxDecoration(),
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              new Container(
+                //color: Colors.red,
+                margin: const EdgeInsets.only(
+                  top: 4,
+                ),
+                child: new Text(
+                  titile,
+                  style: TextStyle(
+                      color: AppColors.colorTextPerfil,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 12),
+                ),
+              ),
+              new Container(
+                  color: Colors.white.withOpacity(0.4),
+                  margin: const EdgeInsets.only(top: 4, bottom: 4),
+                  height: 40,
+                  child: new Center(
+                    child: TextField(
+                      cursorColor: AppColors.colorTextPerfil,
+                      inputFormatters: [maskCpf],
+                      keyboardType: TextInputType.number,
+
+                      //keyboardType: inputType,
+                      controller: controller,
+                      style: new TextStyle(
+                          color: AppColors.colorTextPerfil,
+                          fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 16.0, bottom: 8),
+                      ),
+                    ),
                   )),
             ],
           ),
@@ -1950,427 +1996,176 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   }
 
   Widget rowsStringPosicao(String titile, String value) {
-    if (!enableEdit)
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Expanded(
-              child: new Container(
-            //height: 60,
-            // width: MediaQuery.of(context).size.width*0.8,
-            margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
-            padding: const EdgeInsets.only(left: 6),
-                decoration: enableEdit?new BoxDecoration(
-                    border: new Border.all(
-                      color: AppColors.colorBorderPerfil,
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(8)):
-                new BoxDecoration(),
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        new Expanded(
             child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(
-                    top: 4,
-                  ),
-                  child: new Text(
-                    titile,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12),
-                  ),
-                ),
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  child: new Text(
-                    value,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            new Container(
+              //color: Colors.red,
+              padding: const EdgeInsets.only(left: 6),
+
+              margin: const EdgeInsets.only(left: 26,top:20, right: 26,bottom: 4),
+              child: new Text(
+                titile,
+                style: TextStyle(
+                    color: AppColors.colorTextPerfil,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 12),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 26, right: 26),
+              height: 40,
+              padding: EdgeInsets.only(left: 6),
+              child: new Container(
+                padding: const EdgeInsets.only(left: 16),
+                color: Colors.white.withOpacity(0.4),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    icon: Icon(Icons.arrow_drop_down_outlined,color: Colors.white,),
+                    isExpanded: true,
+                    hint: Text(
+                      "Selecione a Posição",
+                      style: new TextStyle(
+                          color: AppColors.colorTextPerfil,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    value: posicaoSelecionado,
                     style: TextStyle(
                         color: AppColors.colorTextPerfil,
                         fontWeight: FontWeight.bold,
                         fontSize: 14),
+                    dropdownColor: Color(0xff083251),
+                    //, Color(0xff112841),
+                    onChanged: (newValue) {
+                      setState(() {
+                        posicaoSelecionado = newValue;
+                        //controllerNomeCartaoContaBancaria.text = newValue;
+                      });
+                    },
+                    items: listDropPosicao.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
-                )
-              ],
-            ),
-          ))
-        ],
-      );
-    return new Stack(
-      children: [
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            new Expanded(
-                child: new Container(
-              //height: 60,
-              // width: MediaQuery.of(context).size.width*0.8,
-              margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
-              padding: const EdgeInsets.only(left: 6),
-              decoration: new BoxDecoration(
-                  border: new Border.all(
-                    color: AppColors.colorTextPerfil,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8)),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(
-                      top: 4,
-                    ),
-                    child: new Text(
-                      titile,
-                      style: TextStyle(
-                          color: AppColors.colorTextPerfil,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12),
-                    ),
-                  ),
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(top: 4, bottom: 4),
-                    child: new Text(
-                      value,
-                      style: TextStyle(
-                          color: Colors.transparent,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
-                  )
-                ],
-              ),
-            ))
-          ],
-        ),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 26, top: 30, right: 26),
-                height: 40,
-                padding: EdgeInsets.only(left: 6),
-                child: new Stack(
-                  children: <Widget>[
-                    new Container(
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: Text(
-                            "Selecione a Posição",
-                            style: new TextStyle(
-                                color: AppColors.colorTextPerfil,
-                                fontWeight: FontWeight.normal),
-                          ),
-                          value: posicaoSelecionado,
-                          style: TextStyle(
-                              color: AppColors.colorTextPerfil,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
-                          dropdownColor: Color(0xff083251),
-                          //, Color(0xff112841),
-                          onChanged: (newValue) {
-                            setState(() {
-                              posicaoSelecionado = newValue;
-                              //controllerNomeCartaoContaBancaria.text = newValue;
-                            });
-                          },
-                          items: listDropPosicao.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
-            )
+            ),
           ],
-        )
+        ))
       ],
     );
   }
 
   Widget rowsStringPais(String titile, String value) {
-    if (!enableEdit)
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Expanded(
-              child: new Container(
-            //height: 60,
-            // width: MediaQuery.of(context).size.width*0.8,
-            margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
-            padding: const EdgeInsets.only(left: 6),
-                decoration: enableEdit?new BoxDecoration(
-                    border: new Border.all(
-                      color: AppColors.colorBorderPerfil,
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(8)):
-                new BoxDecoration(),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(
-                    top: 4,
-                  ),
-                  child: new Text(
-                    titile,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12),
-                  ),
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        new Expanded(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Container(
+                //color: Colors.red,
+                padding: const EdgeInsets.only(left: 6),
+
+                margin: const EdgeInsets.only(left: 26,top:20, right: 26,bottom: 4),
+                child: new Text(
+                  titile,
+                  style: TextStyle(
+                      color: AppColors.colorTextPerfil,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 12),
                 ),
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  child: new Text(
-                    value,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  ),
-                )
-              ],
-            ),
-          ))
-        ],
-      );
-    return new Stack(
-      children: [
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            new Expanded(
-                child: new Container(
-              //height: 60,
-              // width: MediaQuery.of(context).size.width*0.8,
-              margin: const EdgeInsets.only(top: 16, right: 26, left: 26),
-              padding: const EdgeInsets.only(left: 6),
-              decoration: new BoxDecoration(
-                  border: new Border.all(
-                    color: AppColors.colorTextPerfil,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8)),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(
-                      top: 4,
-                    ),
-                    child: new Text(
-                      titile,
-                      style: TextStyle(
-                          color: AppColors.colorTextPerfil,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12),
-                    ),
-                  ),
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(top: 4, bottom: 4),
-                    child: new Text(
-                      value,
-                      style: TextStyle(
-                          color: Colors.transparent,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
-                  )
-                ],
               ),
-            ))
-          ],
-        ),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 26, top: 26, right: 26),
+              Container(
+                margin: const EdgeInsets.only(left: 26,right: 26),
                 height: 40,
                 padding: EdgeInsets.only(left: 6),
-                child: new Stack(
-                  children: <Widget>[
-                    new Container(
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: Text(
-                            "Selecione o País",
-                            style: new TextStyle(
-                                color: AppColors.colorTextPerfil,
-                                fontWeight: FontWeight.normal),
-                          ),
-                          value: paisSelecionado,
-                          style: new TextStyle(
-                              color: AppColors.colorTextPerfil,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
-                          dropdownColor: Color(0xff083251),
-                          //, Color(0xff112841),
-                          onChanged: (newValue) {
-                            setState(() {
-                              paisSelecionado = newValue;
-                              _controllerPais = newValue;
-                              //controllerNomeCartaoContaBancaria.text = newValue;
-                            });
-                          },
-                          items: listDropPais.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                child: new Container(
+                  padding: const EdgeInsets.only(left: 16),
+                  color: Colors.white.withOpacity(0.4),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      icon: Icon(Icons.arrow_drop_down_outlined,color: Colors.white,),
+                      isExpanded: true,
+                      hint: Text(
+                        "Selecione o País",
+                        style: new TextStyle(
+                            color: AppColors.colorTextPerfil,
+                            fontWeight: FontWeight.normal),
                       ),
+                      value: paisSelecionado,
+                      style: new TextStyle(
+                          color: AppColors.colorTextPerfil,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                      dropdownColor: Color(0xff083251),
+                      //, Color(0xff112841),
+                      onChanged: (newValue) {
+                        setState(() {
+                          paisSelecionado = newValue;
+                          _controllerPais = newValue;
+                          //controllerNomeCartaoContaBancaria.text = newValue;
+                        });
+                      },
+                      items: listDropPais.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            )
-          ],
+            ],
+          )
         )
       ],
     );
   }
 
   Widget rowsStringEstado(String titile, String value) {
-    if(paisSelecionado == 'Brasil'){
-      if (!enableEdit)
-        return new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            new Expanded(
-                child: new Container(
-                  //height: 60,
-                  // width: MediaQuery.of(context).size.width*0.8,
-                  margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
+    if (paisSelecionado == 'Brasil') {
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          new Expanded(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                new Container(
+                  //color: Colors.red,
                   padding: const EdgeInsets.only(left: 6),
-                  decoration: enableEdit?new BoxDecoration(
-                      border: new Border.all(
-                        color: AppColors.colorBorderPerfil,
-                        width: 0.5,
-                      ),
-                      borderRadius: BorderRadius.circular(8)):
-                  new BoxDecoration(),
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      new Container(
-                        //color: Colors.red,
-                        margin: const EdgeInsets.only(
-                          top: 4,
-                        ),
-                        child: new Text(
-                          titile,
-                          style: TextStyle(
-                              color: AppColors.colorTextPerfil,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 12),
-                        ),
-                      ),
-                      new Container(
-                        //color: Colors.red,
-                        margin: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: new Text(
-                          value,
-                          style: TextStyle(
-                              color: AppColors.colorTextPerfil,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
-                        ),
-                      )
-                    ],
+
+                  margin: const EdgeInsets.only(left: 26,top:20, right: 26,bottom: 4),
+                  child: new Text(
+                    titile,
+                    style: TextStyle(
+                        color: AppColors.colorTextPerfil,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12),
                   ),
-                ))
-          ],
-        );
-      return new Stack(
-        children: [
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              new Expanded(
-                  child: new Container(
-                    //height: 60,
-                    // width: MediaQuery.of(context).size.width*0.8,
-                    margin: const EdgeInsets.only(top: 16, right: 26, left: 26),
-                    padding: const EdgeInsets.only(left: 6),
-                    decoration: new BoxDecoration(
-                        border: new Border.all(
-                          color: AppColors.colorTextPerfil,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        new Container(
-                          //color: Colors.red,
-                          margin: const EdgeInsets.only(
-                            top: 4,
-                          ),
-                          child: new Text(
-                            titile,
-                            style: TextStyle(
-                                color: AppColors.colorTextPerfil,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12),
-                          ),
-                        ),
-                        new Container(
-                          //color: Colors.red,
-                          margin: const EdgeInsets.only(top: 4, bottom: 4),
-                          child: new Text(
-                            value,
-                            style: TextStyle(
-                                color: Colors.transparent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14),
-                          ),
-                        )
-                      ],
-                    ),
-                  ))
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              new Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(left: 26, top: 26, right: 26),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 26, right: 26),
                   height: 40,
                   padding: EdgeInsets.only(left: 6),
                   child: new Stack(
                     children: <Widget>[
                       new Container(
+                        padding: const EdgeInsets.only(left: 16),
+                        color: Colors.white.withOpacity(0.4),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            icon: Icon(Icons.arrow_drop_down_outlined,color: Colors.white,),
+
                             isExpanded: true,
                             hint: Text(
                               "Selecione o Estado",
@@ -2403,8 +2198,8 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                     ],
                   ),
                 ),
-              )
-            ],
+              ],
+            )
           )
         ],
       );
@@ -2413,119 +2208,39 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   }
 
   Widget rowsStringSexo(String titile, String value) {
-    if (!enableEdit)
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Expanded(
-              child: new Container(
-            //height: 60,
-            // width: MediaQuery.of(context).size.width*0.8,
-            margin: const EdgeInsets.only(top: 20, right: 26, left: 26),
-            padding: const EdgeInsets.only(left: 6),
-                decoration: enableEdit?new BoxDecoration(
-                    border: new Border.all(
-                      color: AppColors.colorBorderPerfil,
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(8)):
-                new BoxDecoration(),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(
-                    top: 4,
-                  ),
-                  child: new Text(
-                    titile,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12),
-                  ),
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        new Expanded(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Container(
+                //color: Colors.red,
+                padding: const EdgeInsets.only(left: 6),
+
+                margin: const EdgeInsets.only(left: 26,top:20, right: 26,bottom: 4),
+                child: new Text(
+                  titile,
+                  style: TextStyle(
+                      color: AppColors.colorTextPerfil,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 12),
                 ),
-                new Container(
-                  //color: Colors.red,
-                  margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  child: new Text(
-                    value,
-                    style: TextStyle(
-                        color: AppColors.colorTextPerfil,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  ),
-                )
-              ],
-            ),
-          ))
-        ],
-      );
-    return new Stack(
-      children: [
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            new Expanded(
-                child: new Container(
-              //height: 60,
-              // width: MediaQuery.of(context).size.width*0.8,
-              margin: const EdgeInsets.only(top: 16, right: 26, left: 26),
-              padding: const EdgeInsets.only(left: 6),
-              decoration: new BoxDecoration(
-                  border: new Border.all(
-                    color: Colors.white,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8)),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(
-                      top: 4,
-                    ),
-                    child: new Text(
-                      titile,
-                      style: TextStyle(
-                          color: AppColors.colorTextPerfil,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12),
-                    ),
-                  ),
-                  new Container(
-                    //color: Colors.red,
-                    margin: const EdgeInsets.only(top: 4, bottom: 4),
-                    child: new Text(
-                      value,
-                      style: TextStyle(
-                          color: Colors.transparent,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
-                  )
-                ],
               ),
-            ))
-          ],
-        ),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 26, top: 26, right: 26),
+              Container(
+                margin: const EdgeInsets.only(left: 26, right: 26),
                 height: 40,
                 padding: EdgeInsets.only(left: 6),
                 child: new Stack(
                   children: <Widget>[
                     new Container(
+                      color: Colors.white.withOpacity(0.4),
+                      padding: const EdgeInsets.only(left: 16),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
+                          icon: Icon(Icons.arrow_drop_down_outlined,color: Colors.white,),
+
                           isExpanded: true,
                           hint: Text(
                             "Selecione o Sexo",
@@ -2558,21 +2273,22 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                   ],
                 ),
               ),
-            )
-          ],
-        ),
-
+            ],
+          )
+        )
       ],
     );
   }
 
   Widget rowsLoad(
     String titile,
+      BuildContext context
   ) {
     return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         new Container(
-          margin: const EdgeInsets.only(left: 20, top: 20),
+          margin: const EdgeInsets.only(top: 20),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2588,21 +2304,27 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                       fontSize: 12),
                 ),
               ),
-              new Container(
-                margin: const EdgeInsets.only(
-                  top: 4,
-                ),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.withOpacity(0.5),
-                    highlightColor: Colors.white,
-                    child: new Container(
-                      height: 15,
-                      width: 100,
-                      decoration: new BoxDecoration(
-                          color: Colors.grey.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(8)),
-                    )),
-              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 1),
+                    child: Shimmer.fromColors(
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        highlightColor: Colors.white,
+                        child: new Container(
+                          alignment: Alignment.center,
+                          height: 40,
+                          width: MediaQuery.of(context).size.width*0.8,
+                          decoration: new BoxDecoration(
+                            //shape: BoxShape.circle,
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        )),
+                  )
+                ],
+              )
             ],
           ),
         )
@@ -2628,26 +2350,24 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         });
   }
 
-  void dialogDesativarUser(String id, BuildContext context){
+  void dialogDesativarUser(String id, BuildContext context) {
     DialogFutt dialogFutt = new DialogFutt();
-    dialogFutt.showAlertDialogActionNoYes(context, "Desativação",
-        'Deseja realmente desativar sua conta?', () async{
-          _desativarUser(id,context);
-        });
+    dialogFutt.showAlertDialogActionNoYes(
+        context, "Desativação", 'Deseja realmente desativar sua conta?',
+        () async {
+      _desativarUser(id, context);
+    });
   }
 
-  Future<void> _desativarUser(String idUsuario,BuildContext context) async {
+  Future<void> _desativarUser(String idUsuario, BuildContext context) async {
     DialogFutt dialogFutt = new DialogFutt();
     showLoad(context);
     String url = "${ConstantesRest.URL_USUARIOS}/desativa/$idUsuario";
-    var response = await http.put(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        }
-    );
+    var response = await http.put(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
     Navigator.pop(context);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
       dialogFutt.waitingSucess(context, "Concluído", "Conta desativada!");
@@ -2656,11 +2376,15 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       //Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => SplashScreenView(splashInicial: true,)),
-            (Route<dynamic> route) => false,
+        MaterialPageRoute(
+            builder: (context) => SplashScreenView(
+                  splashInicial: true,
+                )),
+        (Route<dynamic> route) => false,
       );
-    }else{
-      dialogFutt.waitingError(context, "Erro", "Ocorreu algum erro ao desativar sua conta.");
+    } else {
+      dialogFutt.waitingError(
+          context, "Erro", "Ocorreu algum erro ao desativar sua conta.");
       await Future.delayed(Duration(seconds: 2));
       Navigator.pop(context);
     }

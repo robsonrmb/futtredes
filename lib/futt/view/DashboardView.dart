@@ -8,11 +8,14 @@ class DashboardView extends StatefulWidget {
   String apelido;
   String nome;
   String nomeFoto;
-  String cidade;
+  String pais;
   String user;
+  String estado;
+  String localOndeJoga;
+  String posicao;
 
   DashboardView(
-      {this.nome, this.nomeFoto, this.cidade, this.apelido, this.user});
+      {this.nome, this.nomeFoto, this.pais, this.apelido, this.user,this.estado,this.localOndeJoga,this.posicao});
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -48,9 +51,12 @@ class _DashboardViewState extends State<DashboardView> {
                     null,
                     widget.nome,
                     widget.nomeFoto,
-                    cidade: widget.cidade,
+                    pais: widget.pais,
                     apelido: widget.apelido,
                     user: widget.user,
+                    estado: widget.estado,
+                    localOndeJoga: widget.localOndeJoga,
+                    posicao: widget.posicao,
                   ),
                 ),
               ),

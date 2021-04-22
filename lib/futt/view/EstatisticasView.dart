@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/EstadosByUfModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/view/components/EstatisticasJogosPontos.dart';
@@ -9,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/components/animation.dart';
 import 'package:futt/futt/view/style/colors.dart';
 import 'package:futt/futt/view/style/font-family.dart';
+import 'package:search_cep/search_cep.dart';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:http/http.dart' as http;
 
 class EstatisticasView extends StatefulWidget {
   int idUsuario;
@@ -20,12 +25,15 @@ class EstatisticasView extends StatefulWidget {
   String nomeFoto;
   String hero;
   int colocacao;
-  String cidade;
+  String pais;
   String user;
+  String estado;
+  String localOndeJoga;
+  String posicao;
 
   EstatisticasView(
       this.idUsuario, this.idRede, this.nomeRede, this.nome, this.nomeFoto,
-      {this.hero, this.colocacao,this.cidade,this.apelido,this.user});
+      {this.hero, this.colocacao,this.pais,this.apelido,this.user,this.estado,this.localOndeJoga,this.posicao});
 
   @override
   _EstatisticasViewState createState() => _EstatisticasViewState();
@@ -36,12 +44,52 @@ class _EstatisticasViewState extends State<EstatisticasView> {
   UsuarioModel usuarioModel;
 
   String user = '';
+  List<EstadosByUFModel> listEstados = [];
+  String siglaEstado;
+  String localOndeJoga;
+  String posicao;
 
   @override
   void initState() {
     super.initState();
-    if(widget.user == null){
+    if(widget.posicao != null){
+      if(widget.posicao == "E"){
+        widget.posicao = "Esquerda";
+      }
+      if(widget.posicao == "D"){
+        widget.posicao = "Direita";
+      }
+      if(widget.posicao == "A"){
+        widget.posicao = "Ambas";
+      }
+    }
+    if(widget.user == null || widget.estado == null ){
       buscarUser();
+    }else{
+      preecherUf();
+
+    }
+  }
+
+  void preecherUf()async{
+    listEstados =  await retornaUser();
+    if(listEstados != null){
+      if(widget.estado == null){
+        if(usuarioModel != null){
+          for(int i = 0; i < listEstados.length; i ++){
+            if(usuarioModel.estado == listEstados[i].nome){
+              siglaEstado = listEstados[i].sigla;
+            }
+          }
+        }
+      }else{
+        for(int i = 0; i < listEstados.length; i ++){
+          if(widget.estado == listEstados[i].nome){
+            siglaEstado = listEstados[i].sigla;
+          }
+        }
+      }
+      setState(() {});
     }
   }
 
@@ -49,7 +97,19 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     usuarioModel = await _buscaUsuarioSelecionado();
     if(usuarioModel != null){
       user = usuarioModel.user;
-      setState(() {});
+      localOndeJoga = usuarioModel.ondeJoga;
+      posicao = usuarioModel.posicao;
+      if(posicao == "E"){
+        posicao = "Esquerda";
+      }
+      if(posicao == "D"){
+        posicao = "Direita";
+      }
+      if(posicao == "A"){
+        posicao = "Ambas";
+      }
+      preecherUf();
+      //setState(() {});
     }
   }
 
@@ -210,11 +270,65 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                           color: Colors.grey,
                                         ),
                                       )),
+                                  // usuarioModel != null?
+                                  // usuarioModel.estado != null?
+                                  // Container(
+                                  //     margin: const EdgeInsets.only(
+                                  //         top: 8, left: 6),
+                                  //     child: Text(
+                                  //       siglaEstado??"",
+                                  //       style: TextStyle(
+                                  //         fontSize: 16,
+                                  //         color: Colors.grey,
+                                  //       ),
+                                  //     )):new Container():new Container(),
+                                  // widget.estado != null?
+                                  // Container(
+                                  //     margin: const EdgeInsets.only(
+                                  //         top: 8, left: 6),
+                                  //     child: Text(
+                                  //       siglaEstado??"",
+                                  //       style: TextStyle(
+                                  //         fontSize: 16,
+                                  //         color: Colors.grey,
+                                  //       ),
+                                  //     )):new Container(),
+                                  widget.localOndeJoga != null?
                                   Container(
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
                                       child: Text(
-                                        widget.cidade??"",
+                                        "${widget.localOndeJoga??""} - ${widget.pais??""} ",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      )):
+                                  Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 8, left: 6),
+                                      child: Text(
+                                        "${localOndeJoga??""} - ${widget.pais??""} ",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      )),
+                                  widget.posicao != null?
+                                  Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 8, left: 6),
+                                      child: Text(
+                                        "${widget.posicao??""}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      )):Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 8, left: 6),
+                                      child: Text(
+                                        "${posicao??""}",
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
@@ -351,6 +465,17 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     UsuarioModel usuario =
     await usuarioService.buscaPorId(widget.idUsuario.toString(), false);
     return usuario;
+  }
+
+  Future<List<EstadosByUFModel>> retornaUser() async {
+    var response = await http.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados',);
+    print(response.body);
+    if (response.statusCode == 200) {
+      return (json.decode(response.body) as List).map((e) => EstadosByUFModel.fromJson(e)).toList();
+
+    } else {
+      return null;
+    }
   }
 
 }

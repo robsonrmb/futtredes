@@ -4,6 +4,7 @@ import 'package:futt/futt/model/EstadoModel.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
 import 'package:futt/futt/model/PaisesModel.dart';
 import 'package:futt/futt/model/RedeModel.dart';
+import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
@@ -19,6 +20,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class NovaRedeView extends StatefulWidget {
+
+  UsuarioModel userModel;
+  bool assinante;
+
+  NovaRedeView({this.userModel,this.assinante});
+
   @override
   _NovaRedeViewState createState() => _NovaRedeViewState();
 }
@@ -49,12 +56,22 @@ class _NovaRedeViewState extends State<NovaRedeView> {
     try {
       _mensagem = "";
       if (_controllerNome.text == "") {
-        _mensagem = "Informe o título do rede.";
+        _mensagem = "Informe o nome.";
       }else if (paisSelecionado == "") {
-        _mensagem = "Informe o país de onde se realizará o rede.";
-      }else if (_controllerCidade.text == "") {
-        _mensagem = "Informe a cidade de onde se realizará o rede.";
-      }/*else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
+        _mensagem = "Informe o país.";
+      }
+      else if (_controllerCidade.text == "") {
+        _mensagem = "Informe a cidade.";
+      }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
+        _mensagem = "Informe o local.";
+      }else if(paisSelecionado == "Brasil"){
+        if(estadoSelecionado == ""){
+          _mensagem = "Informe o estado.";
+        }
+      }
+
+
+      /*else if (int.parse(_controllerQtdIntegrantes.text) <= 0 || int.parse(_controllerQtdIntegrantes.text) > 999) {
         _mensagem = "Qtd de integrantes incorreto.";
       }*/
 
@@ -98,8 +115,9 @@ class _NovaRedeViewState extends State<NovaRedeView> {
         _mensagem = "Rede inserida com sucesso!!!";
 
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waiting(context, "Nova rede", "${_mensagem}");
+        dialogFutt.waitingSucess(context, "Nova rede", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
         Navigator.pop(context);
 
       }else{
@@ -191,9 +209,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-
-
-                      rows('Nome','Digite o nome da rede',_controllerNome),
+                      rows('Nome','',_controllerNome),
                       new Container(
                         //color: Colors.red,
                         margin: const EdgeInsets.only(
@@ -259,9 +275,9 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                         ),
                       ):new Container(),
                       _buildDropEstado(),
-                      rows('Cidade ', 'Digite a cidade da Rede',
+                      rows('Cidade ', '',
                           _controllerCidade),
-                      rows('Local ', 'Digite o local da Rede',
+                      rows('Local ', '',
                           _controllerLocal),
                       rowsQtInte('Limite de integrantes', '20',
                           _controllerQtdIntegrantes),
@@ -485,7 +501,24 @@ class _NovaRedeViewState extends State<NovaRedeView> {
         new Container(
           margin: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
           height: 50,
-          child: RaisedButton(
+          child: !widget.assinante && widget.userModel.qtdRedePromocional > 0?
+          RaisedButton(
+            color: Colors.grey.withOpacity(0.3),
+            textColor: Colors.white,
+            padding: EdgeInsets.all(15),
+            child: Text(
+              "SOMENTE ASSINANTES",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: FontFamily.fontSpecial,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2),
+            ),
+            onPressed: () {},
+          ):
+          RaisedButton(
             onPressed:(){
               _cadastraNovaRede(context);
             },

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:futt/futt/view/NovaRedeView.dart';
 import 'package:futt/futt/view/RegasView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:http/http.dart' as http;
@@ -96,9 +97,28 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   int _indiceAtual = 0;
   String _titleAppBar = "Redes";
 
-  _novaRede() {
-    jaCriouUma = true;
-    Navigator.pushNamed(context, "/novarede").then((value) => buscarFoto());
+  _novaRede() async{
+    DialogFutt dialogFutt = new DialogFutt();
+
+    if(assinante){
+      jaCriouUma = true;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NovaRedeView(userModel: usuarioModel,assinante: assinante,)),
+      ).then((value) => buscarFoto());
+
+    }else{
+      if(!jaCriouUma){
+        jaCriouUma = true;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NovaRedeView(userModel: usuarioModel,assinante: assinante,)),
+        ).then((value) => buscarFoto());
+      }else{
+        dialogFutt.waiting(context, "Atenção", "Somente usuários ativos.");
+        await Future.delayed(Duration(seconds: 2));
+      }
+    }
   }
 
   _abrirPerfil() async {
@@ -233,19 +253,24 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               ])),
         ),
         actions: <Widget>[
-          assinante
-              ? IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: _novaRede,
-                  color: AppColors.colorTextAppNav,
-                )
-              : !jaCriouUma
-                  ? IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: _novaRede,
-                      color: AppColors.colorTextAppNav,
-                    )
-                  : new Container(),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _novaRede,
+            color: AppColors.colorTextAppNav,
+          ),
+          // assinante
+          //     ? IconButton(
+          //         icon: Icon(Icons.add),
+          //         onPressed: _novaRede,
+          //         color: AppColors.colorTextAppNav,
+          //       )
+          //     : !jaCriouUma
+          //         ? IconButton(
+          //             icon: Icon(Icons.add),
+          //             onPressed: _novaRede,
+          //             color: AppColors.colorTextAppNav,
+          //           )
+          //         : new Container(),
           new Container(
             height: 36,
             width: 36,
@@ -572,9 +597,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         return DashboardView(
           nome: usuarioModel.nome,
           nomeFoto: usuarioModel.nomeFoto,
-          cidade: usuarioModel.cidade,
+          pais: usuarioModel.pais,
           apelido: usuarioModel.apelido,
           user: usuarioModel.user,
+          estado: usuarioModel.estado,
+          localOndeJoga: usuarioModel.ondeJoga,
+          posicao: usuarioModel.posicao,
         );
         break;
       default:

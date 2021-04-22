@@ -10,13 +10,14 @@ class EstatisticasAtletasView extends StatefulWidget {
   String nomeFoto;
   String hero;
   int colocacao;
-  String cidade;
+  String pais;
   String apelido;
   String user;
+  String localOndeJoga;
 
   EstatisticasAtletasView(
       this.idUsuario, this.idRede, this.nomeRede, this.nome, this.nomeFoto,
-      {this.hero, this.colocacao, this.cidade, this.apelido, this.user});
+      {this.hero, this.colocacao, this.pais, this.apelido, this.user,this.localOndeJoga});
 
   @override
   _EstatisticasAtletasViewState createState() =>
@@ -63,9 +64,11 @@ class _EstatisticasAtletasViewState extends State<EstatisticasAtletasView> {
                     widget.nomeFoto,
                     hero: widget.hero,
                     colocacao: widget.colocacao,
-                    cidade: widget.cidade,
+                    pais: widget.pais,
                     apelido: widget.apelido,
                     user: widget.user,
+                    localOndeJoga: widget.localOndeJoga,
+
                   ),
                 ),
               ),

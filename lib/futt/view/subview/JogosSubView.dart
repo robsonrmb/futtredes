@@ -9,6 +9,7 @@ import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:futt/futt/view/components/animation.dart';
 import 'package:futt/futt/view/style/colors.dart';
 import 'package:futt/futt/view/style/font-family.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,57 +46,74 @@ class _JogosSubViewState extends State<JogosSubView> {
   }
 
   _atualizaPlacar(int idJogo, int idNumeroJogo) async {
-    try {
-      JogoRedeModel jogoModel = JogoRedeModel.NovoPlacar(
-          idJogo,
-          idNumeroJogo,
-          int.parse(_controllerPontuacao1.text),
-          int.parse(_controllerPontuacao2.text));
+    if(_controllerPontuacao1.text.isNotEmpty && _controllerPontuacao2.text.isNotEmpty){
+      circularProgress(context);
 
-      var _url = "${ConstantesRest.URL_JOGO_REDE}/atualizaplacar";
-      var _dados = jogoModel.toJson();
+      try {
+        JogoRedeModel jogoModel = JogoRedeModel.NovoPlacar(
+            idJogo,
+            idNumeroJogo,
+            int.parse(_controllerPontuacao1.text),
+            int.parse(_controllerPontuacao2.text));
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({
-          'userId': 200,
-          'id': null,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
+        var _url = "${ConstantesRest.URL_JOGO_REDE}/atualizaplacar";
+        var _dados = jogoModel.toJson();
 
-      final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+        if (ConstantesConfig.SERVICO_FIXO == true) {
+          _url = "https://jsonplaceholder.typicode.com/posts/1";
+          _dados = jsonEncode({
+            'userId': 200,
+            'id': null,
+            'title': 'Título',
+            'body': 'Corpo da mensagem'
+          });
+        }
 
-      http.Response response = await http.put(_url,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': token,
-          },
-          body: jsonEncode(_dados));
-      if (response.statusCode == 201) {
-        setState(() {
-          _mensagem = "Placar atualizado com sucesso!!!";
-        });
+        final prefs = await SharedPreferences.getInstance();
+        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+        http.Response response = await http.put(_url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': token,
+            },
+            body: jsonEncode(_dados));
         Navigator.pop(context);
-      } else {
-        var _dadosJson = jsonDecode(response.body);
-        ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+
+        if (response.statusCode == 201) {
+          DialogFutt dialogFutt = new DialogFutt();
+          dialogFutt.waitingSucess(context, "Placar", "Placar atualizado com sucesso!!!");
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.pop(context);
+          Navigator.pop(context);
+          setState(() {
+            _mensagem = "Placar atualizado com sucesso!!!";
+          });
+        } else {
+          var _dadosJson = jsonDecode(response.body);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          DialogFutt dialogFutt = new DialogFutt();
+          dialogFutt.waitingError(context, "Placar", "${exceptionModel.msg}");
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.pop(context);
+        }
+      } on Exception catch (exception) {
+        print(exception.toString());
         setState(() {
-          _mensagem = exceptionModel.msg;
+          _mensagem = exception.toString();
+        });
+      } catch (error) {
+        setState(() {
+          _mensagem = error.toString();
         });
       }
-    } on Exception catch (exception) {
-      print(exception.toString());
-      setState(() {
-        _mensagem = exception.toString();
-      });
-    } catch (error) {
-      setState(() {
-        _mensagem = error.toString();
-      });
+    }else{
+      DialogFutt dialogFutt = new DialogFutt();
+      dialogFutt.waiting(context, "Placar", "Por favor, informe o placar dos 2 times");
+      await Future.delayed(Duration(seconds: 2));
+      Navigator.pop(context);
     }
+
     /*
     final snackbar = SnackBar(
       backgroundColor: Colors.orangeAccent,
@@ -114,6 +132,23 @@ class _JogosSubViewState extends State<JogosSubView> {
     );
     Scaffold.of(context).showSnackBar(snackbar);
     */
+  }
+  void circularProgress(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext bc) {
+          return Center(
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+              ],
+            ),
+          );
+        });
   }
 
   _removeJogo(int idJogo) async {
@@ -204,6 +239,8 @@ class _JogosSubViewState extends State<JogosSubView> {
 
   _zeraJogo(int idJogo) async {
     try {
+      circularProgress(context);
+
       JogoRedeModel jogoModel = JogoRedeModel.Remove(idJogo);
 
       var _url = "${ConstantesRest.URL_JOGO_REDE}/zeraplacar/${idJogo}";
@@ -229,6 +266,7 @@ class _JogosSubViewState extends State<JogosSubView> {
           'Authorization': token,
         },
       );
+      Navigator.pop(context);
       if (response.statusCode == 201) {
         setState(() {
           _mensagem = "Placar do jogo zerado com sucesso!!!";
@@ -237,6 +275,10 @@ class _JogosSubViewState extends State<JogosSubView> {
       } else {
         var _dadosJson = jsonDecode(response.body);
         ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waitingError(context, "Zerar Jogo", "${exceptionModel.msg}");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
         setState(() {
           _mensagem = exceptionModel.msg;
         });
@@ -314,6 +356,8 @@ class _JogosSubViewState extends State<JogosSubView> {
 
   @override
   Widget build(BuildContext context) {
+    final maskPoints = MaskTextInputFormatter(mask: '##', filter: {"#": RegExp(r'[0-9]')});
+
     return FutureBuilder<List<JogoRedeModel>>(
       future: _listaJogosDaRede(),
       builder: (context, snapshot) {
@@ -569,7 +613,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                               Container(
                                                   height: 30,
                                                   width: 30,
-                                                  decoration: new BoxDecoration(
+                                                  decoration: jogo.nomeFotoJogador1 != null?new BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
@@ -577,7 +621,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                               "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador1}")),
                                                       border: Border.all(
                                                           color:
-                                                              Colors.white))),
+                                                              Colors.white)):new BoxDecoration()),
                                               new Container(
                                                 width: MediaQuery.of(context)
                                                         .size
@@ -601,7 +645,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                               Container(
                                                   height: 30,
                                                   width: 30,
-                                                  decoration: new BoxDecoration(
+                                                  decoration:jogo.nomeFotoJogador2 != null? new BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
@@ -609,7 +653,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                               "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador2}")),
                                                       border: Border.all(
                                                           color:
-                                                              Colors.white))),
+                                                              Colors.white)):new BoxDecoration()),
                                               new Container(
                                                 width: MediaQuery.of(context)
                                                         .size
@@ -687,7 +731,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                               Container(
                                                   height: 30,
                                                   width: 30,
-                                                  decoration: new BoxDecoration(
+                                                  decoration:jogo.nomeFotoJogador3 != null? new BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
@@ -695,7 +739,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                               "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador3}")),
                                                       border: Border.all(
                                                           color:
-                                                              Colors.white))),
+                                                              Colors.white)):new BoxDecoration()),
                                             ],
                                           ),
                                           new Row(
@@ -723,7 +767,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                               Container(
                                                   height: 30,
                                                   width: 30,
-                                                  decoration: new BoxDecoration(
+                                                  decoration: jogo.nomeFotoJogador4 != null?new BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
@@ -731,7 +775,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                               "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador4}")),
                                                       border: Border.all(
                                                           color:
-                                                              Colors.white))),
+                                                              Colors.white)):new BoxDecoration()),
                                             ],
                                           )
                                         ],
@@ -869,6 +913,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                                                       width: 40,
                                                                                       margin: const EdgeInsets.only(bottom: 10),
                                                                                       child: TextField(
+                                                                                        inputFormatters: [maskPoints],
                                                                                         keyboardType: TextInputType.number,
                                                                                         controller: _controllerPontuacao1,
                                                                                         style: TextStyle(
@@ -895,6 +940,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                                                       width: 40,
                                                                                       margin: const EdgeInsets.only(bottom: 10),
                                                                                       child: TextField(
+                                                                                        inputFormatters: [maskPoints],
                                                                                         keyboardType: TextInputType.number,
                                                                                         textAlign: TextAlign.right,
                                                                                         controller: _controllerPontuacao2,

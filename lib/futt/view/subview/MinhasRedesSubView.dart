@@ -34,13 +34,13 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
   List<String> choices = <String>[
     "Integrantes",
     "Responsáveis",
-    "Exclusão",
+    "Desativar rede",
   ];
 
   List<String> choices2 = <String>[
     "Integrantes",
     "Responsáveis",
-    "Ativação"
+    "Ativar rede"
   ];
 
   Future<List<RedeModel>> _listaMinhasRedes() async {
@@ -83,6 +83,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
   }
 
   _realizaAcao(int idRede, bool resposta, BuildContext context, acao) async {
+    circularProgress(context);
     if (resposta) {
       if (acao == "D") {
         _desativando(idRede, context);
@@ -98,7 +99,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   _ativando(int idRede, BuildContext context) async {
     try {
-      var _url = "${ConstantesRest.URL_REDE}/${idRede}/desativa";
+      var _url = "${ConstantesRest.URL_REDE}/${idRede}/ativa";
       var _dados = "";
 
       if (ConstantesConfig.SERVICO_FIXO == true) {
@@ -116,16 +117,19 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         },
         body: _dados,
       );
+      Navigator.pop(context);
 
       if (response.statusCode == 201) {
-        _mensagem = "Rede desativada com sucesso!!!";
+        _mensagem = "Rede ativada com sucesso!!!";
 
         DialogFutt dialogFutt = new DialogFutt();
         dialogFutt.waitingSucess(context, "Rede", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
+        setState(() {});
 
       }else{
+        print(response.body);
         DialogFutt dialogFutt = new DialogFutt();
         dialogFutt.waitingError(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
         await Future.delayed(Duration(seconds: 3));
@@ -164,6 +168,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
           },
           body: _dados,
       );
+      Navigator.pop(context);
 
       if (response.statusCode == 201) {
         _mensagem = "Rede desativada com sucesso!!!";
@@ -172,6 +177,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         dialogFutt.waitingSucess(context, "Rede", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
+        setState(() {});
 
       }else{
         DialogFutt dialogFutt = new DialogFutt();
@@ -740,8 +746,8 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             builder: (context) => ResponsaveisRedeView(redeModel: rede,)
         ));
         break;
-      case "Exclusão":
-        _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
+      case "Desativar rede":
+        _showModalAtivaDesativa(context, "Desativar rede", "Deseja realmente desativar a rede?", rede.id, "D");
         break;
       default:
         break;
@@ -759,11 +765,29 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             builder: (context) => ResponsaveisRedeView(redeModel: rede,)
         ));
         break;
-      case "Ativação":
-        _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
+      case "Ativar rede":
+        _showModalAtivaDesativa(context, "Ativar rede", "Deseja reativar a rede?", rede.id, "A");
         break;
       default:
         break;
     }
+  }
+
+  void circularProgress(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext bc) {
+          return Center(
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+              ],
+            ),
+          );
+        });
   }
 }

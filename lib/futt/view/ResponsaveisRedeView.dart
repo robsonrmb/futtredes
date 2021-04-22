@@ -259,9 +259,9 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                 ),
               ),
               //rows('Responsável','Digite o responsável da rede',_controllerResponsavel),
-              rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel1),
-              rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel2),
-              rows('Subresponsável','Digite o email ou usuário',_controllerSubResponsavel3),
+              rows('Subresponsável 1','Digite o email ou usuário',_controllerSubResponsavel1),
+              rows('Subresponsável 2','Digite o email ou usuário',_controllerSubResponsavel2),
+              rows('Subresponsável 3','Digite o email ou usuário',_controllerSubResponsavel3),
 
               // Padding(
               //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -402,20 +402,20 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 15),
-                child: Center(
-                  child: Text(
-                    _mensagem,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontFamily: FontFamily.fontSpecial,
-
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 15),
+              //   child: Center(
+              //     child: Text(
+              //       _mensagem,
+              //       style: TextStyle(
+              //         color: Colors.black,
+              //         fontSize: 12,
+              //         fontFamily: FontFamily.fontSpecial,
+              //
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

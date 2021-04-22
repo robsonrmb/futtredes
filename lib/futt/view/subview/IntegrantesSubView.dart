@@ -271,9 +271,10 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                   integrante.nome,
                                   integrante.nomeFoto,
                                   hero: 'index$index',
-                                  cidade: integrante.cidade,
+                                  pais: integrante.pais,
                                   apelido: integrante.apelido,
                                   user: integrante.user,
+                                  localOndeJoga: integrante.local,
 
                                 ),
                               ));
@@ -365,9 +366,10 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                                       integrante.nome,
                                                       integrante.nomeFoto,
                                                       hero: 'index$index',
-                                                      cidade: integrante.cidade,
+                                                      pais: integrante.pais,
                                                       apelido: integrante.apelido,
                                                       user: integrante.user,
+                                                      localOndeJoga: integrante.local,
 
                                                     ),
                                                   ));
@@ -389,9 +391,10 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                                   integrante.nome,
                                                   integrante.nomeFoto,
                                                   hero: 'index$index',
-                                                  cidade: integrante.cidade,
+                                                  pais: integrante.pais,
                                                   apelido: integrante.apelido,
                                                   user: integrante.user,
+                                                  localOndeJoga: integrante.local,
 
                                                 ),
                                               ));

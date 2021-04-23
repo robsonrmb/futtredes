@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:async/async.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/EstadoModel.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/style/colors.dart';
 import 'package:futt/futt/view/style/font-family.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:multipart_request/multipart_request.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,6 +60,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   String paisSelecionado = '';
   List<String> listDropPais = new List();
   bool carregando = true;
+  BuildContext context;
 
   @override
   void initState() {
@@ -151,9 +154,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
           },
           body: jsonEncode(_dados));
 
-      if(trocouFoto){
-        await _uploadImagem();
-      }
+      // if(trocouFoto){
+      //   await _uploadImagem();
+      // }
 
       if (response.statusCode == 201) {
         _mensagem = "Rede atualizada com sucesso!!!";
@@ -214,144 +217,139 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
-          return new WillPopScope(
-            child: Transform.scale(
-              scale: a1.value,
-              child: Opacity(
+          return Transform.scale(
+            scale: a1.value,
+            child: Opacity(
                 opacity: a1.value,
                 child: Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  elevation: 0.0,
-                  backgroundColor: Colors.transparent,
-                  child:new Container(
-                    decoration: new BoxDecoration(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
                     ),
-                    padding: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
-                    child: new Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            new IconButton(
-                                icon: new Icon(
-                                  Icons.clear,
-                                  color: Colors.black,
+                    elevation: 0.0,
+                    backgroundColor: Colors.transparent,
+                    child:new Container(
+                      decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      padding: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
+                      child: new Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              new IconButton(
+                                  icon: new Icon(
+                                    Icons.clear,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  })
+                            ],
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _recuperaImagem("camera", idUsuario);
+                              Navigator.pop(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            padding: const EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    AppColors.colorEspecialSecundario2,
+                                    AppColors.colorEspecialSecundario1
+                                  ],
                                 ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                })
-                          ],
-                        ),
-                        RaisedButton(
-                          onPressed: () {
-                            _recuperaImagem("camera", idUsuario);
-                            Navigator.pop(context);
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)),
-                          padding: const EdgeInsets.all(0.0),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: <Color>[
-                                  AppColors.colorEspecialSecundario2,
-                                  AppColors.colorEspecialSecundario1
-                                ],
+                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               ),
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  constraints: const BoxConstraints(
+                                      minWidth: 88.0, minHeight: 36.0),
+                                  // min sizes for Material buttons
+                                  alignment: Alignment.center,
+                                  child: new Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      new Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: AppColors.colorIconPerfil,
+                                      ),
+                                      new Container(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Câmera",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.colorTextPerfil,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )),
                             ),
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                constraints: const BoxConstraints(
-                                    minWidth: 88.0, minHeight: 36.0),
-                                // min sizes for Material buttons
-                                alignment: Alignment.center,
-                                child: new Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    new Icon(
-                                      Icons.camera_alt_outlined,
-                                      color: AppColors.colorIconPerfil,
-                                    ),
-                                    new Container(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Câmera",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.colorTextPerfil,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                )),
                           ),
-                        ),
-                        new Container(
-                          height: 20,
-                        ),
-                        RaisedButton(
-                          onPressed: () {
-                            _recuperaImagem("galeria", idUsuario);
-                            Navigator.pop(context);
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)),
-                          padding: const EdgeInsets.all(0.0),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: <Color>[
-                                  AppColors.colorEspecialPrimario2,
-                                  AppColors.colorEspecialPrimario1
-                                ],
+                          new Container(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _recuperaImagem("galeria", idUsuario);
+                              Navigator.pop(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            padding: const EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    AppColors.colorEspecialPrimario2,
+                                    AppColors.colorEspecialPrimario1
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               ),
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  constraints: const BoxConstraints(
+                                      minWidth: 88.0, minHeight: 36.0),
+                                  // min sizes for Material buttons
+                                  alignment: Alignment.center,
+                                  child: new Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      new Icon(
+                                        Icons.image_search_outlined,
+                                        color: AppColors.colorIconPerfil,
+                                      ),
+                                      new Container(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Galeria",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.colorTextPerfil,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )),
                             ),
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                constraints: const BoxConstraints(
-                                    minWidth: 88.0, minHeight: 36.0),
-                                // min sizes for Material buttons
-                                alignment: Alignment.center,
-                                child: new Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    new Icon(
-                                      Icons.image_search_outlined,
-                                      color: AppColors.colorIconPerfil,
-                                    ),
-                                    new Container(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Galeria",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.colorTextPerfil,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                )),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
+                        ],
+                      ),
+                    )
                 )
-              ),
             ),
-            onWillPop: () => Future.value(false),
           );
         },
         transitionDuration: Duration(milliseconds: 200),
-        barrierDismissible: true,
-        barrierLabel: '',
         context: context,
         pageBuilder: (context, animation1, animation2) {});
 
@@ -489,12 +487,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     File _imagemSelecionada;
     switch (origemImagem) {
       case "camera":
-        _imagemSelecionada = await ImagePicker.pickImage(imageQuality: 50,
+        _imagemSelecionada = await ImagePicker.pickImage(imageQuality: 20,
             source: ImageSource.camera); //, maxHeight: 500, maxWidth: 500
         break;
       case "galeria":
         _imagemSelecionada = await ImagePicker.pickImage(
-            source: ImageSource.gallery,imageQuality: 50); //, maxHeight: 500, maxWidth: 500
+            source: ImageSource.gallery,imageQuality: 20); //, maxHeight: 500, maxWidth: 500
         break;
     }
 
@@ -517,47 +515,89 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   }
 
   Future<List<RedeModel>> _uploadImagem() async {
+    circularProgress(context);
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
-    var _url = "${ConstantesRest.URL_REDE}/${widget.redeModel.id}/imagem";
-    var request = MultipartRequest();
+    // var _url = "${ConstantesRest.URL_REDE}/${widget.redeModel.id}/imagem";
+    // var request = MultipartRequest();
+    //
+    // request.setUrl(_url);
+    // request.addFile("file", imagemSelecionada.path);
+    // request.addHeaders({
+    //   //'Content-Type': 'application/json; charset=UTF-8',
+    //   'Authorization': token,
+    // });
+    //
+    // Response response = request.send();
+    // Navigator.pop(context);
+    // var streamedResponse = await request.send();
+    // final respStr = await streamedResponse.stream.bytesToString();
+    //
+    // print("RESPONSE CODE:" + streamedResponse.statusCode.toString());
+    // print("RESPONSE State:" + respStr);
+    var request = new http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            '${ConstantesRest.URL_REDE}/${widget.redeModel.id}/imagem'));
+    var header = new Map<String, String>();
+    header['Content-Type'] = 'application/x-www-form-urlencoded';
+    //header['Accept'] = 'application/json';
 
-    request.setUrl(_url);
-    request.addFile("file", imagemSelecionada.path);
-    request.addHeaders({
-      //'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': token,
-    });
+    if (token.isNotEmpty)
+      header[HttpHeaders.authorizationHeader] = token;
 
-    Response response = request.send();
-    try {
-      print(response);
-    } on Exception catch (exception) {
-      print(exception);
-    } catch (error) {
-      print(error);
+    request.headers.addAll(header);
+
+    var stream =
+    new http.ByteStream(DelegatingStream.typed(imagemSelecionada.openRead()));
+    var length = await imagemSelecionada.length();
+    var multipartFile = new http.MultipartFile('file', stream, length,
+        filename: basename(imagemSelecionada.path));
+
+    request.files.add(multipartFile);
+
+    var streamedResponse = await request.send();
+    final respStr = await streamedResponse.stream.bytesToString();
+
+    print("RESPONSE CODE:" + streamedResponse.statusCode.toString());
+    print("RESPONSE State:" + respStr);
+    Navigator.pop(context);
+
+    if(streamedResponse.statusCode != 200){
+      DialogFutt dialogFutt = new DialogFutt();
+      dialogFutt.waitingError(context, "Erro Foto", "${streamedResponse.statusCode.toString()}");
+      await Future.delayed(Duration(seconds: 3));
+      Navigator.pop(context);
     }
 
-    response.onError = () {
-      setState(() {
-        _subindoImagem = false;
-      });
-    };
-
-    response.onComplete = (response) {
-      //_atualizaImagem(widget.redeModel.id);
-      print("Buscar imagem via http");
-      setState(() {
-        _subindoImagem = false;
-      });
-    };
-
-    response.progress.listen((int progress) {
-      print("Buscar imagem via http");
-      /*setState(() {
-        _subindoImagem = true;
-      });*/
-    });
+    // try {
+    //   print(response);
+    // } on Exception catch (exception) {
+    //   print(exception);
+    // } catch (error) {
+    //   print(error);
+    // }
+    //
+    // response.onError = () {
+    //   setState(() {
+    //     _subindoImagem = false;
+    //   });
+    // };
+    //
+    // response.onComplete = (response) {
+    //   //_atualizaImagem(widget.redeModel.id);
+    //   print("Buscar imagem via http");
+    //   setState(() {
+    //     _subindoImagem = false;
+    //   });
+    // };
+    //
+    // response.progress.listen((int progress) {
+    //   print("Buscar imagem via http");
+    //   /*setState(() {
+    //     _subindoImagem = true;
+    //   });*/
+    // });
 
     /*setState(() {
       _subindoImagem = true;
@@ -566,6 +606,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return selecao
         ? Scaffold(
             backgroundColor: Colors.transparent,
@@ -1373,6 +1414,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
         trocouFoto = true;
         imagemSelecionada = croppedFile;
       });
+      await _uploadImagem();
       // imageFile = croppedFile;
       // setState(() {
       //   state = AppState.cropped;

@@ -258,6 +258,147 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   //   await Future.delayed(Duration(seconds: 2));
   //   Navigator.pop(context);
   // }
+  _showOpc(BuildContext context, String title, String description, int idUsuario){
+    showGeneralDialog(
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionBuilder: (context, a1, a2, widget) {
+          return Transform.scale(
+            scale: a1.value,
+            child: Opacity(
+                opacity: a1.value,
+                child: Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 0.0,
+                    backgroundColor: Colors.transparent,
+                    child:new Container(
+                      decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      padding: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
+                      child: new Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              new IconButton(
+                                  icon: new Icon(
+                                    Icons.clear,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  })
+                            ],
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _recuperaImagem("camera", idUsuario);
+                              Navigator.pop(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            padding: const EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    AppColors.colorEspecialSecundario2,
+                                    AppColors.colorEspecialSecundario1
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  constraints: const BoxConstraints(
+                                      minWidth: 88.0, minHeight: 36.0),
+                                  // min sizes for Material buttons
+                                  alignment: Alignment.center,
+                                  child: new Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      new Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: AppColors.colorIconPerfil,
+                                      ),
+                                      new Container(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Câmera",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.colorTextPerfil,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          ),
+                          new Container(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _recuperaImagem("galeria", idUsuario);
+                              Navigator.pop(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            padding: const EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: <Color>[
+                                    AppColors.colorEspecialPrimario2,
+                                    AppColors.colorEspecialPrimario1
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  constraints: const BoxConstraints(
+                                      minWidth: 88.0, minHeight: 36.0),
+                                  // min sizes for Material buttons
+                                  alignment: Alignment.center,
+                                  child: new Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      new Icon(
+                                        Icons.image_search_outlined,
+                                        color: AppColors.colorIconPerfil,
+                                      ),
+                                      new Container(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Galeria",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.colorTextPerfil,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                )
+            ),
+          );
+        },
+        transitionDuration: Duration(milliseconds: 200),
+        context: context,
+        pageBuilder: (context, animation1, animation2) {});
+
+  }
 
   _showModalAtualizaImagem(
       BuildContext context, String title, String description, int idUsuario) {
@@ -690,7 +831,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                             children: [
                               new GestureDetector(
                                 onTap: () {
-                                  _showModalAtualizaImagem(
+                                  _showOpc(
                                       context,
                                       "Imagem",
                                       "Buscar imagem de qual origem?",
@@ -724,7 +865,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           )
                         : new GestureDetector(
                             onTap: () {
-                              _showModalAtualizaImagem(
+                              _showOpc(
                                   context,
                                   "Imagem",
                                   "Buscar imagem de qual origem?",

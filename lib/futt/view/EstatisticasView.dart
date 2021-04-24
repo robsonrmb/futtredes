@@ -488,7 +488,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                 return '${siglaEstado??""}';
               }
             }else{
-              return '';
+              return localOndeJoga;
             }
           }else{
             return "";

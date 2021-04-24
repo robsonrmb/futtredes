@@ -1,6 +1,7 @@
 import 'package:futt/futt/view/EstatisticasView.dart';
 import 'package:flutter/material.dart';
 import 'package:futt/futt/view/style/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EstatisticasAtletasView extends StatefulWidget {
   int idUsuario;
@@ -25,6 +26,18 @@ class EstatisticasAtletasView extends StatefulWidget {
 }
 
 class _EstatisticasAtletasViewState extends State<EstatisticasAtletasView> {
+  SharedPreferences pref;
+
+  @override
+  void initState() {
+    super.initState();
+    inicializarShared();
+  }
+
+  Future<void> inicializarShared() async {
+    pref = await SharedPreferences.getInstance();
+    pref.setBool('restart', false);
+  }
   @override
   Widget build(BuildContext context) {
     double _tam = 90;

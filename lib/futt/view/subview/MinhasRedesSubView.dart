@@ -206,7 +206,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       if (data != null && data.length>=10) {
         return data.substring(8) + "-" + data.substring(5, 7) + "-" + data.substring(0, 4);
       }else if (data == null) {
-        return "-";
+        return "";
       }else{
         return data??'';
       }

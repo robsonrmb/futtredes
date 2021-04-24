@@ -1649,14 +1649,14 @@ class _JogosSubViewState extends State<JogosSubView> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "${jogo.apelidoFormatadoJogador1}",
+                                        "${jogo.apelidoFormatadoJogador1??""}",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       Text(
-                                        "${jogo.apelidoFormatadoJogador2}",
+                                        "${jogo.apelidoFormatadoJogador2??""}",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
@@ -1717,14 +1717,14 @@ class _JogosSubViewState extends State<JogosSubView> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        "${jogo.apelidoFormatadoJogador3}",
+                                        "${jogo.apelidoFormatadoJogador3??""}",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       Text(
-                                        "${jogo.apelidoFormatadoJogador4}",
+                                        "${jogo.apelidoFormatadoJogador4??""}",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,

@@ -53,15 +53,18 @@ class _EstatisticasViewState extends State<EstatisticasView> {
   void initState() {
     super.initState();
     if(widget.posicao != null){
-      if(widget.posicao == "E"){
+      if(widget.posicao == "2"){
         widget.posicao = "Esquerda";
       }
-      if(widget.posicao == "D"){
+      if(widget.posicao == "1"){
         widget.posicao = "Direita";
       }
-      if(widget.posicao == "A"){
+      if(widget.posicao == "0"){
         widget.posicao = "Ambas";
       }
+    }
+    if(widget.localOndeJoga!= null){
+      localOndeJoga = widget.localOndeJoga;
     }
     if(widget.user == null || widget.estado == null ){
       buscarUser();
@@ -99,13 +102,16 @@ class _EstatisticasViewState extends State<EstatisticasView> {
       user = usuarioModel.user;
       localOndeJoga = usuarioModel.ondeJoga;
       posicao = usuarioModel.posicao;
-      if(posicao == "E"){
+      widget.pais = usuarioModel.pais;
+      widget.estado = usuarioModel.estado;
+
+      if(posicao == "2"){
         posicao = "Esquerda";
       }
-      if(posicao == "D"){
+      if(posicao == "1"){
         posicao = "Direita";
       }
-      if(posicao == "A"){
+      if(posicao == "0"){
         posicao = "Ambas";
       }
       preecherUf();
@@ -255,7 +261,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
                                       child: Text(
-                                        widget.user,
+                                        'Usuário: ${widget.user}',
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
@@ -264,7 +270,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
                                       child: Text(
-                                        user??"",
+                                        'Usuário: ${user??""}',
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
@@ -293,27 +299,38 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                   //         color: Colors.grey,
                                   //       ),
                                   //     )):new Container(),
-                                  widget.localOndeJoga != null?
+
                                   Container(
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
                                       child: Text(
-                                        "${widget.localOndeJoga??""} - ${widget.pais??""} ",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                        ),
-                                      )):
-                                  Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 8, left: 6),
-                                      child: Text(
-                                        "${localOndeJoga??""} - ${widget.pais??""} ",
+                                        estadoOuPais(localOndeJoga, widget.pais),
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
                                         ),
                                       )),
+                                  // widget.localOndeJoga != null?
+                                  // Container(
+                                  //     margin: const EdgeInsets.only(
+                                  //         top: 8, left: 6),
+                                  //     child: Text(
+                                  //       "${widget.localOndeJoga??""} - ${widget.pais??""} ",
+                                  //       style: TextStyle(
+                                  //         fontSize: 16,
+                                  //         color: Colors.grey,
+                                  //       ),
+                                  //     )):
+                                  // Container(
+                                  //     margin: const EdgeInsets.only(
+                                  //         top: 8, left: 6),
+                                  //     child: Text(
+                                  //       "${localOndeJoga??""} - ${widget.pais??""} ",
+                                  //       style: TextStyle(
+                                  //         fontSize: 16,
+                                  //         color: Colors.grey,
+                                  //       ),
+                                  //     )),
                                   widget.posicao != null?
                                   Container(
                                       margin: const EdgeInsets.only(
@@ -457,6 +474,51 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     } else  if (nome.split(' ').length > 1){
       String nomeFormatado = '${nome.split(' ')[0]}';
       return nomeFormatado;
+    }
+  }
+
+  String estadoOuPais(String localOndeJoga, String pais) {
+    if(pais == 'Brasil'){
+      if(widget.estado!= null){
+        if(localOndeJoga != null && pais != null){
+          if(localOndeJoga != ""){
+            return '$localOndeJoga - ${siglaEstado??""}';
+          }else{
+            return '${siglaEstado??""}';
+          }
+        }else{
+          return '';
+        }
+      }else{
+        if(localOndeJoga != null && pais != null){
+          if(usuarioModel != null){
+            if(usuarioModel.estado!= null){
+              if(localOndeJoga != ""){
+                return '$localOndeJoga - ${siglaEstado??""}';
+              }else{
+                return '${siglaEstado??""}';
+              }
+            }else{
+              return '';
+            }
+          }else{
+            return "";
+          }
+        }else{
+          return '';
+        }
+
+      }
+    }else{
+      if(localOndeJoga != null && pais != null){
+        if(localOndeJoga != ""){
+          return '$localOndeJoga - $pais';
+        }else{
+          return '$pais';
+        }
+      }else{
+        return '';
+      }
     }
   }
 

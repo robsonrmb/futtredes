@@ -87,27 +87,53 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       circularProgress(context);
       _mensagem = "";
       if (_controllerNome.text == "") {
-        Navigator.pop(context);
-
-        throw Exception('Informe o título do rede.');
-      } else if (_controllerPaisRede == "") {
-        Navigator.pop(context);
-
-        throw Exception('Informe o país de onde se realizará o rede.');
-      } else if (_controllerCidade.text == "") {
-        Navigator.pop(context);
-
-        throw Exception('Informe a cidade de onde se realizará o rede.');
-      } else if (int.parse(_controllerQtdIntegrantes.text) <= 0 ||
-          int.parse(_controllerQtdIntegrantes.text) > 999) {
-        Navigator.pop(context);
-
-        throw Exception('Qtd de integrantes incorreto.');
+        _mensagem = "Informe o nome.";
+      }else if (paisSelecionado == "") {
+        _mensagem = "Informe o país.";
       }
+      else if(paisSelecionado == "Brasil"){
+        if(estadoSelecionado == ""){
+          _mensagem = "Informe o estado.";
+        }else{
+          if (_controllerCidade.text == "") {
+            _mensagem = "Informe a cidade.";
+          }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
+            _mensagem = "Informe o local.";
+          }
+        }
+      }else{
+        if (_controllerCidade.text == "") {
+          _mensagem = "Informe a cidade.";
+        }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
+          _mensagem = "Informe o local.";
+        }
+      }
+      // _mensagem = "";
+      // if (_controllerNome.text == "") {
+      //   Navigator.pop(context);
+      //
+      //   throw Exception('Informe o título do rede.');
+      // } else if (_controllerPaisRede == "") {
+      //   Navigator.pop(context);
+      //
+      //   throw Exception('Informe o país de onde se realizará o rede.');
+      // } else if (_controllerCidade.text == "") {
+      //   Navigator.pop(context);
+      //
+      //   throw Exception('Informe a cidade de onde se realizará o rede.');
+      // } else if (int.parse(_controllerQtdIntegrantes.text) <= 0 ||
+      //     int.parse(_controllerQtdIntegrantes.text) > 999) {
+      //   Navigator.pop(context);
+      //
+      //   throw Exception('Qtd de integrantes incorreto.');
+      // }
 
 
 
       if (_mensagem != "") {
+        if(_mensagem == "Rede atualizada com sucesso!!!"){
+          _mensagem = "Ocorreu algum erro";
+        }
         DialogFutt dialogFutt = new DialogFutt();
         dialogFutt.waiting(context, "Mensagem", "${_mensagem}");
         await Future.delayed(Duration(seconds: 2));
@@ -1496,6 +1522,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
             onChanged: (newValue) {
               setState(() {
                 paisSelecionado = newValue;
+                estadoSelecionado = '';
                 //controllerNomeCartaoContaBancaria.text = newValue;
               });
             },

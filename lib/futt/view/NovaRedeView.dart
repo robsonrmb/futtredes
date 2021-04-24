@@ -60,13 +60,21 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       }else if (paisSelecionado == "") {
         _mensagem = "Informe o país.";
       }
-      else if (_controllerCidade.text == "") {
+      else if(paisSelecionado == "Brasil"){
+        if(estadoSelecionado == ""){
+          _mensagem = "Informe o estado.";
+        }else{
+      if (_controllerCidade.text == "") {
         _mensagem = "Informe a cidade.";
       }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
         _mensagem = "Informe o local.";
-      }else if(paisSelecionado == "Brasil"){
-        if(estadoSelecionado == ""){
-          _mensagem = "Informe o estado.";
+      }
+        }
+      }else{
+        if (_controllerCidade.text == "") {
+          _mensagem = "Informe a cidade.";
+        }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
+          _mensagem = "Informe o local.";
         }
       }
 
@@ -137,7 +145,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       setState(() {
         _mensagem = error.toString();
       });
-    }
+     }
   }
 
   Future<List<PaisModel>> _listaPaises() async {
@@ -703,6 +711,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
             onChanged: (newValue) {
               setState(() {
                 paisSelecionado = newValue;
+                estadoSelecionado = "";
                 //controllerNomeCartaoContaBancaria.text = newValue;
               });
             },

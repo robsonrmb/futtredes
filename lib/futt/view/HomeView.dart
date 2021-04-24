@@ -115,8 +115,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           MaterialPageRoute(builder: (context) => NovaRedeView(userModel: usuarioModel,assinante: assinante,)),
         ).then((value) => buscarFoto());
       }else{
-        dialogFutt.waiting(context, "Atenção", "Somente usuários ativos.");
-        await Future.delayed(Duration(seconds: 2));
+        dialogFutt.waiting(context, "Atenção", "Funcionalidade permitida somente para assinantes.");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
       }
     }
   }

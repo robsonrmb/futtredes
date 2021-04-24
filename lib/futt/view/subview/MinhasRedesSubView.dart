@@ -422,6 +422,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
+                                    //as offs
                                     Text(_getSubTitulo(rede.status, rede.disponibilidade),
                                       style: TextStyle(
                                         fontSize: 16,
@@ -451,13 +452,39 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                       ),
                                     ),
                                   ],
-                                ):Text(_getSubTitulo(rede.status, rede.disponibilidade),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
-                                  ),
+                                ):
+                                // Text(_getSubTitulo(rede.status, rede.disponibilidade),
+                                //   style: TextStyle(
+                                //     fontSize: 16,
+                                //     fontWeight: FontWeight.bold,
+                                //     color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                //   ),
+                                // ),
+                                new Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    validade != null && validade != ""?
+                                    Text(
+                                      "Validade: $validade",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.colorSubTitle,
+                                          fontWeight: FontWeight.w600
+                                      ),
+                                    ):new Container(),
+                                    Text(
+                                      _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                          fontWeight: FontWeight.w600
+                                      ),
+                                    ),
+                                  ],
                                 ),
+
                                 trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[

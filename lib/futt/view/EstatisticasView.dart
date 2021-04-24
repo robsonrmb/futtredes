@@ -13,6 +13,7 @@ import 'package:futt/futt/view/components/animation.dart';
 import 'package:futt/futt/view/style/colors.dart';
 import 'package:futt/futt/view/style/font-family.dart';
 import 'package:search_cep/search_cep.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,41 +43,26 @@ class EstatisticasView extends StatefulWidget {
 class _EstatisticasViewState extends State<EstatisticasView> {
 
   UsuarioModel usuarioModel;
+  SharedPreferences pref;
 
   String user = '';
   List<EstadosByUFModel> listEstados = [];
   String siglaEstado;
   String localOndeJoga;
   String posicao;
+  String pais;
+  bool restart;
 
   @override
   void initState() {
     super.initState();
-    if(widget.posicao != null){
-      if(widget.posicao == "2"){
-        widget.posicao = "Esquerda";
-      }
-      if(widget.posicao == "1"){
-        widget.posicao = "Direita";
-      }
-      if(widget.posicao == "0"){
-        widget.posicao = "Ambas";
-      }
-    }
-    if(widget.localOndeJoga!= null){
-      localOndeJoga = widget.localOndeJoga;
-    }
-    if(widget.user == null || widget.estado == null ){
-      buscarUser();
-    }else{
-      preecherUf();
 
-    }
   }
 
   void preecherUf()async{
     listEstados =  await retornaUser();
     if(listEstados != null){
+    if(listEstados.length >0){
       if(widget.estado == null){
         if(usuarioModel != null){
           for(int i = 0; i < listEstados.length; i ++){
@@ -94,15 +80,24 @@ class _EstatisticasViewState extends State<EstatisticasView> {
       }
       setState(() {});
     }
+    }else{
+      setState(() {});
+    }
+  }
+
+  Future<void> inicializarShared() async {
+    pref = await SharedPreferences.getInstance();
   }
 
   void buscarUser()async{
+    await inicializarShared();
+    restart = pref.getBool('restart');
     usuarioModel = await _buscaUsuarioSelecionado();
     if(usuarioModel != null){
       user = usuarioModel.user;
       localOndeJoga = usuarioModel.ondeJoga;
-      posicao = usuarioModel.posicao;
-      widget.pais = usuarioModel.pais;
+      posicao = posicaos(usuarioModel.posicao);
+      pais = usuarioModel.pais;
       widget.estado = usuarioModel.estado;
 
       if(posicao == "2"){
@@ -114,7 +109,12 @@ class _EstatisticasViewState extends State<EstatisticasView> {
       if(posicao == "0"){
         posicao = "Ambas";
       }
-      preecherUf();
+
+      if(!restart){
+        pref.setBool('restart', true);
+        preecherUf();
+      }
+
       //setState(() {});
     }
   }
@@ -122,8 +122,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
 
   @override
   Widget build(BuildContext context) {
-    double _tam = 90;
-
+    buscarUser();
     return Container(
       padding: EdgeInsets.only(right: 10, left: 10),
       color: Colors.grey[300],
@@ -304,7 +303,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
                                       child: Text(
-                                        estadoOuPais(localOndeJoga, widget.pais),
+                                        estadoOuPais(localOndeJoga, pais),
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
@@ -331,17 +330,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                   //         color: Colors.grey,
                                   //       ),
                                   //     )),
-                                  widget.posicao != null?
                                   Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 8, left: 6),
-                                      child: Text(
-                                        "${widget.posicao??""}",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                        ),
-                                      )):Container(
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
                                       child: Text(
@@ -522,6 +511,23 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     }
   }
 
+  String posicaos(String pos) {
+    switch (pos){
+      case '2':
+        return 'Esquerda';
+        break;
+      case '1':
+        return 'Direita';
+        break;
+      case '0':
+        return 'Ambas';
+        break;
+      default:
+        return '';
+        break;
+    }
+  }
+
   Future<UsuarioModel> _buscaUsuarioSelecionado() async {
     UsuarioService usuarioService = UsuarioService();
     UsuarioModel usuario =
@@ -531,12 +537,11 @@ class _EstatisticasViewState extends State<EstatisticasView> {
 
   Future<List<EstadosByUFModel>> retornaUser() async {
     var response = await http.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados',);
-    print(response.body);
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List).map((e) => EstadosByUFModel.fromJson(e)).toList();
 
     } else {
-      return null;
+      return [];
     }
   }
 

@@ -123,6 +123,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   }
 
   _abrirPerfil() async {
+    pref.setBool('restart', true);
+
     //Navigator.pushNamed(context, "/perfil");
     bool fotoAlterada = await Navigator.push(
         context,
@@ -133,6 +135,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             usuarioModel: usuarioModel,
           ),
         ));
+
     if (fotoAlterada) {
       buscarFoto();
     }
@@ -595,6 +598,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         return MinhasRedesView();
         break;
       case 2:
+        pref.setBool('restart', false);
         return DashboardView(
           nome: usuarioModel.nome,
           nomeFoto: usuarioModel.nomeFoto,
@@ -604,6 +608,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           estado: usuarioModel.estado,
           localOndeJoga: usuarioModel.ondeJoga,
           posicao: usuarioModel.posicao,
+          idUser: usuarioModel.id,
         );
         break;
       default:

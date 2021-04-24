@@ -94,6 +94,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   void _atualizar(BuildContext context) async {
     try {
+      _mensagem = "";
       _valida();
 
       if (_mensagem != "") {
@@ -761,10 +762,18 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                 Icons.arrow_back,
                                 color: AppColors.colorIconPerfil,
                               ),
-                              onPressed: () => trocouImagem && salvouFotoTrocada
-                                  ? Navigator.pop(context, true)
-                                  : Navigator.pop(context, false)),
+                              onPressed: () {
+                                prefs.setBool('restart', false);
+                               if(trocouImagem && salvouFotoTrocada){
+                                 Navigator.pop(context, true);
+                               }else{
+                                 Navigator.pop(context, false);
+                               }
+                              }
+
+                          ),
                         ),
+                        //    pref.setBool('restart', false);
                         // new Container(
                         //   margin: const EdgeInsets.only(top: 30),
                         //   child: new IconButton(

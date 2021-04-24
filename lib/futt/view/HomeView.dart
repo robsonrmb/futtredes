@@ -80,6 +80,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   void inicializarShared() async {
     pref = await SharedPreferences.getInstance();
     assinante = pref.getBool(ConstantesConfig.PREFERENCES_ASSINANTE);
+    pref.setBool('restart', false);
     print('Assinante: $assinante');
     if (mounted) setState(() {});
   }

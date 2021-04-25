@@ -1049,7 +1049,10 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                               }
                               if (usuarioModel.estado != null ||
                                   usuarioModel.estado != "") {
-                                estadoSelecionado = usuarioModel.estado;
+                                for(int i = 0; i < listDropEstado.length; i++){
+                                  if(usuarioModel.estado == listDropEstado[i])
+                                  estadoSelecionado = listDropEstado[i];
+                                }
                                 // if (estadoSelecionado == null || estadoSelecionado == "") {
                                 //   estadoSelecionado = '';
                                 // }
@@ -1059,7 +1062,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                             }
                             enableEdit = true;
 
-                            Future.delayed(Duration(milliseconds: 200),(){
+                            Future.delayed(Duration(milliseconds: 0),(){
                               podeMontarDrops = true;
                               setState(() {});
                             });

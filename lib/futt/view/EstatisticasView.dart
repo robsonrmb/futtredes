@@ -60,29 +60,35 @@ class _EstatisticasViewState extends State<EstatisticasView> {
   }
 
   void preecherUf()async{
-    listEstados =  await retornaUser();
-    if(listEstados != null){
-    if(listEstados.length >0){
-      if(widget.estado == null){
-        if(usuarioModel != null){
-          for(int i = 0; i < listEstados.length; i ++){
-            if(usuarioModel.estado == listEstados[i].nome){
-              siglaEstado = listEstados[i].sigla;
+    if(widget.estado != null && widget.estado.length == 2){
+      siglaEstado = widget.estado;
+      setState(() {});
+    }else{
+      listEstados =  await retornaUser();
+      if(listEstados != null){
+        if(listEstados.length >0){
+          if(widget.estado == null){
+            if(usuarioModel != null){
+              for(int i = 0; i < listEstados.length; i ++){
+                if(usuarioModel.estado == listEstados[i].nome){
+                  siglaEstado = listEstados[i].sigla;
+                }
+              }
+            }
+          }else{
+            for(int i = 0; i < listEstados.length; i ++){
+              if(widget.estado == listEstados[i].nome){
+                siglaEstado = listEstados[i].sigla;
+              }
             }
           }
+          setState(() {});
         }
       }else{
-        for(int i = 0; i < listEstados.length; i ++){
-          if(widget.estado == listEstados[i].nome){
-            siglaEstado = listEstados[i].sigla;
-          }
-        }
+        setState(() {});
       }
-      setState(() {});
     }
-    }else{
-      setState(() {});
-    }
+
   }
 
   Future<void> inicializarShared() async {

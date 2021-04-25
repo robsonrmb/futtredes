@@ -128,7 +128,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       //   throw Exception('Qtd de integrantes incorreto.');
       // }
 
-
+      String enviaEstado = estadoSelecionado;
 
       if (_mensagem != "") {
         if(_mensagem == "Rede atualizada com sucesso!!!"){
@@ -145,13 +145,20 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
       if(paisSelecionado != "Brasil"){
         estadoSelecionado = '';
+        enviaEstado = '';
+      }else{
+        for(int i = 0; i < estadosList.length; i++){
+          if(estadoSelecionado == estadosList[i].texto){
+            enviaEstado = estadosList[i].codigo;
+          }
+        }
       }
 
       RedeModel redeModel = RedeModel.Edita(
           widget.redeModel.id,
           _controllerNome.text,
             paisSelecionado,
-          estadoSelecionado,
+          enviaEstado,
           _controllerCidade.text,
           _controllerLocal.text,
           int.parse(_controllerQtdIntegrantes.text),
@@ -224,7 +231,11 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       paisSelecionado = redeOrigem.pais;
     }
     if(redeOrigem.estado != null && redeOrigem.estado != ""){
-      estadoSelecionado = redeOrigem.estado;
+      for(int i = 0; i < estadosList.length;i++){
+        if(redeOrigem.estado == estadosList[i].codigo){
+          estadoSelecionado =  estadosList[i].texto;
+        }
+      }
     }
     PaisModel _paisModel = PaisModel(redeOrigem.pais, redeOrigem.pais);
     _controllerCidade.text = redeOrigem.cidade;

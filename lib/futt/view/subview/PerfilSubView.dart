@@ -117,6 +117,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 //      String _dataNasc = "${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}";
 
       String enviaPosicao = '';
+      String enviaEstado = estadoSelecionado;
       if(posicaoSelecionado == "Esquerda"){
         enviaPosicao = "2";
       }
@@ -128,14 +129,23 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       }
       if (_controllerPais != 'Brasil') {
         estadoSelecionado = '';
+        enviaEstado = '';
+      }else{
+        for(int i = 0; i < estadosList.length; i++){
+          if(estadoSelecionado == estadosList[i].texto){
+            enviaEstado = estadosList[i].codigo;
+          }
+        }
       }
+
+
       UsuarioModelAtualiza usuarioModel = UsuarioModelAtualiza.Atualiza(
           _controllerNome.text,
           _controllerApelido.text,
           _dataNasc,
           _controllerSexo,
           enviaPosicao,
-          estadoSelecionado,
+          enviaEstado,
           _controllerPais,
           _controllerCidade.text,
           _controllerLocal.text);

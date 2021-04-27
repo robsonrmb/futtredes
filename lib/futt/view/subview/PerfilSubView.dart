@@ -108,11 +108,16 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         throw Exception(_mensagem);
       }
       circularProgress(context);
+      DateTime _dataNasc;
+      
+      if(_controllerDataNascimento.text != ""&& _controllerDataNascimento.text.length==10){
+        _dataNasc = new DateTime(
+            int.parse(_controllerDataNascimento.text.substring(6)),
+            int.parse(_controllerDataNascimento.text.substring(3, 5)),
+            int.parse(_controllerDataNascimento.text.substring(0, 2)));
+      }
 
-      DateTime _dataNasc = new DateTime(
-          int.parse(_controllerDataNascimento.text.substring(6)),
-          int.parse(_controllerDataNascimento.text.substring(3, 5)),
-          int.parse(_controllerDataNascimento.text.substring(0, 2)));
+
 
 //      String _dataNasc = "${_controllerDataNascimento.text.split('-').last}/${_controllerDataNascimento.text.split('-')[1]}/${_controllerDataNascimento.text.split('-').first}";
 

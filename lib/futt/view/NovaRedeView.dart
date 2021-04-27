@@ -24,7 +24,7 @@ class NovaRedeView extends StatefulWidget {
   UsuarioModel userModel;
   bool assinante;
 
-  NovaRedeView({this.userModel,this.assinante});
+  NovaRedeView({this.userModel,this.assinante:true});
 
   @override
   _NovaRedeViewState createState() => _NovaRedeViewState();

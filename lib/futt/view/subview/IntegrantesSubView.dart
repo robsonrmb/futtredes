@@ -127,6 +127,15 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
   }
 
   _retorneSubtitulo(String pais, String cidade,String local) {
+    if(pais ==""){
+      pais = null;
+    }
+    if(cidade ==""){
+      cidade = null;
+    }
+    if(local ==""){
+      local = null;
+    }
     if (pais == null && cidade == null && local == null) {
       return "";
     }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
@@ -1645,26 +1647,31 @@ class _JogosSubViewState extends State<JogosSubView> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Column(
+                                  new Expanded(
+                                    flex: 30,
+                                    child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "${jogo.apelidoFormatadoJogador1??""}",
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      new Container(height: 8,),
                                       Text(
                                         "${jogo.apelidoFormatadoJogador2??""}",
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  Row(
+                                  ),),
+                                  new Expanded(
+                                    flex: 40,
+                                    child: Row(
                                     children: <Widget>[
                                       Container(
                                         height: 40,
@@ -1712,26 +1719,31 @@ class _JogosSubViewState extends State<JogosSubView> {
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  Column(
+                                  ),),
+                                  new Expanded(
+                                    flex: 30,
+                                    child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
                                         "${jogo.apelidoFormatadoJogador3??""}",
+                                      textAlign: TextAlign.end,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      new Container(height: 8,),
                                       Text(
                                         "${jogo.apelidoFormatadoJogador4??""}",
+                                      textAlign: TextAlign.end,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
-                                  ),
+                                  ),)
                                 ],
                               ),
                             ),

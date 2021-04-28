@@ -105,6 +105,7 @@ class RedeModel {
       'nome': _nome,
       'pais': _pais,
       'cidade': _cidade,
+      'estado': _estado,
       'local': _local,
       'info': _info,
       'qtdIntegrantes': _qtdIntegrantes,

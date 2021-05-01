@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/ResponsaveisRedeView.dart';
 import 'package:futt/futt/view/components/Apresentacao.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
-import 'package:futt/futt/view/components/Passos.dart';
 import 'package:futt/futt/view/components/animation.dart';
 import 'package:futt/futt/view/style/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,32 +53,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         description, () {
           _realizaAcao(idRede, true, context, acao);
         });
-    // return showDialog(
-    //     context: context,
-    //     barrierDismissible: true,
-    //     builder: (BuildContext) {
-    //       return AlertDialog(
-    //         title: Text(title),
-    //         content: SingleChildScrollView(
-    //           child: ListBody(
-    //             children: <Widget>[
-    //               Text(description),
-    //             ],
-    //           ),
-    //         ),
-    //         actions: <Widget>[
-    //           FlatButton(
-    //             onPressed: () => _realizaAcao(idRede, false, context, acao),
-    //             child: Text("Não"),
-    //           ),
-    //           FlatButton(
-    //             onPressed: () => _realizaAcao(idRede, true, context, acao),
-    //             child: Text("Sim"),
-    //           )
-    //         ],
-    //       );
-    //     }
-    // );
   }
 
   _realizaAcao(int idRede, bool resposta, BuildContext context, acao) async {
@@ -453,13 +426,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                     ),
                                   ],
                                 ):
-                                // Text(_getSubTitulo(rede.status, rede.disponibilidade),
-                                //   style: TextStyle(
-                                //     fontSize: 16,
-                                //     fontWeight: FontWeight.bold,
-                                //     color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
-                                //   ),
-                                // ),
                                 new Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -504,7 +470,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                           child: Padding(
                                             padding: EdgeInsets.only(left: 1),
                                             child: new Center(
-                                              child:  new FaIcon(FontAwesomeIcons.spellCheck,color:  AppColors.colorIconCardRede,size: 17,),
+                                              child:  new FaIcon(FontAwesomeIcons.server,color:  AppColors.colorIconCardRede,size: 17,),
                                             )
                                           ),
                                           onTap: (){
@@ -515,91 +481,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                         ),
                                       ),
                                       new Container(width: 6,),
-                                      // new Container(
-                                      //   height: 40,
-                                      //   width: 40,
-                                      //   //padding: const EdgeInsets.all(8),
-                                      //   margin: const EdgeInsets.only(left: 6),
-                                      //   decoration: new BoxDecoration(
-                                      //       gradient: LinearGradient(begin: Alignment.topLeft,
-                                      //           end: Alignment.bottomRight,
-                                      //           colors: <Color>[
-                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
-                                      //           ]),
-                                      //       shape: BoxShape.circle),
-                                      //   child:  GestureDetector(
-                                      //     child: Icon(Icons.people,
-                                      //         color:  AppColors.colorIconCardRede
-                                      //     ),
-                                      //     onTap: (){
-                                      //       Navigator.push(context, MaterialPageRoute(
-                                      //           builder: (context) => IntegrantesView(redeModel: rede, donoRede: true)
-                                      //       ));
-                                      //     },
-                                      //   ),
-                                      // ),
-                                      // new Container(
-                                      //   height: 40,
-                                      //   width: 40,
-                                      //   //padding: const EdgeInsets.all(8),
-                                      //   margin: const EdgeInsets.only(left: 6),
-                                      //   decoration: new BoxDecoration(
-                                      //       gradient: LinearGradient(begin: Alignment.topLeft,
-                                      //           end: Alignment.bottomRight,
-                                      //           colors: <Color>[
-                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                      //             rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
-                                      //           ]),
-                                      //       shape: BoxShape.circle),
-                                      //   child: GestureDetector(
-                                      //     child:Icon(Icons.smartphone,
-                                      //         color:  AppColors.colorIconCardRede
-                                      //     ),
-                                      //     onTap: (){
-                                      //       Navigator.push(context, MaterialPageRoute(
-                                      //           builder: (context) => ResponsaveisRedeView(redeModel: rede,)
-                                      //       ));
-                                      //     },
-                                      //   ),
-                                      // ),
-                                      //
-                                      // (rede.status == 1 || rede.status == 2) ?
-                                      // new Container(
-                                      //   height: 40,
-                                      //   width: 40,
-                                      //   //padding: const EdgeInsets.all(8),
-                                      //   margin: const EdgeInsets.only(left: 6),
-                                      //   decoration: new BoxDecoration(
-                                      //       gradient: LinearGradient(begin: Alignment.topLeft,
-                                      //           end: Alignment.bottomRight,
-                                      //           colors: <Color>[
-                                      //             AppColors.colorEspecialPrimario1,
-                                      //             AppColors.colorEspecialPrimario2
-                                      //           ]),
-                                      //       shape: BoxShape.circle),
-                                      //   child: GestureDetector(
-                                      //     child: Icon(Icons.delete_forever,
-                                      //       color: rede.status == 1 ? Color(0xff093352) :  AppColors.colorIconCardRede,),
-                                      //     onTap: (){
-                                      //       _showModalAtivaDesativa(context, "Desativa rede", "Deseja realmente desativar a rede?", rede.id, "D");
-                                      //     },
-                                      //   )
-                                      // )
-                                      //  : new Padding(
-                                      //   padding: EdgeInsets.all(1),
-                                      // ),
-                                      // (rede.status == 3 || rede.status == 4) ? GestureDetector(
-                                      //   child: Padding(
-                                      //     padding: EdgeInsets.only(left: 10),
-                                      //     child: Icon(Icons.done,),
-                                      //   ),
-                                      //   onTap: (){
-                                      //     _showModalAtivaDesativa(context, "Ativa rede", "Deseja reativar a rede?", rede.id, "A");
-                                      //   },
-                                      // ) : new Padding(
-                                      //   padding: EdgeInsets.all(1),
-                                      // ),
                                       (rede.status == 1 || rede.status == 2)?
                                       new Container(
                                         height: 40,
@@ -711,9 +592,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
   String redeValidadeFormatada(String value){
     String dataFormatada = '${value.split('-')[2]}/${value.split('-')[1]}/${value.split('-')[0]}';
     return dataFormatada;
-
   }
-
 
   _retorneSubtitulo(String pais, String cidade,String local) {
     if(pais ==""){
@@ -728,14 +607,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     if (pais == null && cidade == null && local == null) {
       return "";
     }
-    //
-    // else if (pais != null && cidade != null) {
-    //   return pais + " - " + cidade;
-    // } else if (pais != null && cidade == null) {
-    //   return pais;
-    // } else if (pais == null && cidade != null) {
-    //   return cidade;
-    // }
     else if(pais != null && cidade == null && local == null){
       String value = pais;
       return value;

@@ -282,7 +282,7 @@ class _LoginViewState extends State<LoginView> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 10, left: 20),
                   child: Text(
-                    "Faça seu login para saber mais sobre os torneios",
+                    "Faça seu login para saber mais sobre as redes.",
                     style: TextStyle(
                       color: AppColors.colorTextLogCad,
                       fontSize: 12,
@@ -578,7 +578,7 @@ class _LoginViewState extends State<LoginView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Ainda não é assinante?",
+                                "Ainda não é assinante? ",
                                 style: TextStyle(
                                   color: AppColors.colorTextLogCad,
                                   fontSize: 14,
@@ -594,7 +594,7 @@ class _LoginViewState extends State<LoginView> {
                                   color: Colors.transparent,
                                   child:
                                   new Text(
-                                    ' Assine aqui.',
+                                    'Assine aqui.',
                                     style: TextStyle(
                                       color: AppColors.colorTextLogCad,
                                       decoration: TextDecoration.underline,

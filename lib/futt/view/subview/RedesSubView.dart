@@ -4,12 +4,9 @@ import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/service/RedeService.dart';
-import 'package:futt/futt/view/HomeView.dart';
 import 'package:futt/futt/view/JogosView.dart';
 import 'package:futt/futt/view/IntegrantesView.dart';
-import 'package:futt/futt/view/RankingRedeView.dart';
 import 'package:futt/futt/view/components/Apresentacao.dart';
-import 'package:futt/futt/view/components/Passos.dart';
 import 'package:futt/futt/view/components/animation.dart';
 import 'package:futt/futt/view/style/colors.dart';
 import 'package:shimmer/shimmer.dart';
@@ -180,24 +177,6 @@ class _RedesSubViewState extends State<RedesSubView> {
                           new Container(height: 2,width: double.infinity,color: Colors.white,),
                           Container(
                             decoration: BoxDecoration(
-                              // color: Colors.grey[300],
-                              // border: Border(
-                              //   left: BorderSide(
-                              //     width: 2,
-                              //     //                   <--- left side
-                              //     color: Colors.white,
-                              //   ),
-                              //   right: BorderSide(
-                              //     width: 2,
-                              //     //                   <--- left side
-                              //     color: Colors.white,
-                              //   ),
-                              //   bottom: BorderSide(
-                              //     width: 2,
-                              //     //                   <--- left side
-                              //     color: Colors.white,
-                              //   ),
-                              // ),
                               borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(4.0),
                                 bottomLeft: Radius.circular(4.0),
@@ -235,15 +214,6 @@ class _RedesSubViewState extends State<RedesSubView> {
                                       fontWeight: FontWeight.w600
                                   ),
                                 ),
-
-                                // Text(
-                                //   "${rede.pais == 'Brasil'?'':'${rede.pais} - '}${rede.pais == 'Brasil'?'${rede.cidade} -':''} ${rede.local}",
-                                //   style: TextStyle(
-                                //     fontSize: 14,
-                                //     color: AppColors.colorSubTitle,
-                                //     fontWeight: FontWeight.w600
-                                //   ),
-                                // ),
                                 trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
@@ -268,28 +238,9 @@ class _RedesSubViewState extends State<RedesSubView> {
                                                 //color: Colors.black,
                                                 shape: BoxShape.circle
                                               ),
-                                              child:  new FaIcon(FontAwesomeIcons.spellCheck,color:  AppColors.colorIconCardRede,size: 17,)
+                                              child:  new FaIcon(FontAwesomeIcons.server,color:  AppColors.colorIconCardRede,size: 17,)
                                             )
                                           ),
-                                          // Padding(
-                                          //   //padding: EdgeInsets.only(left: 1),
-                                          //   child: new  Container(
-                                          //     height: 30,
-                                          //     width: 30,
-                                          //     decoration: BoxDecoration(
-                                          //         color: Colors.red,
-                                          //
-                                          //         image: DecorationImage(
-                                          //             image: AssetImage("images/match.png"), fit: BoxFit.fill)),
-                                          //   )
-                                          //
-                                          //   // Icon(Icons.play_circle_outline,
-                                          //   //     color: rede.status < 3
-                                          //   //         ? (rede.status == 1)
-                                          //   //             ? Color(0xff093352)
-                                          //   //             : Colors.lightBlue
-                                          //   //         : Colors.grey),
-                                          // ),
                                           onTap: () {
                                             Navigator.push(
                                                 context,
@@ -345,9 +296,6 @@ class _RedesSubViewState extends State<RedesSubView> {
                                             child: new FaIcon(FontAwesomeIcons.listOl,color:  AppColors.colorIconCardRede,size: 17,),
                                           ),
                                           onTap: () {
-                                            // Navigator.push(context, MaterialPageRoute(
-                                            //     builder: (context) => RankingRedeView(rede.id, rede.nome, rede.status, 0),
-                                            // ));
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -413,14 +361,6 @@ class _RedesSubViewState extends State<RedesSubView> {
     if (pais == null && cidade == null && local == null) {
       return "";
     }
-    //
-    // else if (pais != null && cidade != null) {
-    //   return pais + " - " + cidade;
-    // } else if (pais != null && cidade == null) {
-    //   return pais;
-    // } else if (pais == null && cidade != null) {
-    //   return cidade;
-    // }
     else if(pais != null && cidade == null && local == null){
       String value = pais;
       return value;

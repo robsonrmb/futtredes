@@ -38,17 +38,17 @@ class _CadastroViewState extends State<CadastroView> {
 
 
       if (_controllerNome.text == "") {
-        _mensagem = "Informe seu nome!!!";
+        _mensagem = "Informe seu nome.";
       } else if (_controllerEmail.text == "") {
-        _mensagem = "Informe seu username!!!";
+        _mensagem = "Informe seu username.";
       }else if (_controllerNickName.text == "") {
-        _mensagem = "Informe seu email!!!";
+        _mensagem = "Informe seu email.";
       } else if (_controllerSenha.text == "") {
-        _mensagem = "Informe a senha!!!";
+        _mensagem = "Informe a senha.";
       } else if (_controllerSenhaConfirmacao.text == "") {
-        _mensagem = "Confirme a senha!!!";
+        _mensagem = "Confirme a senha.";
       } else if (_controllerSenha.text != _controllerSenhaConfirmacao.text) {
-        _mensagem = "Confirme a senha corretamente!!!";
+        _mensagem = "Confirmação de senha incorreta.";
       }
 
       if (_mensagem != "") {
@@ -89,14 +89,17 @@ class _CadastroViewState extends State<CadastroView> {
               (Route<dynamic> route) => false,
         );
       } else {
-        dialogFutt.waitingError(context, "Erro", "Ocorreu algum erro ao realizar o cadastro");
-        await Future.delayed(Duration(seconds: 2));
-        Navigator.pop(context);
         setState(() {
-          var _dadosJson = jsonDecode(response.body);
-          ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
+          String source = Utf8Decoder().convert(response.bodyBytes);
+          var dadosJson = json.decode(source);
+          ExceptionModel exceptionModel = ExceptionModel.fromJson(dadosJson);
           _mensagem = exceptionModel.msg;
         });
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waitingError(context, "Erro", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
     } on Exception catch (exception) {
       print(exception.toString());
@@ -458,19 +461,6 @@ class _CadastroViewState extends State<CadastroView> {
                                     fontSize: 16,
                                     color: AppColors.colorTextLogCad,
                                     fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: Center(
-                            child: Text(
-                              _mensagem??'',
-                              style: TextStyle(
-                                  color: AppColors.colorTextLogCad,
-                                  fontSize: 12,
-                                fontFamily: FontFamily.fontSpecial,
                               ),
                             ),
                           ),

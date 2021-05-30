@@ -91,8 +91,16 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
         throw Exception(_mensagem);
       }
+      String enviaEstado = estadoSelecionado;
       if(paisSelecionado != 'Brasil'){
         estadoSelecionado = '';
+      }else{
+        for(int i = 0; i < estadosList.length; i++){
+          if(estadoSelecionado == estadosList[i].texto){
+            enviaEstado = estadosList[i].codigo;
+          }
+        }
+        estadoSelecionado = enviaEstado;
       }
 
       RedeModel redeModel = RedeModel.Novo(
@@ -134,6 +142,10 @@ class _NovaRedeViewState extends State<NovaRedeView> {
           ExceptionModel exceptionModel = ExceptionModel.fromJson(_dadosJson);
           _mensagem = exceptionModel.msg;
         });
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waitingError(context, "Rede", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 10));
+        Navigator.pop(context);
       }
 
     } on Exception catch (exception) {

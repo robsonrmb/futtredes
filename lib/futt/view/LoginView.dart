@@ -160,12 +160,12 @@ class _LoginViewState extends State<LoginView> {
         } else {
           Navigator.pop(context);
           setState(() {
-            _mensagem = "Dados incorretos!!!";
+            _mensagem = "Dados incorretos.";
           });
 
           DialogFutt dialogFutt = new DialogFutt();
           dialogFutt.waiting(
-              context, "Mensagem", "(${response.statusCode}) ${_mensagem}");
+              context, "Mensagem", "${_mensagem}");
           await Future.delayed(Duration(seconds: 3));
           Navigator.pop(context);
         }
@@ -176,7 +176,7 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pop(context);
 
         setState(() {
-          _mensagem = "Dados incorretos!!!";
+          _mensagem = "Dados incorretos.";
         });
       }
     } on Exception catch (exception) {
@@ -199,7 +199,7 @@ class _LoginViewState extends State<LoginView> {
   _enviaNovaSenha() async {
     try {
       Navigator.pop(context);
-      String _msg = "Senha enviada com sucesso!!!";
+      String _msg = "Senha enviada com sucesso.";
       if (_controllerEmailParaTrocaDeSenha.text == "" ||
           _controllerAnoNascimentoParaTrocaDeSenha.text == "") {
         _msg = "Dados para solicitação de senha incompletos.";

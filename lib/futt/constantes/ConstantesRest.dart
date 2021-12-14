@@ -1,9 +1,12 @@
 class ConstantesRest {
 
-  static const URL_BASE = "https://futtapp.herokuapp.com";
   static const URL_BASE_LOCAL = "http://localhost:8080";
   static const URL_BASE_TESTE = "https://jsonplaceholder.typicode.com";
+  static const URL_BASE_CBRASIL = "https://kmaops.hospedagemelastica.com.br/futback";
+  static const URL_BASE_HEROKU = "https://futtapp.herokuapp.com";
   static const URL_BASE_AMAZON = "https://futtapp.s3-sa-east-1.amazonaws.com/";
+
+  static const URL_BASE = "https://kmaops.hospedagemelastica.com.br/futback";
 
   static const URL_LOGIN = "${URL_BASE}/login";
   static const URL_NOVA_SENHA = "${URL_BASE}/auth/nova_senha";

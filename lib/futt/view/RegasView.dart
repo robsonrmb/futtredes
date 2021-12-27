@@ -61,7 +61,6 @@ class _RegrasViewState extends State<RegrasView> {
                         BoxShadow(
                           // color: Colors.black12,
                             color: Colors.black.withOpacity(0.5),
-
                             blurRadius: 5
                         )
                       ]
@@ -110,24 +109,6 @@ class _RegrasViewState extends State<RegrasView> {
                     ],
                   ),
                 ),
-                // new Row(
-                //   children: [
-                //     new Container(
-                //       child: new Text(
-                //         'Regras de uso',
-                //         style: new TextStyle(
-                //             fontWeight: FontWeight.bold, fontSize: 20),
-                //       ),
-                //     )
-                //   ],
-                // ),
-                // new Container(
-                //   margin: const EdgeInsets.only(top: 30),
-                //   child: new Text(
-                //     'Todas as informações cadastradas são de responsabilidade do usuário, tais como:',
-                //     style: new TextStyle(fontSize: 18),
-                //   ),
-                // ),
 
                 Container(
                   margin: const EdgeInsets.only(top: 20),
@@ -155,21 +136,28 @@ class _RegrasViewState extends State<RegrasView> {
                                new Container(
                                  margin: const EdgeInsets.only(top: 10),
                                  child: new Text(
-                                   '- Nome da rede',
+                                   '- Nome da rede.',
                                    style: new TextStyle(fontSize: 18),
                                  ),
                                ),
                                new Container(
                                  margin: const EdgeInsets.only(top: 10),
                                  child: new Text(
-                                   '- Dados pessoais do atleta',
+                                   '- Dados pessoais do atleta.',
                                    style: new TextStyle(fontSize: 18),
                                  ),
                                ),
                                new Container(
                                  margin: const EdgeInsets.only(top: 10,bottom: 10),
                                  child: new Text(
-                                   '- Apelido do atleta',
+                                   '- Apelido do atleta.',
+                                   style: new TextStyle(fontSize: 18),
+                                 ),
+                               ),
+                               new Container(
+                                 margin: const EdgeInsets.only(top: 10,bottom: 10),
+                                 child: new Text(
+                                   '- E todos e quaisquer valores informados pelo usuário.',
                                    style: new TextStyle(fontSize: 18),
                                  ),
                                ),
@@ -191,7 +179,6 @@ class _RegrasViewState extends State<RegrasView> {
                         BoxShadow(
                           // color: Colors.black12,
                             color: Colors.black.withOpacity(0.5),
-
                             blurRadius: 5
                         )
                       ]
@@ -222,6 +209,21 @@ class _RegrasViewState extends State<RegrasView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             new Text(
+                              'Envie um email para futtapp@gmail.com e se TORNE UM ASSINANTE.',
+                              style: new TextStyle(fontSize: 18, color: Color(0xff093352), fontWeight: FontWeight.bold,),
+                              textAlign: TextAlign.start,
+                            ),
+                            new Container(height: 10,),
+                          ],
+                        ),
+                      ),
+                      new Container(
+                        margin: const EdgeInsets.all(16),
+                        child:
+                        new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            new Text(
                               'O usuário poderá desativar seu cadastro se não estiver de acordo com as regras através do próprio aplicativo e se for assinante, poderá cancelar sua assinatura utilizando a estrutura da Hotmart seguindo o passo a passo disponível no site oficial do FuttApp (www.futtapp.com.br).',
                               style: new TextStyle(fontSize: 18),
                               textAlign: TextAlign.start,
@@ -234,7 +236,6 @@ class _RegrasViewState extends State<RegrasView> {
 
                             ),
                             new Container(height: 10,),
-
                             new Text(
                               'À disposição.',
                               style: new TextStyle(fontSize: 18),
@@ -243,7 +244,7 @@ class _RegrasViewState extends State<RegrasView> {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

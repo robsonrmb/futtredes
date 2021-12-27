@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:futt/futt/view/CadastroView.dart';
@@ -12,6 +14,7 @@ import 'package:futt/futt/view/PerfilView.dart';
 import 'package:futt/futt/view/SplashScreenView.dart';
 
 void main() {
+  HttpOverrides.global = new MyHttpOverrides ();
   runApp(MyApp());
 }
 
@@ -70,8 +73,14 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
     );
   }
+}
 
-
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String Host, int port)=> true;
+  }
 }
 
 

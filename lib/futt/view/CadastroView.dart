@@ -33,7 +33,7 @@ class _CadastroViewState extends State<CadastroView> {
       CadastroLoginModel cadastroLoginModel = CadastroLoginModel();
       cadastroLoginModel.email = _controllerEmail.text;
       cadastroLoginModel.senha = _controllerSenha.text;
-      cadastroLoginModel.nome = '1${_controllerNome.text}';
+      cadastroLoginModel.nome = _controllerNome.text;
       cadastroLoginModel.user = _controllerNickName.text;
 
 

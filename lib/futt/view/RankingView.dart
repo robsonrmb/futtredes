@@ -381,7 +381,7 @@ class _RankingViewState extends State<RankingView>
                                                       child: CircleAvatar(
                                                         backgroundImage: NetworkImage(
                                                             ConstantesRest
-                                                                .URL_BASE_AMAZON +
+                                                                .URL_STATIC_USER +
                                                                 resultado
                                                                     .fotoUsuario),
                                                         radius: 30.0,
@@ -450,86 +450,12 @@ class _RankingViewState extends State<RankingView>
                           },
                         ),
                       )
-                      // new Container(
-                      //     child: new ListView.builder(
-                      //         itemCount: 10,
-                      //         shrinkWrap: true,
-                      //         physics: NeverScrollableScrollPhysics(),
-                      //         itemBuilder: (BuildContext c, i) {
-                      //           return new Column(
-                      //             children: [
-                      //               new Row(
-                      //                 children: [
-                      //                   new Container(
-                      //                     height: 46,
-                      //                     width: 46,
-                      //                     margin: const EdgeInsets.only(left: 20),
-                      //                     child: CircleAvatar(
-                      //                       radius: 30.0,
-                      //                       backgroundImage: NetworkImage(
-                      //                           "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg"),
-                      //                       backgroundColor: Colors.transparent,
-                      //                     ),
-                      //                   ),
-                      //                   new Container(
-                      //                     margin: const EdgeInsets.only(left: 8),
-                      //                     child: new Column(
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       children: [
-                      //                         new Text(
-                      //                           'Monica dos Santos',
-                      //                           style: new TextStyle(
-                      //                               fontWeight: FontWeight.bold,
-                      //                               fontSize: 16),
-                      //                         ),
-                      //                         new Container(
-                      //                           height: 4,
-                      //                         ),
-                      //                         new Text(
-                      //                           '170 pontos',
-                      //                           style: new TextStyle(
-                      //                               color: Colors.orange),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   )
-                      //                 ],
-                      //               ),
-                      //               new Container(
-                      //                 height: 1,
-                      //                 color: Colors.grey.withOpacity(0.5),
-                      //                 width: double.infinity,
-                      //                 margin: const EdgeInsets.symmetric(
-                      //                     horizontal: 20, vertical: 10),
-                      //               )
-                      //             ],
-                      //           );
-                      //         }))
                     ],
                   )),
             )
           ],
         )
-
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-        //   children: <Widget>[
-        //     TopoInterno().getTopo(widget.nomeRede, widget.statusRede),
-        //     Expanded(
-        //       child: TabBarView(
-        //         controller: _controllerRanking,
-        //         children: <Widget>[
-        //           RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 1),
-        //           RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 2),
-        //           RankingSubView(widget.idRede, widget.nomeRede, widget.ano, 3),
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
-        );
+    );
   }
 
   Widget _buildDropRanks() {

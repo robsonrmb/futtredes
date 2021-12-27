@@ -165,7 +165,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                 color: Colors.grey[300].withOpacity(0.5),
                                 image: DecorationImage(
                                     image: NetworkImage(
-                                        ConstantesRest.URL_BASE_AMAZON +
+                                        ConstantesRest.URL_STATIC_REDES +
                                             rede.nomeFoto),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.only(

@@ -234,7 +234,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                         ),
                                         child: CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                              '${ConstantesRest.URL_BASE_AMAZON}${widget.nomeFoto}'),
+                                              '${ConstantesRest.URL_STATIC_USER}${widget.nomeFoto}'),
                                           radius: 30.0,
                                         ),
                                       ),
@@ -281,30 +281,6 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                           color: Colors.grey,
                                         ),
                                       )),
-                                  // usuarioModel != null?
-                                  // usuarioModel.estado != null?
-                                  // Container(
-                                  //     margin: const EdgeInsets.only(
-                                  //         top: 8, left: 6),
-                                  //     child: Text(
-                                  //       siglaEstado??"",
-                                  //       style: TextStyle(
-                                  //         fontSize: 16,
-                                  //         color: Colors.grey,
-                                  //       ),
-                                  //     )):new Container():new Container(),
-                                  // widget.estado != null?
-                                  // Container(
-                                  //     margin: const EdgeInsets.only(
-                                  //         top: 8, left: 6),
-                                  //     child: Text(
-                                  //       siglaEstado??"",
-                                  //       style: TextStyle(
-                                  //         fontSize: 16,
-                                  //         color: Colors.grey,
-                                  //       ),
-                                  //     )):new Container(),
-
                                   Container(
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
@@ -315,27 +291,6 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                           color: Colors.grey,
                                         ),
                                       )),
-                                  // widget.localOndeJoga != null?
-                                  // Container(
-                                  //     margin: const EdgeInsets.only(
-                                  //         top: 8, left: 6),
-                                  //     child: Text(
-                                  //       "${widget.localOndeJoga??""} - ${widget.pais??""} ",
-                                  //       style: TextStyle(
-                                  //         fontSize: 16,
-                                  //         color: Colors.grey,
-                                  //       ),
-                                  //     )):
-                                  // Container(
-                                  //     margin: const EdgeInsets.only(
-                                  //         top: 8, left: 6),
-                                  //     child: Text(
-                                  //       "${localOndeJoga??""} - ${widget.pais??""} ",
-                                  //       style: TextStyle(
-                                  //         fontSize: 16,
-                                  //         color: Colors.grey,
-                                  //       ),
-                                  //     )),
                                   Container(
                                       margin: const EdgeInsets.only(
                                           top: 8, left: 6),
@@ -346,14 +301,6 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                           color: Colors.grey,
                                         ),
                                       )),
-                                  // Container(
-                                  //     margin: const EdgeInsets.only(top: 8,left: 6),
-                                  //     child: Text(
-                                  //       '31 anos  |  Destro',
-                                  //       style: TextStyle(
-                                  //         fontSize: 16,color: Colors.grey,
-                                  //       ),
-                                  //     )),
                                 ],
                               )
                             ],

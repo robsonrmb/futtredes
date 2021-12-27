@@ -59,7 +59,7 @@ class _RankingRedeSubViewState extends State<RankingRedeSubView> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(ConstantesRest.URL_BASE_AMAZON + resultado.fotoUsuario),
+                        backgroundImage: NetworkImage(ConstantesRest.URL_STATIC_USER + resultado.fotoUsuario),
                         radius: 30.0,
                       ),
                       title: Row(

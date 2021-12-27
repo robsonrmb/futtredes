@@ -620,7 +620,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
                                                           image: NetworkImage(
-                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador1}")),
+                                                              "${ConstantesRest.URL_STATIC_USER}${jogo.nomeFotoJogador1}")),
                                                       border: Border.all(
                                                           color:
                                                               Colors.white)):new BoxDecoration()),
@@ -652,7 +652,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
                                                           image: NetworkImage(
-                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador2}")),
+                                                              "${ConstantesRest.URL_STATIC_USER}${jogo.nomeFotoJogador2}")),
                                                       border: Border.all(
                                                           color:
                                                               Colors.white)):new BoxDecoration()),
@@ -738,7 +738,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
                                                           image: NetworkImage(
-                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador3}")),
+                                                              "${ConstantesRest.URL_STATIC_USER}${jogo.nomeFotoJogador3}")),
                                                       border: Border.all(
                                                           color:
                                                               Colors.white)):new BoxDecoration()),
@@ -774,7 +774,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                       image: new DecorationImage(
                                                           fit: BoxFit.scaleDown,
                                                           image: NetworkImage(
-                                                              "${ConstantesRest.URL_BASE_AMAZON}${jogo.nomeFotoJogador4}")),
+                                                              "${ConstantesRest.URL_STATIC_USER}${jogo.nomeFotoJogador4}")),
                                                       border: Border.all(
                                                           color:
                                                               Colors.white)):new BoxDecoration()),
@@ -850,215 +850,6 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                                   ))),
                                                           onTap: () {
                                                             _showOpc(context,jogo);
-                                                            // _controllerPontuacao1
-                                                            //     .text = "";
-                                                            // _controllerPontuacao2
-                                                            //     .text = "";
-                                                            // showDialog(
-                                                            //     context:
-                                                            //         context,
-                                                            //     builder:
-                                                            //         (context) {
-                                                            //       return AlertDialog(
-                                                            //         shape: RoundedRectangleBorder(
-                                                            //             borderRadius:
-                                                            //                 BorderRadius.circular(20)),
-                                                            //         title: Text(
-                                                            //             "Informe o placar"),
-                                                            //         content:
-                                                            //             SingleChildScrollView(
-                                                            //           child:
-                                                            //               Column(
-                                                            //             crossAxisAlignment:
-                                                            //                 CrossAxisAlignment.stretch,
-                                                            //             children: <
-                                                            //                 Widget>[
-                                                            //               Container(
-                                                            //                 padding:
-                                                            //                     EdgeInsets.all(5),
-                                                            //                 decoration:
-                                                            //                     BoxDecoration(
-                                                            //                   color: Colors.grey[200],
-                                                            //                   border: Border.all(
-                                                            //                     width: 1.0,
-                                                            //                     color: Colors.grey[300],
-                                                            //                   ),
-                                                            //                       borderRadius: new BorderRadius.circular(8)
-                                                            //                 ),
-                                                            //                 child:
-                                                            //                     Row(
-                                                            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            //                   crossAxisAlignment: CrossAxisAlignment.center,
-                                                            //                   children: <Widget>[
-                                                            //                     Column(
-                                                            //                       crossAxisAlignment: CrossAxisAlignment.start,
-                                                            //                       children: <Widget>[
-                                                            //                         Text(
-                                                            //                           "${jogo.apelidoFormatadoJogador1}",
-                                                            //                           style: TextStyle(
-                                                            //                             fontSize: 14,
-                                                            //                             fontWeight: FontWeight.bold,
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                         Text(
-                                                            //                           "${jogo.apelidoFormatadoJogador2}",
-                                                            //                           style: TextStyle(
-                                                            //                             fontSize: 14,
-                                                            //                             fontWeight: FontWeight.bold,
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                       ],
-                                                            //                     ),
-                                                            //                     Row(
-                                                            //                       children: <Widget>[
-                                                            //                         Container(
-                                                            //                           height: 40,
-                                                            //                           width: 40,
-                                                            //                           margin: const EdgeInsets.only(bottom: 10),
-                                                            //                           child: TextField(
-                                                            //                             inputFormatters: [maskPoints],
-                                                            //                             keyboardType: TextInputType.number,
-                                                            //                             controller: _controllerPontuacao1,
-                                                            //                             style: TextStyle(
-                                                            //                               color: AppColors
-                                                            //                                   .colorPontuacaoJogos,
-                                                            //                               fontSize: 14,
-                                                            //                               fontFamily:
-                                                            //                               FontFamily.fontSpecial,
-                                                            //                             ),
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                         Text(
-                                                            //                           "X",
-                                                            //                           style: TextStyle(
-                                                            //                             color: AppColors
-                                                            //                                 .colorPontuacaoJogos,
-                                                            //                             fontSize: 14,
-                                                            //                             fontFamily:
-                                                            //                             FontFamily.fontSpecial,
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                         Container(
-                                                            //                           height: 40,
-                                                            //                           width: 40,
-                                                            //                           margin: const EdgeInsets.only(bottom: 10),
-                                                            //                           child: TextField(
-                                                            //                             inputFormatters: [maskPoints],
-                                                            //                             keyboardType: TextInputType.number,
-                                                            //                             textAlign: TextAlign.right,
-                                                            //                             controller: _controllerPontuacao2,
-                                                            //                             style: TextStyle(
-                                                            //                               color: AppColors
-                                                            //                                   .colorPontuacaoJogos,
-                                                            //                               fontSize: 14,
-                                                            //                               fontFamily:
-                                                            //                               FontFamily.fontSpecial,
-                                                            //                             ),
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                       ],
-                                                            //                     ),
-                                                            //                     Column(
-                                                            //                       crossAxisAlignment: CrossAxisAlignment.end,
-                                                            //                       children: <Widget>[
-                                                            //                         Text(
-                                                            //                           "${jogo.apelidoFormatadoJogador3}",
-                                                            //                           style: TextStyle(
-                                                            //                             fontSize: 14,
-                                                            //                             fontWeight: FontWeight.bold,
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                         Text(
-                                                            //                           "${jogo.apelidoFormatadoJogador4}",
-                                                            //                           style: TextStyle(
-                                                            //                             fontSize: 14,
-                                                            //                             fontWeight: FontWeight.bold,
-                                                            //                           ),
-                                                            //                         ),
-                                                            //                       ],
-                                                            //                     ),
-                                                            //                   ],
-                                                            //                 ),
-                                                            //               ),
-                                                            //               new Container(height: 20,),
-                                                            //               RaisedButton(
-                                                            //                 onPressed:
-                                                            //                     () {
-                                                            //                   _atualizaPlacar(jogo.id, jogo.numero);
-                                                            //                 },
-                                                            //                 shape:
-                                                            //                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                                                            //                 padding:
-                                                            //                     const EdgeInsets.all(0.0),
-                                                            //                 child:
-                                                            //                     Ink(
-                                                            //                   decoration: BoxDecoration(
-                                                            //                     gradient: LinearGradient(
-                                                            //                       colors: <Color>[
-                                                            //                         AppColors.colorEspecialSecundario1,
-                                                            //                         AppColors.colorEspecialSecundario2
-                                                            //                       ],
-                                                            //                     ),
-                                                            //                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                                            //                   ),
-                                                            //                   child: Container(
-                                                            //                     padding: const EdgeInsets.symmetric(vertical: 12),
-                                                            //                     constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
-                                                            //                     // min sizes for Material buttons
-                                                            //                     alignment: Alignment.center,
-                                                            //                     child: Text(
-                                                            //                       "Atualiza placar",
-                                                            //                       style: TextStyle(fontSize: 16, color: AppColors.colorTextLogCad, fontWeight: FontWeight.bold),
-                                                            //                     ),
-                                                            //                   ),
-                                                            //                 ),
-                                                            //               ),
-                                                            //               // RaisedButton(
-                                                            //               //   color: Color(0xff086ba4),
-                                                            //               //   textColor:
-                                                            //               //   Colors.white,
-                                                            //               //   padding:
-                                                            //               //   EdgeInsets.all(15),
-                                                            //               //   child: Text(
-                                                            //               //     "Atualiza placar",
-                                                            //               //     style:
-                                                            //               //     TextStyle(
-                                                            //               //       fontSize:
-                                                            //               //       16,
-                                                            //               //       fontFamily:
-                                                            //               //       'Candal',
-                                                            //               //     ),
-                                                            //               //   ),
-                                                            //               //   shape:
-                                                            //               //   RoundedRectangleBorder(
-                                                            //               //     borderRadius:
-                                                            //               //     BorderRadius.circular(
-                                                            //               //         2),
-                                                            //               //   ),
-                                                            //               //   onPressed:
-                                                            //               //       () {
-                                                            //               //     _atualizaPlacar(
-                                                            //               //         jogo.id,
-                                                            //               //         jogo.numero);
-                                                            //               //   },
-                                                            //               // ),
-                                                            //             ],
-                                                            //           ),
-                                                            //         ),
-                                                            //         actions: <
-                                                            //             Widget>[
-                                                            //           FlatButton(
-                                                            //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                            //             color: AppColors.colorButtonDialog,
-                                                            //             onPressed: (){
-                                                            //               Navigator.pop(
-                                                            //                   context);
-                                                            //             },
-                                                            //             child: Text('Fechar',style: new TextStyle(color: Colors.white),),
-                                                            //           ),
-                                                            //         ],
-                                                            //       );
-                                                            //     });
                                                           },
                                                         ),
                                                       )

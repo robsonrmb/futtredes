@@ -139,14 +139,6 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
     if (pais == null && cidade == null && local == null) {
       return "";
     }
-    //
-    // else if (pais != null && cidade != null) {
-    //   return pais + " - " + cidade;
-    // } else if (pais != null && cidade == null) {
-    //   return pais;
-    // } else if (pais == null && cidade != null) {
-    //   return cidade;
-    // }
     else if(pais != null && cidade == null && local == null){
       String value = pais;
       return value;
@@ -298,7 +290,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                     tag: 'index$index',
                                     child: CircleAvatar(
                                       backgroundImage: NetworkImage(
-                                          '${ConstantesRest.URL_BASE_AMAZON}${integrante.nomeFoto}'),
+                                          '${ConstantesRest.URL_STATIC_USER}${integrante.nomeFoto}'),
                                       radius: 30.0,
                                     )),
                                 title: Row(
@@ -422,82 +414,6 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                           ],
                         ),
                       );
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                '${ConstantesRest.URL_BASE_AMAZON}${integrante.nomeFoto}'),
-                            radius: 30.0,
-                          ),
-                          title: Row(
-                            children: <Widget>[
-                              Text(
-                                "${integrante.nome}",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Row(
-                            children: <Widget>[
-                              Text(
-                                _retorneSubtitulo(
-                                    integrante.pais, integrante.cidade,''),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                GestureDetector(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 1),
-                                    child: Icon(Icons.insert_chart),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EstatisticasAtletasView(
-                                                  integrante.idUsuario,
-                                                  widget.redeModel.id,
-                                                  widget.redeModel.nome,
-                                                  integrante.nome,
-                                                  integrante.nomeFoto),
-                                        ));
-                                  },
-                                ),
-                                widget.donoRede
-                                    ? new GestureDetector(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 20),
-                                          child: Icon(Icons.delete),
-                                        ),
-                                        onTap: () {
-                                          _showModalRemoveIntegrante(
-                                              context,
-                                              integrante.idUsuario,
-                                              widget.redeModel.id);
-                                        },
-                                      )
-                                    : new Padding(
-                                        padding: EdgeInsets.all(1),
-                                      ),
-                              ]),
-                        ),
-                      );
                     },
                     /*
                 separatorBuilder: (context, index) => Divider(
@@ -546,17 +462,4 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
     }
   }
 
-
-//APELIDO OU NOME COMPLETO
-
-// String apelidoOuNome(String apelido, String nome){
-  //   if(apelido != null && apelido != ""){
-  //     return apelido;
-  //   }else if(nome.split(' ').length == 1){
-  //     return nome;
-  //   }else{
-  //     String nomeFormatado = '${nome.split(' ')[0]} ${nome.split(' ')[nome.split(' ').length-1]}';
-  //     return nomeFormatado;
-  //   }
-  // }
 }

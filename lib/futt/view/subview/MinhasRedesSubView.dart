@@ -319,7 +319,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                           new GestureDetector(
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto,),
+                                builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_STATIC_REDES + rede.nomeFoto,),
                               ));
                             },
                             child: new Hero(tag: 'imageRede$index', child: Container(
@@ -327,7 +327,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                               decoration: BoxDecoration(
                                 color: Colors.grey[300].withOpacity(0.5),
                                 image: DecorationImage(
-                                    image: NetworkImage(ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto),
+                                    image: NetworkImage(ConstantesRest.URL_STATIC_REDES + rede.nomeFoto),
                                     fit: BoxFit.fill
                                 ),
                                 borderRadius: BorderRadius.only(
@@ -568,7 +568,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                               ),
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_BASE_AMAZON + rede.nomeFoto,),
+                                  builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_STATIC_REDES + rede.nomeFoto,),
                                 ));
                               },
                             ),

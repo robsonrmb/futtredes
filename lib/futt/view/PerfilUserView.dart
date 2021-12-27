@@ -463,7 +463,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                                 if( snapshot.hasData ) {
 
                                   UsuarioModel usuarioRetorno = snapshot.data;
-                                  _nomeImagem = ConstantesRest.URL_BASE_AMAZON + usuarioRetorno.nomeFoto;
+                                  _nomeImagem = ConstantesRest.URL_STATIC_USER + usuarioRetorno.nomeFoto;
 
                                   return GestureDetector(
                                     child: CircleAvatar(

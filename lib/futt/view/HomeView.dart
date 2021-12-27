@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   UsuarioModel usuarioModel;
   bool assinante = false;
-  bool jaCriouUma = true;
+  bool permiteCriarRede = true;
 
   List<String> choices = <String>[
     "Regras",
@@ -88,8 +88,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   void buscarFoto() async {
     usuarioModel = await _buscaUsuarioLogado();
     if (usuarioModel != null) {
-      if (usuarioModel.qtdRedePromocional == 0) {
-        jaCriouUma = false;
+      if (usuarioModel.qtdRedePromocional >= usuarioModel.numMaximoRedePromocional) {
+        permiteCriarRede = false;
       }
       setState(() {});
     }
@@ -102,15 +102,13 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     DialogFutt dialogFutt = new DialogFutt();
 
     if(assinante){
-      jaCriouUma = true;
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => NovaRedeView(userModel: usuarioModel,assinante: assinante,)),
       ).then((value) => buscarFoto());
 
     }else{
-      if(!jaCriouUma){
-        jaCriouUma = true;
+      if(permiteCriarRede){
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => NovaRedeView(userModel: usuarioModel,assinante: assinante,)),
@@ -132,7 +130,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         PageRouteBuilder(
           transitionDuration: Duration(milliseconds: 700),
           pageBuilder: (_, __, ___) => PerfilView(
-            image: '${ConstantesRest.URL_BASE_AMAZON}${usuarioModel.nomeFoto}',
+            image: '${ConstantesRest.URL_STATIC_USER}${usuarioModel.nomeFoto}',
             usuarioModel: usuarioModel,
           ),
         ));
@@ -263,19 +261,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             onPressed: _novaRede,
             color: AppColors.colorTextAppNav,
           ),
-          // assinante
-          //     ? IconButton(
-          //         icon: Icon(Icons.add),
-          //         onPressed: _novaRede,
-          //         color: AppColors.colorTextAppNav,
-          //       )
-          //     : !jaCriouUma
-          //         ? IconButton(
-          //             icon: Icon(Icons.add),
-          //             onPressed: _novaRede,
-          //             color: AppColors.colorTextAppNav,
-          //           )
-          //         : new Container(),
           new Container(
             height: 36,
             width: 36,
@@ -291,7 +276,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                               image: new DecorationImage(
                                   fit: BoxFit.scaleDown,
                                   image: NetworkImage(
-                                      "${ConstantesRest.URL_BASE_AMAZON}${usuarioModel.nomeFoto}")),
+                                      "${ConstantesRest.URL_STATIC_USER}${usuarioModel.nomeFoto}")),
                               border: Border.all(color: Colors.white))),
                     ))
                 : Shimmer.fromColors(
@@ -331,68 +316,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               size: 17,
             ),
           )
-          // IconButton(
-          //   icon: FaIcon(FontAwesomeIcons.ellipsisV,color: Colors.white,size: 17,),
-          //   onPressed: _sairApp,
-          // ),
         ],
-        // bottom: _indiceAtual == 0
-        //     ? TabBar(
-        //         controller: _controllerTorneios,
-        //         labelColor: Colors.white,
-        //         unselectedLabelColor: const Color(0xff525c6e),
-        //         indicatorPadding: EdgeInsets.all(0.0),
-        //         indicatorWeight: 4.0,
-        //         labelPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-        //         indicator: ShapeDecoration(
-        //             shape: UnderlineInputBorder(
-        //                 borderSide: BorderSide(
-        //                     color: Colors.transparent,
-        //                     width: 0,
-        //                     style: BorderStyle.solid)),
-        //             gradient: LinearGradient(
-        //                 colors: [Colors.yellow, Colors.deepOrange])),
-        //         onTap: (index) {
-        //           setState(() {
-        //             _currentIndex = index;
-        //           });
-        //         },
-        //         tabs: <Widget>[
-        //           Container(
-        //             height: 40,
-        //             alignment: Alignment.center,
-        //             decoration: new BoxDecoration(
-        //               gradient: LinearGradient(
-        //                   colors: [
-        //                     Color(0xff083251),
-        //                     Color(0xff112841)
-        //                   ],
-        //                   begin: const FractionalOffset(0.0, 0.0),
-        //                   end: const FractionalOffset(0.5, 4.0),
-        //                   stops: [0.0, 1.0],
-        //                   tileMode: TileMode.clamp),
-        //             ),
-        //             child: Text("Participante"),
-        //           ),
-        //           Container(
-        //             height: 40,
-        //             alignment: Alignment.center,
-        //             decoration: new BoxDecoration(
-        //               gradient: LinearGradient(
-        //                   colors: [
-        //                     Color(0xff083251),
-        //                     Color(0xff112841)
-        //                   ],
-        //                   begin: const FractionalOffset(0.0, 2.0),
-        //                   end: const FractionalOffset(0.5, 0.0),
-        //                   stops: [0.0, 1.0],
-        //                   tileMode: TileMode.clamp),
-        //             ),
-        //             child: Text("Dono"),
-        //           ),
-        //         ],
-        //       )
-        //     : null,
       ),
       body: buildBody(),
       bottomNavigationBar: BottomNavigationBar(
@@ -419,167 +343,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           BottomNavigationBarItem(
               title: Text("Dashboard"),
               icon: FaIcon(FontAwesomeIcons.chartLine)),
-          /*BottomNavigationBarItem(
-                      title: Text("Escolinhas"),
-                      icon: Icon(Icons.school),
-                    )*/
         ],
       ),
-    );
-
-    FutureBuilder<UsuarioModel>(
-      future: _buscaUsuarioLogado(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return Center(
-              child: Text("None!!!"),
-            );
-          case ConnectionState.waiting:
-            return Center(
-              child: SplashScreenView(),
-            );
-            break;
-          case ConnectionState.active:
-            return Center(
-              child: Text("Active!!!"),
-            );
-          case ConnectionState.done:
-            if (snapshot.hasData) {
-              UsuarioModel usuarioModel = snapshot.data;
-
-              return Scaffold(
-                appBar: AppBar(
-                  iconTheme: IconThemeData(
-                    color: Colors.white,
-                    opacity: 1,
-                  ),
-                  backgroundColor: Color(0xff093352),
-                  textTheme: TextTheme(
-                      title: TextStyle(color: Colors.white, fontSize: 20)),
-                  title: Text(_titleAppBar),
-                  flexibleSpace: Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: <Color>[
-                          Color(0xff083251),
-                          Color(0xff112841)
-                        ])),
-                  ),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: _novaRede,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.person),
-                      onPressed: _abrirPerfil, //_(usuarioModel),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.exit_to_app),
-                      onPressed: _sairApp,
-                    ),
-                  ],
-                  // bottom: _indiceAtual == 0
-                  //     ? TabBar(
-                  //         controller: _controllerTorneios,
-                  //         labelColor: Colors.white,
-                  //         unselectedLabelColor: const Color(0xff525c6e),
-                  //         indicatorPadding: EdgeInsets.all(0.0),
-                  //         indicatorWeight: 4.0,
-                  //         labelPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                  //         indicator: ShapeDecoration(
-                  //             shape: UnderlineInputBorder(
-                  //                 borderSide: BorderSide(
-                  //                     color: Colors.transparent,
-                  //                     width: 0,
-                  //                     style: BorderStyle.solid)),
-                  //             gradient: LinearGradient(
-                  //                 colors: [Colors.yellow, Colors.deepOrange])),
-                  //         onTap: (index) {
-                  //           setState(() {
-                  //             _currentIndex = index;
-                  //           });
-                  //         },
-                  //         tabs: <Widget>[
-                  //           Container(
-                  //             height: 40,
-                  //             alignment: Alignment.center,
-                  //             decoration: new BoxDecoration(
-                  //               gradient: LinearGradient(
-                  //                   colors: [
-                  //                     Color(0xff083251),
-                  //                     Color(0xff112841)
-                  //                   ],
-                  //                   begin: const FractionalOffset(0.0, 0.0),
-                  //                   end: const FractionalOffset(0.5, 4.0),
-                  //                   stops: [0.0, 1.0],
-                  //                   tileMode: TileMode.clamp),
-                  //             ),
-                  //             child: Text("Participante"),
-                  //           ),
-                  //           Container(
-                  //             height: 40,
-                  //             alignment: Alignment.center,
-                  //             decoration: new BoxDecoration(
-                  //               gradient: LinearGradient(
-                  //                   colors: [
-                  //                     Color(0xff083251),
-                  //                     Color(0xff112841)
-                  //                   ],
-                  //                   begin: const FractionalOffset(0.0, 2.0),
-                  //                   end: const FractionalOffset(0.5, 0.0),
-                  //                   stops: [0.0, 1.0],
-                  //                   tileMode: TileMode.clamp),
-                  //             ),
-                  //             child: Text("Dono"),
-                  //           ),
-                  //         ],
-                  //       )
-                  //     : null,
-                ),
-                body: buildBody(),
-                bottomNavigationBar: BottomNavigationBar(
-                  backgroundColor: Color(0xff093352),
-                  currentIndex: _indiceAtual,
-                  onTap: (indice) {
-                    setState(() {
-                      _indiceAtual = indice;
-                      _titleAppBar = _getTitleAppBar(indice);
-                    });
-                  },
-                  type: BottomNavigationBarType.fixed,
-                  //este e o padrão
-                  fixedColor: Colors.white,
-                  items: [
-                    BottomNavigationBarItem(
-                      title: Text("Redes"),
-                      icon: Icon(Icons.home),
-                    ),
-                    BottomNavigationBarItem(
-                      title: Text("Dono"),
-                      icon: Icon(Icons.home),
-                    ),
-                    BottomNavigationBarItem(
-                      title: Text("Dashboard"),
-                      icon: Icon(Icons.insert_chart),
-                    ),
-                    /*BottomNavigationBarItem(
-                      title: Text("Escolinhas"),
-                      icon: Icon(Icons.school),
-                    )*/
-                  ],
-                ),
-              );
-            } else {
-              return Container();
-            }
-            break;
-        }
-        return new Container();
-      },
     );
   }
 

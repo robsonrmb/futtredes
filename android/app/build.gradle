@@ -46,9 +46,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "br.com.futtredesid"
         minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 16
-        versionName "1.0.2"
+        targetSdkVersion 31
+        versionCode 23
+        versionName "1.0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

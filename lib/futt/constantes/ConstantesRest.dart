@@ -4,12 +4,13 @@ class ConstantesRest {
   static const URL_BASE_TESTE = "https://jsonplaceholder.typicode.com";
   static const URL_BASE_HEROKU_ = "https://futtapp.herokuapp.com";
   static const URL_BASE_AMAZON_ = "https://futtapp.s3-sa-east-1.amazonaws.com/";
-  static const URL_BASE_CBRASIL = "https://kmaops.hospedagemelastica.com.br";
+  static const URL_BASE_CBRASIL = "https://www.futtapp.com.br";
 
   static const URL_BASE = URL_BASE_CBRASIL;
   static const URL_CONTEXT = "${URL_BASE}/futback";
-  static const URL_STATIC_USER = "${URL_BASE}/imagens/usuarios";
-  static const URL_STATIC_REDES = "${URL_BASE}/imagens/redes";
+  static const URL_STATIC_USER = "${URL_BASE}/imagens/usuarios/";
+  static const URL_STATIC_REDES = "${URL_BASE}/imagens/redes/";
+  static const URL_STATIC_BANNERS = "${URL_CONTEXT}/images/banners/";
 
   static const URL_LOGIN = "${URL_CONTEXT}/login";
   static const URL_NOVA_SENHA = "${URL_CONTEXT}/auth/nova_senha";
@@ -28,5 +29,6 @@ class ConstantesRest {
   static const URL_USUARIOS = "${URL_CONTEXT}/usuarios";
   static const URL_PAISES = "${URL_CONTEXT}/utils/paises";
   static const URL_ESTADOS = "${URL_CONTEXT}/utils/estados";
+  static const URL_BANNERS = "${URL_CONTEXT}/banners";
 
 }

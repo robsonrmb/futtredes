@@ -160,7 +160,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            height: 140,
+                            height: 80,
                             decoration: BoxDecoration(
                                 color: Colors.grey[300].withOpacity(0.5),
                                 image: DecorationImage(

@@ -1,5 +1,8 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
+import 'package:futt/futt/constantes/ConstantesRest.dart';
+import 'package:futt/futt/model/BannerModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
+import 'package:futt/futt/service/BannerService.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/view/EstatisticasView.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +31,12 @@ class _DashboardViewState extends State<DashboardView> {
     //_buscaUsuarioLogado();
   }
 
+  Future<BannerModel> _buscaPermissaoBanners() async {
+    BannerService bannerService = BannerService();
+    BannerModel banner = await bannerService.buscaPermissaoBanners();
+    return banner;
+  }
+
   Future<UsuarioModel> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
     Future<UsuarioModel> usuario =
@@ -37,71 +46,77 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: EstatisticasView(
-                    widget.idUser,
-                    0,
-                    null,
-                    widget.nome,
-                    widget.nomeFoto,
-                    pais: widget.pais,
-                    apelido: widget.apelido,
-                    user: widget.user,
-                    estado: widget.estado,
-                    localOndeJoga: widget.localOndeJoga,
-                    posicao: widget.posicao,
+    return FutureBuilder<BannerModel>(
+        future: _buscaPermissaoBanners(),
+        // ignore: missing_return
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none :
+            case ConnectionState.active :
+            case ConnectionState.waiting :
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            case ConnectionState.done :
+              if (snapshot.hasData) {
+                return new Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              child: EstatisticasView(
+                                widget.idUser,
+                                0,
+                                null,
+                                widget.nome,
+                                widget.nomeFoto,
+                                pais: widget.pais,
+                                apelido: widget.apelido,
+                                user: widget.user,
+                                estado: widget.estado,
+                                localOndeJoga: widget.localOndeJoga,
+                                posicao: widget.posicao,
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: snapshot.data.showDashboard,
+                            maintainSize: false,
+                            maintainAnimation: true,
+                            maintainState: true,
+                            child: Container(
+                              height: 60,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300].withOpacity(0.5),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        ConstantesRest.URL_STATIC_BANNERS +
+                                            "bannerDashboard.png"),
+                                    fit: BoxFit.fill),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(4.0),
+                                  topRight: Radius.circular(4.0),
+                                  bottomLeft: Radius.circular(4.0),
+                                  bottomRight: Radius.circular(4.0),
+                                ), //borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: FutureBuilder<UsuarioModel>(
-                future: _buscaUsuarioLogado(),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                      break;
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      if (snapshot.hasData) {
-                        UsuarioModel usuario = snapshot.data;
-
-                        return Container(
-                          child: EstatisticasView(
-                              0, 0, null, usuario.nome, usuario.nomeFoto),
-                        );
-                      } else {
-                        return Container();
-                      }
-                      break;
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+                );
+              } else {
+                return Container();
+              }
+          }
+        }
     );
   }
 }

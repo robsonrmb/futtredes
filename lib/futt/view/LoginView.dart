@@ -421,6 +421,11 @@ class _LoginViewState extends State<LoginView> {
                                                         .emailAddress,
                                                     decoration: InputDecoration(
                                                       hintText: "Email",
+                                                      fillColor: AppColors.colorTextTitle,
+                                                      enabledBorder: OutlineInputBorder (
+                                                        borderSide: BorderSide (
+                                                            width: 2 , color: AppColors.colorFundoEscuroApp ) ,
+                                                      ) ,
                                                     ),
                                                     controller:
                                                         _controllerEmailParaTrocaDeSenha,
@@ -429,19 +434,38 @@ class _LoginViewState extends State<LoginView> {
                                                     keyboardType:
                                                         TextInputType.number,
                                                     decoration: InputDecoration(
-                                                      hintText:
-                                                          "Ano de nascimento",
+                                                      hintText: "Ano de nascimento",
+                                                      enabledBorder: OutlineInputBorder (
+                                                        borderSide: BorderSide (
+                                                            width: 2 , color: AppColors.colorFundoEscuroApp ) ,
+                                                      ) ,
                                                     ),
                                                     maxLength: 4,
                                                     controller:
                                                         _controllerAnoNascimentoParaTrocaDeSenha,
                                                   ),
+                                                  new Container(
+                                                    margin: const EdgeInsets.only(top: 14),
+                                                    alignment: Alignment.center,
+                                                    child: new Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          "Ou envie um email para futtapp@gmail.com.",
+                                                          style: TextStyle(
+                                                            color: AppColors.colorTextTitle,
+                                                            fontSize: 12,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ),
                                             actions: <Widget>[
                                               FlatButton(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 
                                                 color: AppColors.colorButtonDialog,
                                                 onPressed: () =>
@@ -450,7 +474,7 @@ class _LoginViewState extends State<LoginView> {
                                                 Text("Enviar nova senha"),
                                               ),
                                               FlatButton(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 
                                                 color: AppColors.colorButtonDialog,
                                                 onPressed: () =>
@@ -463,45 +487,8 @@ class _LoginViewState extends State<LoginView> {
                                   },
                                 )
                               ],
-                            )),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 5),
-                        //   child: RaisedButton(
-                        //     color: Color(0xff2c7ce7),
-                        //     textColor: Colors.white,
-                        //     padding: EdgeInsets.all(15),
-                        //     child: Text(
-                        //       "Entrar",
-                        //       style: TextStyle(
-                        //         fontSize: 16,
-                        //         fontFamily: 'Candal',
-                        //       ),
-                        //     ),
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(8),
-                        //     ),
-                        //     onPressed: _entrar,
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 5),
-                        //   child: RaisedButton(
-                        //     color: Colors.orange,
-                        //     textColor: Colors.white,
-                        //     padding: EdgeInsets.all(15),
-                        //     child: Text(
-                        //       "Quero me cadastrar",
-                        //       style: TextStyle(
-                        //         fontSize: 16,
-                        //         fontFamily: 'Candal',
-                        //       ),
-                        //     ),
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(8),
-                        //     ),
-                        //     onPressed: _abrirCadastro,
-                        //   ),
-                        // ),
+                            )
+                        ),
                         RaisedButton(
                           onPressed: () {
                             _entrar(context);
@@ -571,6 +558,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
+                        /*
                         new Container(
                           margin: const EdgeInsets.only(top: 14),
                           alignment: Alignment.center,
@@ -606,19 +594,7 @@ class _LoginViewState extends State<LoginView> {
                               )
                             ],
                           ),
-                        )
-                        // Padding(
-                        //   padding: EdgeInsets.only(top: 15),
-                        //   child: Center(
-                        //     child: Text(
-                        //       _mensagem,
-                        //       style: TextStyle(
-                        //           color: Colors.white,
-                        //           fontSize: 12,
-                        //           fontFamily: 'Candal'),
-                        //     ),
-                        //   ),
-                        // ),
+                        )*/
                       ],
                     ),
                   ),
@@ -654,22 +630,6 @@ class _LoginViewState extends State<LoginView> {
           context, "Erro", 'Ocorreu algum erro ao validar seus dados');
       await Future.delayed(Duration(seconds: 4));
       Navigator.pop(context);
-      // showDialog(
-      //     context: context,
-      //     barrierDismissible: false,
-      //     builder: (BuildContext) {
-      //       return AlertDialog(
-      //         title: Text('Erro'),
-      //         content: SingleChildScrollView(
-      //           child: ListBody(
-      //             children: <Widget>[
-      //               Text('Ocorreu algum erro ao validar seus dados'),
-      //             ],
-      //           ),
-      //         ),
-      //       );
-      //     }
-      // );
     }
   }
 

@@ -60,7 +60,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   PosicionamentoModel posicionamentoModelSelecionado;
   List<EstadosModel> estadosList = [];
   File _imagem;
-  bool _subindoImagem = false;
   String _nomeImagem = "";
   bool enableEdit = false;
   String sexoSelecionado;
@@ -559,13 +558,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     trocouImagem = true;
 
     setState(() {});
-    // if (_imagem != null) {
-    //   imageCache.clear();
-    //   setState(() {
-    //     _subindoImagem = true;
-    //   });
-    //   _uploadImagem(idRede);
-    // }
   }
 
   Future<bool> uploadImagemBool(int idUsuario) async {
@@ -607,46 +599,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       return false;
     }
 
-    // var _url = "${ConstantesRest.URL_USUARIOS}/$idUsuario/foto";
-    // var request = MultipartRequest();
-    //
-    // request.setUrl(_url);
-    // request.addFile("file", _imagem.path);
-    // request.addHeaders({
-    //   //'Content-Type': 'application/json; charset=UTF-8',
-    //   'Authorization': token,
-    // });
-    //
-    // Response response = request.send();
-    // try {
-    //   print(response);
-    //   setState(() {
-    //     _buscaUsuarioLogado();
-    //   });
-    // } on Exception catch (exception) {
-    //   print(exception);
-    // } catch (error) {
-    //   print(error);
-    // }
-    //
-    // response.onError = () {
-    //   setState(() {
-    //     _subindoImagem = false;
-    //   });
-    // };
-    //
-    // response.onComplete = (response) {
-    //   //_atualizaImagem(widget.redeModel.id);
-    //   print("Buscar imagem via http");
-    //   setState(() {
-    //     _subindoImagem = false;
-    //   });
-    // };
-    //
-    // response.progress.listen((int progress) {
-    //   print("Buscar imagem via http");
-    // });
-    salvouFotoTrocada = true;
   }
 
   Future<UsuarioModel> _uploadImagem(int idUsuario) async {
@@ -683,45 +635,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
     if (streamedResponse.statusCode == 200) {}
 
-    // var _url = "${ConstantesRest.URL_USUARIOS}/$idUsuario/foto";
-    // var request = MultipartRequest();
-    //
-    // request.setUrl(_url);
-    // request.addFile("file", _imagem.path);
-    // request.addHeaders({
-    //   //'Content-Type': 'application/json; charset=UTF-8',
-    //   'Authorization': token,
-    // });
-    //
-    // Response response = request.send();
-    // try {
-    //   print(response);
-    //   setState(() {
-    //     _buscaUsuarioLogado();
-    //   });
-    // } on Exception catch (exception) {
-    //   print(exception);
-    // } catch (error) {
-    //   print(error);
-    // }
-    //
-    // response.onError = () {
-    //   setState(() {
-    //     _subindoImagem = false;
-    //   });
-    // };
-    //
-    // response.onComplete = (response) {
-    //   //_atualizaImagem(widget.redeModel.id);
-    //   print("Buscar imagem via http");
-    //   setState(() {
-    //     _subindoImagem = false;
-    //   });
-    // };
-    //
-    // response.progress.listen((int progress) {
-    //   print("Buscar imagem via http");
-    // });
     salvouFotoTrocada = true;
   }
 
@@ -783,22 +696,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
                           ),
                         ),
-                        //    pref.setBool('restart', false);
-                        // new Container(
-                        //   margin: const EdgeInsets.only(top: 30),
-                        //   child: new IconButton(
-                        //       icon: Icon(
-                        //         enableEdit ? Icons.edit_off : Icons.edit_outlined,
-                        //         color: AppColors.colorIconPerfil,
-                        //       ),
-                        //       onPressed: () {
-                        //         if (enableEditPencil) {
-                        //           setState(() {
-                        //             enableEdit = !enableEdit;
-                        //           });
-                        //         }
-                        //       }),
-                        // )
                       ],
                     ),
                     new Row(
@@ -818,21 +715,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                 ),
                               )),
                         )
-                        // new Container(
-                        //   margin: const EdgeInsets.only(top: 30),
-                        //   child: new IconButton(
-                        //       icon: Icon(
-                        //         enableEdit ? Icons.edit_off : Icons.edit_outlined,
-                        //         color: AppColors.colorIconPerfil,
-                        //       ),
-                        //       onPressed: () {
-                        //         if (enableEditPencil) {
-                        //           setState(() {
-                        //             enableEdit = !enableEdit;
-                        //           });
-                        //         }
-                        //       }),
-                        // )
                       ],
                     ),
                   ],
@@ -1038,7 +920,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                 new PaisModel(_controllerPais, _controllerPais);
                             generoModelSelecionado = new GeneroModel(
                                 _controllerSexo,
-                                _controllerSexo == "M"
+                                (_controllerSexo == "M" || _controllerSexo == "Masculino")
                                     ? "Masculino"
                                     : "Feminino");
                             posicionamentoModelSelecionado =

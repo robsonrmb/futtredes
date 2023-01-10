@@ -33,18 +33,39 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
   List<String> choices = <String>[
     "Integrantes",
     "Responsáveis",
+    "Reiniciar rede",
     "Desativar rede",
   ];
 
   List<String> choices2 = <String>[
     "Integrantes",
     "Responsáveis",
+    "Reiniciar rede",
     "Ativar rede"
   ];
 
   Future<List<RedeModel>> _listaMinhasRedes() async {
     RedeService redeService = RedeService();
     return redeService.listaMinhasRedes(ConstantesConfig.SERVICO_FIXO);
+  }
+
+  _showModalReiniciaRede(BuildContext context, String title, String description, int idRede){
+    DialogFutt dialogFutt = new DialogFutt();
+    dialogFutt.showAlertDialogActionNoYes(context, title,
+        description, () {
+          _realizaReinicializacao(idRede, true, context);
+        });
+  }
+
+  _realizaReinicializacao(int idRede, bool resposta, BuildContext context) async {
+    circularProgress(context);
+    if (resposta) {
+      _reiniciandoRede(idRede, context);
+      Navigator.pop(context);
+
+    }else{
+      Navigator.pop(context);
+    }
   }
 
   _showModalAtivaDesativa(BuildContext context, String title, String description, int idRede, String acao){
@@ -121,6 +142,57 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
+  _reiniciandoRede(int idRede, BuildContext context) async {
+    try {
+      var _url = "${ConstantesRest.URL_REDE}/${idRede}/reset/n";
+      var _dados = "";
+
+      if (ConstantesConfig.SERVICO_FIXO == true) {
+        _url = "https://jsonplaceholder.typicode.com/posts/1";
+        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+
+      http.Response response = await http.put(_url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token,
+        },
+        body: _dados,
+      );
+      Navigator.pop(context);
+
+      if (response.statusCode == 201) {
+        _mensagem = "Rede reiniciada com sucesso!!!";
+
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waitingSucess(context, "Rede", "${_mensagem}");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+        setState(() {});
+
+      }else{
+        DialogFutt dialogFutt = new DialogFutt();
+        dialogFutt.waitingError(context, "Rede", "(${response.statusCode}) Falha no processamento!!!");
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+      }
+
+    } on Exception catch (exception) {
+      print(exception.toString());
+      setState(() {
+        _mensagem = exception.toString();
+      });
+
+    } catch (error) {
+      setState(() {
+        _mensagem = error.toString();
+      });
+    }
+  }
+
   _desativando(int idRede, BuildContext context) async {
     try {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/desativa";
@@ -187,6 +259,8 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       return "FECHADA";
     }else if (status == 4) {
       return "DESATIVADA";
+    }else if (status == 5) {
+      return "PENDENTE";
     }else{
       return "";
     }
@@ -368,88 +442,89 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                 subtitle:
                                 rede.disponibilidade != null?
                                     rede.status == 2?
-                                    new Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Validade: $validade",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColors.colorSubTitle,
-                                              fontWeight: FontWeight.w600
+                                      new Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Validade: $validade",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: AppColors.colorSubTitle,
+                                                fontWeight: FontWeight.w600
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
-                                              fontWeight: FontWeight.w600
+                                          Text(
+                                            _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                                fontWeight: FontWeight.w600
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ):
-                                new Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    //as offs
-                                    Text(_getSubTitulo(rede.status, rede.disponibilidade),
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                        ],
+                                      ):
+                                      new Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          //as offs
+                                          Text(_getSubTitulo(rede.status, rede.disponibilidade),
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                            ),
+                                          ),
+                                          rede.status == 4?
+                                            new Container():
+                                            validade != null?
+                                              Text(
+                                                "Validade: $validade",
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: AppColors.colorSubTitle,
+                                                    fontWeight: FontWeight.w600
+                                                ),
+                                              ):
+                                              new Container(),
+                                            Text(
+                                              _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                                  fontWeight: FontWeight.w600
+                                              ),
+                                            ),
+                                        ],
+                                      ):
+                                      new Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          validade != null && validade != ""?
+                                          Text(
+                                            "Validade: $validade",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: AppColors.colorSubTitle,
+                                                fontWeight: FontWeight.w600
+                                            ),
+                                          ):new Container(),
+                                          Text(
+                                            _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                                fontWeight: FontWeight.w600
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    rede.status == 4?
-                                        new Container():
-                                    validade != null?
-                                    Text(
-                                      "Validade: $validade",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.colorSubTitle,
-                                          fontWeight: FontWeight.w600
-                                      ),
-                                    ):new Container(),
-                                    Text(
-                                      _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
-                                          fontWeight: FontWeight.w600
-                                      ),
-                                    ),
-                                  ],
-                                ):
-                                new Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    validade != null && validade != ""?
-                                    Text(
-                                      "Validade: $validade",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.colorSubTitle,
-                                          fontWeight: FontWeight.w600
-                                      ),
-                                    ):new Container(),
-                                    Text(
-                                      _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
-                                          fontWeight: FontWeight.w600
-                                      ),
-                                    ),
-                                  ],
-                                ),
 
                                 trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -644,6 +719,9 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             builder: (context) => ResponsaveisRedeView(redeModel: rede,)
         ));
         break;
+      case "Reiniciar rede":
+        _showModalReiniciaRede(context, "Deseja reiniciar a rede?", "Jogos e estatísticas serão permanentemente apagados.", rede.id);
+        break;
       case "Desativar rede":
         _showModalAtivaDesativa(context, "Desativar rede", "Deseja realmente desativar a rede?", rede.id, "D");
         break;
@@ -662,6 +740,9 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         Navigator.push(context, MaterialPageRoute(
             builder: (context) => ResponsaveisRedeView(redeModel: rede,)
         ));
+        break;
+      case "Reiniciar rede":
+        _showModalReiniciaRede(context, "Deseja reiniciar a rede?", "Jogos e estatísticas serão permanentemente apagados.", rede.id);
         break;
       case "Ativar rede":
         _showModalAtivaDesativa(context, "Ativar rede", "Deseja reativar a rede?", rede.id, "A");

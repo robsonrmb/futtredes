@@ -108,25 +108,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
           _mensagem = "Informe o local.";
         }
       }
-      // _mensagem = "";
-      // if (_controllerNome.text == "") {
-      //   Navigator.pop(context);
-      //
-      //   throw Exception('Informe o título do rede.');
-      // } else if (_controllerPaisRede == "") {
-      //   Navigator.pop(context);
-      //
-      //   throw Exception('Informe o país de onde se realizará o rede.');
-      // } else if (_controllerCidade.text == "") {
-      //   Navigator.pop(context);
-      //
-      //   throw Exception('Informe a cidade de onde se realizará o rede.');
-      // } else if (int.parse(_controllerQtdIntegrantes.text) <= 0 ||
-      //     int.parse(_controllerQtdIntegrantes.text) > 999) {
-      //   Navigator.pop(context);
-      //
-      //   throw Exception('Qtd de integrantes incorreto.');
-      // }
 
       String enviaEstado = estadoSelecionado;
 
@@ -542,36 +523,13 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     //  trocouImagem = true;
 
     setState(() {});
-    // if (_imagem != null) {
-    //   imageCache.clear();
-    //   setState(() {
-    //     _subindoImagem = true;
-    //   });
-    //   _uploadImagem(idRede);
-    // }
   }
 
   Future<List<RedeModel>> _uploadImagem() async {
     circularProgress(context);
     final prefs = await SharedPreferences.getInstance();
     String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
-    // var _url = "${ConstantesRest.URL_REDE}/${widget.redeModel.id}/imagem";
-    // var request = MultipartRequest();
-    //
-    // request.setUrl(_url);
-    // request.addFile("file", imagemSelecionada.path);
-    // request.addHeaders({
-    //   //'Content-Type': 'application/json; charset=UTF-8',
-    //   'Authorization': token,
-    // });
-    //
-    // Response response = request.send();
-    // Navigator.pop(context);
-    // var streamedResponse = await request.send();
-    // final respStr = await streamedResponse.stream.bytesToString();
-    //
-    // print("RESPONSE CODE:" + streamedResponse.statusCode.toString());
-    // print("RESPONSE State:" + respStr);
+
     var request = new http.MultipartRequest(
         'POST',
         Uri.parse(
@@ -606,39 +564,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       await Future.delayed(Duration(seconds: 3));
       Navigator.pop(context);
     }
-
-    // try {
-    //   print(response);
-    // } on Exception catch (exception) {
-    //   print(exception);
-    // } catch (error) {
-    //   print(error);
-    // }
-    //
-    // response.onError = () {
-    //   setState(() {
-    //     _subindoImagem = false;
-    //   });
-    // };
-    //
-    // response.onComplete = (response) {
-    //   //_atualizaImagem(widget.redeModel.id);
-    //   print("Buscar imagem via http");
-    //   setState(() {
-    //     _subindoImagem = false;
-    //   });
-    // };
-    //
-    // response.progress.listen((int progress) {
-    //   print("Buscar imagem via http");
-    //   /*setState(() {
-    //     _subindoImagem = true;
-    //   });*/
-    // });
-
-    /*setState(() {
-      _subindoImagem = true;
-    });*/
   }
 
   @override
@@ -706,20 +631,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
               ),
               centerTitle: true,
             ),
-            // appBar: AppBar(
-            //   iconTheme: IconThemeData(
-            //     color: Colors.white,
-            //     opacity: 1,
-            //   ),
-            //   backgroundColor: Color(0xff093352),
-            //   textTheme: TextTheme(
-            //       title: TextStyle(
-            //           color: Colors.white,
-            //           fontSize: 20
-            //       )
-            //   ),
-            //   title: Text("Edição de redes"),
-            // ),
             body: Container(
               color: Color(0xfff7f7f7),
               child: Center(
@@ -728,15 +639,18 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      // Padding(
-                      //   padding: EdgeInsets.only(bottom: 5),
-                      //   child: Text(
-                      //     "Atualização de dados",
-                      //     style: TextStyle(
-                      //         fontSize: 12
-                      //     ),
-                      //   ),
-                      // ),
+                      Container(
+                        height: 140,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300].withOpacity(0.5),
+                          image: DecorationImage(
+                              image: NetworkImage(widget.imageRede),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      /* PARA POSSIBILITAR A TROCA DA IMAGEM/BANNER DA REDE:
+                         - ELIMINE O CONTAINER ACIMA
+                         - DESCOMENTE O IF TERNÁRIO ABAIXO (LINHA 654 À 692)
                       imagemSelecionada == null
                           ? GestureDetector(
                               child: Container(
@@ -746,11 +660,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                   image: DecorationImage(
                                       image: NetworkImage(widget.imageRede),
                                       fit: BoxFit.fill),
-                                  //borderRadius: BorderRadius.circular(5.0),
-                                  // border: Border.all(
-                                  //   width: 1.0,
-                                  //   color: Colors.grey[300],
-                                  // )
                                 ),
                               ),
                               onTap: () {
@@ -780,67 +689,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                   ),
                                 ),
                               ),
-                            ),
-                      // _subindoImagem
-                      //     ? CircularProgressIndicator()
-                      //     : FutureBuilder<RedeModel>(
-                      //         future: _atualizaImagem(widget.redeModel.id),
-                      //         builder: (context, snapshot) {
-                      //           switch (snapshot.connectionState) {
-                      //             case ConnectionState.none:
-                      //             case ConnectionState.waiting:
-                      //               return Shimmer.fromColors(
-                      //                   baseColor: Colors.grey.withOpacity(0.5),
-                      //                   highlightColor: Colors.white,
-                      //                   child: new Container(
-                      //                     height: 140,
-                      //                     width: double.infinity,
-                      //                     decoration: new BoxDecoration(
-                      //                       color: Colors.grey.withOpacity(0.5),
-                      //                     ),
-                      //                   ));
-                      //               break;
-                      //             case ConnectionState.active:
-                      //             case ConnectionState.done:
-                      //               if (snapshot.hasData) {
-                      //                 RedeModel redeRetorno = snapshot.data;
-                      //                 _nomeImagem = ConstantesRest.URL_BASE_AMAZON +
-                      //                     redeRetorno.nomeFoto;
-                      //
-                      //                 return GestureDetector(
-                      //                   child: Container(
-                      //                     height:140,
-                      //                     decoration: BoxDecoration(
-                      //                       color: Colors.grey[300].withOpacity(0.5),
-                      //                       image: DecorationImage(
-                      //                           image: NetworkImage(_nomeImagem),
-                      //                           fit: BoxFit.fill),
-                      //                       //borderRadius: BorderRadius.circular(5.0),
-                      //                       // border: Border.all(
-                      //                       //   width: 1.0,
-                      //                       //   color: Colors.grey[300],
-                      //                       // )
-                      //                     ),
-                      //                   ),
-                      //                   onTap: () {
-                      //                     //_showModalIndisponivel();
-                      //                     _showModalAtualizaImagem(
-                      //                         context,
-                      //                         "Imagem",
-                      //                         "Buscar imagem de qual origem?",
-                      //                         widget.redeModel.id);
-                      //                   },
-                      //                 );
-                      //               } else {
-                      //                 return Center(
-                      //                   child: Text("Sem valores!!!"),
-                      //                 );
-                      //               }
-                      //               break;
-                      //           }
-                      //           return null;
-                      //         },
-                      //       ),
+                            ),*/
                       new Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         width: double.infinity,
@@ -863,53 +712,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(top: 5),
-                      //   child: Text(
-                      //     "Imagem da Rede",
-                      //     style: TextStyle(
-                      //       fontSize: 14,
-                      //       fontWeight: FontWeight.bold,
-                      //     ),
-                      //   ),
-                      // ),
                       Center(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             rows('Nome', 'Digite o nome da Rede',
                                 _controllerNome),
-                            // Padding(
-                            //   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            //   child: TextField(
-                            //     keyboardType: TextInputType.text,
-                            //     decoration: InputDecoration(
-                            //       filled: true,
-                            //       fillColor: Colors.white,
-                            //       hintText: "Nome da rede",
-                            //       hintStyle: TextStyle(
-                            //         fontSize: 14,
-                            //         color: Colors.grey[400],
-                            //       ),
-                            //       /*prefixIcon: Icon(
-                            //         Icons.done_all,
-                            //         color: Colors.black,
-                            //       ),*/
-                            //       // icon: new Icon(Icons.done_all),
-                            //       // prefixText: "Nome",
-                            //       // prefixStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
-                            //       // labelText: "Informe seu nome",
-                            //       /* border: OutlineInputBorder(
-                            //         gapPadding: 5,
-                            //       ),*/
-                            //     ),
-                            //     style: TextStyle(
-                            //         fontSize: 16,
-                            //         color: Colors.black
-                            //     ),
-                            //     controller: _controllerNome,
-                            //   ),
-                            // ),
                             new Container(
                               //color: Colors.red,
                               margin: const EdgeInsets.only(
@@ -926,41 +734,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               ),
                             ),
                             _buildDropPais(),
-                            // new Container(
-                            //   decoration: BoxDecoration(
-                            //       borderRadius:
-                            //           BorderRadius.all(Radius.circular(8)),
-                            //       color: Colors.white,
-                            //       boxShadow: [
-                            //         BoxShadow(
-                            //             // color: Colors.black12,
-                            //             color: Colors.black12,
-                            //             blurRadius: 5)
-                            //       ]),
-                            //   margin:
-                            //       const EdgeInsets.only(right: 16, left: 16),
-                            //   child: Padding(
-                            //     padding: EdgeInsets.only(),
-                            //     child: FindDropdown<PaisModel>(
-                            //       showSearchBox: true,
-                            //       selectedItem: PaisModel(widget.redeModel.pais,
-                            //           widget.redeModel.pais),
-                            //       onFind: (String filter) => _listaPaises(),
-                            //       searchBoxDecoration: InputDecoration(
-                            //         hintText: "Search",
-                            //         border: OutlineInputBorder(
-                            //           borderRadius:
-                            //               BorderRadius.all(Radius.circular(8)),
-                            //         ),
-                            //         icon: new Icon(Icons.monetization_on),
-                            //         labelText: "País",
-                            //       ),
-                            //       onChanged: (PaisModel data) =>
-                            //           _controllerPaisRede = data.id,
-                            //       showClearButton: false,
-                            //     ),
-                            //   ),
-                            // ),
                             paisSelecionado == 'Brasil'?
                             new Container(
                               //color: Colors.red,
@@ -985,83 +758,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                             rowsQtInte('Limite de integrantes', '20',
                                 _controllerQtdIntegrantes),
 
-                            // TextField(
-                            //   keyboardType: TextInputType.text,
-                            //   decoration: InputDecoration(
-                            //     filled: true,
-                            //     fillColor: Colors.white,
-                            //     hintText: "Lisboa",
-                            //     hintStyle: TextStyle(
-                            //       fontSize: 14,
-                            //       color: Colors.grey[400],
-                            //     ),
-                            //     // icon: new Icon(Icons.location_city),
-                            //     /* border: OutlineInputBorder(
-                            //               gapPadding: 1,
-                            //             ),*/
-                            //   ),
-                            //   style: TextStyle(
-                            //       fontSize: 14,
-                            //       color: Colors.black
-                            //   ),
-                            //   controller: _controllerCidade,
-                            // ),
-                            // Padding(
-                            //   padding: EdgeInsets.all(5),
-                            // ),
-                            // TextField(
-                            //   keyboardType: TextInputType.text,
-                            //   decoration: InputDecoration(
-                            //     filled: true,
-                            //     fillColor: Colors.white,
-                            //     hintText: "Cascais - Praia dos pescadores",
-                            //     hintStyle: TextStyle(
-                            //       fontSize: 14,
-                            //       color: Colors.grey[400],
-                            //     ),
-                            //   ),
-                            //   style: TextStyle(
-                            //       fontSize: 14,
-                            //       color: Colors.black
-                            //   ),
-                            //   controller: _controllerLocal,
-                            // ),
-                            // Padding(
-                            //   padding: EdgeInsets.all(5),
-                            // ),
-                            // TextField(
-                            //   enabled: false,
-                            //   keyboardType: TextInputType.number,
-                            //   decoration: InputDecoration(
-                            //     filled: true,
-                            //     fillColor: Colors.white,
-                            //     hintText: "20",
-                            //     hintStyle: TextStyle(
-                            //       fontSize: 14,
-                            //       color: Colors.grey[400],
-                            //     ),
-                            //     // icon: new Icon(Icons.monetization_on),
-                            //     suffixIcon: Icon(
-                            //       Icons.monetization_on,
-                            //       color: Colors.black,
-                            //     ),
-                            //   ),
-                            //   style: TextStyle(
-                            //       fontSize: 14,
-                            //       color: Colors.black
-                            //   ),
-                            //   //maxLength: 3,
-                            //   //maxLengthEnforced: true,
-                            //   controller: _controllerQtdIntegrantes,
-                            //   onTap: () => {
-                            //     /*Navigator.push(context, MaterialPageRoute(
-                            //       builder: (context) => MensalidadeView(),
-                            //     ))*/
-                            //   },
-                            // ),
-                            // Padding(
-                            //   padding: EdgeInsets.all(5),
-                            // ),
                             new Container(
                               //color: Colors.red,
                               margin: const EdgeInsets.only(
@@ -1122,19 +818,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                 controller: _controllerMais,
                               ),
                             ),
-                            // Padding(
-                            //   padding: EdgeInsets.only(top: 15),
-                            //   child: Center(
-                            //     child: Text(
-                            //       _mensagem,
-                            //       style: TextStyle(
-                            //         color: Colors.black,
-                            //         fontSize: 12,
-                            //         fontFamily: FontFamily.fontSpecial,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -1183,29 +866,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                       ),
                     ),
                   )
-                    // Container(
-                    //   padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    //   color: Colors.grey[300],
-                    //   child: RaisedButton(
-                    //     color: Color(0xff086ba4),
-                    //     textColor: Colors.white,
-                    //     padding: EdgeInsets.all(15),
-                    //     child: Text(
-                    //       "Atualiza",
-                    //       style: TextStyle(
-                    //         fontSize: 16,
-                    //         fontFamily: 'Candal',
-                    //       ),
-                    //     ),
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(2),
-                    //     ),
-                    //     onPressed: () {
-                    //       _atualizaRede();
-                    //     },
-                    //   ),
-                    // ),
-                    )
+                )
                 : null,
           );
   }

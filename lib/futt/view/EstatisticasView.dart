@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/EstadosByUfModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
@@ -484,7 +483,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
   Future<UsuarioModel> _buscaUsuarioSelecionado() async {
     UsuarioService usuarioService = UsuarioService();
     UsuarioModel usuario =
-    await usuarioService.buscaPorId(widget.idUsuario.toString(), false);
+    await usuarioService.buscaPorId(widget.idUsuario.toString());
     return usuario;
   }
 

@@ -111,11 +111,6 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       var _url = "${ConstantesRest.URL_REDE}/adiciona";
       var _dados = redeModel.toJson();
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({ 'userId': 1, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
-      }
-
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 

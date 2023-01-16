@@ -148,16 +148,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       var _url = "${ConstantesRest.URL_REDE}/atualiza";
       var _dados = redeModel.toJson();
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({
-          'userId': 1,
-          'id': 1,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
-
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 
@@ -227,8 +217,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   Future<RedeModel> _atualizaImagem(int idRede) async {
     RedeService redeService = RedeService();
-    return redeService.buscaRedePorId(
-        idRede, false); //ConstantesConfig.SERVICO_FIXO
+    return redeService.buscaRedePorId(idRede); //ConstantesConfig.SERVICO_FIXO
   }
 
   _showOpc(BuildContext context, String title, String description, int idUsuario){

@@ -57,11 +57,6 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
       var _url = "${ConstantesRest.URL_REDE}/atualizaresponsaveis";
       var _dados = redeModel.toJson();
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
-      }
-
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 

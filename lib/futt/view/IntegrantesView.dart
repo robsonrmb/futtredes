@@ -42,11 +42,6 @@ class _IntegrantesViewState extends State<IntegrantesView> {
         var _url = "${ConstantesRest.URL_REDE}/adicionaintegrante";
         var _dados = integranteModel.toJson();
 
-        if (ConstantesConfig.SERVICO_FIXO == true) {
-          _url = "https://jsonplaceholder.typicode.com/posts";
-          _dados = jsonEncode({ 'userId': 1, 'id': 200, 'title': 'Título', 'body': 'Corpo da mensagem' });
-        }
-
         final prefs = await SharedPreferences.getInstance();
         String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 
@@ -126,14 +121,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
               content: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    rows('Email/Usuário','Digite o email ou usuário',_controllerEmail),
-                    // TextField(
-                    //   keyboardType: TextInputType.emailAddress,
-                    //   decoration: InputDecoration(
-                    //     labelText: "Email",
-                    //   ),
-                    //   controller: _controllerEmail,
-                    // ),
+                    rows('Email/Usuário','Digite o email ou o usuário',_controllerEmail),
                     new Padding(
                       padding: EdgeInsets.all(5),
                     ),
@@ -184,11 +172,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
       children: [
         new Expanded(
             child: new Container(
-              //height: 60,
-              //width: MediaQuery.of(context).size.width,
-
               margin: const EdgeInsets.only(top: 16),
-              // padding: const EdgeInsets.only(left: 6),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -217,7 +201,6 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            // color: Colors.black12,
                               color: Colors.black12,
                               blurRadius: 5)
                         ]),

@@ -32,8 +32,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
 
   Future<List<IntegranteModel>> _listaIntegrantes(int lista) async {
     IntegranteService resultadoService = IntegranteService();
-    return resultadoService.listaIntegrantesDaRede(
-        widget.redeModel.id, ConstantesConfig.SERVICO_FIXO, lista);
+    return resultadoService.listaIntegrantesDaRede( widget.redeModel.id);
   }
 
   _showModalRemoveIntegrante(
@@ -82,16 +81,6 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
 
       var _url = "${ConstantesRest.URL_REDE}/removeintegrante";
       var _dados = integranteModel.toJson();
-
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({
-          'userId': 1,
-          'id': 200,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
 
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);

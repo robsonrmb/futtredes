@@ -66,16 +66,6 @@ class _PerfilUserViewState extends State<PerfilUserView> {
         var _url = "${ConstantesRest.URL_USUARIOS}/atualizaSenha";
         var _dados = usuarioModel.toJson();
 
-        if (ConstantesConfig.SERVICO_FIXO == true) {
-          _url = "https://jsonplaceholder.typicode.com/posts";
-          _dados = jsonEncode({
-            'userId': 1,
-            'id': 200,
-            'title': 'Título',
-            'body': 'Corpo da mensagem'
-          });
-        }
-
         http.Response response = await http.put(_url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
@@ -134,11 +124,6 @@ class _PerfilUserViewState extends State<PerfilUserView> {
 
       var _url = "${ConstantesRest.URL_USUARIOS}";
       var _dados = usuarioModel.toJson();
-
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
-      }
 
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
@@ -204,7 +189,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
 
   Future<UsuarioModel> _atualizaImagem(int idUsuario) async {
     UsuarioService usuarioService = UsuarioService();
-    return usuarioService.buscaPorId(idUsuario.toString(), false); //ConstantesConfig.SERVICO_FIXO
+    return usuarioService.buscaPorId(idUsuario.toString());
   }
 
   _showModalIndisponivel() async {

@@ -46,16 +46,6 @@ class _PerfilViewState extends State<PerfilView> {
         var _url = "${ConstantesRest.URL_USUARIOS}/atualizaSenha";
         var _dados = usuarioModel.toJson();
 
-        if (ConstantesConfig.SERVICO_FIXO == true) {
-          _url = "https://jsonplaceholder.typicode.com/posts";
-          _dados = jsonEncode({
-            'userId': 1,
-            'id': 200,
-            'title': 'Título',
-            'body': 'Corpo da mensagem'
-          });
-        }
-
         http.Response response = await http.put(_url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',

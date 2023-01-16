@@ -4,14 +4,13 @@ import 'package:futt/futt/model/RespPerformanceModel.dart';
 import 'package:futt/futt/model/RespQuantidadeModel.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/EstatisticaServiceFixo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EstatisticaRest extends BaseRest {
 
-  Future<List<RespQuantidadeModel>> processaHttpGetListRespQuantidade(String url, int tipo, bool fixo) async {
+  Future<List<RespQuantidadeModel>> processaHttpGetListRespQuantidade(String url, int tipo) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -24,14 +23,7 @@ class EstatisticaRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        EstatisticaServiceFixo serviceFixo = EstatisticaServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseListaQuantidade(tipo));
-        return _parseListaRespQuantidadeModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar resultados!!!');
-      }
+      throw Exception('Falha ao listar resultados!!!');
 
     } catch (error) {
       print(error.toString());
@@ -39,7 +31,7 @@ class EstatisticaRest extends BaseRest {
 
   }
 
-  Future<List<RespPerformanceModel>> processaHttpGetListRespPerformance(String url, int tipo, bool fixo) async {
+  Future<List<RespPerformanceModel>> processaHttpGetListRespPerformance(String url, int tipo) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -52,14 +44,7 @@ class EstatisticaRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        EstatisticaServiceFixo serviceFixo = EstatisticaServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseListaPerformance(tipo));
-        return _parseListaRespPerformanceModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar resultados!!!');
-      }
+      throw Exception('Falha ao listar resultados!!!');
 
     } catch (error) {
       print(error.toString());
@@ -67,7 +52,7 @@ class EstatisticaRest extends BaseRest {
 
   }
 
-  Future<List<QuantidadeModel>> processaHttpGetListQuantidade(String url, int tipo, bool fixo) async {
+  Future<List<QuantidadeModel>> processaHttpGetListQuantidade(String url, int tipo) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -80,14 +65,7 @@ class EstatisticaRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        EstatisticaServiceFixo serviceFixo = EstatisticaServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseQuantidade(tipo));
-        return _parseListaQuantidadeModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar resultados!!!');
-      }
+      throw Exception('Falha ao listar resultados!!!');
 
     } catch (error) {
       print(error.toString());
@@ -95,7 +73,7 @@ class EstatisticaRest extends BaseRest {
 
   }
 
-  Future<List<RespostaModel>> processaHttpGetListResposta(String url, int tipo, bool fixo) async {
+  Future<List<RespostaModel>> processaHttpGetListResposta(String url, int tipo) async {
     try {
       //http.Response response = await http.get(url);
       final prefs = await SharedPreferences.getInstance();
@@ -108,28 +86,15 @@ class EstatisticaRest extends BaseRest {
           },
       );
       if (response.statusCode == 200) {
-        if (fixo != null && fixo == false) {
-          var dadosJson = json.decode(response.body);
-          return _parseListaRespostaModel(dadosJson);
-        }else{
-          EstatisticaServiceFixo serviceFixo = EstatisticaServiceFixo();
-          var dadosJson = json.decode(serviceFixo.responseEstatisticas(tipo));
-          return _parseListaRespostaModel(dadosJson);
-        }
+        var dadosJson = json.decode(response.body);
+        return _parseListaRespostaModel(dadosJson);
 
       } else {
         throw Exception('Falha ao buscar estatísticas!!!');
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        EstatisticaServiceFixo serviceFixo = EstatisticaServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseEstatisticas(tipo));
-        return _parseListaRespostaModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao buscar estatísticas!!!');
-      }
+      throw Exception('Falha ao buscar estatísticas!!!');
 
     } catch (error) {
       print(error.toString());

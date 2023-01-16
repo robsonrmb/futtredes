@@ -1,4 +1,3 @@
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/CadastroLoginModel.dart';
 import 'package:futt/futt/model/ExceptionModel.dart';
@@ -62,16 +61,6 @@ class _CadastroViewState extends State<CadastroView> {
 
       var _url = "${ConstantesRest.URL_USUARIOS}";
       var _dados = cadastroLoginModel.toJson();
-
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({
-          'userId': 200,
-          'id': null,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
 
       http.Response response = await http.post(_url,
           headers: <String, String>{

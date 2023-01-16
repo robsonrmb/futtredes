@@ -1,12 +1,11 @@
 import 'package:futt/futt/model/RankingModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/RankingServiceFixo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RankingRest extends BaseRest {
 
-  Future<List<RankingModel>> processaHttpGetList(String url, bool fixo) async {
+  Future<List<RankingModel>> processaHttpGetList(String url) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -19,25 +18,11 @@ class RankingRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        RankingServiceFixo serviceFixo = RankingServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(true));
-        return _parseListaRankingModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar resultados!!!');
-      }
+      throw Exception('Falha ao listar resultados!!!');
 
     } catch (error) {
       print(error.toString());
-      if (fixo != null && fixo == true) {
-        RankingServiceFixo serviceFixo = RankingServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(true));
-        return _parseListaRankingModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar resultados!!!');
-      }
+      throw Exception('Falha ao listar resultados!!!');
     }
   }
 

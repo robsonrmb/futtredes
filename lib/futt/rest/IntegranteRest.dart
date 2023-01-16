@@ -1,12 +1,11 @@
 import 'package:futt/futt/model/IntegranteModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/IntegranteServiceFixo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class IntegranteRest extends BaseRest {
 
-  Future<List<IntegranteModel>> processaHttpGetList(String url, bool fixo, int lista) async {
+  Future<List<IntegranteModel>> processaHttpGetList(String url) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -19,14 +18,7 @@ class IntegranteRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        IntegranteServiceFixo serviceFixo = IntegranteServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(lista));
-        return _parseListaIntegranteModel(dadosJson);
-
-      } else {
-        throw Exception('Falha na busca dos integrantes da rede!!!');
-      }
+      throw Exception('Falha na busca dos integrantes da rede!!!');
 
     } catch (error) {
       print(error.toString());

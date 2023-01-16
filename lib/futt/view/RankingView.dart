@@ -570,7 +570,7 @@ class _RankingViewState extends State<RankingView>
     //   ano = now.year;
     // }
     return rankingService.listaRankingRede(
-        widget.idRede, anoSelect, number, ConstantesConfig.SERVICO_FIXO);
+        widget.idRede, anoSelect, number);
   }
 
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RedeModel.dart';
 import 'package:futt/futt/service/RedeService.dart';
@@ -21,7 +20,7 @@ class RedesSubView extends StatefulWidget {
 class _RedesSubViewState extends State<RedesSubView> {
   Future<List<RedeModel>> _listaRedesQueParticipo() async {
     RedeService redeService = RedeService();
-    return redeService.listaRedesQueParticipo(ConstantesConfig.SERVICO_FIXO);
+    return redeService.listaRedesQueParticipo();
   }
 
   @override

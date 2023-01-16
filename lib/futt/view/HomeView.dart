@@ -150,16 +150,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       var _url = "${ConstantesRest.URL_LOGIN}";
       var _dados = loginModel.toJson();
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({
-          'userId': 200,
-          'id': null,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
-
       http.Response response = await http.post(_url,
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -224,7 +214,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   Future<UsuarioModel> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
     UsuarioModel usuario =
-        await usuarioService.buscaLogado(ConstantesConfig.SERVICO_FIXO);
+        await usuarioService.buscaLogado();
     return usuario;
   }
 

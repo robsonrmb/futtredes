@@ -4,10 +4,10 @@ import 'package:futt/futt/rest/IntegranteRest.dart';
 
 class IntegranteService {
 
-  Future<List<IntegranteModel>> listaIntegrantesDaRede(int idRede, bool fixo, int lista) {
+  Future<List<IntegranteModel>> listaIntegrantesDaRede(int idRede) {
     String url = "${ConstantesRest.URL_PARTICIPANTES}/${idRede}";
     IntegranteRest integranteRest = IntegranteRest();
-    return integranteRest.processaHttpGetList(url, fixo, lista);
+    return integranteRest.processaHttpGetList(url);
   }
 
 }

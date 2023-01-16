@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:find_dropdown/find_dropdown.dart';
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/EstadoModel.dart';
@@ -13,11 +12,8 @@ import 'package:futt/futt/model/UsuarioModelAtualiza.dart';
 import 'package:futt/futt/model/utils/GeneroModel.dart';
 import 'package:futt/futt/model/utils/PaisModel.dart';
 import 'package:futt/futt/model/utils/PosicionamentoModel.dart';
-import 'package:futt/futt/rest/UsuarioRest.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/service/UsuarioService.dart';
-import 'package:futt/futt/view/HomeView.dart';
-import 'package:futt/futt/view/LoginView.dart';
 import 'package:futt/futt/view/SplashScreenView.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:futt/futt/view/style/colors.dart';
@@ -26,7 +22,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-import 'package:multipart_request/multipart_request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -152,16 +147,6 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       var _url = "${ConstantesRest.URL_USUARIOS}";
       var _dados = usuarioModel.toJson();
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({
-          'userId': 1,
-          'id': 1,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
-
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 
@@ -262,7 +247,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   Future<UsuarioModel> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
-    return usuarioService.buscaLogado(ConstantesConfig.SERVICO_FIXO);
+    return usuarioService.buscaLogado();
   }
 
   // _showModalIndisponivel() async {

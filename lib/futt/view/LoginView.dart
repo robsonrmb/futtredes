@@ -68,16 +68,6 @@ class _LoginViewState extends State<LoginView> {
           var _url = "${ConstantesRest.URL_LOGIN}";
           var _dados = loginModel.toJson();
 
-          if (ConstantesConfig.SERVICO_FIXO == true) {
-            _url = "https://jsonplaceholder.typicode.com/posts";
-            _dados = jsonEncode({
-              'userId': 200,
-              'id': null,
-              'title': 'Título',
-              'body': 'Corpo da mensagem'
-            });
-          }
-
           http.Response response = await http.post(_url,
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -130,16 +120,6 @@ class _LoginViewState extends State<LoginView> {
 
         var _url = "${ConstantesRest.URL_LOGIN}";
         var _dados = loginModel.toJson();
-
-        if (ConstantesConfig.SERVICO_FIXO == true) {
-          _url = "https://jsonplaceholder.typicode.com/posts";
-          _dados = jsonEncode({
-            'userId': 200,
-            'id': null,
-            'title': 'Título',
-            'body': 'Corpo da mensagem'
-          });
-        }
 
         http.Response response = await http.post(_url,
             headers: <String, String>{
@@ -209,16 +189,6 @@ class _LoginViewState extends State<LoginView> {
           int.parse(_controllerAnoNascimentoParaTrocaDeSenha.text));
       var _url = "${ConstantesRest.URL_USUARIOS}/novasenha";
       var _dados = emailModel.toJson();
-
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts";
-        _dados = jsonEncode({
-          'userId': 200,
-          'id': null,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
 
       http.Response response = await http.post(_url,
           headers: <String, String>{

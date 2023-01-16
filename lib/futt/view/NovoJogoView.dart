@@ -58,8 +58,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
 
   Future<List<IntegranteModel>> _listaIntegrantes() async {
     IntegranteService resultadoService = IntegranteService();
-    return resultadoService.listaIntegrantesDaRede(widget.redeModel.id,
-        ConstantesConfig.SERVICO_FIXO, 0); //0 para retorno fixo (jogar fora)
+    return resultadoService.listaIntegrantesDaRede(widget.redeModel.id); //0 para retorno fixo (jogar fora)
   }
 
   String _buscaEmailDaLista(String valor, List<IntegranteModel> lista) {
@@ -206,16 +205,6 @@ class _NovoJogoViewState extends State<NovoJogoView> {
 
       var _url = "${ConstantesRest.URL_JOGO_REDE}/adicionaporemail";
       var _dados = jogoRedeModel.toJson();
-
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({
-          'userId': 1,
-          'id': 1,
-          'title': 'Título',
-          'body': 'Corpo da mensagem'
-        });
-      }
 
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);

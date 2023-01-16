@@ -1,4 +1,3 @@
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/EscolinhaModel.dart';
 import 'package:futt/futt/service/EscolinhaService.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +20,11 @@ class _EscolinhaSubViewState extends State<EscolinhaSubView> {
     if (widget.pais == "" && widget.cidade == "") {
       EscolinhaService escolinhaService = EscolinhaService();
       return escolinhaService.listaEscolinhas(
-          widget.paisDefault, widget.cidadeDefault,
-          ConstantesConfig.SERVICO_FIXO);
+          widget.paisDefault, widget.cidadeDefault);
     }else{
       EscolinhaService escolinhaService = EscolinhaService();
       return escolinhaService.listaEscolinhas(
-          widget.pais, widget.cidade,
-          ConstantesConfig.SERVICO_FIXO);
+          widget.pais, widget.cidade);
     }
   }
 

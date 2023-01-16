@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/service/EstatisticaService.dart';
 import 'package:futt/futt/view/components/Estatistica.dart';
@@ -25,7 +24,7 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
   Future<List<RespostaModel>> _getValoresSequenciais() {
     EstatisticaService estatisticaService = EstatisticaService();
     Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(
-        widget.idUsuario, widget.idRede, ConstantesConfig.SERVICO_FIXO);
+        widget.idUsuario, widget.idRede);
     return respostas;
   }
 

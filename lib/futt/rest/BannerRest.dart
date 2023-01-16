@@ -1,11 +1,6 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/BannerModel.dart';
-import 'package:futt/futt/model/EstadoModel.dart';
-import 'package:futt/futt/model/PaisesModel.dart';
-import 'package:futt/futt/model/UsuarioAssinanteModel.dart';
-import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/UsuarioServiceFixo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

@@ -4,10 +4,10 @@ import 'package:futt/futt/rest/AreaEstatisticaRest.dart';
 
 class AreaEstatisticaService {
 
-  Future<List<AreaEstatisticaModel>> listaAtivas({bool fixo}) {
+  Future<List<AreaEstatisticaModel>> listaAtivas() {
     String url = "${ConstantesRest.URL_AREA_ESTATISTICA}/ativas";
     AreaEstatisticaRest areaEstatisticaRest = AreaEstatisticaRest();
-    return areaEstatisticaRest.processaHttpGetList(url, fixo);
+    return areaEstatisticaRest.processaHttpGetList(url);
   }
 
 }

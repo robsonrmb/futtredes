@@ -1,19 +1,14 @@
 import 'package:futt/futt/model/AreaEstatisticaModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/AreaEstatisticaServiceFixo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AreaEstatisticaRest extends BaseRest {
 
-  Future<List<AreaEstatisticaModel>> processaHttpGetList(String url, bool fixo) async {
+  Future<List<AreaEstatisticaModel>> processaHttpGetList(String url) async {
     http.Response response = await http.get(url);
-    if (response.statusCode == 200 || (fixo != null && fixo == true)) {
+    if (response.statusCode == 200) {
       var dadosJson = json.decode(response.body);
-      if (fixo != null && fixo == true) {
-        AreaEstatisticaServiceFixo serviceFixo = AreaEstatisticaServiceFixo();
-        dadosJson = serviceFixo.responseLista();
-      }
       List<AreaEstatisticaModel> lista = List();
       for (var registro in dadosJson) {
         AreaEstatisticaModel areaEstatisticaModel = AreaEstatisticaModel

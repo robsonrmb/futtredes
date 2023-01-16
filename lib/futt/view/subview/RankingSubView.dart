@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/RankingModel.dart';
 import 'package:futt/futt/service/RankingService.dart';
@@ -26,7 +25,7 @@ class _RankingSubViewState extends State<RankingSubView> {
       var now = new DateTime.now();
       ano = now.year;
     }
-    return rankingService.listaRankingRede(widget.idRede, widget.ano, widget.tipo, ConstantesConfig.SERVICO_FIXO);
+    return rankingService.listaRankingRede(widget.idRede, widget.ano, widget.tipo);
   }
 
   @override

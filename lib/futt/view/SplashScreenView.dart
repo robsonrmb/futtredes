@@ -42,16 +42,6 @@ class _SplashScreenViewState extends State<SplashScreenView> {
         var _url = "${ConstantesRest.URL_LOGIN}";
         var _dados = loginModel.toJson();
 
-        if (ConstantesConfig.SERVICO_FIXO == true) {
-          _url = "https://jsonplaceholder.typicode.com/posts";
-          _dados = jsonEncode({
-            'userId': 200,
-            'id': null,
-            'title': 'Título',
-            'body': 'Corpo da mensagem'
-          });
-        }
-
         http.Response response = await http.post(_url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',

@@ -46,7 +46,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   Future<List<RedeModel>> _listaMinhasRedes() async {
     RedeService redeService = RedeService();
-    return redeService.listaMinhasRedes(ConstantesConfig.SERVICO_FIXO);
+    return redeService.listaMinhasRedes();
   }
 
   _showModalReiniciaRede(BuildContext context, String title, String description, int idRede){
@@ -96,11 +96,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/ativa";
       var _dados = "";
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
-      }
-
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 
@@ -147,11 +142,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/reset/n";
       var _dados = "";
 
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
-      }
-
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
 
@@ -197,11 +187,6 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     try {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/desativa";
       var _dados = "";
-
-      if (ConstantesConfig.SERVICO_FIXO == true) {
-        _url = "https://jsonplaceholder.typicode.com/posts/1";
-        _dados = jsonEncode({ 'userId': 1, 'id': 1, 'title': 'Título', 'body': 'Corpo da mensagem' });
-      }
 
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);

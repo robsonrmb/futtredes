@@ -4,14 +4,13 @@ import 'package:futt/futt/model/PaisesModel.dart';
 import 'package:futt/futt/model/UsuarioAssinanteModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/UsuarioServiceFixo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UsuarioRest extends BaseRest {
 
-  Future<List<UsuarioModel>> processaHttpGetList(String url, bool fixo) async {
+  Future<List<UsuarioModel>> processaHttpGetList(String url) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -23,14 +22,7 @@ class UsuarioRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        UsuarioServiceFixo serviceFixo = UsuarioServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista());
-        return _parseListaUsuarioModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar redes!!!');
-      }
+      throw Exception('Falha ao listar usuários!!!');
 
     } catch (error) {
       print(error.toString());
@@ -73,7 +65,7 @@ class UsuarioRest extends BaseRest {
     }
   }
 
-  Future<UsuarioModel> processaHttpGetObject(String url, bool fixo) async {
+  Future<UsuarioModel> processaHttpGetObject(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
@@ -95,21 +87,14 @@ class UsuarioRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        UsuarioServiceFixo serviceFixo = UsuarioServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista());
-        return UsuarioModel.fromJson(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar usuários!!!');
-      }
+      throw Exception('Falha ao listar usuários!!!');
 
     } catch (error) {
       print(error.toString());
     }
   }
 
-  Future<List<UsuarioModel>> processaHttpPostReturn(String url, var usuarioModel, bool fixo) async {
+  Future<List<UsuarioModel>> processaHttpPostReturn(String url, var usuarioModel) async {
     http.Response response = await http.post(
         url,
         headers: <String, String>{
@@ -121,10 +106,6 @@ class UsuarioRest extends BaseRest {
     );
     var dadosJson = json.decode(response.body);
 
-    if (fixo != null && fixo == true) {
-      UsuarioServiceFixo serviceFixo = UsuarioServiceFixo();
-      dadosJson = serviceFixo.responseLista();
-    }
     List<UsuarioModel> lista = List();
     for (var registro in dadosJson) {
       UsuarioModel usuarioModel = UsuarioModel.fromJson(registro); //.converteJson
@@ -133,7 +114,7 @@ class UsuarioRest extends BaseRest {
     return lista;
   }
 
-  Future<List<UsuarioModel>> processaHttpGetListToken(String url, bool fixo) async {
+  Future<List<UsuarioModel>> processaHttpGetListToken(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
@@ -148,18 +129,11 @@ class UsuarioRest extends BaseRest {
         return _parseListaUsuarioModel(dadosJson);
 
       } else {
-        throw Exception('Falha ao listar redes!!!');
+        throw Exception('Falha ao listar usuários!!!');
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        UsuarioServiceFixo serviceFixo = UsuarioServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista());
-        return _parseListaUsuarioModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar redes!!!');
-      }
+      throw Exception('Falha ao listar usuários!!!');
 
     } catch (error) {
       print(error.toString());
@@ -213,7 +187,7 @@ class UsuarioRest extends BaseRest {
         return usuarioModel;
 
       } else {
-        throw Exception('Falha ao carregar Dados de Usuario Assinante!!!');
+        throw Exception('Falha ao carregar dados de Usuário Assinante!!!');
       }
     } on Exception catch (exception) {
 

@@ -1,14 +1,13 @@
 import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/model/JogoRedeModel.dart';
 import 'package:futt/futt/rest/BaseRest.dart';
-import 'package:futt/futt/service/fixo/JogoRedeServiceFixo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class JogoRedeRest extends BaseRest {
 
-  Future<List<JogoRedeModel>> processaHttpGetList(String url, bool fixo) async {
+  Future<List<JogoRedeModel>> processaHttpGetList(String url) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -20,14 +19,7 @@ class JogoRedeRest extends BaseRest {
         throw Exception('Falha na busca dos integrantes da rede!!!');
       }
     } on Exception catch (exception) {
-      if (fixo != null && fixo == true) {
-        JogoRedeServiceFixo serviceFixo = JogoRedeServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(1));
-        return _parseListaJogoRedeModel(dadosJson);
-
-      } else {
-        throw Exception('Falha na busca dos integrantes da rede!!!');
-      }
+      throw Exception('Falha na busca dos integrantes da rede!!!');
 
     } catch (error) {
       print(error.toString());
@@ -35,7 +27,7 @@ class JogoRedeRest extends BaseRest {
 
   }
 
-  Future<List<JogoRedeModel>> processaHttpGetListToken(String url, bool fixo) async {
+  Future<List<JogoRedeModel>> processaHttpGetListToken(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
@@ -54,14 +46,7 @@ class JogoRedeRest extends BaseRest {
         throw Exception('Falha na busca dos jogos!!!');
       }
     } on Exception catch (exception) {
-      if (fixo != null && fixo == true) {
-        JogoRedeServiceFixo serviceFixo = JogoRedeServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseLista(1));
-        return _parseListaJogoRedeModel(dadosJson);
-
-      } else {
-        throw Exception('Falha na busca dos jogos!!!');
-      }
+      throw Exception('Falha na busca dos jogos!!!');
 
     } catch (error) {
       print(error.toString());
@@ -69,7 +54,7 @@ class JogoRedeRest extends BaseRest {
 
   }
 
-  Future<List<JogoRedeModel>> processaHttpGetListPlacarAtualizado(String url, int dia, bool atualizouPlacar, bool fixo) async {
+  Future<List<JogoRedeModel>> processaHttpGetListPlacarAtualizado(String url, int dia, bool atualizouPlacar) async {
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -81,14 +66,7 @@ class JogoRedeRest extends BaseRest {
       }
     } on Exception catch (exception) {
       print(exception.toString());
-      if (fixo != null && fixo == true) {
-        JogoRedeServiceFixo serviceFixo = JogoRedeServiceFixo();
-        var dadosJson = json.decode(serviceFixo.responseListaPlacarAtualizado(dia));
-        return _parseListaJogoRedeModel(dadosJson);
-
-      } else {
-        throw Exception('Falha ao listar participantes!!!');
-      }
+      throw Exception('Falha ao listar participantes!!!');
 
     } catch (error) {
       print(error.toString());

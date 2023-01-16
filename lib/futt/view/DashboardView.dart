@@ -1,4 +1,3 @@
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
 import 'package:futt/futt/constantes/ConstantesRest.dart';
 import 'package:futt/futt/model/BannerModel.dart';
 import 'package:futt/futt/model/UsuarioModel.dart';
@@ -40,7 +39,7 @@ class _DashboardViewState extends State<DashboardView> {
   Future<UsuarioModel> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
     Future<UsuarioModel> usuario =
-        usuarioService.buscaLogado(ConstantesConfig.SERVICO_FIXO);
+        usuarioService.buscaLogado();
     return usuario;
   }
 

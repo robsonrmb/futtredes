@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:futt/futt/constantes/ConstantesConfig.dart';
-import 'package:futt/futt/constantes/ConstantesEstatisticas.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
 import 'package:futt/futt/service/EstatisticaService.dart';
 import 'package:futt/futt/view/components/Estatistica.dart';
@@ -26,7 +24,7 @@ class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
   Future<List<RespostaModel>> _getValoresJogosEPontos() {
     EstatisticaService estatisticaService = EstatisticaService();
     Future<List<RespostaModel>> respostas = estatisticaService.getJogosEPontos(
-        widget.idUsuario, widget.idRede, 0, ConstantesConfig.SERVICO_FIXO);
+        widget.idUsuario, widget.idRede, 0);
     return respostas;
   }
 

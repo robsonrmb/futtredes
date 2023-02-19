@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -47,8 +47,8 @@ android {
         applicationId "br.com.futtredesid"
         minSdkVersion 16
         targetSdkVersion 31
-        versionCode 25
-        versionName "1.0.11"
+        versionCode 26
+        versionName "1.0.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

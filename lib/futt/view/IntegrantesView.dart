@@ -15,8 +15,8 @@ import 'dart:convert';
 
 class IntegrantesView extends StatefulWidget {
 
-  RedeModel redeModel;
-  bool donoRede;
+  RedeModel? redeModel;
+  bool? donoRede;
   IntegrantesView({this.redeModel, this.donoRede});
 
   @override
@@ -37,15 +37,15 @@ class _IntegrantesViewState extends State<IntegrantesView> {
         });
       }else{
         circularProgress(context);
-        IntegranteModel integranteModel = IntegranteModel.Novo(widget.redeModel.id, _controllerEmail.text);
+        IntegranteModel integranteModel = IntegranteModel.Novo(widget.redeModel!.id, _controllerEmail.text);
 
         var _url = "${ConstantesRest.URL_REDE}/adicionaintegrante";
         var _dados = integranteModel.toJson();
 
         final prefs = await SharedPreferences.getInstance();
-        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-        http.Response response = await http.post(_url,
+        http.Response response = await http.post(Uri.parse(_url),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': token,
@@ -91,14 +91,8 @@ class _IntegrantesViewState extends State<IntegrantesView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
         centerTitle: true,
-        title: Text("Integrantes",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,
+        title: Text("Integrantes",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,fontSize: 20
         ),),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -108,7 +102,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
                   colors: <Color>[AppColors.colorFundoClaroApp,AppColors.colorFundoEscuroApp])),
         ),
       ),
-      floatingActionButton: widget.donoRede && (widget.redeModel.status == 1 || widget.redeModel.status == 2) ? FloatingActionButton(
+      floatingActionButton: widget.donoRede! && (widget.redeModel!.status == 1 || widget.redeModel!.status == 2) ? FloatingActionButton(
         child: Icon(Icons.add,color: AppColors.colorIconFloatButton,),
         backgroundColor: AppColors.colorFloatButton,
         onPressed: () {
@@ -138,9 +132,11 @@ class _IntegrantesViewState extends State<IntegrantesView> {
               actions: <Widget>[
                 new Container(
                   margin: const EdgeInsets.only(right: 6),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    color: AppColors.colorButtonDialog,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      backgroundColor: AppColors.colorButtonDialog,
+                    ),
                     onPressed: () {
                       _adicionaIntegrante();
                     },
@@ -158,7 +154,7 @@ class _IntegrantesViewState extends State<IntegrantesView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             //CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
-            TopoInterno().getTopo(widget.redeModel.nome, widget.redeModel.status),
+            TopoInterno().getTopo(widget.redeModel!.nome!, widget.redeModel!.status!),
             IntegrantesSubView(widget.redeModel, widget.donoRede, _inclui),
           ],
         ),

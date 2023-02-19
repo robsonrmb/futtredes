@@ -31,19 +31,19 @@ class UsuarioService {
     usuarioRest.processaHttpDelete(url);
   }
 
-  Future<UsuarioModel> buscaPorId(String idUsuario) {
+  Future<UsuarioModel?> buscaPorId(String idUsuario) {
     String url = "${ConstantesRest.URL_USUARIOS}/${idUsuario}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetObject(url);
   }
 
-  Future<UsuarioModel> buscaLogado() {
+  Future<UsuarioModel?> buscaLogado() {
     String url = "${ConstantesRest.URL_USUARIOS}/logado";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetObject(url);
   }
 
-  Future<List<UsuarioModel>> listaTodos() {
+  Future<List<UsuarioModel>?> listaTodos() {
     String url = "${ConstantesRest.URL_USUARIOS}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetList(url);
@@ -67,37 +67,37 @@ class UsuarioService {
     return usuarioRest.processaHttpPostReturn(url, usuarioModel);
   }
 
-  Future<List<UsuarioModel>> listaPorEstado(String estado) {
+  Future<List<UsuarioModel>?> listaPorEstado(String estado) {
     String url = "${ConstantesRest.URL_USUARIOS}/filterEstado/${estado}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetList(url);
   }
 
-  Future<UsuarioModel> buscaPorEmail(String email) {
+  Future<UsuarioModel?> buscaPorEmail(String email) {
     String url = "${ConstantesRest.URL_USUARIOS}/filterEmail/${email}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetObject(url);
   }
 
-  Future<List<UsuarioModel>> listaPorNome(String nome) {
+  Future<List<UsuarioModel>?> listaPorNome(String nome) {
     String url = "${ConstantesRest.URL_USUARIOS}/filterNome/${nome}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetList(url);
   }
 
-  Future<List<PaisesModel>> listaPaises() {
+  Future<List<PaisesModel>?> listaPaises() {
     String url = "${ConstantesRest.URL_PAISES}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetListPaises(url);
   }
 
-  Future<List<EstadosModel>> listaEstados() {
+  Future<List<EstadosModel>?> listaEstados() {
     String url = "${ConstantesRest.URL_ESTADOS}";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetListEstados(url);
   }
 
-  Future<UsuarioAssinanteModel> buscaUsuarioAssinante() {
+  Future<UsuarioAssinanteModel?> buscaUsuarioAssinante() {
     String url = "${ConstantesRest.URL_USUARIOS}/assinatura/futtredes";
     UsuarioRest usuarioRest = UsuarioRest();
     return usuarioRest.processaHttpGetAssinante(url);

@@ -35,7 +35,7 @@ class SearchDelegateUsuariosDaRede extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> lf = List();
+    List<String> lf = [];
     lf = integrantes.where(
             (texto) => texto.toLowerCase().startsWith( query.toLowerCase() )
     ).toList();

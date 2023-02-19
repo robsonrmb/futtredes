@@ -10,9 +10,9 @@ import 'dart:convert';
 
 class UsuarioRest extends BaseRest {
 
-  Future<List<UsuarioModel>> processaHttpGetList(String url) async {
+  Future<List<UsuarioModel>?> processaHttpGetList(String url) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         var dadosJson = json.decode(response.body);
         return _parseListaUsuarioModel(dadosJson);
@@ -29,9 +29,9 @@ class UsuarioRest extends BaseRest {
     }
   }
 
-  Future<List<PaisesModel>> processaHttpGetListPaises(String url) async {
+  Future<List<PaisesModel>?> processaHttpGetListPaises(String url) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -47,9 +47,9 @@ class UsuarioRest extends BaseRest {
     }
   }
 
-  Future<List<EstadosModel>> processaHttpGetListEstados(String url) async {
+  Future<List<EstadosModel>?> processaHttpGetListEstados(String url) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -65,12 +65,12 @@ class UsuarioRest extends BaseRest {
     }
   }
 
-  Future<UsuarioModel> processaHttpGetObject(String url) async {
+  Future<UsuarioModel?> processaHttpGetObject(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -96,7 +96,7 @@ class UsuarioRest extends BaseRest {
 
   Future<List<UsuarioModel>> processaHttpPostReturn(String url, var usuarioModel) async {
     http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -106,7 +106,7 @@ class UsuarioRest extends BaseRest {
     );
     var dadosJson = json.decode(response.body);
 
-    List<UsuarioModel> lista = List();
+    List<UsuarioModel> lista = [];
     for (var registro in dadosJson) {
       UsuarioModel usuarioModel = UsuarioModel.fromJson(registro); //.converteJson
       lista.add(usuarioModel);
@@ -114,12 +114,12 @@ class UsuarioRest extends BaseRest {
     return lista;
   }
 
-  Future<List<UsuarioModel>> processaHttpGetListToken(String url) async {
+  Future<List<UsuarioModel>?> processaHttpGetListToken(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
           headers: <String, String>{
             'Authorization': token,
           });
@@ -141,7 +141,7 @@ class UsuarioRest extends BaseRest {
   }
 
   List<UsuarioModel> _parseListaUsuarioModel(dadosJson) {
-    List<UsuarioModel> lista = List();
+    List<UsuarioModel> lista = [];
     for (var registro in dadosJson) {
       UsuarioModel resultadoModel = UsuarioModel.fromJson(
           registro); //.converteJson
@@ -151,7 +151,7 @@ class UsuarioRest extends BaseRest {
   }
 
   List<PaisesModel> _parseListaPaisesModel(dadosJson) {
-    List<PaisesModel> lista = List();
+    List<PaisesModel> lista =[];
     for (var registro in dadosJson) {
       PaisesModel resultadoModel = PaisesModel.fromJson(
           registro); //.converteJson
@@ -161,7 +161,7 @@ class UsuarioRest extends BaseRest {
   }
 
   List<EstadosModel> _parseListaEstadosModel(dadosJson) {
-    List<EstadosModel> lista = List();
+    List<EstadosModel> lista = [];
     for (var registro in dadosJson) {
       EstadosModel resultadoModel = EstadosModel.fromJson(
           registro); //.converteJson
@@ -170,12 +170,12 @@ class UsuarioRest extends BaseRest {
     return lista;
   }
 
-  Future<UsuarioAssinanteModel> processaHttpGetAssinante(String url) async {
+  Future<UsuarioAssinanteModel?> processaHttpGetAssinante(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,

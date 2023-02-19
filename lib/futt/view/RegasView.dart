@@ -21,12 +21,13 @@ class _RegrasViewState extends State<RegrasView> {
             color: Colors.white,
             opacity: 1,
           ),
-          textTheme:
-              TextTheme(title: TextStyle(color: Colors.white, fontSize: 20)),
+          // textTheme:
+          //     TextTheme(title: TextStyle(color: Colors.white, fontSize: 20)),
           title: Text(
             "Regras",
             style: new TextStyle(
               fontWeight: FontWeight.bold,
+              fontSize: 20,
               color: AppColors.colorTextAppNav,
             ),
           ),
@@ -79,7 +80,7 @@ class _RegrasViewState extends State<RegrasView> {
                           gradient:  LinearGradient(
                             colors: <Color>[
                               Colors.grey,
-                              Colors.grey[100]
+                              Colors.grey[100]!
                             ],
                           ),
                         ),
@@ -157,7 +158,7 @@ class _RegrasViewState extends State<RegrasView> {
                           gradient:  LinearGradient(
                             colors: <Color>[
                               Colors.grey,
-                              Colors.grey[100]
+                              Colors.grey[100]!
                             ],
                           ),
                         ),

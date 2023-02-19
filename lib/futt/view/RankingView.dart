@@ -12,11 +12,11 @@ import 'EstatisticasAtletasView.dart';
 import 'package:shimmer/shimmer.dart';
 
 class RankingView extends StatefulWidget {
-  int idRede;
-  String nomeRede;
-  int statusRede;
+  int? idRede;
+  String? nomeRede;
+  int? statusRede;
   int ano;
-  String cidade;
+  String? cidade;
 
   RankingView(this.idRede, this.nomeRede, this.statusRede, this.ano,this.cidade);
 
@@ -26,9 +26,9 @@ class RankingView extends StatefulWidget {
 
 class _RankingViewState extends State<RankingView>
     with TickerProviderStateMixin {
-  TabController _controllerRanking;
-  String rankSelecionado = 'Media';
-  List<String> ranks = new List();
+  TabController? _controllerRanking;
+  String? rankSelecionado = 'Media';
+  List<String> ranks = [];
   int number = 4;
 
   int anoSelect = 0;
@@ -36,15 +36,15 @@ class _RankingViewState extends State<RankingView>
   int ano2 = 0;
   int ano3 = 0;
 
-  Color colorDefault = Color(0xFF0D47A1);
-  Color colorAno1 = Colors.grey[400];
-  Color colorAno2 = Colors.grey[400];
-  Color colorAno3 = Colors.grey[400];
+  Color? colorDefault = Color(0xFF0D47A1);
+  Color? colorAno1 = Colors.grey[400];
+  Color? colorAno2 = Colors.grey[400];
+  Color? colorAno3 = Colors.grey[400];
 
-  Color colorDefaultText = Colors.white;
-  Color colorAno1Text = Colors.grey[800];
-  Color colorAno2Text = Colors.grey[800];
-  Color colorAno3Text = Colors.grey[800];
+  Color? colorDefaultText = Colors.white;
+  Color? colorAno1Text = Colors.grey[800];
+  Color? colorAno2Text = Colors.grey[800];
+  Color? colorAno3Text = Colors.grey[800];
 
   @override
   void initState() {
@@ -76,9 +76,7 @@ class _RankingViewState extends State<RankingView>
             color: Colors.white,
             opacity: 1,
           ),
-          textTheme:
-              TextTheme(title: TextStyle(color: Colors.white, fontSize: 20)),
-          title: Text("Rankings",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,
+          title: Text("Rankings",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,fontSize: 20
           ),),
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -100,7 +98,7 @@ class _RankingViewState extends State<RankingView>
         ),
         body: new ListView(
           children: [
-            TopoInterno().getTopo(widget.nomeRede, widget.statusRede),
+            TopoInterno().getTopo(widget.nomeRede!, widget.statusRede!),
             // new Container(
             //   margin: const EdgeInsets.only(left: 16, top: 20),
             //   child: new Text(
@@ -219,12 +217,12 @@ class _RankingViewState extends State<RankingView>
                               case ConnectionState.done:
                                 if (snapshot.hasData) {
                                   return ListView.builder(
-                                    itemCount: snapshot.data.length,
+                                    itemCount: snapshot.data!.length,
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       List<RankingModel> ranking =
-                                          snapshot.data;
+                                          snapshot.data!;
                                       RankingModel resultado = ranking[index];
                                       String subText = '';
                                       if (number == 1) {
@@ -383,7 +381,7 @@ class _RankingViewState extends State<RankingView>
                                                             ConstantesRest
                                                                 .URL_STATIC_USER +
                                                                 resultado
-                                                                    .fotoUsuario),
+                                                                    .fotoUsuario!),
                                                         radius: 30.0,
                                                       ),
                                                     ),),
@@ -446,7 +444,6 @@ class _RankingViewState extends State<RankingView>
                                 }
                                 break;
                             }
-                            return null;
                           },
                         ),
                       )
@@ -574,7 +571,7 @@ class _RankingViewState extends State<RankingView>
   }
 
 
-  Widget buildYears(String title, Color colorText, Color color, int index) {
+  Widget buildYears(String title, Color? colorText, Color? color, int index) {
     return new GestureDetector(
       onTap: () {
         selectItemYears(index);
@@ -646,15 +643,15 @@ class _RankingViewState extends State<RankingView>
 }
 
 class AnimatedListShimmer extends StatefulWidget {
-  int index;
+  int? index;
   AnimatedListShimmer({this.index});
   @override
   _AnimatedListShimmerState createState() => _AnimatedListShimmerState();
 }
 
 class _AnimatedListShimmerState extends State<AnimatedListShimmer> with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Offset> _animation;
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
 
   @override
   void initState() {
@@ -671,7 +668,7 @@ class _AnimatedListShimmerState extends State<AnimatedListShimmer> with TickerPr
         parent: _controller,
         curve: Curves.ease,
       ));
-    Future.delayed(Duration(milliseconds: 60*(widget.index+1)),(){
+    Future.delayed(Duration(milliseconds: 60*(widget.index!+1)),(){
       _controller.forward();
     });
   }
@@ -747,9 +744,9 @@ class _AnimatedListShimmerState extends State<AnimatedListShimmer> with TickerPr
   }
 
 
-  @override
-  void dispose(){
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose(){
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 }

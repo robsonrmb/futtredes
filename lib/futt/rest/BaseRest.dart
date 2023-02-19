@@ -7,7 +7,7 @@ class BaseRest {
     http.Response response;
     if (model != null) {
       response = await http.post(
-          url,
+          Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -15,7 +15,7 @@ class BaseRest {
       );
     }else{
       response = await http.post(
-          url,
+          Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           }
@@ -30,7 +30,7 @@ class BaseRest {
     http.Response response;
     if (model != null) {
       response = await http.put(
-          url,
+          Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -38,7 +38,7 @@ class BaseRest {
       );
     }else{
       response = await http.put(
-          url,
+          Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           }
@@ -51,7 +51,7 @@ class BaseRest {
 
   processaHttpDelete(String url) async {
     http.Response response = await http.delete(
-        url,
+        Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         }

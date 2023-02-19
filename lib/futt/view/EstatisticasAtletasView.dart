@@ -4,17 +4,17 @@ import 'package:futt/futt/view/style/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EstatisticasAtletasView extends StatefulWidget {
-  int idUsuario;
-  int idRede;
-  String nomeRede;
-  String nome;
-  String nomeFoto;
-  String hero;
-  int colocacao;
-  String pais;
-  String apelido;
-  String user;
-  String localOndeJoga;
+  int? idUsuario;
+  int? idRede;
+  String? nomeRede;
+  String? nome;
+  String? nomeFoto;
+  String? hero;
+  int? colocacao;
+  String? pais;
+  String? apelido;
+  String? user;
+  String? localOndeJoga;
 
   EstatisticasAtletasView(
       this.idUsuario, this.idRede, this.nomeRede, this.nome, this.nomeFoto,
@@ -26,7 +26,7 @@ class EstatisticasAtletasView extends StatefulWidget {
 }
 
 class _EstatisticasAtletasViewState extends State<EstatisticasAtletasView> {
-  SharedPreferences pref;
+  late SharedPreferences pref;
 
   @override
   void initState() {

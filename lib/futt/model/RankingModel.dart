@@ -1,14 +1,14 @@
 class RankingModel {
-  int _id;
-  int _ano;
-  int _pontuacao;
-  int _pontuacao2;
-  int _pontuacao3;
-  int _idUsuario;
-  String _nomeUsuario;
-  String _apelidoUsuario;
-  String _fotoUsuario;
-  String _mediaFormatada;
+  int? _id;
+  int? _ano;
+  int? _pontuacao;
+  int? _pontuacao2;
+  int? _pontuacao3;
+  int? _idUsuario;
+  String? _nomeUsuario;
+  String? _apelidoUsuario;
+  String? _fotoUsuario;
+  String? _mediaFormatada;
 
   RankingModel(this._id, this._ano, this._pontuacao, this._pontuacao2, this._pontuacao3, this._mediaFormatada,
       this._idUsuario, this._nomeUsuario, this._apelidoUsuario, this._fotoUsuario);
@@ -28,7 +28,7 @@ class RankingModel {
     );
   }
 
-  String getApelidoFormatado() {
+  String? getApelidoFormatado() {
     if (apelidoUsuario == null) {
       return nomeUsuario;
     }else{
@@ -36,7 +36,7 @@ class RankingModel {
     }
   }
 
-  String getNomeFormatado() {
+  String? getNomeFormatado() {
     if (apelidoUsuario == null) {
       return "";
     }else{
@@ -44,63 +44,63 @@ class RankingModel {
     }
   }
 
-  String get fotoUsuario => _fotoUsuario;
+  String? get fotoUsuario => _fotoUsuario;
 
-  set fotoUsuario(String value) {
+  set fotoUsuario(String? value) {
     _fotoUsuario = value;
   }
 
-  String get apelidoUsuario => _apelidoUsuario;
+  String? get apelidoUsuario => _apelidoUsuario;
 
-  set apelidoUsuario(String value) {
+  set apelidoUsuario(String? value) {
     _apelidoUsuario = value;
   }
 
-  String get nomeUsuario => _nomeUsuario;
+  String? get nomeUsuario => _nomeUsuario;
 
-  set nomeUsuario(String value) {
+  set nomeUsuario(String? value) {
     _nomeUsuario = value;
   }
 
-  int get idUsuario => _idUsuario;
+  int? get idUsuario => _idUsuario;
 
-  set idUsuario(int value) {
+  set idUsuario(int? value) {
     _idUsuario = value;
   }
 
-  int get pontuacao => _pontuacao;
+  int? get pontuacao => _pontuacao;
 
-  set pontuacao(int value) {
+  set pontuacao(int? value) {
     _pontuacao = value;
   }
 
-  int get ano => _ano;
+  int? get ano => _ano;
 
-  set ano(int value) {
+  set ano(int? value) {
     _ano = value;
   }
 
-  int get id => _id;
+  int? get id => _id;
 
-  set id(int value) {
+  set id(int? value) {
     _id = value;
   }
 
-  int get pontuacao2 => _pontuacao2;
+  int? get pontuacao2 => _pontuacao2;
 
-  set pontuacao2(int value) {
+  set pontuacao2(int? value) {
     _pontuacao2 = value;
   }
 
-  String get mediaFormatada => _mediaFormatada;
+  String? get mediaFormatada => _mediaFormatada;
 
-  set mediaFormatada(String value) {
+  set mediaFormatada(String? value) {
     _mediaFormatada = value;
   }
 
-  int get pontuacao3 => _pontuacao3;
+  int? get pontuacao3 => _pontuacao3;
 
-  set pontuacao3(int value) {
+  set pontuacao3(int? value) {
     _pontuacao3 = value;
   }
 

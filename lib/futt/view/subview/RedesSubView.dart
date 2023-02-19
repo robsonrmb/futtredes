@@ -18,14 +18,14 @@ class RedesSubView extends StatefulWidget {
 }
 
 class _RedesSubViewState extends State<RedesSubView> {
-  Future<List<RedeModel>> _listaRedesQueParticipo() async {
+  Future<List<RedeModel>?> _listaRedesQueParticipo() async {
     RedeService redeService = RedeService();
     return redeService.listaRedesQueParticipo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<RedeModel>>(
+    return FutureBuilder<List<RedeModel>?>(
       future: _listaRedesQueParticipo(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -139,11 +139,11 @@ class _RedesSubViewState extends State<RedesSubView> {
               child: Text("Active!!!"),
             );
           case ConnectionState.done:
-            if (snapshot.hasData && snapshot.data.length > 0) {
+            if (snapshot.hasData && snapshot.data!.length > 0) {
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  List<RedeModel> redes = snapshot.data;
+                  List<RedeModel> redes = snapshot.data!;
                   RedeModel rede = redes[index];
 
                   return new Card(
@@ -161,11 +161,11 @@ class _RedesSubViewState extends State<RedesSubView> {
                           Container(
                             height: 80,
                             decoration: BoxDecoration(
-                                color: Colors.grey[300].withOpacity(0.5),
+                                color: Colors.grey[300]!.withOpacity(0.5),
                                 image: DecorationImage(
                                     image: NetworkImage(
                                         ConstantesRest.URL_STATIC_REDES +
-                                            rede.nomeFoto),
+                                            rede.nomeFoto!),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(4.0),
@@ -195,7 +195,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                         style: TextStyle(
                                           fontSize: 16,
 
-                                          color: rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorTextTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                          color: rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorTextTitle : AppColors.colorRedeDesabilitadaTextICon,
 
                                           //AppColors.colorTextTitle,
                                           fontWeight: FontWeight.bold,
@@ -209,7 +209,7 @@ class _RedesSubViewState extends State<RedesSubView> {
                                   _retorneSubtitulo(rede.pais, rede.cidade, rede.local),
                                   style: TextStyle(
                                     fontSize: 14,
-                                      color: rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                      color: rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                       fontWeight: FontWeight.w600
                                   ),
                                 ),
@@ -226,8 +226,8 @@ class _RedesSubViewState extends State<RedesSubView> {
                                           gradient: LinearGradient(begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                               colors: <Color>[
-                                                rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                                rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
                                               ]),
                                         ),
                                         child: GestureDetector(
@@ -260,8 +260,8 @@ class _RedesSubViewState extends State<RedesSubView> {
                                             gradient: LinearGradient(begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: <Color>[
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
                                                 ]),
                                             shape: BoxShape.circle),
                                         child: GestureDetector(
@@ -286,8 +286,8 @@ class _RedesSubViewState extends State<RedesSubView> {
                                             gradient: LinearGradient(begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: <Color>[
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
                                                 ]),
                                             shape: BoxShape.circle),
                                         child: GestureDetector(
@@ -347,7 +347,7 @@ class _RedesSubViewState extends State<RedesSubView> {
   }
 
 
-  _retorneSubtitulo(String pais, String cidade,String local) {
+  _retorneSubtitulo(String? pais, String? cidade,String? local) {
     if(pais ==""){
       pais = null;
     }

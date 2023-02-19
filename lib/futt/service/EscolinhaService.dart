@@ -4,7 +4,7 @@ import 'package:futt/futt/rest/EscolinhaRest.dart';
 
 class EscolinhaService {
 
-  Future<List<EscolinhaModel>> listaEscolinhas(String pais, String cidade) {
+  Future<List<EscolinhaModel>> listaEscolinhas(String? pais, String cidade) {
     String url = "${ConstantesRest.URL_ESCOLINHA}/filtro";
     EscolinhaRest escolinhaRest = EscolinhaRest();
     bool _filtro = true;

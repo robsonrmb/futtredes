@@ -5,9 +5,9 @@ import 'dart:convert';
 
 class JogoRest extends BaseRest {
 
-  Future<List<JogoRedeModel>> processaHttpGetList(String url) async {
+  Future<List<JogoRedeModel>?> processaHttpGetList(String url) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -26,9 +26,9 @@ class JogoRest extends BaseRest {
 
   }
 
-  Future<List<JogoRedeModel>> processaHttpGetListPlacarAtualizado(String url, int idFase, bool atualizouPlacar) async {
+  Future<List<JogoRedeModel>?> processaHttpGetListPlacarAtualizado(String url, int idFase, bool atualizouPlacar) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -48,7 +48,7 @@ class JogoRest extends BaseRest {
   }
 
   List<JogoRedeModel> _parseListaJogoRedeModel(dadosJson) {
-    List<JogoRedeModel> lista = List();
+    List<JogoRedeModel> lista = [];
     for (var registro in dadosJson) {
       JogoRedeModel resultadoModel = JogoRedeModel.fromJson(
           registro); //.converteJson

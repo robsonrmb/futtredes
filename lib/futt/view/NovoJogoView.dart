@@ -24,7 +24,7 @@ import 'dart:convert';
 import 'package:shimmer/shimmer.dart';
 
 class NovoJogoView extends StatefulWidget {
-  RedeModel redeModel;
+  RedeModel? redeModel;
 
   NovoJogoView(this.redeModel);
 
@@ -33,7 +33,7 @@ class NovoJogoView extends StatefulWidget {
 }
 
 class _NovoJogoViewState extends State<NovoJogoView> {
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerEmailJogador1 = TextEditingController();
   TextEditingController _controllerEmailJogador2 = TextEditingController();
   TextEditingController _controllerEmailJogador3 = TextEditingController();
@@ -48,21 +48,21 @@ class _NovoJogoViewState extends State<NovoJogoView> {
   String _resultadoJogador2 = "";
   String _resultadoJogador3 = "";
   String _resultadoJogador4 = "";
-  Future<List<IntegranteModel>> _integrantes;
+  Future<List<IntegranteModel>>? _integrantes;
   GlobalKey<AutoCompleteTextFieldState<String>> key1 = new GlobalKey();
   GlobalKey<AutoCompleteTextFieldState<String>> key2 = new GlobalKey();
   GlobalKey<AutoCompleteTextFieldState<String>> key3 = new GlobalKey();
   GlobalKey<AutoCompleteTextFieldState<String>> key4 = new GlobalKey();
-  List<IntegranteModel> integrantesList = [];
+  List<IntegranteModel>? integrantesList = [];
   String currentText = '';
 
-  Future<List<IntegranteModel>> _listaIntegrantes() async {
+  Future<List<IntegranteModel>?> _listaIntegrantes() async {
     IntegranteService resultadoService = IntegranteService();
-    return resultadoService.listaIntegrantesDaRede(widget.redeModel.id); //0 para retorno fixo (jogar fora)
+    return resultadoService.listaIntegrantesDaRede(widget.redeModel!.id); //0 para retorno fixo (jogar fora)
   }
 
-  String _buscaEmailDaLista(String valor, List<IntegranteModel> lista) {
-    String retorno = "";
+  String? _buscaEmailDaLista(String valor, List<IntegranteModel> lista) {
+    String? retorno = "";
     for (IntegranteModel _im in lista) {
       if (_im.nome == valor) {
         retorno = _im.email;
@@ -72,7 +72,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
     return retorno;
   }
 
-  _cadastraJogo(BuildContext context, List<IntegranteModel> integrantes) async {
+  _cadastraJogo(BuildContext context, List<IntegranteModel>? integrantes) async {
     circularProgress(context);
 
     try {
@@ -159,24 +159,24 @@ class _NovoJogoViewState extends State<NovoJogoView> {
       }
 
 
-      String email1 = _controllerEmailJogador1.text;
-      String email2 = _controllerEmailJogador2.text;
+      String? email1 = _controllerEmailJogador1.text;
+      String? email2 = _controllerEmailJogador2.text;
 
-      String email3 = _controllerEmailJogador3.text;
-      String email4 = _controllerEmailJogador4.text;
+      String? email3 = _controllerEmailJogador3.text;
+      String? email4 = _controllerEmailJogador4.text;
 
-      for (int i = 0; i < integrantesList.length; i++) {
-        if (email1Compara == integrantesList[i].user) {
-          email1 = integrantesList[i].email;
+      for (int i = 0; i < integrantesList!.length; i++) {
+        if (email1Compara == integrantesList![i].user) {
+          email1 = integrantesList![i].email;
         }
-        if (email2Compara == integrantesList[i].user) {
-          email2 = integrantesList[i].email;
+        if (email2Compara == integrantesList![i].user) {
+          email2 = integrantesList![i].email;
         }
-        if (email3Compara == integrantesList[i].user) {
-          email3 = integrantesList[i].email;
+        if (email3Compara == integrantesList![i].user) {
+          email3 = integrantesList![i].email;
         }
-        if (email4Compara == integrantesList[i].user) {
-          email4 = integrantesList[i].email;
+        if (email4Compara == integrantesList![i].user) {
+          email4 = integrantesList![i].email;
         }
       }
 
@@ -194,7 +194,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
 
 
       JogoRedeModel jogoRedeModel = JogoRedeModel.NovoJogo(
-        widget.redeModel.id,
+        widget.redeModel!.id,
         pontuacao1,
         pontuacao2,
         email1,
@@ -207,9 +207,9 @@ class _NovoJogoViewState extends State<NovoJogoView> {
       var _dados = jogoRedeModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.post(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -274,12 +274,11 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                     AppColors.colorFundoEscuroApp
                   ])),
         ),
-        textTheme:
-        TextTheme(title: TextStyle(color: Colors.white, fontSize: 20)),
         title: Text(
           "Cadastro de Jogos",
           style: new TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 20,
             color: AppColors.colorTextAppNav,
           ),
         ),
@@ -289,7 +288,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
         color: Color(0xfff7f7f7),
         child: SingleChildScrollView(
           padding: EdgeInsets.all(10),
-          child: FutureBuilder<List<IntegranteModel>>(
+          child: FutureBuilder<List<IntegranteModel>?>(
             future: _listaIntegrantes(),
             builder: (context, snapshot) {
               List<String> listIntegrantes = [];
@@ -395,8 +394,8 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                 style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color: widget.redeModel.status < 3
-                                        ? (widget.redeModel.status == 1)
+                                    color: widget.redeModel!.status! < 3
+                                        ? (widget.redeModel!.status == 1)
                                         ? Colors.lightBlue
                                         : Colors.deepOrange
                                         : Colors.grey[800]),
@@ -411,7 +410,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                         padding: EdgeInsets.only(top: 15),
                         child: Center(
                           child: Text(
-                            _mensagem,
+                            _mensagem!,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -426,9 +425,9 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                 case ConnectionState.active:
                 case ConnectionState.done:
                   if (snapshot.hasData) {
-                    List<IntegranteModel> integrantes = snapshot.data;
+                    List<IntegranteModel> integrantes = snapshot.data!;
                     integrantesList = snapshot.data;
-                    List<String> _integrantes = List();
+                    List<String?> _integrantes = [];
 
                     for (IntegranteModel _im in integrantes) {
                       _integrantes.add(_im.nome);
@@ -475,12 +474,12 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
                                 child: Text(
-                                  "${widget.redeModel.nome}",
+                                  "${widget.redeModel!.nome}",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontFamily: FontFamily.fontSpecial,
-                                      color: widget.redeModel.status < 3
-                                          ? (widget.redeModel.status == 1)
+                                      color: widget.redeModel!.status! < 3
+                                          ? (widget.redeModel!.status == 1)
                                           ? Color(0xff093352)
                                           : Color(0xFF0D47A1)
                                           : Colors.grey[800]),
@@ -489,12 +488,12 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                               Padding(
                                 padding: EdgeInsets.only(top: 1),
                                 child: Text(
-                                  "${widget.redeModel.pais} - ${widget.redeModel
+                                  "${widget.redeModel!.pais} - ${widget.redeModel!
                                       .cidade}",
                                   style: TextStyle(
                                       fontSize: 12,
-                                      color: widget.redeModel.status < 3
-                                          ? (widget.redeModel.status == 1)
+                                      color: widget.redeModel!.status! < 3
+                                          ? (widget.redeModel!.status == 1)
                                           ? Color(0xff093352)
                                           : Color(0xFF0D47A1)
                                           : Colors.grey[800]),
@@ -503,11 +502,11 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
                                 child: Text(
-                                  "${widget.redeModel.local}",
+                                  "${widget.redeModel!.local}",
                                   style: TextStyle(
                                       fontSize: 12,
-                                      color: widget.redeModel.status < 3
-                                          ? (widget.redeModel.status == 1)
+                                      color: widget.redeModel!.status! < 3
+                                          ? (widget.redeModel!.status == 1)
                                           ? Color(0xff093352)
                                           : Color(0xFF0D47A1)
                                           : Colors.grey[800]),
@@ -579,8 +578,8 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color: widget.redeModel.status < 3
-                                          ? (widget.redeModel.status == 1)
+                                      color: widget.redeModel!.status! < 3
+                                          ? (widget.redeModel!.status == 1)
                                           ? Colors.lightBlue
                                           : Colors.deepOrange
                                           : Colors.grey[800]),
@@ -805,7 +804,6 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                   }
                   break;
               }
-              return null;
             },
           ),
         ),
@@ -816,14 +814,18 @@ class _NovoJogoViewState extends State<NovoJogoView> {
           height: 60,
           padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
           color: Color(0xfff7f7f7),
-          child: widget.redeModel.status == 1 || widget.redeModel.status == 2
-              ? RaisedButton(
+          child: widget.redeModel!.status == 1 || widget.redeModel!.status == 2
+              ? ElevatedButton(
             onPressed: () {
               _cadastraJogo(context, integrantesList);
             },
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
-            padding: const EdgeInsets.all(0.0),
+
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              padding: const EdgeInsets.all(0.0),
+            ),
+
             child: Ink(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -869,19 +871,24 @@ class _NovoJogoViewState extends State<NovoJogoView> {
           //   },
           // )
 
-              : RaisedButton(
-            textColor: Colors.white,
-            padding: EdgeInsets.all(15),
+              : ElevatedButton(
+
+
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2),
+              ),
+              padding: EdgeInsets.all(15),
+            ),
             child: Text(
               "REDE FECHADA OU DESATIVADA",
               style: TextStyle(
                 fontSize: 16,
+                color: Colors.white,
                 fontFamily: FontFamily.fontSpecial,
               ),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(2),
-            ),
+
             onPressed: () {},
           ),
         ),
@@ -1004,7 +1011,7 @@ class _NovoJogoViewState extends State<NovoJogoView> {
                     controller: controller,
                     titulo: 'Bucar Jogador',
                     onChange: (value) {
-                      controller.text = value;
+                      controller.text = value!;
                     },
                   )
                   // Container(

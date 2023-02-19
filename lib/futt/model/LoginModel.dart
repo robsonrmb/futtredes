@@ -1,6 +1,6 @@
 class LoginModel {
-  String _email;
-  String _senha;
+  String? _email;
+  String? _senha;
 
   LoginModel(this._email, this._senha);
 
@@ -18,15 +18,15 @@ class LoginModel {
     };
   }
 
-  String get email => _email;
+  String? get email => _email;
 
-  set email(String value) {
+  set email(String? value) {
     _email = value;
   }
 
-  String get senha => _senha;
+  String? get senha => _senha;
 
-  set senha(String value) {
+  set senha(String? value) {
     _senha = value;
   }
 

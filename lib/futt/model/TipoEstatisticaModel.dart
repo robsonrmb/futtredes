@@ -1,10 +1,10 @@
 import 'package:futt/futt/model/TipoRespostaEstatisticaModel.dart';
 
 class TipoEstatisticaModel {
-  int id;
-  String nome;
-  String descricao;
-  List<TipoRespostaEstatisticaModel> listaTipoRespostaEstatistica;
+  int? id;
+  String? nome;
+  String? descricao;
+  List<TipoRespostaEstatisticaModel>? listaTipoRespostaEstatistica;
 
   TipoEstatisticaModel({this.id, this.nome, this.descricao, this.listaTipoRespostaEstatistica});
 

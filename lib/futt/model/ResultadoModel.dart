@@ -1,18 +1,18 @@
 class ResultadoModel {
 
-  int _idTorneio;
-  String _tituloTorneio;
-  String _dataTorneio;
-  String _paisTorneio;
-  String _cidadeTorneio;
-  int _idJogador1;
-  int _idJogador2;
-  String _nomeJogador1;
-  String _nomeJogador2;
-  String _apelidoJogador1;
-  String _apelidoJogador2;
-  String _fotoJogador1;
-  String _fotoJogador2;
+  int? _idTorneio;
+  String? _tituloTorneio;
+  String? _dataTorneio;
+  String? _paisTorneio;
+  String? _cidadeTorneio;
+  int? _idJogador1;
+  int? _idJogador2;
+  String? _nomeJogador1;
+  String? _nomeJogador2;
+  String? _apelidoJogador1;
+  String? _apelidoJogador2;
+  String? _fotoJogador1;
+  String? _fotoJogador2;
 
   ResultadoModel(this._idTorneio, this._tituloTorneio, this._dataTorneio,
       this._paisTorneio, this._cidadeTorneio, this._idJogador1, this._idJogador2,
@@ -37,81 +37,81 @@ class ResultadoModel {
     );
   }
 
-  String get apelidoJogador2 => _apelidoJogador2;
+  String? get apelidoJogador2 => _apelidoJogador2;
 
-  set apelidoJogador2(String value) {
+  set apelidoJogador2(String? value) {
     _apelidoJogador2 = value;
   }
 
-  String get apelidoJogador1 => _apelidoJogador1;
+  String? get apelidoJogador1 => _apelidoJogador1;
 
-  set apelidoJogador1(String value) {
+  set apelidoJogador1(String? value) {
     _apelidoJogador1 = value;
   }
 
-  String get nomeJogador2 => _nomeJogador2;
+  String? get nomeJogador2 => _nomeJogador2;
 
-  set nomeJogador2(String value) {
+  set nomeJogador2(String? value) {
     _nomeJogador2 = value;
   }
 
-  String get nomeJogador1 => _nomeJogador1;
+  String? get nomeJogador1 => _nomeJogador1;
 
-  set nomeJogador1(String value) {
+  set nomeJogador1(String? value) {
     _nomeJogador1 = value;
   }
 
-  int get idJogador2 => _idJogador2;
+  int? get idJogador2 => _idJogador2;
 
-  set idJogador2(int value) {
+  set idJogador2(int? value) {
     _idJogador2 = value;
   }
 
-  int get idJogador1 => _idJogador1;
+  int? get idJogador1 => _idJogador1;
 
-  set idJogador1(int value) {
+  set idJogador1(int? value) {
     _idJogador1 = value;
   }
 
-  String get cidadeTorneio => _cidadeTorneio;
+  String? get cidadeTorneio => _cidadeTorneio;
 
-  set cidadeTorneio(String value) {
+  set cidadeTorneio(String? value) {
     _cidadeTorneio = value;
   }
 
-  String get paisTorneio => _paisTorneio;
+  String? get paisTorneio => _paisTorneio;
 
-  set paisTorneio(String value) {
+  set paisTorneio(String? value) {
     _paisTorneio = value;
   }
 
-  String get dataTorneio => _dataTorneio;
+  String? get dataTorneio => _dataTorneio;
 
-  set dataTorneio(String value) {
+  set dataTorneio(String? value) {
     _dataTorneio = value;
   }
 
-  String get tituloTorneio => _tituloTorneio;
+  String? get tituloTorneio => _tituloTorneio;
 
-  set tituloTorneio(String value) {
+  set tituloTorneio(String? value) {
     _tituloTorneio = value;
   }
 
-  int get idTorneio => _idTorneio;
+  int? get idTorneio => _idTorneio;
 
-  set idTorneio(int value) {
+  set idTorneio(int? value) {
     _idTorneio = value;
   }
 
-  String get fotoJogador2 => _fotoJogador2;
+  String? get fotoJogador2 => _fotoJogador2;
 
-  set fotoJogador2(String value) {
+  set fotoJogador2(String? value) {
     _fotoJogador2 = value;
   }
 
-  String get fotoJogador1 => _fotoJogador1;
+  String? get fotoJogador1 => _fotoJogador1;
 
-  set fotoJogador1(String value) {
+  set fotoJogador1(String? value) {
     _fotoJogador1 = value;
   }
 

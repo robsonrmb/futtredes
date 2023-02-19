@@ -21,7 +21,7 @@ class DialogFutt {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text("Ok"),
               )
@@ -86,7 +86,7 @@ class DialogFutt {
         barrierDismissible: false,
         barrierLabel: '',
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
   }
 
   waitingSucess(BuildContext context, String title, String description) {
@@ -118,10 +118,10 @@ class DialogFutt {
         barrierDismissible: false,
         barrierLabel: '',
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
   }
 
-  waitingError(BuildContext context, String title, String description) {
+  waitingError(BuildContext context, String title, String? description) {
     return showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
@@ -150,7 +150,7 @@ class DialogFutt {
         barrierDismissible: false,
         barrierLabel: '',
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
   }
 
   /*
@@ -184,11 +184,11 @@ class DialogFutt {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => _confirm(false, context),
                 child: Text("Não"),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => _confirm(true, context),
                 child: Text("Sim"),
               )
@@ -233,6 +233,6 @@ class DialogFutt {
         barrierDismissible: false,
         barrierLabel: '',
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
   }
 }

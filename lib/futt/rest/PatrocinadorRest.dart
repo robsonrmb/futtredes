@@ -6,10 +6,10 @@ import 'dart:convert';
 class PatrocinadorRest extends BaseRest {
 
   Future<List<PatrocinadorModel>> processaHttpGetList(String url) async {
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var dadosJson = json.decode(response.body);
-      List<PatrocinadorModel> lista = List();
+      List<PatrocinadorModel> lista = [];
       for (var registro in dadosJson) {
         PatrocinadorModel patrocinadorModel = PatrocinadorModel.fromJson(
             registro); //.converteJson

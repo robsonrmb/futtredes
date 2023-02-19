@@ -17,19 +17,19 @@ import 'package:simple_animations/simple_animations.dart';
 import 'package:http/http.dart' as http;
 
 class EstatisticasView extends StatefulWidget {
-  int idUsuario;
-  String apelido;
-  int idRede;
-  String nomeRede;
-  String nome;
-  String nomeFoto;
-  String hero;
-  int colocacao;
-  String pais;
-  String user;
-  String estado;
-  String localOndeJoga;
-  String posicao;
+  int? idUsuario;
+  String? apelido;
+  int? idRede;
+  String? nomeRede;
+  String? nome;
+  String? nomeFoto;
+  String? hero;
+  int? colocacao;
+  String? pais;
+  String? user;
+  String? estado;
+  String? localOndeJoga;
+  String? posicao;
 
   EstatisticasView(
       this.idUsuario, this.idRede, this.nomeRede, this.nome, this.nomeFoto,
@@ -41,16 +41,16 @@ class EstatisticasView extends StatefulWidget {
 
 class _EstatisticasViewState extends State<EstatisticasView> {
 
-  UsuarioModel usuarioModel;
-  SharedPreferences pref;
+  UsuarioModel? usuarioModel;
+  late SharedPreferences pref;
 
-  String user = '';
+  String? user = '';
   List<EstadosByUFModel> listEstados = [];
-  String siglaEstado;
-  String localOndeJoga;
-  String posicao;
-  String pais;
-  bool restart;
+  String? siglaEstado;
+  String? localOndeJoga;
+  String? posicao;
+  String? pais;
+  bool? restart;
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
   }
 
   void preecherUf()async{
-    if(widget.estado != null && widget.estado.length == 2){
+    if(widget.estado != null && widget.estado!.length == 2){
       siglaEstado = widget.estado;
       setState(() {});
     }else{
@@ -69,7 +69,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
           if(widget.estado == null){
             if(usuarioModel != null){
               for(int i = 0; i < listEstados.length; i ++){
-                if(usuarioModel.estado == listEstados[i].nome){
+                if(usuarioModel!.estado == listEstados[i].nome){
                   siglaEstado = listEstados[i].sigla;
                 }
               }
@@ -99,11 +99,11 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     restart = pref.getBool('restart');
     usuarioModel = await _buscaUsuarioSelecionado();
     if(usuarioModel != null){
-      user = usuarioModel.user;
-      localOndeJoga = usuarioModel.ondeJoga;
-      posicao = posicaos(usuarioModel.posicao);
-      pais = usuarioModel.pais;
-      widget.estado = usuarioModel.estado;
+      user = usuarioModel!.user;
+      localOndeJoga = usuarioModel!.ondeJoga;
+      posicao = posicaos(usuarioModel!.posicao);
+      pais = usuarioModel!.pais;
+      widget.estado = usuarioModel!.estado;
 
       if(posicao == "2"){
         posicao = "Esquerda";
@@ -115,7 +115,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
         posicao = "Ambas";
       }
 
-      if(!restart){
+      if(!restart!){
         pref.setBool('restart', true);
         preecherUf();
       }
@@ -184,7 +184,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                       child: Text(
                         widget.nomeRede == null
                             ? "ESTATÍSTICAS DE TODAS AS REDES"
-                            : "REDE: ${widget.nomeRede.toUpperCase()}",
+                            : "REDE: ${widget.nomeRede!.toUpperCase()}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff093352)),
@@ -252,7 +252,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                     margin:
                                         const EdgeInsets.only(top: 20, left: 6),
                                     child: Text(
-                                      apelidoOuNome(widget.apelido,widget.nome),
+                                      apelidoOuNome(widget.apelido,widget.nome)!,
                                       style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.colorTextTitlesDash,
@@ -304,7 +304,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                               )
                             ],
                           ),
-                          widget.colocacao != null && widget.colocacao < 4
+                          widget.colocacao != null && widget.colocacao! < 4
                               ? Container(
                                   //padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                   decoration: BoxDecoration(
@@ -324,7 +324,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
                                     padding: const EdgeInsets.only(
                                         top: 6, bottom: 6),
                                     child: Text(
-                                      '${widget.colocacao}° Lugar ${widget.nomeRede.toUpperCase()}',
+                                      '${widget.colocacao}° Lugar ${widget.nomeRede!.toUpperCase()}',
                                       style: new TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
@@ -356,7 +356,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     );
   }
 
-  Widget _buildStar(int ind) {
+  Widget _buildStar(int? ind) {
     switch (ind) {
       case 1:
         return new Row(
@@ -407,10 +407,10 @@ class _EstatisticasViewState extends State<EstatisticasView> {
         return new Container();
     }
   }
-  String apelidoOuNome(String apelido, String nome) {
+  String? apelidoOuNome(String? apelido, String? nome) {
     if (apelido != null && apelido != "") {
       return apelido;
-    } else if (nome.split(' ').length == 1) {
+    } else if (nome!.split(' ').length == 1) {
       return nome;
     } else  if (nome.split(' ').length > 1){
       String nomeFormatado = '${nome.split(' ')[0]}';
@@ -418,7 +418,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     }
   }
 
-  String estadoOuPais(String localOndeJoga, String pais) {
+  String estadoOuPais(String? localOndeJoga, String? pais) {
     if(pais == 'Brasil'){
       if(widget.estado!= null){
         if(localOndeJoga != null && pais != null){
@@ -433,7 +433,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
       }else{
         if(localOndeJoga != null && pais != null){
           if(usuarioModel != null){
-            if(usuarioModel.estado!= null){
+            if(usuarioModel!.estado!= null){
               if(localOndeJoga != ""){
                 return '$localOndeJoga - ${siglaEstado??""}';
               }else{
@@ -463,7 +463,7 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     }
   }
 
-  String posicaos(String pos) {
+  String posicaos(String? pos) {
     switch (pos){
       case '2':
         return 'Esquerda';
@@ -480,15 +480,15 @@ class _EstatisticasViewState extends State<EstatisticasView> {
     }
   }
 
-  Future<UsuarioModel> _buscaUsuarioSelecionado() async {
+  Future<UsuarioModel?> _buscaUsuarioSelecionado() async {
     UsuarioService usuarioService = UsuarioService();
-    UsuarioModel usuario =
+    UsuarioModel? usuario =
     await usuarioService.buscaPorId(widget.idUsuario.toString());
     return usuario;
   }
 
   Future<List<EstadosByUFModel>> retornaUser() async {
-    var response = await http.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados',);
+    var response = await http.get(Uri.parse('https://servicodados.ibge.gov.br/api/v1/localidades/estados'),);
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List).map((e) => EstadosByUFModel.fromJson(e)).toList();
 

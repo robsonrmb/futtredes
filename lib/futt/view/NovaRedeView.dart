@@ -21,8 +21,8 @@ import 'dart:convert';
 
 class NovaRedeView extends StatefulWidget {
 
-  UsuarioModel userModel;
-  bool assinante;
+  UsuarioModel? userModel;
+  bool? assinante;
 
   NovaRedeView({this.userModel,this.assinante:true});
 
@@ -32,18 +32,18 @@ class NovaRedeView extends StatefulWidget {
 
 class _NovaRedeViewState extends State<NovaRedeView> {
 
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
   String _controllerPaisRede = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
   TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
-  List<String> listDropEstado = new List();
+  List<String?> listDropEstado = [];
   List<EstadosModel> estadosList = [];
-  String estadoSelecionado = '';
-  String paisSelecionado = '';
-  List<String> listDropPais = new List();
+  String? estadoSelecionado = '';
+  String? paisSelecionado = '';
+  List<String?> listDropPais = [];
 
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
 
         throw Exception(_mensagem);
       }
-      String enviaEstado = estadoSelecionado;
+      String? enviaEstado = estadoSelecionado;
       if(paisSelecionado != 'Brasil'){
         estadoSelecionado = '';
       }else{
@@ -112,9 +112,9 @@ class _NovaRedeViewState extends State<NovaRedeView> {
       var _dados = redeModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.post(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -171,13 +171,8 @@ class _NovaRedeViewState extends State<NovaRedeView> {
           color: Colors.white,
           opacity: 1,
         ),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
-        title: Text("Cadastro de redes",style: new TextStyle(fontWeight: FontWeight.bold, color: AppColors.colorTextAppNav,),),
+        title: Text("Cadastro de redes",style: new TextStyle(fontWeight: FontWeight.bold, color: AppColors.colorTextAppNav, fontSize: 20
+        ),),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -263,7 +258,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                             borderRadius: BorderRadius.circular(5.0),
                             border: Border.all(
                               width: 1.0,
-                              color: Colors.grey[400],
+                              color: Colors.grey[400]!,
                             )),
                         child: TextField(
                           maxLines: 10,
@@ -294,29 +289,36 @@ class _NovaRedeViewState extends State<NovaRedeView> {
         new Container(
           margin: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
           height: 50,
-          child: !widget.assinante && widget.userModel.qtdRedePromocional > 0?
-          RaisedButton(
-            color: Colors.grey.withOpacity(0.3),
-            textColor: Colors.white,
-            padding: EdgeInsets.all(15),
+          child: !widget.assinante! && widget.userModel!.qtdRedePromocional! > 0?
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey.withOpacity(0.3),
+              padding: EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
             child: Text(
               "SOMENTE ASSINANTES",
               style: TextStyle(
                 fontSize: 16,
+                color: Colors.white,
                 fontFamily: FontFamily.fontSpecial,
               ),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(2),
-            ),
+
             onPressed: () {},
           ):
-          RaisedButton(
+          ElevatedButton(
             onPressed:(){
               _cadastraNovaRede(context);
             },
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            padding: const EdgeInsets.all(0.0),
+
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey.withOpacity(0.3),
+              padding: const EdgeInsets.all(0.0),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            ),
             child: Ink(
               decoration: BoxDecoration(
                 gradient:  LinearGradient(
@@ -500,10 +502,10 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                 //controllerNomeCartaoContaBancaria.text = newValue;
               });
             },
-            items: listDropPais.map((String value) {
+            items: listDropPais.map((String? value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(value!),
               );
             }).toList(),
           ),
@@ -551,10 +553,10 @@ class _NovaRedeViewState extends State<NovaRedeView> {
                   //controllerNomeCartaoContaBancaria.text = newValue;
                 });
               },
-              items: listDropEstado.map((String value) {
+              items: listDropEstado.map((String? value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(value!),
                 );
               }).toList(),
             ),
@@ -568,7 +570,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
   void _buscaEstado() async {
     listDropEstado.add('');
     UsuarioService usuarioService = UsuarioService();
-    List<EstadosModel> estados = await usuarioService.listaEstados();
+    List<EstadosModel>? estados = await usuarioService.listaEstados();
     if (estados != null) {
       estadosList = estados;
       for (int i = 0; i < estados.length; i++) {
@@ -582,7 +584,7 @@ class _NovaRedeViewState extends State<NovaRedeView> {
   void _buscaPais() async {
     listDropPais.add('');
     UsuarioService usuarioService = UsuarioService();
-    List<PaisesModel> paises = await usuarioService.listaPaises();
+    List<PaisesModel>? paises = await usuarioService.listaPaises();
     if (paises != null) {
       for (int i = 0; i < paises.length; i++) {
         listDropPais.add(paises[i].texto);

@@ -11,8 +11,8 @@ import 'package:futt/futt/service/UsuarioService.dart';
 import 'package:futt/futt/service/UtilService.dart';
 import 'package:futt/futt/view/components/DialogFutt.dart';
 import 'package:futt/futt/view/style/colors.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:multipart_request/multipart_request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -20,7 +20,7 @@ import 'dart:io';
 
 class PerfilUserView extends StatefulWidget {
 
-  UsuarioModel usuarioModel;
+  UsuarioModel? usuarioModel;
   PerfilUserView({this.usuarioModel});
 
   @override
@@ -29,24 +29,24 @@ class PerfilUserView extends StatefulWidget {
 
 class _PerfilUserViewState extends State<PerfilUserView> {
 
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerSenha = TextEditingController();
   TextEditingController _controllerConfirmSenha = TextEditingController();
 
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerApelido = TextEditingController();
   TextEditingController _controllerDataNascimento = TextEditingController();
-  String _controllerPosicionamento = "";
-  String _controllerSexo = "";
-  String _controllerPais = "";
+  String? _controllerPosicionamento = "";
+  String? _controllerSexo = "";
+  String? _controllerPais = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
 
-  PaisModel paisModelSelecionado;
-  GeneroModel generoModelSelecionado;
-  PosicionamentoModel posicionamentoModelSelecionado;
+  PaisModel? paisModelSelecionado;
+  GeneroModel? generoModelSelecionado;
+  PosicionamentoModel? posicionamentoModelSelecionado;
 
-  File _imagem;
+  File? _imagem;
   bool _subindoImagem = false;
   String _nomeImagem = "";
 
@@ -58,15 +58,15 @@ class _PerfilUserViewState extends State<PerfilUserView> {
         });
       }else{
         final prefs = await SharedPreferences.getInstance();
-        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
-        String email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
+        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
+        String? email = await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
 
         UsuarioModel usuarioModel = UsuarioModel.AtualizaSenha(email, _controllerSenha.text, _controllerSenha.text);
 
         var _url = "${ConstantesRest.URL_USUARIOS}/atualizaSenha";
         var _dados = usuarioModel.toJson();
 
-        http.Response response = await http.put(_url,
+        http.Response response = await http.put(Uri.parse(_url),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': token,
@@ -126,9 +126,9 @@ class _PerfilUserViewState extends State<PerfilUserView> {
       var _dados = usuarioModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -187,7 +187,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
     return utilService.listaPaises();
   }
 
-  Future<UsuarioModel> _atualizaImagem(int idUsuario) async {
+  Future<UsuarioModel?> _atualizaImagem(int? idUsuario) async {
     UsuarioService usuarioService = UsuarioService();
     return usuarioService.buscaPorId(idUsuario.toString());
   }
@@ -214,21 +214,21 @@ class _PerfilUserViewState extends State<PerfilUserView> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => {
                   _recuperaImagem("galeria", idUsuario),
                   Navigator.pop(context),
                 },
                 child: Text("Galeria"),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => {
                   _recuperaImagem("camera", idUsuario),
                   Navigator.pop(context),
                 },
                 child: Text("Câmera"),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => {
                   Navigator.pop(context),
                 },
@@ -241,17 +241,19 @@ class _PerfilUserViewState extends State<PerfilUserView> {
   }
 
   _recuperaImagem(String origemImagem, int idRede) async {
-    File _imagemSelecionada;
+    XFile? _imagemSelecionada;
+    final ImagePicker _picker = ImagePicker();
     switch (origemImagem) {
       case "camera" :
-        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.camera); //, maxHeight: 500, maxWidth: 500
+        _imagemSelecionada = await _picker.pickImage(source: ImageSource.camera); //, maxHeight: 500, maxWidth: 500
         break;
       case "galeria" :
-        _imagemSelecionada = await ImagePicker.pickImage(source: ImageSource.gallery); //, maxHeight: 500, maxWidth: 500
+        _imagemSelecionada = await _picker.pickImage(source: ImageSource.gallery); //, maxHeight: 500, maxWidth: 500
         break;
     }
+    File fileImage = File(_imagemSelecionada!.path);
 
-    _imagem = _imagemSelecionada;
+    _imagem = fileImage;
     if (_imagem != null) {
       imageCache.clear();
       setState(() {
@@ -261,20 +263,36 @@ class _PerfilUserViewState extends State<PerfilUserView> {
     }
   }
 
-  Future<UsuarioModel> _uploadImagem(int idUsuario) async {
+  Future<UsuarioModel?> _uploadImagem(int idUsuario) async {
     final prefs = await SharedPreferences.getInstance();
-    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
     var _url = "${ConstantesRest.URL_USUARIOS}/${idUsuario}/foto";
-    var request = MultipartRequest();
+    var url = Uri.parse(_url);
 
-    request.setUrl(_url);
-    request.addFile("file", _imagem.path);
-    request.addHeaders({
-      //'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': token,
+    // request.setUrl(_url);
+    // request.addFile("file", _imagem.path);
+    // request.addHeaders({
+    //   //'Content-Type': 'application/json; charset=UTF-8',
+    //   'Authorization': token,
+    // });
+    //
+    // Response response = request.send();
+
+    Response? response;
+
+    var request = new http.MultipartRequest("POST", url,);
+    request.files.add(
+        await http.MultipartFile.fromPath(
+            "file",
+            _imagem!.path
+        )
+    );
+    request.headers["authorization"]=token;
+     await request.send().then((responsed) async{
+       response = await Response.fromStream(responsed);
     });
 
-    Response response = request.send();
+
     try {
       print(response);
     } on Exception catch (exception) {
@@ -283,23 +301,29 @@ class _PerfilUserViewState extends State<PerfilUserView> {
       print(error);
     }
 
-    response.onError = () {
-      setState(() {
-        _subindoImagem = false;
-      });
-    };
+    if(response!=null && response!.statusCode == 200){
+      _subindoImagem = false;
+    }else{
+      _subindoImagem = false;
+    }
 
-    response.onComplete = (response) {
-      //_atualizaImagem(widget.redeModel.id);
-      print("Buscar imagem via http");
-      setState(() {
-        _subindoImagem = false;
-      });
-    };
-
-    response.progress.listen((int progress) {
-      print("Buscar imagem via http");
-    });
+    // response.onError = () {
+    //   setState(() {
+    //     _subindoImagem = false;
+    //   });
+    // };
+    //
+    // response.onComplete = (response) {
+    //   //_atualizaImagem(widget.redeModel.id);
+    //   print("Buscar imagem via http");
+    //   setState(() {
+    //     _subindoImagem = false;
+    //   });
+    // };
+    //
+    // response.progress.listen((int progress) {
+    //   print("Buscar imagem via http");
+    // });
   }
 
   @override
@@ -312,13 +336,10 @@ class _PerfilUserViewState extends State<PerfilUserView> {
           opacity: 1,
         ),
         backgroundColor: Color(0xff093352),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
-        title: Text("Perfil"),
+        title: Text("Perfil",style: TextStyle(
+            color: Colors.white,
+            fontSize: 20
+        ),),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.colorFloatButton,
@@ -351,7 +372,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                       obscureText: true,
                       controller: _controllerConfirmSenha,
                     ),
-                    Text(_mensagem,
+                    Text(_mensagem!,
                       style: TextStyle(
                         fontSize: 12,
                         fontFamily: 'Candal',
@@ -362,44 +383,40 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
-                  child: RaisedButton(
-                    color: Color(0xff086ba4),
-                    textColor: Colors.white,
+                TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
                     padding: EdgeInsets.all(15),
-                    child: Text(
-                      "Alterar",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'Candal',
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
+                    backgroundColor:Color(0xff086ba4),
+                  ),
+                  child: Text(
+                    "Alterar",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontFamily: 'Candal',
                     ),
                   ),
                   onPressed: () {
                     _salvaNovaSenha();
                   },
                 ),
-                FlatButton(
-                  child: RaisedButton(
-                    color: Color(0xff086ba4),
-                    textColor: Colors.white,
+                TextButton(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
                     padding: EdgeInsets.all(15),
-                    child: Text(
-                      "Fechar",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'Candal',
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
+                    backgroundColor:Color(0xff086ba4),
+                  ),
+                  child: Text(
+                    "Fechar",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontFamily: 'Candal',
                     ),
                   ),
                   onPressed: () {
-                   Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ),
               ],
@@ -433,8 +450,8 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                         ),
                         _subindoImagem
                             ? CircularProgressIndicator()
-                            : FutureBuilder<UsuarioModel>(
-                          future: _atualizaImagem(widget.usuarioModel.id),
+                            : FutureBuilder<UsuarioModel?>(
+                          future: _atualizaImagem(widget.usuarioModel!.id),
                           builder: (context, snapshot) {
                             switch( snapshot.connectionState ) {
                               case ConnectionState.none :
@@ -447,8 +464,8 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                               case ConnectionState.done :
                                 if( snapshot.hasData ) {
 
-                                  UsuarioModel usuarioRetorno = snapshot.data;
-                                  _nomeImagem = ConstantesRest.URL_STATIC_USER + usuarioRetorno.nomeFoto;
+                                  UsuarioModel usuarioRetorno = snapshot.data!;
+                                  _nomeImagem = ConstantesRest.URL_STATIC_USER + usuarioRetorno.nomeFoto!;
 
                                   return GestureDetector(
                                     child: CircleAvatar(
@@ -579,7 +596,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                                     hintText: "Search",
                                     border: OutlineInputBorder(),
                                   ),
-                                  onChanged: (PosicionamentoModel data) => _controllerPosicionamento = data.id,
+                                  onChanged: (PosicionamentoModel? data) => _controllerPosicionamento = data!.id,
                                   selectedItem: posicionamentoModelSelecionado,
                                 ),
                               ),
@@ -592,7 +609,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                                     hintText: "Search",
                                     border: OutlineInputBorder(),
                                   ),
-                                  onChanged: (GeneroModel data) => _controllerSexo = data.id,
+                                  onChanged: (GeneroModel? data) => _controllerSexo = data!.id,
                                   selectedItem: generoModelSelecionado,
                                 ),
                               ),
@@ -605,7 +622,7 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                                     hintText: "Search",
                                     border: OutlineInputBorder(),
                                   ),
-                                  onChanged: (PaisModel data) => _controllerPais = data.id,
+                                  onChanged: (PaisModel? data) => _controllerPais = data!.id,
                                   selectedItem: paisModelSelecionado,
                                 ),
                               ),
@@ -656,27 +673,30 @@ class _PerfilUserViewState extends State<PerfilUserView> {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 10),
-                                child: RaisedButton(
-                                  color: Color(0xff086ba4),
-                                  textColor: Colors.white,
-                                  padding: EdgeInsets.all(15),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                    backgroundColor:  Color(0xff086ba4),
+                                    padding: EdgeInsets.all(15),
+                                  ),
                                   child: Text(
                                     "Atualizar",
                                     style: TextStyle(
                                       fontSize: 16,
+                                      color: Colors.white,
                                       fontFamily: 'Candal',
                                     ),
                                   ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
+
                                   onPressed: _atualizar,
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 15),
                                 child: Text(
-                                  _mensagem,
+                                  _mensagem!,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 12,

@@ -8,8 +8,8 @@ import 'package:futt/futt/view/style/font-family.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EstatisticasSequenciais extends StatefulWidget {
-  int idUsuario;
-  int idRede;
+  int? idUsuario;
+  int? idRede;
 
   EstatisticasSequenciais(this.idUsuario, this.idRede);
 
@@ -21,9 +21,9 @@ class EstatisticasSequenciais extends StatefulWidget {
 class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
   var _valoresSequenciais;
 
-  Future<List<RespostaModel>> _getValoresSequenciais() {
+  Future<List<RespostaModel>?> _getValoresSequenciais() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getSequenciais(
+    Future<List<RespostaModel>?> respostas = estatisticaService.getSequenciais(
         widget.idUsuario, widget.idRede);
     return respostas;
   }
@@ -48,7 +48,7 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<RespostaModel>>(
+    return FutureBuilder<List<RespostaModel>?>(
       future: _getValoresSequenciais(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -192,9 +192,9 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
           case ConnectionState.done:
             if (snapshot.hasData) {
               double _tam = 90;
-              List<RespostaModel> estatisticas = snapshot.data;
+              List<RespostaModel> estatisticas = snapshot.data!;
               RespostaModel resultado = estatisticas[0];
-              _valoresSequenciais = resultado.resposta.split("#");
+              _valoresSequenciais = resultado.resposta!.split("#");
 
               if (_valoresSequenciais != "" && _valoresSequenciais[0] != "") {
                 return new Container(
@@ -372,7 +372,6 @@ class _EstatisticasSequenciaisState extends State<EstatisticasSequenciais> {
             }
             break;
         }
-        return null;
       },
     );
   }

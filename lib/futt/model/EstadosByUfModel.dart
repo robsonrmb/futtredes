@@ -1,7 +1,7 @@
 class EstadosByUFModel {
-  int id;
-  String sigla;
-  String nome;
+  int? id;
+  String? sigla;
+  String? nome;
 
   EstadosByUFModel({this.sigla,this.id, this.nome});
 

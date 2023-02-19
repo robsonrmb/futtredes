@@ -1,16 +1,16 @@
 class IntegranteModel {
-  int _idUsuario;
-  String _email;
-  String _nome;
-  String _nomeFoto;
-  String _pais;
-  String _estado;
-  String _cidade;
-  String _local;
-  String _apelido;
-  int _idRede;
-  String _user;
-  String _integrante;
+  int? _idUsuario;
+  String? _email;
+  String? _nome;
+  String? _nomeFoto;
+  String? _pais;
+  String? _estado;
+  String? _cidade;
+  String? _local;
+  String? _apelido;
+  int? _idRede;
+  String? _user;
+  String? _integrante;
 
   IntegranteModel(this._apelido,this._local,this._idUsuario, this._email, this._nome, this._nomeFoto, this._pais, this._estado, this._cidade, this._idRede,this._user,this._integrante);
   IntegranteModel.Novo(this._idRede, this._integrante);
@@ -50,71 +50,71 @@ class IntegranteModel {
     };
   }
 
-  String get apelido => _apelido;
+  String? get apelido => _apelido;
 
-  set apelido(String value) {
+  set apelido(String? value) {
     _apelido = value;
   }
 
 
-  String get local => _local;
+  String? get local => _local;
 
-  set local(String value) {
+  set local(String? value) {
     _local = value;
   }
 
 
-  String get estado => _estado;
+  String? get estado => _estado;
 
-  set estado(String value) {
+  set estado(String? value) {
     _estado = value;
   }
 
-  String get pais => _pais;
+  String? get pais => _pais;
 
-  set pais(String value) {
+  set pais(String? value) {
     _pais = value;
   }
 
-  String get nomeFoto => _nomeFoto;
+  String? get nomeFoto => _nomeFoto;
 
-  set nomeFoto(String value) {
+  set nomeFoto(String? value) {
     _nomeFoto = value;
   }
 
-  String get nome => _nome;
+  String? get nome => _nome;
 
-  set nome(String value) {
+  set nome(String? value) {
     _nome = value;
   }
 
-  int get idUsuario => _idUsuario;
+  int? get idUsuario => _idUsuario;
 
-  set idUsuario(int value) {
+  set idUsuario(int? value) {
     _idUsuario = value;
   }
 
-  int get idRede => _idRede;
+  int? get idRede => _idRede;
 
-  set idRede(int value) {
+  set idRede(int? value) {
     _idRede = value;
   }
 
-  String get cidade => _cidade;
+  String? get cidade => _cidade;
 
-  set cidade(String value) {
+  set cidade(String? value) {
     _cidade = value;
   }
 
-  String get email => _email;
+  String? get email => _email;
 
-  set email(String value) {
+  set email(String? value) {
     _email = value;
   }
 
-  String get user => _user;
+  String? get user => _user;
 
-  set user(String value) {
+  set user(String? value) {
     _user = value;
   }
 

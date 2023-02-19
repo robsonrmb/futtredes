@@ -30,7 +30,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
-  TabController _controllerTorneios;
+  TabController? _controllerTorneios;
   int _currentIndex = 0;
 
   TextEditingController _controllerNome = TextEditingController();
@@ -44,10 +44,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   String _cidadeFiltro = "";
   String _dataFiltro = "";
 
-  SharedPreferences pref;
+  late SharedPreferences pref;
 
-  UsuarioModel usuarioModel;
-  bool assinante = false;
+  UsuarioModel? usuarioModel;
+  bool? assinante = false;
   bool permiteCriarRede = true;
 
   List<String> choices = <String>[
@@ -88,7 +88,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   void buscarFoto() async {
     usuarioModel = await _buscaUsuarioLogado();
     if (usuarioModel != null) {
-      if (usuarioModel.qtdRedePromocional >= usuarioModel.numMaximoRedePromocional) {
+      if (usuarioModel!.qtdRedePromocional! >= usuarioModel!.numMaximoRedePromocional!) {
         permiteCriarRede = false;
       }
       setState(() {});
@@ -101,7 +101,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   _novaRede() async{
     DialogFutt dialogFutt = new DialogFutt();
 
-    if(assinante){
+    if(assinante!){
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => NovaRedeView(userModel: usuarioModel,assinante: assinante,)),
@@ -130,7 +130,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         PageRouteBuilder(
           transitionDuration: Duration(milliseconds: 700),
           pageBuilder: (_, __, ___) => PerfilView(
-            image: '${ConstantesRest.URL_STATIC_USER}${usuarioModel.nomeFoto}',
+            image: '${ConstantesRest.URL_STATIC_USER}${usuarioModel!.nomeFoto}',
             usuarioModel: usuarioModel,
           ),
         ));
@@ -142,15 +142,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
   verificarUsuario() async {
     pref = await SharedPreferences.getInstance();
-    String email = pref.getString(ConstantesConfig.PREFERENCES_EMAIL);
-    String senha = pref.getString(ConstantesConfig.PREFERENCES_SENHA);
+    String? email = pref.getString(ConstantesConfig.PREFERENCES_EMAIL);
+    String? senha = pref.getString(ConstantesConfig.PREFERENCES_SENHA);
     if (email != null && senha != null && email != "" && senha != "") {
       LoginModel loginModel = LoginModel(email, senha);
 
       var _url = "${ConstantesRest.URL_LOGIN}";
       var _dados = loginModel.toJson();
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.post(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -211,9 +211,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     }
   }
 
-  Future<UsuarioModel> _buscaUsuarioLogado() async {
+  Future<UsuarioModel?> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
-    UsuarioModel usuario =
+    UsuarioModel? usuario =
         await usuarioService.buscaLogado();
     return usuario;
   }
@@ -226,12 +226,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           color: Colors.white,
           opacity: 1,
         ),
-        textTheme:
-            TextTheme(title: TextStyle(color: Colors.white, fontSize: 20)),
         title: Text(
           _titleAppBar,
           style: new TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 20,
             color: AppColors.colorTextAppNav,
           ),
         ),
@@ -266,7 +265,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                               image: new DecorationImage(
                                   fit: BoxFit.scaleDown,
                                   image: NetworkImage(
-                                      "${ConstantesRest.URL_STATIC_USER}${usuarioModel.nomeFoto}")),
+                                      "${ConstantesRest.URL_STATIC_USER}${usuarioModel!.nomeFoto}")),
                               border: Border.all(color: Colors.white))),
                     ))
                 : Shimmer.fromColors(
@@ -285,7 +284,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           // ),
 
           PopupMenuButton(
-            onSelected: (value) {
+            onSelected: (dynamic value) {
               selectedChoice(value);
             },
             shape: RoundedRectangleBorder(
@@ -325,13 +324,13 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         fixedColor: AppColors.colorTextAppNav,
         items: [
           BottomNavigationBarItem(
-            title: Text("Redes"),
+            label: 'Redes',
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-              title: Text("Dono"), icon: FaIcon(FontAwesomeIcons.addressBook)),
+              label: 'Dono', icon: FaIcon(FontAwesomeIcons.addressBook)),
           BottomNavigationBarItem(
-              title: Text("Dashboard"),
+              label:'Dashboard',
               icon: FaIcon(FontAwesomeIcons.chartLine)),
         ],
       ),
@@ -356,15 +355,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       case 2:
         pref.setBool('restart', false);
         return DashboardView(
-          nome: usuarioModel.nome,
-          nomeFoto: usuarioModel.nomeFoto,
-          pais: usuarioModel.pais,
-          apelido: usuarioModel.apelido,
-          user: usuarioModel.user,
-          estado: usuarioModel.estado,
-          localOndeJoga: usuarioModel.ondeJoga,
-          posicao: usuarioModel.posicao,
-          idUser: usuarioModel.id,
+          nome: usuarioModel!.nome,
+          nomeFoto: usuarioModel!.nomeFoto,
+          pais: usuarioModel!.pais,
+          apelido: usuarioModel!.apelido,
+          user: usuarioModel!.user,
+          estado: usuarioModel!.estado,
+          localOndeJoga: usuarioModel!.ondeJoga,
+          posicao: usuarioModel!.posicao,
+          idUser: usuarioModel!.id,
         );
         break;
       default:

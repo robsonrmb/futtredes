@@ -23,7 +23,7 @@ class SplashScreenView extends StatefulWidget {
 }
 
 class _SplashScreenViewState extends State<SplashScreenView> {
-  SharedPreferences pref;
+  late SharedPreferences pref;
 
   @override
   void initState() {
@@ -34,15 +34,15 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   verificarUsuario() async {
     if (widget.splashInicial) {
       pref = await SharedPreferences.getInstance();
-      String email = pref.getString(ConstantesConfig.PREFERENCES_EMAIL);
-      String senha = pref.getString(ConstantesConfig.PREFERENCES_SENHA);
+      String? email = pref.getString(ConstantesConfig.PREFERENCES_EMAIL);
+      String? senha = pref.getString(ConstantesConfig.PREFERENCES_SENHA);
       if (email != null && senha != null && email != "" && senha != "") {
         LoginModel loginModel = LoginModel(email, senha);
 
         var _url = "${ConstantesRest.URL_LOGIN}";
         var _dados = loginModel.toJson();
 
-        http.Response response = await http.post(_url,
+        http.Response response = await http.post(Uri.parse(_url),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -51,7 +51,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
         if (response.statusCode == 200) {
           //Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginView()));
           await pref.setString(ConstantesConfig.PREFERENCES_TOKEN,
-              response.headers['authorization']);
+              response.headers['authorization']!);
           _buscarUsuarioAssinante();
         }
       }else{
@@ -103,7 +103,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
   void _buscarUsuarioAssinante() async {
     UsuarioService usuarioService = UsuarioService();
-    UsuarioAssinanteModel usuarioAssinanteModel = await usuarioService.buscaUsuarioAssinante();
+    UsuarioAssinanteModel? usuarioAssinanteModel = await usuarioService.buscaUsuarioAssinante();
     Navigator.pop(context);
 
     if (usuarioAssinanteModel != null) {

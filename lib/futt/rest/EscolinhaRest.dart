@@ -8,7 +8,7 @@ class EscolinhaRest extends BaseRest {
   Future<List<EscolinhaModel
   >> processaHttpGetList(String url, bool filtro) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         var dadosJson = json.decode(response.body);
         return _parseListaEscolinhaModel(dadosJson);
@@ -27,7 +27,7 @@ class EscolinhaRest extends BaseRest {
   }
 
   List<EscolinhaModel> _parseListaEscolinhaModel(dadosJson) {
-    List<EscolinhaModel> lista = List();
+    List<EscolinhaModel> lista =[];
     for (var registro in dadosJson) {
       EscolinhaModel resultadoModel = EscolinhaModel.fromJson(
           registro); //.converteJson

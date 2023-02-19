@@ -19,7 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LoginView extends StatefulWidget {
   @override
-  bool exibeLogin;
+  bool? exibeLogin;
 
   LoginView({this.exibeLogin});
 
@@ -27,7 +27,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
   TextEditingController _controllerEmailParaTrocaDeSenha =
@@ -35,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController _controllerAnoNascimentoParaTrocaDeSenha =
       TextEditingController();
 
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   bool obscureText = true;
 
@@ -56,9 +56,9 @@ class _LoginViewState extends State<LoginView> {
         _controllerEmail.text = "";
         _controllerSenha.text = "";
       } else {
-        String email =
+        String? email =
             await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
-        String senha =
+        String? senha =
             await prefs.getString(ConstantesConfig.PREFERENCES_SENHA);
 
         if (email != null && senha != null && email != "" && senha != "") {
@@ -68,7 +68,7 @@ class _LoginViewState extends State<LoginView> {
           var _url = "${ConstantesRest.URL_LOGIN}";
           var _dados = loginModel.toJson();
 
-          http.Response response = await http.post(_url,
+          http.Response response = await http.post(Uri.parse(_url),
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
               },
@@ -81,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
             await prefs.setString(
                 ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
             await prefs.setString(ConstantesConfig.PREFERENCES_TOKEN,
-                response.headers['authorization']);
+                response.headers['authorization']!);
 
             Navigator.pushAndRemoveUntil(
               context,
@@ -121,7 +121,7 @@ class _LoginViewState extends State<LoginView> {
         var _url = "${ConstantesRest.URL_LOGIN}";
         var _dados = loginModel.toJson();
 
-        http.Response response = await http.post(_url,
+        http.Response response = await http.post(Uri.parse(_url),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -134,7 +134,7 @@ class _LoginViewState extends State<LoginView> {
           await prefs.setString(
               ConstantesConfig.PREFERENCES_SENHA, _controllerSenha.text);
           await prefs.setString(ConstantesConfig.PREFERENCES_TOKEN,
-              response.headers['authorization']);
+              response.headers['authorization']!);
 
           _buscarUsuarioAssinante();
         } else {
@@ -190,7 +190,7 @@ class _LoginViewState extends State<LoginView> {
       var _url = "${ConstantesRest.URL_USUARIOS}/novasenha";
       var _dados = emailModel.toJson();
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.post(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -375,8 +375,8 @@ class _LoginViewState extends State<LoginView> {
                                       fontSize: 14,
                                     ),
                                   ),
-                                  onTap: () {
-                                    return showDialog(
+                                  onTap: () async{
+                                    return await showDialog(
                                         context: context,
                                         barrierDismissible: true,
                                         builder: (BuildContext) {
@@ -434,19 +434,21 @@ class _LoginViewState extends State<LoginView> {
                                               ),
                                             ),
                                             actions: <Widget>[
-                                              FlatButton(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-
-                                                color: AppColors.colorButtonDialog,
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                  backgroundColor: AppColors.colorButtonDialog,
+                                                ),
                                                 onPressed: () =>
                                                     _enviaNovaSenha(),
                                                 child:
                                                 Text("Enviar nova senha"),
                                               ),
-                                              FlatButton(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-
-                                                color: AppColors.colorButtonDialog,
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                  backgroundColor: AppColors.colorButtonDialog,
+                                                ),
                                                 onPressed: () =>
                                                     Navigator.pop(context),
                                                 child: Text("Fechar"),
@@ -459,13 +461,16 @@ class _LoginViewState extends State<LoginView> {
                               ],
                             )
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {
                             _entrar(context);
                           },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          padding: const EdgeInsets.all(0.0),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            padding: const EdgeInsets.all(0.0),
+                          ),
+
                           child: Ink(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -496,11 +501,15 @@ class _LoginViewState extends State<LoginView> {
                         new Container(
                           height: 4,
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: _abrirCadastro,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          padding: const EdgeInsets.all(0.0),
+
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            padding: const EdgeInsets.all(0.0),
+                          ),
+
                           child: Ink(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -579,7 +588,7 @@ class _LoginViewState extends State<LoginView> {
 
   void _buscarUsuarioAssinante() async {
     UsuarioService usuarioService = UsuarioService();
-    UsuarioAssinanteModel usuarioAssinanteModel =
+    UsuarioAssinanteModel? usuarioAssinanteModel =
         await usuarioService.buscaUsuarioAssinante();
     Navigator.pop(context);
 

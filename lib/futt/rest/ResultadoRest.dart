@@ -5,9 +5,9 @@ import 'dart:convert';
 
 class ResultadoRest extends BaseRest {
 
-  Future<List<ResultadoModel>> processaHttpGetList(String url) async {
+  Future<List<ResultadoModel>?> processaHttpGetList(String url) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -27,7 +27,7 @@ class ResultadoRest extends BaseRest {
   }
 
   List<ResultadoModel> _parseListaResultadoModel(dadosJson) {
-    List<ResultadoModel> lista = List();
+    List<ResultadoModel> lista =[];
     for (var registro in dadosJson) {
       ResultadoModel resultadoModel = ResultadoModel.fromJson(
           registro); //.converteJson

@@ -6,10 +6,10 @@ import 'dart:convert';
 class AreaEstatisticaRest extends BaseRest {
 
   Future<List<AreaEstatisticaModel>> processaHttpGetList(String url) async {
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var dadosJson = json.decode(response.body);
-      List<AreaEstatisticaModel> lista = List();
+      List<AreaEstatisticaModel> lista = [];
       for (var registro in dadosJson) {
         AreaEstatisticaModel areaEstatisticaModel = AreaEstatisticaModel
             .fromJson(

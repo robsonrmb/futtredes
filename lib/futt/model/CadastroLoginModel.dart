@@ -1,11 +1,11 @@
 class CadastroLoginModel {
-  String email;
-  String user;
-  String senha;
-  String nome;
-  String pais;
-  String estado;
-  String sexo;
+  String? email;
+  String? user;
+  String? senha;
+  String? nome;
+  String? pais;
+  String? estado;
+  String? sexo;
 
   CadastroLoginModel({this.email, this.user,this.senha, this.nome, this.pais, this.estado,
       this.sexo});

@@ -1,11 +1,11 @@
 import 'package:futt/futt/model/TipoAvaliacaoModel.dart';
 
 class ExceptionModel {
-  int _status;
-  String _msg;
-  int _timeStamp;
-  String _cause;
-  String _stackTrace;
+  int? _status;
+  String? _msg;
+  int? _timeStamp;
+  String? _cause;
+  String? _stackTrace;
 
   ExceptionModel(this._status, this._msg, this._timeStamp, this._cause, this._stackTrace);
 
@@ -19,33 +19,33 @@ class ExceptionModel {
     );
   }
 
-  String get stackTrace => _stackTrace;
+  String? get stackTrace => _stackTrace;
 
-  set stackTrace(String value) {
+  set stackTrace(String? value) {
     _stackTrace = value;
   }
 
-  String get cause => _cause;
+  String? get cause => _cause;
 
-  set cause(String value) {
+  set cause(String? value) {
     _cause = value;
   }
 
-  int get timeStamp => _timeStamp;
+  int? get timeStamp => _timeStamp;
 
-  set timeStamp(int value) {
+  set timeStamp(int? value) {
     _timeStamp = value;
   }
 
-  String get msg => _msg;
+  String? get msg => _msg;
 
-  set msg(String value) {
+  set msg(String? value) {
     _msg = value;
   }
 
-  int get status => _status;
+  int? get status => _status;
 
-  set status(int value) {
+  set status(int? value) {
     _status = value;
   }
 

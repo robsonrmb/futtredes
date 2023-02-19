@@ -7,9 +7,9 @@ enum AniProps { opacity, translateX }
 class FadeAnimation extends StatelessWidget {
   final double delay;
   final Widget child;
-  bool horizontal;
+  bool? horizontal;
 
-  FadeAnimation(this.delay, this.child, {AssetImage image,this.horizontal});
+  FadeAnimation(this.delay, this.child, {AssetImage? image,this.horizontal});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class FadeAnimation extends StatelessWidget {
     }
     final tween = MultiTween<AniProps>()
       ..add(AniProps.opacity, 0.0.tweenTo(1.0), 250.milliseconds)
-      ..add(AniProps.translateX, (horizontal?40.0:-30.0).tweenTo(0.0), 250.milliseconds,
+      ..add(AniProps.translateX, (horizontal!?40.0:-30.0).tweenTo(0.0), 250.milliseconds,
           Curves.easeOut);
     /*
     final tween = MultiTrackTween([
@@ -35,7 +35,7 @@ class FadeAnimation extends StatelessWidget {
       child: child,
       builder: (context, child, value) => Opacity(
         opacity: value.get(AniProps.opacity),
-        child: !horizontal?
+        child: !horizontal!?
             Transform.translate(
             offset: Offset(0,value.get(AniProps.translateX)), child: child):
             Transform.translate(

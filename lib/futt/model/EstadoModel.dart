@@ -1,6 +1,6 @@
 class EstadosModel {
-  String codigo;
-  String texto;
+  String? codigo;
+  String? texto;
 
   EstadosModel({this.codigo,this.texto});
 

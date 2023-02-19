@@ -18,7 +18,6 @@ import 'package:futt/futt/view/style/font-family.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:multipart_request/multipart_request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -27,9 +26,9 @@ import 'dart:io';
 import 'package:shimmer/shimmer.dart';
 
 class EdicaoRedeView extends StatefulWidget {
-  RedeModel redeModel;
-  String imageRede;
-  String nomeHero;
+  RedeModel? redeModel;
+  String? imageRede;
+  String? nomeHero;
 
   EdicaoRedeView({this.redeModel, this.imageRede, this.nomeHero});
 
@@ -38,29 +37,29 @@ class EdicaoRedeView extends StatefulWidget {
 }
 
 class _EdicaoRedeViewState extends State<EdicaoRedeView> {
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
-  String _controllerPaisRede = "";
+  String? _controllerPaisRede = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
   TextEditingController _controllerQtdIntegrantes = TextEditingController();
   TextEditingController _controllerMais = TextEditingController();
 
-  File _imagem;
+  File? _imagem;
   bool _subindoImagem = false;
   String _nomeImagem = "";
   bool selecao = false;
 
   bool trocouFoto = false;
 
-  File imagemSelecionada;
-  List<String> listDropEstado = new List();
-  List<EstadosModel> estadosList = [];
-  String estadoSelecionado = '';
-  String paisSelecionado = '';
-  List<String> listDropPais = new List();
+  late File imagemSelecionada;
+  List<String?> listDropEstado = [];
+  List<EstadosModel?> estadosList = [];
+  String? estadoSelecionado = '';
+  String? paisSelecionado = '';
+  List<String?> listDropPais = [];
   bool carregando = true;
-  BuildContext context;
+  late BuildContext context;
 
   @override
   void initState() {
@@ -68,11 +67,11 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     inicializarTela();
   }
 
-  void inicializarTela()async{
+  void inicializarTela() async {
     await _buscaPais();
     await _buscaEstado();
     imageCache.clear();
-    _atualizaValoresIniciais(widget.redeModel);
+    _atualizaValoresIniciais(widget.redeModel!);
   }
 
   _showModalIndisponivel() async {
@@ -88,31 +87,32 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       _mensagem = "";
       if (_controllerNome.text == "") {
         _mensagem = "Informe o nome.";
-      }else if (paisSelecionado == "") {
+      } else if (paisSelecionado == "") {
         _mensagem = "Informe o país.";
-      }
-      else if(paisSelecionado == "Brasil"){
-        if(estadoSelecionado == ""){
+      } else if (paisSelecionado == "Brasil") {
+        if (estadoSelecionado == "") {
           _mensagem = "Informe o estado.";
-        }else{
+        } else {
           if (_controllerCidade.text == "") {
             _mensagem = "Informe a cidade.";
-          }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
+          } else if (_controllerLocal.text == null ||
+              _controllerLocal.text == "") {
             _mensagem = "Informe o local.";
           }
         }
-      }else{
+      } else {
         if (_controllerCidade.text == "") {
           _mensagem = "Informe a cidade.";
-        }else if(_controllerLocal.text == null || _controllerLocal.text == ""){
+        } else if (_controllerLocal.text == null ||
+            _controllerLocal.text == "") {
           _mensagem = "Informe o local.";
         }
       }
 
-      String enviaEstado = estadoSelecionado;
+      String? enviaEstado = estadoSelecionado;
 
       if (_mensagem != "") {
-        if(_mensagem == "Rede atualizada com sucesso!!!"){
+        if (_mensagem == "Rede atualizada com sucesso!!!") {
           _mensagem = "Ocorreu algum erro";
         }
         DialogFutt dialogFutt = new DialogFutt();
@@ -124,21 +124,21 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
         throw Exception(_mensagem);
       }
 
-      if(paisSelecionado != "Brasil"){
+      if (paisSelecionado != "Brasil") {
         estadoSelecionado = '';
         enviaEstado = '';
-      }else{
-        for(int i = 0; i < estadosList.length; i++){
-          if(estadoSelecionado == estadosList[i].texto){
-            enviaEstado = estadosList[i].codigo;
+      } else {
+        for (int i = 0; i < estadosList.length; i++) {
+          if (estadoSelecionado == estadosList[i]!.texto) {
+            enviaEstado = estadosList[i]!.codigo;
           }
         }
       }
 
       RedeModel redeModel = RedeModel.Edita(
-          widget.redeModel.id,
+          widget.redeModel!.id,
           _controllerNome.text,
-            paisSelecionado,
+          paisSelecionado,
           enviaEstado,
           _controllerCidade.text,
           _controllerLocal.text,
@@ -149,9 +149,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
       var _dados = redeModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -166,11 +166,11 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
         _mensagem = "Rede atualizada com sucesso!!!";
 
         DialogFutt dialogFutt = new DialogFutt();
-        dialogFutt.waitingSucess(context, "Atualização de rede", "${_mensagem}");
+        dialogFutt.waitingSucess(
+            context, "Atualização de rede", "${_mensagem}");
         await Future.delayed(Duration(seconds: 3));
         Navigator.pop(context);
         Navigator.pop(context);
-
       } else {
         setState(() {
           var _dadosJson = jsonDecode(response.body);
@@ -196,31 +196,32 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   }
 
   _atualizaValoresIniciais(RedeModel redeOrigem) {
-    _controllerNome.text = redeOrigem.nome;
+    _controllerNome.text = redeOrigem.nome!;
     _controllerPaisRede = redeOrigem.pais;
-    if(redeOrigem.pais != null && redeOrigem.pais != ""){
+    if (redeOrigem.pais != null && redeOrigem.pais != "") {
       paisSelecionado = redeOrigem.pais;
     }
-    if(redeOrigem.estado != null && redeOrigem.estado != ""){
-      for(int i = 0; i < estadosList.length;i++){
-        if(redeOrigem.estado == estadosList[i].codigo){
-          estadoSelecionado =  estadosList[i].texto;
+    if (redeOrigem.estado != null && redeOrigem.estado != "") {
+      for (int i = 0; i < estadosList.length; i++) {
+        if (redeOrigem.estado == estadosList[i]!.codigo) {
+          estadoSelecionado = estadosList[i]!.texto;
         }
       }
     }
     PaisModel _paisModel = PaisModel(redeOrigem.pais, redeOrigem.pais);
-    _controllerCidade.text = redeOrigem.cidade;
-    _controllerLocal.text = redeOrigem.local;
+    _controllerCidade.text = redeOrigem.cidade!;
+    _controllerLocal.text = redeOrigem.local!;
     _controllerQtdIntegrantes.text = redeOrigem.qtdIntegrantes.toString();
-    _controllerMais.text = redeOrigem.info;
+    _controllerMais.text = redeOrigem.info!;
   }
 
-  Future<RedeModel> _atualizaImagem(int idRede) async {
-    RedeService redeService = RedeService();
-    return redeService.buscaRedePorId(idRede); //ConstantesConfig.SERVICO_FIXO
-  }
+  // Future<RedeModel> _atualizaImagem(int idRede) async {
+  //   RedeService redeService = RedeService();
+  //   return redeService.buscaRedePorId(idRede); //ConstantesConfig.SERVICO_FIXO
+  // }
 
-  _showOpc(BuildContext context, String title, String description, int idUsuario){
+  _showOpc(
+      BuildContext context, String title, String description, int idUsuario) {
     showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
@@ -234,12 +235,13 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                     ),
                     elevation: 0.0,
                     backgroundColor: Colors.transparent,
-                    child:new Container(
+                    child: new Container(
                       decoration: new BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                       ),
-                      padding: const EdgeInsets.only(bottom: 16,right: 16,left: 16),
+                      padding: const EdgeInsets.only(
+                          bottom: 16, right: 16, left: 16),
                       child: new Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -256,14 +258,16 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                   })
                             ],
                           ),
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () {
                               _recuperaImagem("camera", idUsuario);
                               Navigator.pop(context);
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            padding: const EdgeInsets.all(0.0),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              padding: const EdgeInsets.all(0.0),
+                            ),
                             child: Ink(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -272,10 +276,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                     AppColors.colorEspecialSecundario1
                                   ],
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
                               ),
                               child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   constraints: const BoxConstraints(
                                       minWidth: 88.0, minHeight: 36.0),
                                   // min sizes for Material buttons
@@ -304,14 +310,16 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                           new Container(
                             height: 20,
                           ),
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () {
                               _recuperaImagem("galeria", idUsuario);
                               Navigator.pop(context);
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            padding: const EdgeInsets.all(0.0),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              padding: const EdgeInsets.all(0.0),
+                            ),
                             child: Ink(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -320,10 +328,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                     AppColors.colorEspecialPrimario1
                                   ],
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
                               ),
                               child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   constraints: const BoxConstraints(
                                       minWidth: 88.0, minHeight: 36.0),
                                   // min sizes for Material buttons
@@ -351,15 +361,12 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                           ),
                         ],
                       ),
-                    )
-                )
-            ),
+                    ))),
           );
         },
         transitionDuration: Duration(milliseconds: 200),
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
-
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
   }
 
   _showModalAtualizaImagem(
@@ -389,14 +396,16 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         })
                   ],
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     _recuperaImagem("camera", idUsuario);
                     Navigator.pop(context);
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  padding: const EdgeInsets.all(0.0),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    padding: const EdgeInsets.all(0.0),
+                  ),
                   child: Ink(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -437,14 +446,16 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                 new Container(
                   height: 20,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     _recuperaImagem("galeria", idUsuario);
                     Navigator.pop(context);
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  padding: const EdgeInsets.all(0.0),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    padding: const EdgeInsets.all(0.0),
+                  ),
                   child: Ink(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -491,49 +502,50 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   _recuperaImagem(String origemImagem, int idRede) async {
     selecao = true;
     setState(() {});
-    File _imagemSelecionada;
+    XFile? _imagemSelecionada;
+    final ImagePicker _picker = ImagePicker();
     switch (origemImagem) {
       case "camera":
-        _imagemSelecionada = await ImagePicker.pickImage(imageQuality: 20,
+        _imagemSelecionada = await _picker.pickImage(
+            imageQuality: 20,
             source: ImageSource.camera); //, maxHeight: 500, maxWidth: 500
         break;
       case "galeria":
-        _imagemSelecionada = await ImagePicker.pickImage(
-            source: ImageSource.gallery,imageQuality: 20); //, maxHeight: 500, maxWidth: 500
+        _imagemSelecionada = await _picker.pickImage(
+            source: ImageSource.gallery,
+            imageQuality: 20); //, maxHeight: 500, maxWidth: 500
         break;
     }
 
     if (_imagemSelecionada != null) {
-      _cropImage(_imagemSelecionada);
+      File fileImage = File(_imagemSelecionada.path);
+      _cropImage(fileImage);
     }
     selecao = false;
 
-    _imagem = _imagemSelecionada;
+    _imagem = File(_imagemSelecionada!.path);
     //  trocouImagem = true;
 
     setState(() {});
   }
 
-  Future<List<RedeModel>> _uploadImagem() async {
+  Future<List<RedeModel>?> _uploadImagem() async {
     circularProgress(context);
     final prefs = await SharedPreferences.getInstance();
-    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-    var request = new http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            '${ConstantesRest.URL_REDE}/${widget.redeModel.id}/imagem'));
+    var request = new http.MultipartRequest('POST',
+        Uri.parse('${ConstantesRest.URL_REDE}/${widget.redeModel!.id}/imagem'));
     var header = new Map<String, String>();
     header['Content-Type'] = 'application/x-www-form-urlencoded';
     //header['Accept'] = 'application/json';
 
-    if (token.isNotEmpty)
-      header[HttpHeaders.authorizationHeader] = token;
+    if (token.isNotEmpty) header[HttpHeaders.authorizationHeader] = token;
 
     request.headers.addAll(header);
 
-    var stream =
-    new http.ByteStream(DelegatingStream.typed(imagemSelecionada.openRead()));
+    var stream = new http.ByteStream(
+        DelegatingStream.typed(imagemSelecionada.openRead()));
     var length = await imagemSelecionada.length();
     var multipartFile = new http.MultipartFile('file', stream, length,
         filename: basename(imagemSelecionada.path));
@@ -547,9 +559,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     print("RESPONSE State:" + respStr);
     Navigator.pop(context);
 
-    if(streamedResponse.statusCode != 200){
+    if (streamedResponse.statusCode != 200) {
       DialogFutt dialogFutt = new DialogFutt();
-      dialogFutt.waitingError(context, "Erro Foto", "${streamedResponse.statusCode.toString()}");
+      dialogFutt.waitingError(
+          context, "Erro Foto", "${streamedResponse.statusCode.toString()}");
       await Future.delayed(Duration(seconds: 3));
       Navigator.pop(context);
     }
@@ -609,12 +622,11 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                       AppColors.colorFundoEscuroApp
                     ])),
               ),
-              textTheme: TextTheme(
-                  title: TextStyle(color: Colors.white, fontSize: 20)),
               title: Text(
                 "Edição de redes",
                 style: new TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontSize: 20,
                   color: AppColors.colorTextAppNav,
                 ),
               ),
@@ -631,9 +643,9 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                       Container(
                         height: 140,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300].withOpacity(0.5),
+                          color: Colors.grey[300]!.withOpacity(0.5),
                           image: DecorationImage(
-                              image: NetworkImage(widget.imageRede),
+                              image: NetworkImage(widget.imageRede!),
                               fit: BoxFit.fill),
                         ),
                       ),
@@ -723,22 +735,23 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                               ),
                             ),
                             _buildDropPais(),
-                            paisSelecionado == 'Brasil'?
-                            new Container(
-                              //color: Colors.red,
-                              margin: const EdgeInsets.only(
-                                top: 20,
-                                left: 16,
-                                bottom: 4,
-                              ),
-                              child: new Text(
-                                'Estado',
-                                style: TextStyle(
-                                    color: Color(0xff112841),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12),
-                              ),
-                            ):new Container(),
+                            paisSelecionado == 'Brasil'
+                                ? new Container(
+                                    //color: Colors.red,
+                                    margin: const EdgeInsets.only(
+                                      top: 20,
+                                      left: 16,
+                                      bottom: 4,
+                                    ),
+                                    child: new Text(
+                                      'Estado',
+                                      style: TextStyle(
+                                          color: Color(0xff112841),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12),
+                                    ),
+                                  )
+                                : new Container(),
                             _buildDropEstado(),
                             rows('Cidade ', 'Digite a cidade da Rede',
                                 _controllerCidade),
@@ -746,7 +759,6 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                 _controllerLocal),
                             rowsQtInte('Limite de integrantes', '20',
                                 _controllerQtdIntegrantes),
-
                             new Container(
                               //color: Colors.red,
                               margin: const EdgeInsets.only(
@@ -762,51 +774,60 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                                     fontSize: 12),
                               ),
                             ),
-                            carregando?new Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16),
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 1),
-                                child: Shimmer.fromColors(
-                                    baseColor: Colors.grey.withOpacity(0.5),
-                                    highlightColor: Colors.white,
-                                    child: new Container(
-                                      height: 40,
-                                      width: MediaQuery.of(context).size.width*0.9,
-                                      decoration: new BoxDecoration(
-                                        //shape: BoxShape.circle,
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.grey.withOpacity(0.5),
+                            carregando
+                                ? new Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 1),
+                                      child: Shimmer.fromColors(
+                                          baseColor:
+                                              Colors.grey.withOpacity(0.5),
+                                          highlightColor: Colors.white,
+                                          child: new Container(
+                                            height: 40,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.9,
+                                            decoration: new BoxDecoration(
+                                              //shape: BoxShape.circle,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                            ),
+                                          )),
+                                    ),
+                                  )
+                                : Container(
+                                    margin: const EdgeInsets.only(
+                                        right: 16, left: 16),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        border: Border.all(
+                                          width: 1.0,
+                                          color: Colors.grey[400]!,
+                                        )),
+                                    child: TextField(
+                                      maxLines: 10,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration.collapsed(
+                                        hintText:
+                                            "Acrescente alguma observação(opcional)",
+                                        hintStyle: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[400],
+                                        ),
                                       ),
-                                    )),
-                              ),
-                            ):
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(right: 16, left: 16),
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  border: Border.all(
-                                    width: 1.0,
-                                    color: Colors.grey[400],
-                                  )),
-                              child: TextField(
-                                maxLines: 10,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration.collapsed(
-                                  hintText:
-                                      "Acrescente alguma observação(opcional)",
-                                  hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[400],
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                      controller: _controllerMais,
+                                    ),
                                   ),
-                                ),
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                controller: _controllerMais,
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -815,19 +836,21 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                 ),
               ),
             ),
-            bottomNavigationBar: widget.redeModel.status == 2
+            bottomNavigationBar: widget.redeModel!.status == 2
                 ? BottomAppBar(
                     child: new Container(
                     height: 60,
                     padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                     color: Color(0xfff7f7f7),
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         _atualizaRede();
                       },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      padding: const EdgeInsets.all(0.0),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        padding: const EdgeInsets.all(0.0),
+                      ),
                       child: Ink(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -854,60 +877,59 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                         ),
                       ),
                     ),
-                  )
-                )
+                  ))
                 : null,
           );
   }
 
   Widget rows(String title, String hint, TextEditingController controller) {
-    if(carregando){
+    if (carregando) {
       return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           new Expanded(
               child: new Container(
-                //height: 60,
-                //width: MediaQuery.of(context).size.width,
+            //height: 60,
+            //width: MediaQuery.of(context).size.width,
 
-                margin: const EdgeInsets.only(top: 16, right: 14, left: 14),
-                // padding: const EdgeInsets.only(left: 6),
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    new Container(
-                      //color: Colors.red,
-                      margin: const EdgeInsets.only(
-                        top: 4,
-                        bottom: 4,
-                      ),
-                      child: new Text(
-                        title,
-                        style: TextStyle(
-                            color: Color(0xff112841),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1),
-                      child: Shimmer.fromColors(
-                          baseColor: Colors.grey.withOpacity(0.5),
-                          highlightColor: Colors.white,
-                          child: new Container(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width*0.9,
-                            decoration: new BoxDecoration(
-                              //shape: BoxShape.circle,
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          )),
-                    )
-                  ],
+            margin: const EdgeInsets.only(top: 16, right: 14, left: 14),
+            // padding: const EdgeInsets.only(left: 6),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Container(
+                  //color: Colors.red,
+                  margin: const EdgeInsets.only(
+                    top: 4,
+                    bottom: 4,
+                  ),
+                  child: new Text(
+                    title,
+                    style: TextStyle(
+                        color: Color(0xff112841),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12),
+                  ),
                 ),
-              ))
+                Padding(
+                  padding: EdgeInsets.only(top: 1),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.withOpacity(0.5),
+                      highlightColor: Colors.white,
+                      child: new Container(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: new BoxDecoration(
+                          //shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.withOpacity(0.5),
+                        ),
+                      )),
+                )
+              ],
+            ),
+          ))
         ],
       );
     }
@@ -970,53 +992,53 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
 
   Widget rowsQtInte(
       String title, String hint, TextEditingController controller) {
-    if(carregando){
+    if (carregando) {
       return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           new Expanded(
               child: new Container(
-                //height: 60,
-                //width: MediaQuery.of(context).size.width,
+            //height: 60,
+            //width: MediaQuery.of(context).size.width,
 
-                margin: const EdgeInsets.only(top: 16, right: 14, left: 14),
-                // padding: const EdgeInsets.only(left: 6),
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    new Container(
-                      //color: Colors.red,
-                      margin: const EdgeInsets.only(
-                        top: 4,
-                        bottom: 4,
-                      ),
-                      child: new Text(
-                        title,
-                        style: TextStyle(
-                            color: Color(0xff112841),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1),
-                      child: Shimmer.fromColors(
-                          baseColor: Colors.grey.withOpacity(0.5),
-                          highlightColor: Colors.white,
-                          child: new Container(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width*0.9,
-                            decoration: new BoxDecoration(
-                              //shape: BoxShape.circle,
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          )),
-                    )
-                  ],
+            margin: const EdgeInsets.only(top: 16, right: 14, left: 14),
+            // padding: const EdgeInsets.only(left: 6),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Container(
+                  //color: Colors.red,
+                  margin: const EdgeInsets.only(
+                    top: 4,
+                    bottom: 4,
+                  ),
+                  child: new Text(
+                    title,
+                    style: TextStyle(
+                        color: Color(0xff112841),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12),
+                  ),
                 ),
-              ))
+                Padding(
+                  padding: EdgeInsets.only(top: 1),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.withOpacity(0.5),
+                      highlightColor: Colors.white,
+                      child: new Container(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: new BoxDecoration(
+                          //shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.withOpacity(0.5),
+                        ),
+                      )),
+                )
+              ],
+            ),
+          ))
         ],
       );
     }
@@ -1079,12 +1101,15 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   }
 
   Future<Null> _cropImage(File file) async {
-    File croppedFile = await ImageCropper.cropImage(
-        sourcePath: file.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.ratio16x9,
-        ],
-        androidUiSettings: AndroidUiSettings(
+    final ImageCropper _cropper = ImageCropper();
+
+    CroppedFile? croppedFile = await _cropper.cropImage(
+      sourcePath: file.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.ratio16x9,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
             toolbarTitle: 'Parte Escolhida',
             toolbarColor: AppColors.colorFundoEscuroApp,
             toolbarWidgetColor: Colors.white,
@@ -1093,13 +1118,16 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
             backgroundColor: AppColors.colorFundoEscuroApp,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: true),
-        iosUiSettings: IOSUiSettings(
+        IOSUiSettings(
           title: 'Parte Escolhida',
-        ));
+        )
+      ],
+    );
     if (croppedFile != null) {
       setState(() {
         trocouFoto = true;
-        imagemSelecionada = croppedFile;
+        File file = File(croppedFile.path);
+        imagemSelecionada = file;
       });
       await _uploadImagem();
       // imageFile = croppedFile;
@@ -1128,41 +1156,38 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
         });
   }
 
-  Widget _buildDropPais(){
-    if(carregando){
+  Widget _buildDropPais() {
+    if (carregando) {
       return Padding(
-        padding: EdgeInsets.only(top: 1),
-        child: new Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child:Shimmer.fromColors(
-              baseColor: Colors.grey.withOpacity(0.5),
-              highlightColor: Colors.white,
-              child: new Container(
-                height: 40,
-                //width: MediaQuery.of(context).size.width*0.9,
-                decoration: new BoxDecoration(
-                  //shape: BoxShape.circle,
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-              )),
-        )
-      );
+          padding: EdgeInsets.only(top: 1),
+          child: new Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(0.5),
+                highlightColor: Colors.white,
+                child: new Container(
+                  height: 40,
+                  //width: MediaQuery.of(context).size.width*0.9,
+                  decoration: new BoxDecoration(
+                    //shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                )),
+          ));
     }
     return new Container(
       height: 40,
       decoration: BoxDecoration(
-          borderRadius:
-          BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              // color: Colors.black12,
+                // color: Colors.black12,
                 color: Colors.black12,
                 blurRadius: 5)
           ]),
-      margin:
-      const EdgeInsets.only(right: 16, left: 16),
+      margin: const EdgeInsets.only(right: 16, left: 16),
       child: new Container(
         padding: const EdgeInsets.only(left: 16),
         child: DropdownButtonHideUnderline(
@@ -1171,13 +1196,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
             hint: Text(
               "Selecione o País",
               style: new TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal),
+                  color: Colors.black, fontWeight: FontWeight.normal),
             ),
             value: paisSelecionado,
-            style: new TextStyle(
-                color: Colors.black,
-                fontSize: 14),
+            style: new TextStyle(color: Colors.black, fontSize: 14),
             dropdownColor: Colors.white,
             //, Color(0xff112841),
             onChanged: (newValue) {
@@ -1187,10 +1209,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                 //controllerNomeCartaoContaBancaria.text = newValue;
               });
             },
-            items: listDropPais.map((String value) {
+            items: listDropPais.map((String? value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(value!),
               );
             }).toList(),
           ),
@@ -1199,25 +1221,23 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     );
   }
 
-  Widget _buildDropEstado(){
-    if(carregando){
+  Widget _buildDropEstado() {
+    if (carregando) {
       return new Container();
     }
-    if(paisSelecionado == 'Brasil'){
+    if (paisSelecionado == 'Brasil') {
       return new Container(
         height: 40,
         decoration: BoxDecoration(
-            borderRadius:
-            BorderRadius.all(Radius.circular(4)),
+            borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                // color: Colors.black12,
+                  // color: Colors.black12,
                   color: Colors.black12,
                   blurRadius: 5)
             ]),
-        margin:
-        const EdgeInsets.only(right: 16, left: 16),
+        margin: const EdgeInsets.only(right: 16, left: 16),
         child: new Container(
           padding: const EdgeInsets.only(left: 16),
           child: DropdownButtonHideUnderline(
@@ -1226,13 +1246,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
               hint: Text(
                 "Selecione o Estado",
                 style: new TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal),
+                    color: Colors.black, fontWeight: FontWeight.normal),
               ),
               value: estadoSelecionado,
-              style: new TextStyle(
-                  color: Colors.black,
-                  fontSize: 14),
+              style: new TextStyle(color: Colors.black, fontSize: 14),
               dropdownColor: Colors.white,
               //, Color(0xff112841),
               onChanged: (newValue) {
@@ -1241,10 +1258,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
                   //controllerNomeCartaoContaBancaria.text = newValue;
                 });
               },
-              items: listDropEstado.map((String value) {
+              items: listDropEstado.map((String? value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(value!),
                 );
               }).toList(),
             ),
@@ -1258,7 +1275,7 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
   Future<void> _buscaEstado() async {
     listDropEstado.add('');
     UsuarioService usuarioService = UsuarioService();
-    List<EstadosModel> estados = await usuarioService.listaEstados();
+    List<EstadosModel>? estados = await usuarioService.listaEstados();
     if (estados != null) {
       estadosList = estados;
       for (int i = 0; i < estados.length; i++) {
@@ -1270,11 +1287,10 @@ class _EdicaoRedeViewState extends State<EdicaoRedeView> {
     });
   }
 
-
   Future<void> _buscaPais() async {
     listDropPais.add('');
     UsuarioService usuarioService = UsuarioService();
-    List<PaisesModel> paises = await usuarioService.listaPaises();
+    List<PaisesModel>? paises = await usuarioService.listaPaises();
     if (paises != null) {
       for (int i = 0; i < paises.length; i++) {
         listDropPais.add(paises[i].texto);

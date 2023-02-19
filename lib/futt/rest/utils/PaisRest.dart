@@ -13,7 +13,7 @@ class PaisRest extends BaseRest {
   }
 
   List<PaisModel> _parseListaPaisModel(dadosJson) {
-    List<PaisModel> lista = List();
+    List<PaisModel> lista =[];
     for (var registro in dadosJson) {
       PaisModel resultadoModel = PaisModel.fromJson(
           registro); //.converteJson

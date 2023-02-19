@@ -1,5 +1,5 @@
 class QuantidadeModel {
-  int _quantidade;
+  int? _quantidade;
 
   QuantidadeModel(this._quantidade);
 
@@ -9,9 +9,9 @@ class QuantidadeModel {
     );
   }
 
-  int get quantidade => _quantidade;
+  int? get quantidade => _quantidade;
 
-  set quantidade(int value) {
+  set quantidade(int? value) {
     _quantidade = value;
   }
 

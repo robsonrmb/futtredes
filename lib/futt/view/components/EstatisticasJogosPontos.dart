@@ -8,8 +8,8 @@ import 'package:futt/futt/view/style/font-family.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EstatisticasJogosPontos extends StatefulWidget {
-  int idUsuario;
-  int idRede;
+  int? idUsuario;
+  int? idRede;
 
   EstatisticasJogosPontos(this.idUsuario, this.idRede);
 
@@ -19,18 +19,18 @@ class EstatisticasJogosPontos extends StatefulWidget {
 }
 
 class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
-  var _valoresJogosEPontos;
+  late var _valoresJogosEPontos;
 
-  Future<List<RespostaModel>> _getValoresJogosEPontos() {
+  Future<List<RespostaModel>?> _getValoresJogosEPontos() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getJogosEPontos(
+    Future<List<RespostaModel>?> respostas = estatisticaService.getJogosEPontos(
         widget.idUsuario, widget.idRede, 0);
     return respostas;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<RespostaModel>>(
+    return FutureBuilder<List<RespostaModel>?>(
       future: _getValoresJogosEPontos(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -226,9 +226,9 @@ class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
           case ConnectionState.done:
             if (snapshot.hasData) {
               double _tam = 90;
-              List<RespostaModel> estatisticas = snapshot.data;
+              List<RespostaModel> estatisticas = snapshot.data!;
               RespostaModel resultado = estatisticas[0];
-              _valoresJogosEPontos = resultado.resposta.split("#");
+              _valoresJogosEPontos = resultado.resposta!.split("#");
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -394,7 +394,6 @@ class _EstatisticasJogosPontosState extends State<EstatisticasJogosPontos> {
             }
             break;
         }
-        return null;
       },
     );
   }

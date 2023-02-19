@@ -52,16 +52,16 @@ class _RedesViewState extends State<RedesView> {
                           child: RedesSubView(),
                         ),
                         GestureDetector(
-                          onTap: () => _clickBanner(snapshot.data.linkRedes),
+                          onTap: () => _clickBanner(snapshot.data!.linkRedes!),
                           child: Visibility(
-                            visible: snapshot.data.showRedes,
+                            visible: snapshot.data!.showRedes!,
                             maintainSize: false,
                             maintainAnimation: true,
                             maintainState: true,
                             child: Container(
                               height: 60,
                               decoration: BoxDecoration(
-                                color: Colors.grey[300].withOpacity(0.5),
+                                color: Colors.grey[300]!.withOpacity(0.5),
                                 image: DecorationImage(
                                     image: NetworkImage(
                                         ConstantesRest.URL_STATIC_BANNERS +

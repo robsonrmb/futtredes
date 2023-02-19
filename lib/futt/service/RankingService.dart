@@ -4,7 +4,7 @@ import 'package:futt/futt/rest/RankingRest.dart';
 
 class RankingService {
 
-  Future<List<RankingModel>> listaRankingRede(int idRede, int ano, int tipo) {
+  Future<List<RankingModel>> listaRankingRede(int? idRede, int ano, int tipo) {
     String url = "${ConstantesRest.URL_ESTATISTICAS}/rankingvitorias/${idRede}?ano=$ano";
     if (tipo == 2) {
       url = "${ConstantesRest.URL_ESTATISTICAS}/rankingjogos/${idRede}?ano=$ano";

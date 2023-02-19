@@ -1,7 +1,7 @@
 class PaisModel {
 
-  String _id;
-  String _nome;
+  String? _id;
+  String? _nome;
 
   PaisModel(this._id, this._nome);
 
@@ -13,7 +13,7 @@ class PaisModel {
   }
 
   @override
-  String toString() => _nome;
+  String toString() => _nome!;
 
   @override
   operator ==(o) => o is PaisModel && o.id == id;
@@ -21,15 +21,15 @@ class PaisModel {
   @override
   int get hashCode => id.hashCode^nome.hashCode;
 
-  String get nome => _nome;
+  String? get nome => _nome;
 
-  set nome(String value) {
+  set nome(String? value) {
     _nome = value;
   }
 
-  String get id => _id;
+  String? get id => _id;
 
-  set id(String value) {
+  set id(String? value) {
     _id = value;
   }
 

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/style/colors.dart';
 
 class CollectionList extends StatefulWidget {
-  final List<String> lista;
+  final List<String>? lista;
   final String titulo;
-  final String ultimoValor;
+  final String? ultimoValor;
   final color;
   final bool escondeSearch;
   int skip;
@@ -25,13 +25,13 @@ class CollectionList extends StatefulWidget {
 }
 
 class _CollectionListState extends State<CollectionList> {
-  List<String> _listaFiltro;
-  ScrollController scrollController;
+  List<String>? _listaFiltro;
+  ScrollController? scrollController;
   TextEditingController controllerBusca = new TextEditingController();
 
   @override
   void initState() {
-    _listaFiltro = new List<String>();
+    _listaFiltro = [];
     scrollController = new ScrollController();
     //scrollController.addListener(_scrollListener);
     _initList();
@@ -73,12 +73,6 @@ class _CollectionListState extends State<CollectionList> {
           color: Colors.white,
           opacity: 1,
         ),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
             leading: new GestureDetector(
               onTap: () => _selecionarItem(widget.ultimoValor),
               child: new Container(
@@ -91,7 +85,7 @@ class _CollectionListState extends State<CollectionList> {
                 ),
               ),
             ),
-            title: Text(widget.titulo,style: new TextStyle(fontWeight: FontWeight.bold, color: AppColors.colorTextAppNav,),),
+            title: Text(widget.titulo,style: new TextStyle(fontWeight: FontWeight.bold, color: AppColors.colorTextAppNav,fontSize: 20),),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -143,7 +137,7 @@ class _CollectionListState extends State<CollectionList> {
                                 text = text.toLowerCase();
                                 setState(() {
                                   if (text.length > 0)
-                                    _listaFiltro = widget.lista
+                                    _listaFiltro = widget.lista!
                                         .where((x) =>
                                         x.toLowerCase().contains(text))
                                         .toList();
@@ -178,39 +172,39 @@ class _CollectionListState extends State<CollectionList> {
 
   Widget _buildLista() {
     return ListView.builder(
-      itemCount: _listaFiltro.length,
+      itemCount: _listaFiltro!.length,
       controller: scrollController,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        var item = _listaFiltro[index];
+        var item = _listaFiltro![index];
         return new ListTile(
           onTap: () {
             _selecionarItem(item);
           },
           title: new Text(
-            "${_listaFiltro[index]}",style: new TextStyle(fontFamily: 'Lato'),
+            "${_listaFiltro![index]}",style: new TextStyle(fontFamily: 'Lato'),
           ),
         );
       },
     );
   }
 
-  void _selecionarItem(String item) {
+  void _selecionarItem(String? item) {
     Navigator.of(context).pop(item);
   }
 
-  Future<void> _initList() {
+  Future<void> _initList() async{
     if (widget.take == 0) {
       setState(() {
         _listaFiltro = widget.lista;
       });
     } else {
       var listaSkipTake =
-      widget.lista.skip(widget.skip).take(widget.take).toList();
+      widget.lista!.skip(widget.skip).take(widget.take).toList();
 
       if (listaSkipTake != null && listaSkipTake.length > 0) {
         setState(() {
-          _listaFiltro.addAll(listaSkipTake);
+          _listaFiltro!.addAll(listaSkipTake);
           widget.skip += widget.take;
         });
       }
@@ -219,13 +213,13 @@ class _CollectionListState extends State<CollectionList> {
 
   Future<void> _scrollListener() async {
     if (widget.take > 0) {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         var listaSkipTake =
-        widget.lista.skip(widget.skip).take(widget.take).toList();
+        widget.lista!.skip(widget.skip).take(widget.take).toList();
         if (listaSkipTake != null && listaSkipTake.length > 0) {
           setState(() {
-            _listaFiltro.addAll(listaSkipTake);
+            _listaFiltro!.addAll(listaSkipTake);
             widget.skip += widget.take;
           });
         }

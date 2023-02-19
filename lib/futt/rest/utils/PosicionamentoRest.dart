@@ -13,7 +13,7 @@ class PosicionamentoRest extends BaseRest {
   }
 
   List<PosicionamentoModel> _parseListaPosicionamentoModel(dadosJson) {
-    List<PosicionamentoModel> lista = List();
+    List<PosicionamentoModel> lista = [];
     for (var registro in dadosJson) {
       PosicionamentoModel resultadoModel = PosicionamentoModel.fromJson(
           registro); //.converteJson

@@ -7,8 +7,8 @@ class PreferencesService {
     await prefs.setString(nome, valor);
   }
 
-  Future<String> recupera(String nome) async {
-    String retorno = "";
+  Future<String?> recupera(String nome) async {
+    String? retorno = "";
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString(nome) != null) {
       retorno = prefs.getString(nome);

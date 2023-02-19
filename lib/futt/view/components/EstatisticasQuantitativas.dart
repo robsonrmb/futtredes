@@ -1,4 +1,4 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter_new/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:futt/futt/model/RespPerformanceModel.dart';
 import 'package:futt/futt/model/RespostaModel.dart';
@@ -11,8 +11,8 @@ import 'package:futt/futt/view/style/font-family.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EstatisticasQuantitativas extends StatefulWidget {
-  int idUsuario;
-  int idRede;
+  int? idUsuario;
+  int? idRede;
 
   EstatisticasQuantitativas(this.idUsuario, this.idRede);
 
@@ -22,26 +22,26 @@ class EstatisticasQuantitativas extends StatefulWidget {
 }
 
 class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
-  var _valoresQuantitativos;
+  late var _valoresQuantitativos;
 
   int anoSelect = 0;
   int ano1 = 0;
   int ano2 = 0;
   int ano3 = 0;
 
-  Color colorDefault = Color(0xFF0D47A1);
-  Color colorAno1 = Colors.grey[400];
-  Color colorAno2 = Colors.grey[400];
-  Color colorAno3 = Colors.grey[400];
+  Color? colorDefault = Color(0xFF0D47A1);
+  Color? colorAno1 = Colors.grey[400];
+  Color? colorAno2 = Colors.grey[400];
+  Color? colorAno3 = Colors.grey[400];
 
-  Color colorDefaultText = Colors.white;
-  Color colorAno1Text = Colors.grey[800];
-  Color colorAno2Text = Colors.grey[800];
-  Color colorAno3Text = Colors.grey[800];
+  Color? colorDefaultText = Colors.white;
+  Color? colorAno1Text = Colors.grey[800];
+  Color? colorAno2Text = Colors.grey[800];
+  Color? colorAno3Text = Colors.grey[800];
 
-  Future<List<RespostaModel>> _getValoresQuantitativos() {
+  Future<List<RespostaModel>?> _getValoresQuantitativos() {
     EstatisticaService estatisticaService = EstatisticaService();
-    Future<List<RespostaModel>> respostas = estatisticaService.getQuantitativas(
+    Future<List<RespostaModel>?> respostas = estatisticaService.getQuantitativas(
         widget.idUsuario, widget.idRede, anoSelect);
     return respostas;
   }
@@ -49,7 +49,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
   /*
    ESTATÍSTICAS QUANTITATIVAS - VITORIAS E DERROTAS
    */
-  List<charts.Series<RespPerformanceModel, String>> _createGraphicsVD() {
+  List<charts.Series<RespPerformanceModel, String?>> _createGraphicsVD() {
     final dataVD = [
       //new RespPerformanceModel.Grafico("Vitórias", int.parse(_valoresQuantitativos[0])),
       //new RespPerformanceModel.Grafico("Derrotas", int.parse(_valoresQuantitativos[1])),
@@ -70,20 +70,20 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
     ];
 
     return [
-      new charts.Series<RespPerformanceModel, String>(
+      new charts.Series<RespPerformanceModel, String?>(
         id: 'ds',
         colorFn: (_, __) => __ == 0
             ? charts.ColorUtil.fromDartColor(Color(0xff083251))
             : __ == 1
-                ? charts.ColorUtil.fromDartColor(Colors.orange[300])
+                ? charts.ColorUtil.fromDartColor(Colors.orange[300]!)
                 : __ == 2
                     ? charts.ColorUtil.fromDartColor(Color(0xff083251))
                     : __ == 3
-                        ? charts.ColorUtil.fromDartColor(Colors.orange[300])
+                        ? charts.ColorUtil.fromDartColor(Colors.orange[300]!)
                         : __ == 4
                             ? charts.ColorUtil.fromDartColor(Color(0xff083251))
                             : charts.ColorUtil.fromDartColor(
-                                Colors.orange[300]),
+                                Colors.orange[300]!),
 
         domainFn: (RespPerformanceModel resp, _) => resp.descricao,
         measureFn: (RespPerformanceModel resp, _) => resp.valor,
@@ -98,7 +98,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
   /*
    ESTATÍSTICAS QUANTITATIVAS - CAPOTE
    */
-  List<charts.Series<RespPerformanceModel, String>> _createGraphicsCapote() {
+  List<charts.Series<RespPerformanceModel, String?>> _createGraphicsCapote() {
     final dataCapote = [
       new RespPerformanceModel.Grafico(
           "Capotes vencidos", int.parse(_valoresQuantitativos[2])),
@@ -107,7 +107,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
     ];
 
     return [
-      new charts.Series<RespPerformanceModel, String>(
+      new charts.Series<RespPerformanceModel, String?>(
         id: 'Capotes',
         domainFn: (RespPerformanceModel resp, _) => resp.descricao,
         measureFn: (RespPerformanceModel resp, _) => resp.valor,
@@ -122,7 +122,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
   /*
    ESTATÍSTICAS QUANTITATIVAS - A2
    */
-  List<charts.Series<RespPerformanceModel, String>> _createGraphicsA2() {
+  List<charts.Series<RespPerformanceModel, String?>> _createGraphicsA2() {
     final dataA2 = [
       new RespPerformanceModel.Grafico(
           "Jogos A2 vencidos", int.parse(_valoresQuantitativos[4])),
@@ -131,7 +131,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
     ];
 
     return [
-      new charts.Series<RespPerformanceModel, String>(
+      new charts.Series<RespPerformanceModel, String?>(
         id: 'A2',
         colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
         domainFn: (RespPerformanceModel resp, _) => resp.descricao,
@@ -157,7 +157,7 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<RespostaModel>>(
+    return FutureBuilder<List<RespostaModel>?>(
       future: _getValoresQuantitativos(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -306,9 +306,9 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
           case ConnectionState.done:
             if (snapshot.hasData) {
               double _tam = 90;
-              List<RespostaModel> estatisticas = snapshot.data;
+              List<RespostaModel> estatisticas = snapshot.data!;
               RespostaModel resultado = estatisticas[0];
-              _valoresQuantitativos = resultado.resposta.split("#");
+              _valoresQuantitativos = resultado.resposta!.split("#");
 
               return new Container(
                 margin: const EdgeInsets.only(right: 8, left: 8),
@@ -453,12 +453,11 @@ class _EstatisticasQuantitativasState extends State<EstatisticasQuantitativas> {
             }
             break;
         }
-        return null;
       },
     );
   }
 
-  Widget buildYears(String title, Color colorText, Color color, int index) {
+  Widget buildYears(String title, Color? colorText, Color? color, int index) {
     return new GestureDetector(
       onTap: () {
         selectItemYears(index);

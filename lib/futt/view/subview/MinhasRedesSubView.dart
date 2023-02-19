@@ -44,12 +44,12 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     "Ativar rede"
   ];
 
-  Future<List<RedeModel>> _listaMinhasRedes() async {
+  Future<List<RedeModel>?> _listaMinhasRedes() async {
     RedeService redeService = RedeService();
     return redeService.listaMinhasRedes();
   }
 
-  _showModalReiniciaRede(BuildContext context, String title, String description, int idRede){
+  _showModalReiniciaRede(BuildContext context, String title, String description, int? idRede){
     DialogFutt dialogFutt = new DialogFutt();
     dialogFutt.showAlertDialogActionNoYes(context, title,
         description, () {
@@ -57,7 +57,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         });
   }
 
-  _realizaReinicializacao(int idRede, bool resposta, BuildContext context) async {
+  _realizaReinicializacao(int? idRede, bool resposta, BuildContext context) async {
     circularProgress(context);
     if (resposta) {
       _reiniciandoRede(idRede, context);
@@ -68,7 +68,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
-  _showModalAtivaDesativa(BuildContext context, String title, String description, int idRede, String acao){
+  _showModalAtivaDesativa(BuildContext context, String title, String description, int? idRede, String acao){
     DialogFutt dialogFutt = new DialogFutt();
     dialogFutt.showAlertDialogActionNoYes(context, title,
         description, () {
@@ -76,7 +76,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
         });
   }
 
-  _realizaAcao(int idRede, bool resposta, BuildContext context, acao) async {
+  _realizaAcao(int? idRede, bool resposta, BuildContext context, acao) async {
     circularProgress(context);
     if (resposta) {
       if (acao == "D") {
@@ -91,15 +91,15 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
-  _ativando(int idRede, BuildContext context) async {
+  _ativando(int? idRede, BuildContext context) async {
     try {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/ativa";
       var _dados = "";
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,
@@ -137,15 +137,15 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
-  _reiniciandoRede(int idRede, BuildContext context) async {
+  _reiniciandoRede(int? idRede, BuildContext context) async {
     try {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/reset/n";
       var _dados = "";
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,
@@ -183,15 +183,15 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
-  _desativando(int idRede, BuildContext context) async {
+  _desativando(int? idRede, BuildContext context) async {
     try {
       var _url = "${ConstantesRest.URL_REDE}/${idRede}/desativa";
       var _dados = "";
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -229,7 +229,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     }
   }
 
-  _getSubTitulo(int status, String data) {
+  _getSubTitulo(int? status, String? data) {
     if (status == 1) {
       return "EM APROVAÇÃO";
     }else if (status == 2) {
@@ -238,7 +238,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
       }else if (data == null) {
         return "";
       }else{
-        return data??'';
+        return data;
       }
     }else if (status == 3) {
       return "FECHADA";
@@ -253,7 +253,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<RedeModel>>(
+    return FutureBuilder<List<RedeModel>?>(
       future: _listaMinhasRedes(),
       builder: (context, snapshot) {
         switch( snapshot.connectionState ) {
@@ -347,18 +347,18 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
             break;
           case ConnectionState.active :
           case ConnectionState.done :
-          if( snapshot.hasData && snapshot.data.length > 0 ) {
+          if( snapshot.hasData && snapshot.data!.length > 0 ) {
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
 
                   String validade = '';
 
-                  List<RedeModel> redes = snapshot.data;
+                  List<RedeModel> redes = snapshot.data!;
                   RedeModel rede = redes[index];
 
                   if(rede.disponibilidade != null){
-                    validade = redeValidadeFormatada(rede.disponibilidade);
+                    validade = redeValidadeFormatada(rede.disponibilidade!);
                   }
 
                   return new Card(
@@ -378,15 +378,15 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                           new GestureDetector(
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_STATIC_REDES + rede.nomeFoto,),
+                                builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_STATIC_REDES + rede.nomeFoto!,),
                               ));
                             },
                             child: new Hero(tag: 'imageRede$index', child: Container(
                               height: 140,
                               decoration: BoxDecoration(
-                                color: Colors.grey[300].withOpacity(0.5),
+                                color: Colors.grey[300]!.withOpacity(0.5),
                                 image: DecorationImage(
-                                    image: NetworkImage(ConstantesRest.URL_STATIC_REDES + rede.nomeFoto),
+                                    image: NetworkImage(ConstantesRest.URL_STATIC_REDES + rede.nomeFoto!),
                                     fit: BoxFit.fill
                                 ),
                                 borderRadius: BorderRadius.only(
@@ -417,7 +417,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                         "${rede.nome}",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorTextTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                          color:rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorTextTitle : AppColors.colorRedeDesabilitadaTextICon,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -444,7 +444,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                                color:rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                                 fontWeight: FontWeight.w600
                                             ),
                                           ),
@@ -459,7 +459,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
-                                              color: rede.status < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                              color: rede.status! < 3 ? (rede.status == 1) ? Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                             ),
                                           ),
                                           rede.status == 4?
@@ -480,7 +480,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                   fontSize: 14,
-                                                  color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                                  color:rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                                   fontWeight: FontWeight.w600
                                               ),
                                             ),
@@ -504,7 +504,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                color:rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
+                                                color:rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorSubTitle : AppColors.colorRedeDesabilitadaTextICon,
                                                 fontWeight: FontWeight.w600
                                             ),
                                           ),
@@ -522,8 +522,8 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                             gradient: LinearGradient(begin: Alignment.topLeft,
                                                 end: Alignment.bottomRight,
                                                 colors: <Color>[
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
-                                                  rede.status < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario1 : AppColors.colorRedeDesabilitadaTextICon,
+                                                  rede.status! < 3 ? (rede.status == 1) ?Color(0xff093352): AppColors.colorEspecialPrimario2 : AppColors.colorRedeDesabilitadaTextICon,
                                                 ]),
                                             shape: BoxShape.circle),
                                         child: GestureDetector(
@@ -556,7 +556,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                             shape: BoxShape.circle),
                                         child: PopupMenuButton(
                                           color: Color(0xff083251),
-                                          onSelected: (value) {
+                                          onSelected: (dynamic value) {
                                             selectedChoice(value,rede);
                                           },
                                           // shape: RoundedRectangleBorder(
@@ -596,7 +596,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                                               shape: BoxShape.circle),
                                           child: PopupMenuButton(
                                             color: Color(0xff083251),
-                                            onSelected: (value) {
+                                            onSelected: (dynamic value) {
                                               selectedChoice2(value,rede);
                                             },
                                             // shape: RoundedRectangleBorder(
@@ -628,7 +628,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
                               ),
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_STATIC_REDES + rede.nomeFoto,),
+                                  builder: (context) => EdicaoRedeView(redeModel: rede,imageRede: ConstantesRest.URL_STATIC_REDES + rede.nomeFoto!,),
                                 ));
                               },
                             ),
@@ -654,7 +654,7 @@ class _MinhasRedesSubViewState extends State<MinhasRedesSubView> {
     return dataFormatada;
   }
 
-  _retorneSubtitulo(String pais, String cidade,String local) {
+  _retorneSubtitulo(String? pais, String? cidade,String? local) {
     if(pais ==""){
       pais = null;
     }

@@ -184,7 +184,7 @@ class Passos {
                 gradient:  LinearGradient(
                   colors: <Color>[
                     clickable?AppColors.colorEspecialSecundario1:Colors.grey,
-                    clickable?AppColors.colorEspecialSecundario2:Colors.grey[100]
+                    clickable?AppColors.colorEspecialSecundario2:Colors.grey[100]!
                   ],
                 ),
               ),

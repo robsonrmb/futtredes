@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class EscolinhaSubView extends StatefulWidget {
 
-  String pais;
+  String? pais;
   String cidade;
   String paisDefault;
   String cidadeDefault;
@@ -44,10 +44,10 @@ class _EscolinhaSubViewState extends State<EscolinhaSubView> {
           case ConnectionState.done :
             if( snapshot.hasData ) {
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
 
-                  List<EscolinhaModel> escolinha = snapshot.data;
+                  List<EscolinhaModel> escolinha = snapshot.data!;
                   EscolinhaModel resultado = escolinha[index];
 
                   return Container(
@@ -215,20 +215,19 @@ class _EscolinhaSubViewState extends State<EscolinhaSubView> {
                               ),
                             ),
                             actions: <Widget>[
-                              FlatButton(
-                                child: RaisedButton(
-                                  color: Color(0xff086ba4),
-                                  textColor: Colors.white,
+                              TextButton(
+
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                  backgroundColor: Color(0xff086ba4),
                                   padding: EdgeInsets.all(15),
-                                  child: Text(
-                                    "Fechar",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'Candal',
-                                    ),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
+                                ),
+                                child: Text(
+                                  "Fechar",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontFamily: 'Candal',
                                   ),
                                 ),
                                 onPressed: () {

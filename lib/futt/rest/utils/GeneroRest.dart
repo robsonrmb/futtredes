@@ -12,7 +12,7 @@ class GeneroRest extends BaseRest {
   }
 
   List<GeneroModel> _parseListaGeneroModel(dadosJson) {
-    List<GeneroModel> lista = List();
+    List<GeneroModel> lista = [];
     for (var registro in dadosJson) {
       GeneroModel resultadoModel = GeneroModel.fromJson(
           registro); //.converteJson

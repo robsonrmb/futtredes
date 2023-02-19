@@ -1,20 +1,20 @@
 class EscolinhaModel {
-  int _id;
-  String _nome;
-  String _telefone;
-  String _cidade;
-  String _estado;
-  String _pais;
-  String _endereco;
-  String _descricao;
-  String _nomeResponsavel;
-  String _nomeProfessor1;
-  String _nomeProfessor2;
-  String _nomeProfessor3;
-  String _fotoResponsavel;
-  String _fotoProfessor1;
-  String _fotoProfessor2;
-  String _fotoProfessor3;
+  int? _id;
+  String? _nome;
+  String? _telefone;
+  String? _cidade;
+  String? _estado;
+  String? _pais;
+  String? _endereco;
+  String? _descricao;
+  String? _nomeResponsavel;
+  String? _nomeProfessor1;
+  String? _nomeProfessor2;
+  String? _nomeProfessor3;
+  String? _fotoResponsavel;
+  String? _fotoProfessor1;
+  String? _fotoProfessor2;
+  String? _fotoProfessor3;
 
   EscolinhaModel(this._id, this._nome, this._telefone, this._cidade, this._estado, this._pais,
       this._endereco, this._descricao, this._nomeResponsavel,
@@ -43,99 +43,99 @@ class EscolinhaModel {
     );
   }
 
-  String get fotoProfessor3 => _fotoProfessor3;
+  String? get fotoProfessor3 => _fotoProfessor3;
 
-  set fotoProfessor3(String value) {
+  set fotoProfessor3(String? value) {
     _fotoProfessor3 = value;
   }
 
-  String get fotoProfessor2 => _fotoProfessor2;
+  String? get fotoProfessor2 => _fotoProfessor2;
 
-  set fotoProfessor2(String value) {
+  set fotoProfessor2(String? value) {
     _fotoProfessor2 = value;
   }
 
-  String get fotoProfessor1 => _fotoProfessor1;
+  String? get fotoProfessor1 => _fotoProfessor1;
 
-  set fotoProfessor1(String value) {
+  set fotoProfessor1(String? value) {
     _fotoProfessor1 = value;
   }
 
-  String get fotoResponsavel => _fotoResponsavel;
+  String? get fotoResponsavel => _fotoResponsavel;
 
-  set fotoResponsavel(String value) {
+  set fotoResponsavel(String? value) {
     _fotoResponsavel = value;
   }
 
-  String get nomeProfessor3 => _nomeProfessor3;
+  String? get nomeProfessor3 => _nomeProfessor3;
 
-  set nomeProfessor3(String value) {
+  set nomeProfessor3(String? value) {
     _nomeProfessor3 = value;
   }
 
-  String get nomeProfessor2 => _nomeProfessor2;
+  String? get nomeProfessor2 => _nomeProfessor2;
 
-  set nomeProfessor2(String value) {
+  set nomeProfessor2(String? value) {
     _nomeProfessor2 = value;
   }
 
-  String get nomeProfessor1 => _nomeProfessor1;
+  String? get nomeProfessor1 => _nomeProfessor1;
 
-  set nomeProfessor1(String value) {
+  set nomeProfessor1(String? value) {
     _nomeProfessor1 = value;
   }
 
-  String get nomeResponsavel => _nomeResponsavel;
+  String? get nomeResponsavel => _nomeResponsavel;
 
-  set nomeResponsavel(String value) {
+  set nomeResponsavel(String? value) {
     _nomeResponsavel = value;
   }
 
-  String get descricao => _descricao;
+  String? get descricao => _descricao;
 
-  set descricao(String value) {
+  set descricao(String? value) {
     _descricao = value;
   }
 
-  String get endereco => _endereco;
+  String? get endereco => _endereco;
 
-  set endereco(String value) {
+  set endereco(String? value) {
     _endereco = value;
   }
 
-  String get pais => _pais;
+  String? get pais => _pais;
 
-  set pais(String value) {
+  set pais(String? value) {
     _pais = value;
   }
 
-  String get estado => _estado;
+  String? get estado => _estado;
 
-  set estado(String value) {
+  set estado(String? value) {
     _estado = value;
   }
 
-  String get cidade => _cidade;
+  String? get cidade => _cidade;
 
-  set cidade(String value) {
+  set cidade(String? value) {
     _cidade = value;
   }
 
-  String get nome => _nome;
+  String? get nome => _nome;
 
-  set nome(String value) {
+  set nome(String? value) {
     _nome = value;
   }
 
-  int get id => _id;
+  int? get id => _id;
 
-  set id(int value) {
+  set id(int? value) {
     _id = value;
   }
 
-  String get telefone => _telefone;
+  String? get telefone => _telefone;
 
-  set telefone(String value) {
+  set telefone(String? value) {
     _telefone = value;
   }
 

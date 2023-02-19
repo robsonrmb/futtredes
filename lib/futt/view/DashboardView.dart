@@ -7,15 +7,15 @@ import 'package:futt/futt/view/EstatisticasView.dart';
 import 'package:flutter/material.dart';
 
 class DashboardView extends StatefulWidget {
-  String apelido;
-  String nome;
-  String nomeFoto;
-  String pais;
-  String user;
-  String estado;
-  String localOndeJoga;
-  String posicao;
-  int idUser;
+  String? apelido;
+  String? nome;
+  String? nomeFoto;
+  String? pais;
+  String? user;
+  String? estado;
+  String? localOndeJoga;
+  String? posicao;
+  int? idUser;
 
   DashboardView(
       {this.nome, this.nomeFoto, this.pais, this.apelido, this.user,this.estado,this.localOndeJoga,this.posicao,this.idUser});
@@ -36,9 +36,9 @@ class _DashboardViewState extends State<DashboardView> {
     return banner;
   }
 
-  Future<UsuarioModel> _buscaUsuarioLogado() async {
+  Future<UsuarioModel?> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
-    Future<UsuarioModel> usuario =
+    Future<UsuarioModel?> usuario =
         usuarioService.buscaLogado();
     return usuario;
   }
@@ -83,7 +83,7 @@ class _DashboardViewState extends State<DashboardView> {
                             ),
                           ),
                           Visibility(
-                            visible: snapshot.data.showDashboard,
+                            visible: snapshot.data!.showDashboard!,
                             maintainSize: false,
                             maintainAnimation: true,
                             maintainState: true,
@@ -91,7 +91,7 @@ class _DashboardViewState extends State<DashboardView> {
                               height: 60,
                               padding: EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: Colors.grey[300].withOpacity(0.5),
+                                color: Colors.grey[300]!.withOpacity(0.5),
                                 image: DecorationImage(
                                     image: NetworkImage(
                                         ConstantesRest.URL_STATIC_BANNERS +

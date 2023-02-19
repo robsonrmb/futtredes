@@ -1,25 +1,25 @@
 class UsuarioModel {
-  int _id;
-  String _nome;
-  String _email;
-  String _senha;
-  String _novaSenha;
-  String _apelido;
-  String _dataNascimento;
-  String _ondeJoga;
-  String _tipo;
-  String _nivel;
-  String _cidade;
-  String _estado;
-  String _pais;
-  String _status;
-  String _sexo;
-  String _posicao;
-  String _professor;
-  String _nomeFoto;
-  int _qtdRedePromocional;
-  String _user;
-  int _numMaximoRedePromocional;
+  int? _id;
+  String? _nome;
+  String? _email;
+  String? _senha;
+  String? _novaSenha;
+  String? _apelido;
+  String? _dataNascimento;
+  String? _ondeJoga;
+  String? _tipo;
+  String? _nivel;
+  String? _cidade;
+  String? _estado;
+  String? _pais;
+  String? _status;
+  String? _sexo;
+  String? _posicao;
+  String? _professor;
+  String? _nomeFoto;
+  int? _qtdRedePromocional;
+  String? _user;
+  int? _numMaximoRedePromocional;
 
   UsuarioModel.Novo(this._id);
   UsuarioModel.Atualiza(this._nome, this._apelido, this._dataNascimento, this._sexo, this._posicao,
@@ -94,123 +94,123 @@ class UsuarioModel {
     return "";
   }
 
-  String get nomeFoto => _nomeFoto;
+  String? get nomeFoto => _nomeFoto;
 
-  set nomeFoto(String value) {
+  set nomeFoto(String? value) {
     _nomeFoto = value;
   }
 
-  String get professor => _professor;
+  String? get professor => _professor;
 
-  set professor(String value) {
+  set professor(String? value) {
     _professor = value;
   }
 
-  String get sexo => _sexo;
+  String? get sexo => _sexo;
 
-  set sexo(String value) {
+  set sexo(String? value) {
     _sexo = value;
   }
 
-  String get status => _status;
+  String? get status => _status;
 
-  set status(String value) {
+  set status(String? value) {
     _status = value;
   }
 
-  String get pais => _pais;
+  String? get pais => _pais;
 
-  set pais(String value) {
+  set pais(String? value) {
     _pais = value;
   }
 
-  String get estado => _estado;
+  String? get estado => _estado;
 
-  set estado(String value) {
+  set estado(String? value) {
     _estado = value;
   }
 
-  String get cidade => _cidade;
+  String? get cidade => _cidade;
 
-  set cidade(String value) {
+  set cidade(String? value) {
     _cidade = value;
   }
 
-  String get nivel => _nivel;
+  String? get nivel => _nivel;
 
-  set nivel(String value) {
+  set nivel(String? value) {
     _nivel = value;
   }
 
-  String get tipo => _tipo;
+  String? get tipo => _tipo;
 
-  set tipo(String value) {
+  set tipo(String? value) {
     _tipo = value;
   }
 
-  String get ondeJoga => _ondeJoga;
+  String? get ondeJoga => _ondeJoga;
 
-  set ondeJoga(String value) {
+  set ondeJoga(String? value) {
     _ondeJoga = value;
   }
 
-  String get dataNascimento => _dataNascimento;
+  String? get dataNascimento => _dataNascimento;
 
-  set dataNascimento(String value) {
+  set dataNascimento(String? value) {
     _dataNascimento = value;
   }
 
-  String get apelido => _apelido;
+  String? get apelido => _apelido;
 
-  set apelido(String value) {
+  set apelido(String? value) {
     _apelido = value;
   }
 
-  String get senha => _senha;
+  String? get senha => _senha;
 
-  set senha(String value) {
+  set senha(String? value) {
     _senha = value;
   }
 
-  String get email => _email;
+  String? get email => _email;
 
-  set email(String value) {
+  set email(String? value) {
     _email = value;
   }
 
-  String get nome => _nome;
+  String? get nome => _nome;
 
-  set nome(String value) {
+  set nome(String? value) {
     _nome = value;
   }
 
-  int get id => _id;
+  int? get id => _id;
 
-  set id(int value) {
+  set id(int? value) {
     _id = value;
   }
 
-  String get posicao => _posicao;
+  String? get posicao => _posicao;
 
-  set posicao(String value) {
+  set posicao(String? value) {
     _posicao = value;
   }
 
-  String get user => _user;
+  String? get user => _user;
 
-  set user(String value) {
+  set user(String? value) {
     _user = value;
   }
 
-  int get numMaximoRedePromocional => _numMaximoRedePromocional;
+  int? get numMaximoRedePromocional => _numMaximoRedePromocional;
 
-  set numMaximoRedePromocional(int value) {
+  set numMaximoRedePromocional(int? value) {
     _numMaximoRedePromocional = value;
   }
 
-  int get qtdRedePromocional => _qtdRedePromocional;
+  int? get qtdRedePromocional => _qtdRedePromocional;
 
-  set qtdRedePromocional(int value) {
+  set qtdRedePromocional(int? value) {
     _qtdRedePromocional = value;
   }
 

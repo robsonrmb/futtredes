@@ -12,7 +12,7 @@ import 'dart:convert';
 
 class ResponsaveisRedeView extends StatefulWidget {
 
-  RedeModel redeModel;
+  RedeModel? redeModel;
   ResponsaveisRedeView({this.redeModel});
 
   @override
@@ -21,15 +21,15 @@ class ResponsaveisRedeView extends StatefulWidget {
 
 class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
 
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerResponsavel = TextEditingController();
   TextEditingController _controllerSubResponsavel1 = TextEditingController();
   TextEditingController _controllerSubResponsavel2 = TextEditingController();
   TextEditingController _controllerSubResponsavel3 = TextEditingController();
 
-  String _tituloSub1 = "Subresponsável da rede";
-  String _tituloSub2 = "Subresponsável da rede";
-  String _tituloSub3 = "Subresponsável da rede";
+  String? _tituloSub1 = "Subresponsável da rede";
+  String? _tituloSub2 = "Subresponsável da rede";
+  String? _tituloSub3 = "Subresponsável da rede";
 
   _atualizaResponsaveis() async {
     circularProgress(context);
@@ -50,7 +50,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
       // }
 
       RedeModel redeModel = RedeModel.Responsaveis(
-        widget.redeModel.id, _controllerResponsavel.text,
+        widget.redeModel!.id, _controllerResponsavel.text,
         _controllerSubResponsavel1.text, _controllerSubResponsavel2.text, _controllerSubResponsavel3.text,
       );
 
@@ -58,9 +58,9 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
       var _dados = redeModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -106,10 +106,10 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
   }
 
   _atualizaValoresIniciais(RedeModel redeOrigem) {
-    _controllerResponsavel.text = redeOrigem.emailResponsavelRede;
-    _controllerSubResponsavel1.text = redeOrigem.emailResponsavelJogos1;
-    _controllerSubResponsavel2.text = redeOrigem.emailResponsavelJogos2;
-    _controllerSubResponsavel3.text = redeOrigem.emailResponsavelJogos3;
+    _controllerResponsavel.text = redeOrigem.emailResponsavelRede!;
+    _controllerSubResponsavel1.text = redeOrigem.emailResponsavelJogos1!;
+    _controllerSubResponsavel2.text = redeOrigem.emailResponsavelJogos2!;
+    _controllerSubResponsavel3.text = redeOrigem.emailResponsavelJogos3!;
 
     if (redeOrigem.responsavelJogos1 != 0) {
       _tituloSub1 = redeOrigem.nomeResponsavelJogos1;
@@ -125,7 +125,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
   @override
   void initState() {
     super.initState();
-    _atualizaValoresIniciais(widget.redeModel);
+    _atualizaValoresIniciais(widget.redeModel!);
   }
 
   @override
@@ -144,13 +144,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                   end: Alignment.centerRight,
                   colors: <Color>[AppColors.colorFundoClaroApp,AppColors.colorFundoEscuroApp])),
         ),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
-        title: Text("Responsáveis da rede",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,
+        title: Text("Responsáveis da rede",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,fontSize: 20
         ),),
         centerTitle: true,
       ),
@@ -227,17 +221,17 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                         style: TextStyle(
                             fontSize: 18,
                             fontFamily: FontFamily.fontSpecial,
-                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
+                            color: widget.redeModel!.status! < 3 ? (widget.redeModel!.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
                         ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 1),
-                      child: Text("Responsável: ${widget.redeModel.nomeResponsavelRede}",
+                      child: Text("Responsável: ${widget.redeModel!.nomeResponsavelRede}",
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
+                            color: widget.redeModel!.status! < 3 ? (widget.redeModel!.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
                         ),
                       ),
                     ),
@@ -246,7 +240,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                       child: Text("Indique até 3 subresponsáveis.",
                         style: TextStyle(
                             fontSize: 12,
-                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
+                            color: widget.redeModel!.status! < 3 ? (widget.redeModel!.status == 1) ? Color(0xff093352): Color(0xFF0D47A1) : Colors.grey[800]
                         ),
                       ),
                     ),
@@ -381,7 +375,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                       child: Text("Os subresponsáveis podem cadastrar:",
                         style: TextStyle(
                             fontSize: 12,
-                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1): Colors.grey[800]
+                            color: widget.redeModel!.status! < 3 ? (widget.redeModel!.status == 1) ? Color(0xff093352): Color(0xFF0D47A1): Colors.grey[800]
                         ),
                       ),
                     ),
@@ -390,7 +384,7 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
                       child: Text("JOGOS, PLACARES, PARTICIPANTES, ENTRE OUTROS.",
                         style: TextStyle(
                             fontSize: 12,
-                            color: widget.redeModel.status < 3 ? (widget.redeModel.status == 1) ? Color(0xff093352): Color(0xFF0D47A1): Colors.grey[800]
+                            color: widget.redeModel!.status! < 3 ? (widget.redeModel!.status == 1) ? Color(0xff093352): Color(0xFF0D47A1): Colors.grey[800]
                         ),
                       ),
                     ),
@@ -421,13 +415,17 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
           height: 60,
           padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
           color: Color(0xfff7f7f7),
-          child: widget.redeModel.status == 1 || widget.redeModel.status == 2 ?
-          RaisedButton(
+          child: widget.redeModel!.status == 1 || widget.redeModel!.status == 2 ?
+          ElevatedButton(
             onPressed: (){
                     _atualizaResponsaveis();
                   },
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            padding: const EdgeInsets.all(0.0),
+
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              padding: const EdgeInsets.all(0.0),
+            ),
             child: Ink(
               decoration: BoxDecoration(
                 gradient:  LinearGradient(
@@ -470,20 +468,21 @@ class _ResponsaveisRedeViewState extends State<ResponsaveisRedeView> {
           //   },
           // )
               :
-          RaisedButton(
-            color: Colors.grey.withOpacity(0.3),
-            textColor: Colors.white,
-            padding: EdgeInsets.all(15),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0)),
+              padding: EdgeInsets.all(15),
+              backgroundColor: Colors.grey.withOpacity(0.3),
+            ),
             child: Text(
               "REDE FECHADA OU DESATIVADA",
               style: TextStyle(
                 fontSize: 16,
+                color: Colors.white,
                 fontFamily: FontFamily.fontSpecial,
 
               ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(2),
             ),
             onPressed: () {},
           )

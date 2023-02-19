@@ -41,13 +41,13 @@ class RedeService {
     redeRest.processaHttpPut(url, null);
   }
 
-  Future<List<RedeModel>> listaRedesQueParticipo() {
+  Future<List<RedeModel>?> listaRedesQueParticipo() async{
     String url = "${ConstantesRest.URL_REDE}/participacao";
     RedeRest redeRest = RedeRest();
     return redeRest.processaHttpGetListToken(url, "1");
   }
 
-  Future<List<RedeModel>> listaMinhasRedes() {
+  Future<List<RedeModel>?> listaMinhasRedes() {
     String url = "${ConstantesRest.URL_REDE}/minhasredes";
     RedeRest redeRest = RedeRest();
     return redeRest.processaHttpGetListToken(url, "2");
@@ -59,7 +59,7 @@ class RedeService {
     return redeRest.processaHttpGetListIntegrantes(url);
   }
 
-  Future<RedeModel> buscaRedePorId(int idRede) {
+  Future<RedeModel?> buscaRedePorId(int idRede) {
     String url = "${ConstantesRest.URL_REDE}/${idRede}";
     RedeRest redeRest = RedeRest();
     return redeRest.processaHttpGetObject(url);

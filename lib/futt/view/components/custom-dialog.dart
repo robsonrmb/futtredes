@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:futt/futt/view/style/colors.dart';
 
 class CustomDialog extends StatelessWidget {
-  final String title, description, buttonText;
-  final Image image;
-  final Color color;
-  final Icon icon;
+  final String? title, description, buttonText;
+  final Image? image;
+  final Color? color;
+  final Icon? icon;
   final bool encerrar;
-  final GestureTapCallback actionYes;
+  final GestureTapCallback? actionYes;
 
   CustomDialog(
-      {@required this.title,
-        @required this.description,
+      {required this.title,
+        required this.description,
         this.buttonText,
         this.color,
         this.image,
@@ -62,7 +62,7 @@ class CustomDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
               Text(
-                title,
+                title!,
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.w700,
@@ -70,7 +70,7 @@ class CustomDialog extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                description,
+                description!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16.0,
@@ -80,11 +80,11 @@ class CustomDialog extends StatelessWidget {
               buttonText != null?
               Align(
                 alignment: Alignment.bottomRight,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // To close the dialog
                   },
-                  child: Text(buttonText),
+                  child: Text(buttonText!),
                 ),
               ):new Container(),
             ],
@@ -144,7 +144,7 @@ class CustomDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
               Text(
-                title,
+                title!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24.0,
@@ -153,7 +153,7 @@ class CustomDialog extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               Text(
-                description,
+                description!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16.0,
@@ -163,17 +163,20 @@ class CustomDialog extends StatelessWidget {
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  TextButton(
 
-                    color: AppColors.colorButtonDialog,
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      backgroundColor: AppColors.colorButtonDialog,
+                    ),
                     onPressed: actionYes,
                     child: Text('Sim',style: new TextStyle(color: Colors.white),),
                   ),
-                  FlatButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-
-                    color: AppColors.colorButtonDialog,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      backgroundColor: AppColors.colorButtonDialog,
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop(); // To close the dialog
                     },

@@ -28,13 +28,13 @@ class JogoRedeService {
     jogoRest.processaHttpDelete(url);
   }
 
-  Future<List<JogoRedeModel>> listaPorRede(int idRede) async {
+  Future<List<JogoRedeModel>?> listaPorRede(int? idRede) async {
     String url = "${ConstantesRest.URL_JOGO_REDE}/rede/${idRede}";
     JogoRedeRest jogoRest = JogoRedeRest();
     return jogoRest.processaHttpGetList(url);
   }
 
-  Future<List<JogoRedeModel>> listaPorRedeUsuario(int idRede) async {
+  Future<List<JogoRedeModel>?> listaPorRedeUsuario(int? idRede) async {
     String url = "${ConstantesRest.URL_JOGO_REDE}/usuario/0/${idRede}";
     JogoRedeRest jogoRest = JogoRedeRest();
     return jogoRest.processaHttpGetListToken(url);

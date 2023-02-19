@@ -20,9 +20,9 @@ import 'dart:convert';
 import 'package:shimmer/shimmer.dart';
 
 class JogosSubView extends StatefulWidget {
-  RedeModel redeModel;
-  bool donoRede;
-  bool meusJogos;
+  RedeModel? redeModel;
+  bool? donoRede;
+  bool? meusJogos;
 
   JogosSubView(this.redeModel, this.donoRede, this.meusJogos);
 
@@ -34,20 +34,20 @@ class _JogosSubViewState extends State<JogosSubView> {
   TextEditingController _controllerPontuacao1 = TextEditingController();
   TextEditingController _controllerPontuacao2 = TextEditingController();
   bool _atualizaJogos = false;
-  String _mensagem = "";
+  String? _mensagem = "";
 
-  Future<List<JogoRedeModel>> _listaJogosDaRede() async {
+  Future<List<JogoRedeModel>?> _listaJogosDaRede() async {
     JogoRedeService jogoService = JogoRedeService();
-    if (widget.meusJogos) {
+    if (widget.meusJogos!) {
       return jogoService.listaPorRedeUsuario(
-          widget.redeModel.id);
+          widget.redeModel!.id);
     } else {
       return jogoService.listaPorRede(
-          widget.redeModel.id);
+          widget.redeModel!.id);
     }
   }
 
-  _atualizaPlacar(int idJogo, int idNumeroJogo) async {
+  _atualizaPlacar(int? idJogo, int? idNumeroJogo) async {
     if(_controllerPontuacao1.text.isNotEmpty && _controllerPontuacao2.text.isNotEmpty){
       circularProgress(context);
 
@@ -62,9 +62,9 @@ class _JogosSubViewState extends State<JogosSubView> {
         var _dados = jogoModel.toJson();
 
         final prefs = await SharedPreferences.getInstance();
-        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+        String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-        http.Response response = await http.put(_url,
+        http.Response response = await http.put(Uri.parse(_url),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': token,
@@ -124,7 +124,7 @@ class _JogosSubViewState extends State<JogosSubView> {
         });
   }
 
-  _removeJogo(int idJogo) async {
+  _removeJogo(int? idJogo) async {
     try {
       JogoRedeModel jogoModel = JogoRedeModel.Remove(idJogo);
 
@@ -132,10 +132,10 @@ class _JogosSubViewState extends State<JogosSubView> {
       var _dados = jogoModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
       http.Response response = await http.delete(
-        _url,
+        Uri.parse(_url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,
@@ -166,14 +166,14 @@ class _JogosSubViewState extends State<JogosSubView> {
   }
 
   _showModalRemoveJogo(
-      BuildContext context, String title, String description, int idJogo) {
+      BuildContext context, String title, String description, int? idJogo) {
     DialogFutt dialogFutt = new DialogFutt();
     dialogFutt.showAlertDialogActionNoYes(context, title, description, () {
       _removeJogo(idJogo);
     });
   }
 
-  _zeraJogo(int idJogo) async {
+  _zeraJogo(int? idJogo) async {
     try {
       circularProgress(context);
 
@@ -183,10 +183,10 @@ class _JogosSubViewState extends State<JogosSubView> {
       var _dados = jogoModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
       http.Response response = await http.put(
-        _url,
+        Uri.parse(_url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,
@@ -237,13 +237,13 @@ class _JogosSubViewState extends State<JogosSubView> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => {
                   Navigator.pop(context),
                 },
                 child: Text("Não"),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => _zeraJogo(idJogo),
                 child: Text("Sim"),
               )
@@ -252,7 +252,7 @@ class _JogosSubViewState extends State<JogosSubView> {
         });
   }
 
-  void showZerar(int idJogo) {
+  void showZerar(int? idJogo) {
     DialogFutt dialogFutt = new DialogFutt();
     dialogFutt.showAlertDialogActionNoYes(context, "Zerar placar do jogo",
         'Deseja realmente zerar o placar do jogo?', () {
@@ -262,7 +262,7 @@ class _JogosSubViewState extends State<JogosSubView> {
 
   bool _alteraPlacar(JogoRedeModel jogo) {
     if (widget.donoRede == true &&
-        (widget.redeModel.status == 1 || widget.redeModel.status == 2) &&
+        (widget.redeModel!.status == 1 || widget.redeModel!.status == 2) &&
         (jogo.pontuacao1 == 0 && jogo.pontuacao2 == 0)) {
       return true;
     } else {
@@ -272,7 +272,7 @@ class _JogosSubViewState extends State<JogosSubView> {
 
   bool _zeraPlacar(JogoRedeModel jogo) {
     if (widget.donoRede == true &&
-        (widget.redeModel.status == 1 || widget.redeModel.status == 2) &&
+        (widget.redeModel!.status == 1 || widget.redeModel!.status == 2) &&
         (jogo.pontuacao1 != 0 || jogo.pontuacao2 != 0)) {
       return true;
     } else {
@@ -284,7 +284,7 @@ class _JogosSubViewState extends State<JogosSubView> {
   Widget build(BuildContext context) {
     final maskPoints = MaskTextInputFormatter(mask: '##', filter: {"#": RegExp(r'[0-9]')});
 
-    return FutureBuilder<List<JogoRedeModel>>(
+    return FutureBuilder<List<JogoRedeModel>?>(
       future: _listaJogosDaRede(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -504,9 +504,9 @@ class _JogosSubViewState extends State<JogosSubView> {
                 //   borderRadius: BorderRadius.circular(5),
                 // ),
                 child: ListView.builder(
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    List<JogoRedeModel> paticipantes = snapshot.data;
+                    List<JogoRedeModel> paticipantes = snapshot.data!;
                     JogoRedeModel jogo = paticipantes[index];
 
                     return new GestureDetector(
@@ -554,9 +554,9 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                         .width *
                                                     0.25,
                                                 child: new Text(
-                                                  apelidoOuNome(
+                                                  '${apelidoOuNome(
                                                       jogo.apelidoFormatadoJogador1,
-                                                      jogo.nomeJogador1),
+                                                      jogo.nomeJogador1)}',
                                                   style: new TextStyle(
                                                       fontWeight:
                                                           FontWeight.w300,
@@ -586,9 +586,9 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                         .width *
                                                     0.25,
                                                 child: new Text(
-                                                  apelidoOuNome(
+                                                  '${apelidoOuNome(
                                                       jogo.apelidoFormatadoJogador2,
-                                                      jogo.nomeJogador2),
+                                                      jogo.nomeJogador2)}',
                                                   style: new TextStyle(
                                                       fontWeight:
                                                           FontWeight.w300,
@@ -644,9 +644,9 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                         .width *
                                                     0.25,
                                                 child: new Text(
-                                                  apelidoOuNome(
+                                                  '${apelidoOuNome(
                                                       jogo.apelidoFormatadoJogador3,
-                                                      jogo.nomeJogador3),
+                                                      jogo.nomeJogador3)}',
                                                   style: new TextStyle(
                                                       fontWeight:
                                                           FontWeight.w300,
@@ -680,9 +680,9 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                         .width *
                                                     0.25,
                                                 child: new Text(
-                                                  apelidoOuNome(
+                                                  '${apelidoOuNome(
                                                       jogo.apelidoFormatadoJogador4,
-                                                      jogo.nomeJogador4),
+                                                      jogo.nomeJogador4)}',
                                                   style: new TextStyle(
                                                       fontWeight:
                                                           FontWeight.w300,
@@ -736,10 +736,10 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                               end: Alignment
                                                                   .bottomRight,
                                                               colors: <Color>[
-                                                                widget.redeModel
-                                                                            .status <
+                                                                widget.redeModel!
+                                                                            .status! <
                                                                         3
-                                                                    ? (widget.redeModel.status ==
+                                                                    ? (widget.redeModel!.status ==
                                                                             1)
                                                                         ? Color(
                                                                             0xff093352)
@@ -747,10 +747,10 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                                             .colorEspecialPrimario1
                                                                     : Colors
                                                                         .grey,
-                                                                widget.redeModel
-                                                                            .status <
+                                                                widget.redeModel!
+                                                                            .status! <
                                                                         3
-                                                                    ? (widget.redeModel.status ==
+                                                                    ? (widget.redeModel!.status ==
                                                                             1)
                                                                         ? Color(
                                                                             0xff093352)
@@ -799,10 +799,10 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                               end: Alignment
                                                                   .bottomRight,
                                                               colors: <Color>[
-                                                                widget.redeModel
-                                                                            .status <
+                                                                widget.redeModel!
+                                                                            .status! <
                                                                         3
-                                                                    ? (widget.redeModel.status ==
+                                                                    ? (widget.redeModel!.status ==
                                                                             1)
                                                                         ? Color(
                                                                             0xff093352)
@@ -810,10 +810,10 @@ class _JogosSubViewState extends State<JogosSubView> {
                                                                             .colorEspecialPrimario1
                                                                     : Colors
                                                                         .grey,
-                                                                widget.redeModel
-                                                                            .status <
+                                                                widget.redeModel!
+                                                                            .status! <
                                                                         3
-                                                                    ? (widget.redeModel.status ==
+                                                                    ? (widget.redeModel!.status ==
                                                                             1)
                                                                         ? Color(
                                                                             0xff093352)
@@ -875,7 +875,7 @@ class _JogosSubViewState extends State<JogosSubView> {
   }
 
   //APELIDO OU PRIMEIRO NOME
-  String apelidoOuNome(String apelido, String nome) {
+  String? apelidoOuNome(String? apelido, String? nome) {
     if (apelido != null && apelido != "") {
       return apelido;
     }
@@ -937,7 +937,7 @@ class _JogosSubViewState extends State<JogosSubView> {
                                   color: Colors.grey[200],
                                   border: Border.all(
                                     width: 1.0,
-                                    color: Colors.grey[300],
+                                    color: Colors.grey[300]!,
                                   ),
                                   borderRadius: new BorderRadius.circular(8)
                               ),
@@ -1047,15 +1047,18 @@ class _JogosSubViewState extends State<JogosSubView> {
                               ),
                             ),
                             new Container(height: 20,),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed:
                                   () {
                                 _atualizaPlacar(jogo.id, jogo.numero);
                               },
-                              shape:
-                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                              padding:
-                              const EdgeInsets.all(0.0),
+                              style: ElevatedButton.styleFrom(
+                                shape:
+                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                                padding:
+                                const EdgeInsets.all(0.0),
+                              ),
+
                               child:
                               Ink(
                                 decoration: BoxDecoration(
@@ -1084,9 +1087,13 @@ class _JogosSubViewState extends State<JogosSubView> {
                             new Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                FlatButton(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                  color: AppColors.colorButtonDialog,
+                                TextButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                    backgroundColor: AppColors.colorButtonDialog,
+                                  ),
+
+
                                   onPressed: (){
                                     Navigator.pop(
                                         context);
@@ -1105,7 +1112,7 @@ class _JogosSubViewState extends State<JogosSubView> {
         },
         transitionDuration: Duration(milliseconds: 200),
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
 
   }
 }

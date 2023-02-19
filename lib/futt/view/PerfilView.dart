@@ -11,8 +11,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PerfilView extends StatefulWidget {
-  String image;
-  UsuarioModel usuarioModel;
+  String? image;
+  UsuarioModel? usuarioModel;
 
   PerfilView({this.image, this.usuarioModel});
 
@@ -21,7 +21,7 @@ class PerfilView extends StatefulWidget {
 }
 
 class _PerfilViewState extends State<PerfilView> {
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerSenha = TextEditingController();
   TextEditingController _controllerConfirmSenha = TextEditingController();
 
@@ -36,8 +36,8 @@ class _PerfilViewState extends State<PerfilView> {
       } else {
         final prefs = await SharedPreferences.getInstance();
         String token =
-            await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
-        String email =
+            await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
+        String? email =
             await prefs.getString(ConstantesConfig.PREFERENCES_EMAIL);
 
         UsuarioModel usuarioModel = UsuarioModel.AtualizaSenha(
@@ -46,7 +46,7 @@ class _PerfilViewState extends State<PerfilView> {
         var _url = "${ConstantesRest.URL_USUARIOS}/atualizaSenha";
         var _dados = usuarioModel.toJson();
 
-        http.Response response = await http.put(_url,
+        http.Response response = await http.put(Uri.parse(_url),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': token,
@@ -136,7 +136,7 @@ class _PerfilViewState extends State<PerfilView> {
                           //   controller: _controllerConfirmSenha,
                           // ),
                           Text(
-                            _mensagem,
+                            _mensagem!,
                             style: TextStyle(
                               fontSize: 12,
                               fontFamily: FontFamily.fontSpecial,
@@ -147,10 +147,12 @@ class _PerfilViewState extends State<PerfilView> {
                       ),
                     ),
                     actions: <Widget>[
-                      FlatButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          backgroundColor: Color(0xff083251),
+                        ),
 
-                        color: Color(0xff083251),
 
                         child: Text(
                           "Alterar",
@@ -165,10 +167,11 @@ class _PerfilViewState extends State<PerfilView> {
                           _salvaNovaSenha();
                         },
                       ),
-                      FlatButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-
-                        color: Color(0xff083251),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          backgroundColor: Color(0xff083251),
+                        ),
                         child: Text(
                           "Fechar",
                           style: TextStyle(

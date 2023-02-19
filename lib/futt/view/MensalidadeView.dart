@@ -15,13 +15,10 @@ class _MensalidadeViewState extends State<MensalidadeView> {
             opacity: 1,
           ),
           backgroundColor: Color(0xff093352),
-          textTheme: TextTheme(
-              title: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-              )
-          ),
-          title: Text("Valores mensais"),
+          title: Text("Valores mensais",style: TextStyle(
+              color: Colors.white,
+              fontSize: 20
+          ),),
         ),
         body: Container(
           color: Colors.amberAccent,

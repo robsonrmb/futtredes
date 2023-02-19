@@ -4,7 +4,7 @@ import 'package:futt/futt/view/style/font-family.dart';
 
 class Estatistica {
 
-    resultadoJogo(String valor,bool first) {
+    resultadoJogo(String? valor,bool first) {
       bool vitoria = true;
       if (valor != 'V') {
         vitoria = false;

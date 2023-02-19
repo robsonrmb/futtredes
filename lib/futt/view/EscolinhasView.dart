@@ -17,9 +17,9 @@ class EscolinhasView extends StatefulWidget {
 
 class _EscolinhasViewState extends State<EscolinhasView> {
   TextEditingController _controllerCidade = TextEditingController();
-  String _controllerPais = "";
+  String? _controllerPais = "";
 
-  String _pais = "";
+  String? _pais = "";
   String _cidade = "";
 
   _pesquisarEscolinhas() {
@@ -87,27 +87,28 @@ class _EscolinhasViewState extends State<EscolinhasView> {
                                     hintText: "Search",
                                     border: OutlineInputBorder(),
                                   ),
-                                  onChanged: (PaisModel data) => _controllerPais = data.id,
+                                  onChanged: (PaisModel? data) => _controllerPais = data!.id,
                                 ),
                               ),
                             ],
                           ),
                         ),
                         actions: <Widget>[
-                          FlatButton(
-                            child: RaisedButton(
-                              color: Color(0xff086ba4),
-                              textColor: Colors.white,
-                              padding: EdgeInsets.all(15),
-                              child: Text(
-                                "Pesquisar",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: 'Candal',
-                                ),
-                              ),
+                          TextButton(
+                            style: TextButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2),
+                              ),
+                              backgroundColor: Color(0xff086ba4),
+                              padding: EdgeInsets.all(15),
+
+                            ),
+                            child: Text(
+                              "Pesquisar",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontFamily: 'Candal',
                               ),
                             ),
                             onPressed: () {

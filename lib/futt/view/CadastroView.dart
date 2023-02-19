@@ -15,7 +15,7 @@ class CadastroView extends StatefulWidget {
 }
 
 class _CadastroViewState extends State<CadastroView> {
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerNickName = TextEditingController();
@@ -62,7 +62,7 @@ class _CadastroViewState extends State<CadastroView> {
       var _url = "${ConstantesRest.URL_USUARIOS}";
       var _dados = cadastroLoginModel.toJson();
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.post(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -393,11 +393,13 @@ class _CadastroViewState extends State<CadastroView> {
                         new Container(
                           height: 30,
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: _cadastrar,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          padding: const EdgeInsets.all(0.0),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            padding: const EdgeInsets.all(0.0),
+                          ),
                           child: Ink(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -425,11 +427,13 @@ class _CadastroViewState extends State<CadastroView> {
                         new Container(
                           height: 4,
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: _voltar,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          padding: const EdgeInsets.all(0.0),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            padding: const EdgeInsets.all(0.0),
+                          ),
                           child: Ink(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(

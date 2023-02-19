@@ -1,9 +1,9 @@
 import 'package:futt/futt/model/TipoEstatisticaModel.dart';
 
 class AreaEstatisticaModel {
-  int id;
-  String nome;
-  List<TipoEstatisticaModel> listaTipoEstatistica;
+  int? id;
+  String? nome;
+  List<TipoEstatisticaModel>? listaTipoEstatistica;
 
   AreaEstatisticaModel({this.id, this.nome, this.listaTipoEstatistica});
 

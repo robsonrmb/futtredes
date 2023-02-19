@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 class JogosView extends StatefulWidget {
 
-  RedeModel redeModel;
-  bool donoRede;
+  RedeModel? redeModel;
+  bool? donoRede;
   JogosView({this.redeModel, this.donoRede});
 
   @override
@@ -18,7 +18,7 @@ class JogosView extends StatefulWidget {
 
 class _JogosViewState extends State<JogosView> {
 
-  bool _meusJogos = false;
+  bool? _meusJogos = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +29,7 @@ class _JogosViewState extends State<JogosView> {
           color: Colors.white,
           opacity: 1,
         ),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
-        title: Text("Jogos",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,
+        title: Text("Jogos",style: new TextStyle(fontWeight: FontWeight.bold,color: AppColors.colorTextAppNav,fontSize: 20
         ),),
         centerTitle: true,
         flexibleSpace: Container(
@@ -46,7 +40,7 @@ class _JogosViewState extends State<JogosView> {
                   colors: <Color>[AppColors.colorFundoClaroApp,AppColors.colorFundoEscuroApp])),
         ),
       ),
-      floatingActionButton: widget.donoRede && (widget.redeModel.status == 1 || widget.redeModel.status == 2) ? FloatingActionButton(
+      floatingActionButton: widget.donoRede! && (widget.redeModel!.status == 1 || widget.redeModel!.status == 2) ? FloatingActionButton(
         child: Icon(Icons.add,color: AppColors.colorIconFloatButton),
         backgroundColor: AppColors.colorFloatButton,
 
@@ -61,7 +55,7 @@ class _JogosViewState extends State<JogosView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             //CabecalhoLista().cabecalho(widget.redeModel.nome, widget.redeModel.pais, widget.redeModel.cidade, widget.redeModel.local, widget.redeModel.status),
-            TopoInterno().getTopo(widget.redeModel.nome, widget.redeModel.status),
+            TopoInterno().getTopo(widget.redeModel!.nome!, widget.redeModel!.status!),
             Expanded(
               child: JogosSubView(widget.redeModel, widget.donoRede, _meusJogos),
             )
@@ -81,7 +75,7 @@ class _JogosViewState extends State<JogosView> {
               //subtitle: Text("Exibição dos últimos 50 jogos."),
               activeColor: Colors.lightBlue,
               value: _meusJogos,
-              onChanged: (bool valor) {
+              onChanged: (bool? valor) {
                 setState(() {
                   _meusJogos = valor;
                 });

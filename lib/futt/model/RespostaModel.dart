@@ -1,5 +1,5 @@
 class RespostaModel {
-  String _resposta;
+  String? _resposta;
 
   RespostaModel(this._resposta);
 
@@ -9,9 +9,9 @@ class RespostaModel {
     );
   }
 
-  String get resposta => _resposta;
+  String? get resposta => _resposta;
 
-  set resposta(String value) {
+  set resposta(String? value) {
     _resposta = value;
   }
 

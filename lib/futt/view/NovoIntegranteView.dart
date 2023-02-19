@@ -15,7 +15,7 @@ class NovoIntegranteView extends StatefulWidget {
 class _NovoIntegranteViewState extends State<NovoIntegranteView> {
 
   String _mensagem = "";
-  int _idTorneio;
+  int? _idTorneio;
   TextEditingController _controllerEmail = TextEditingController();
 
   _inserirIntegrante(id) async {
@@ -36,13 +36,8 @@ class _NovoIntegranteViewState extends State<NovoIntegranteView> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Color(0xff093352),
-          textTheme: TextTheme(
-              title: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-              )
-          ),
-          title: Text("Novo integrante"),
+          title: Text("Novo integrante",style: TextStyle(   color: Colors.white,
+              fontSize: 20),),
         ),
         body: Container(
             padding: EdgeInsets.all(16),
@@ -68,14 +63,17 @@ class _NovoIntegranteViewState extends State<NovoIntegranteView> {
                   ),
                   controller: _controllerEmail,
                 ),
-                RaisedButton(
-                  color: Color(0xff086ba4),
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(15),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xff086ba4),
+                    padding: EdgeInsets.all(15),
+
+                  ),
                   child: Text(
                     "Cadastrar novo integrante",
                     style: TextStyle(
-                        fontSize: 20
+                        fontSize: 20,
+                      color: Colors.white
                     ),
                   ),
                   onPressed: () {

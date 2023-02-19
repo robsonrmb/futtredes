@@ -17,8 +17,8 @@ import 'dart:convert';
 import 'package:shimmer/shimmer.dart';
 
 class IntegrantesSubView extends StatefulWidget {
-  RedeModel redeModel;
-  bool donoRede;
+  RedeModel? redeModel;
+  bool? donoRede;
   int inclui;
 
   IntegrantesSubView(this.redeModel, this.donoRede, this.inclui);
@@ -28,11 +28,11 @@ class IntegrantesSubView extends StatefulWidget {
 }
 
 class _IntegrantesSubViewState extends State<IntegrantesSubView> {
-  String _mensagem = "";
+  String? _mensagem = "";
 
-  Future<List<IntegranteModel>> _listaIntegrantes(int lista) async {
+  Future<List<IntegranteModel>?> _listaIntegrantes(int lista) async {
     IntegranteService resultadoService = IntegranteService();
-    return resultadoService.listaIntegrantesDaRede( widget.redeModel.id);
+    return resultadoService.listaIntegrantesDaRede( widget.redeModel!.id);
   }
 
   _showModalRemoveIntegrante(
@@ -51,11 +51,11 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () => _remove(context, idRede, idIntegrante, false),
                 child: Text("Não"),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => _remove(context, idRede, idIntegrante, true),
                 child: Text("Sim"),
               )
@@ -65,7 +65,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
   }
 
   _remove(
-      BuildContext context, int idRede, int idIntegrante, bool resposta) async {
+      BuildContext context, int? idRede, int? idIntegrante, bool resposta) async {
     if (resposta) {
       _removendo(context, idRede, idIntegrante);
       Navigator.pop(context);
@@ -74,7 +74,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
     }
   }
 
-  _removendo(BuildContext context, int idRede, int idAtleta) async {
+  _removendo(BuildContext context, int? idRede, int? idAtleta) async {
     try {
       IntegranteModel integranteModel =
           IntegranteModel.Remove(idRede, idAtleta);
@@ -83,9 +83,9 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
       var _dados = integranteModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.post(_url,
+      http.Response response = await http.post(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -115,7 +115,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
     }
   }
 
-  _retorneSubtitulo(String pais, String cidade,String local) {
+  _retorneSubtitulo(String? pais, String? cidade,String? local) {
     if(pais ==""){
       pais = null;
     }
@@ -156,7 +156,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<IntegranteModel>>(
+    return FutureBuilder<List<IntegranteModel>?>(
       future: _listaIntegrantes(widget.inclui),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -243,11 +243,11 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                 child: new Card(
                   elevation: 5,
                   child: ListView.builder(
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data!.length,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      List<IntegranteModel> integrantes = snapshot.data;
+                      List<IntegranteModel> integrantes = snapshot.data!;
                       IntegranteModel integrante = integrantes[index];
                       return new InkWell(
                         onTap: () {
@@ -256,8 +256,8 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                               MaterialPageRoute(
                                 builder: (context) => EstatisticasAtletasView(
                                   integrante.idUsuario,
-                                  widget.redeModel.id,
-                                  widget.redeModel.nome,
+                                  widget.redeModel!.id,
+                                  widget.redeModel!.nome,
                                   integrante.nome,
                                   integrante.nomeFoto,
                                   hero: 'index$index',
@@ -285,9 +285,9 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 title: Row(
                                   children: <Widget>[
                                     new Container(
-                                      width:widget.donoRede? MediaQuery.of(context).size.width*0.32:MediaQuery.of(context).size.width*0.43,
+                                      width:widget.donoRede!? MediaQuery.of(context).size.width*0.32:MediaQuery.of(context).size.width*0.43,
                                       child: Text(
-                                        apelidoOuNome(integrante.apelido,integrante.nome),
+                                        '${apelidoOuNome(integrante.apelido,integrante.nome)}',
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: AppColors.colorTextTitleIntegrantes,
@@ -300,7 +300,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 subtitle: Row(
                                   children: <Widget>[
                                     new Container(
-                                      width:widget.donoRede? MediaQuery.of(context).size.width*0.32:MediaQuery.of(context).size.width*0.43,
+                                      width:widget.donoRede!? MediaQuery.of(context).size.width*0.32:MediaQuery.of(context).size.width*0.43,
                                       child: Text(
                                         _retorneSubtitulo(
                                             integrante.pais, integrante.cidade,integrante.local),
@@ -324,7 +324,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                 trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      widget.donoRede
+                                      widget.donoRede!
                                           ? new Row(
                                         children: [
                                           new GestureDetector(
@@ -333,7 +333,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                               showDialogExclusao(
                                                   context,
                                                   integrante.idUsuario,
-                                                  widget.redeModel.id);
+                                                  widget.redeModel!.id);
                                               // _showModalRemoveIntegrante(
                                               //     context,
                                               //     integrante.idUsuario,
@@ -351,8 +351,8 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                                   MaterialPageRoute(
                                                     builder: (context) => EstatisticasAtletasView(
                                                       integrante.idUsuario,
-                                                      widget.redeModel.id,
-                                                      widget.redeModel.nome,
+                                                      widget.redeModel!.id,
+                                                      widget.redeModel!.nome,
                                                       integrante.nome,
                                                       integrante.nomeFoto,
                                                       hero: 'index$index',
@@ -376,8 +376,8 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
                                               MaterialPageRoute(
                                                 builder: (context) => EstatisticasAtletasView(
                                                   integrante.idUsuario,
-                                                  widget.redeModel.id,
-                                                  widget.redeModel.nome,
+                                                  widget.redeModel!.id,
+                                                  widget.redeModel!.nome,
                                                   integrante.nome,
                                                   integrante.nomeFoto,
                                                   hero: 'index$index',
@@ -425,7 +425,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
   }
 
   void showDialogExclusao(
-      BuildContext context, int idIntegrante, int idRede) {
+      BuildContext context, int? idIntegrante, int? idRede) {
     DialogFutt dialogFutt = new DialogFutt();
     dialogFutt.showAlertDialogActionNoYes(context, "Remove integrante da rede",
         'Deseja realmente remover o integrante?', () {
@@ -436,7 +436,7 @@ class _IntegrantesSubViewState extends State<IntegrantesSubView> {
 
 
   //APELIDO OU PRIMEIRO NOME
-  String apelidoOuNome(String apelido, String nome) {
+  String? apelidoOuNome(String? apelido, String? nome) {
     if (apelido != null && apelido != "") {
       return apelido;
     } if(nome != null){

@@ -1,6 +1,6 @@
 class PaisesModel {
-  String codigo;
-  String texto;
+  String? codigo;
+  String? texto;
 
   PaisesModel({this.codigo,this.texto});
 

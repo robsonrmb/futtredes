@@ -7,7 +7,7 @@ class RankingRest extends BaseRest {
 
   Future<List<RankingModel>> processaHttpGetList(String url) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -27,7 +27,7 @@ class RankingRest extends BaseRest {
   }
 
   List<RankingModel> _parseListaRankingModel(dadosJson) {
-    List<RankingModel> lista = List();
+    List<RankingModel> lista = [];
     for (var registro in dadosJson) {
       RankingModel resultadoModel = RankingModel.fromJson(
           registro); //.converteJson

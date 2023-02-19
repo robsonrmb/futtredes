@@ -10,9 +10,9 @@ class BannerRest extends BaseRest {
   Future<BannerModel> processaHttpGetObject(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,
@@ -35,17 +35,17 @@ class BannerRest extends BaseRest {
     }
   }
 
-  List<BannerModel> _parseListaBannerModel(dadosJson, view) {
-    if (view) {
-      List<BannerModel> lista = List();
-      for (var registro in dadosJson) {
-        BannerModel resultadoModel = BannerModel.fromJson(
-            registro); //.converteJson
-        lista.add(resultadoModel);
-      }
-      return lista;
-    }else{
-
-    }
-  }
+  // List<BannerModel> _parseListaBannerModel(dadosJson, view) {
+  //   if (view) {
+  //     List<BannerModel> lista = [];
+  //     for (var registro in dadosJson) {
+  //       BannerModel resultadoModel = BannerModel.fromJson(
+  //           registro); //.converteJson
+  //       lista.add(resultadoModel);
+  //     }
+  //     return lista;
+  //   }else{
+  //
+  //   }
+  // }
 }

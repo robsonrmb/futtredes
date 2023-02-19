@@ -30,8 +30,8 @@ import 'dart:io';
 import 'package:shimmer/shimmer.dart';
 
 class PerfilSubView extends StatefulWidget {
-  String image;
-  UsuarioModel usuarioModel;
+  String? image;
+  UsuarioModel? usuarioModel;
 
   PerfilSubView({this.image, this.usuarioModel});
 
@@ -40,35 +40,35 @@ class PerfilSubView extends StatefulWidget {
 }
 
 class _PerfilSubViewState extends State<PerfilSubView> {
-  String _mensagem = "";
+  String? _mensagem = "";
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerApelido = TextEditingController();
   TextEditingController _controllerDataNascimento = TextEditingController();
-  String _controllerPosicionamento = "";
-  String _controllerSexo = "";
-  String _controllerPais = "";
+  String? _controllerPosicionamento = "";
+  String? _controllerSexo = "";
+  String? _controllerPais = "";
   TextEditingController _controllerCidade = TextEditingController();
   TextEditingController _controllerLocal = TextEditingController();
 
-  PaisModel paisModelSelecionado;
-  GeneroModel generoModelSelecionado;
-  PosicionamentoModel posicionamentoModelSelecionado;
+  PaisModel? paisModelSelecionado;
+  late GeneroModel generoModelSelecionado;
+  PosicionamentoModel? posicionamentoModelSelecionado;
   List<EstadosModel> estadosList = [];
-  File _imagem;
+  File? _imagem;
   String _nomeImagem = "";
   bool enableEdit = false;
-  String sexoSelecionado;
+  String? sexoSelecionado;
   List<String> listDropSexo = ['Masculino', 'Feminino'];
-  String posicaoSelecionado;
+  String? posicaoSelecionado;
   List<String> listDropPosicao = ['','Esquerda', 'Direita', 'Ambas'];
-  String paisSelecionado;
-  List<String> listDropPais = new List();
-  String estadoSelecionado;
-  List<String> listDropEstado = new List();
+  String? paisSelecionado;
+  List<String?> listDropPais = [];
+  String? estadoSelecionado;
+  List<String?> listDropEstado = [];
 
   bool trocouImagem = false;
   bool salvouFotoTrocada = false;
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
   bool enableEditPencil = false;
 
 
@@ -102,7 +102,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         throw Exception(_mensagem);
       }
       circularProgress(context);
-      DateTime _dataNasc;
+      DateTime? _dataNasc;
       
       if(_controllerDataNascimento.text != ""&& _controllerDataNascimento.text.length==10){
         _dataNasc = new DateTime(
@@ -112,7 +112,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       }
 
       String enviaPosicao = '';
-      String enviaEstado = estadoSelecionado;
+      String? enviaEstado = estadoSelecionado;
       if(posicaoSelecionado == "Esquerda"){
         enviaPosicao = "2";
       }
@@ -148,9 +148,9 @@ class _PerfilSubViewState extends State<PerfilSubView> {
       var _dados = usuarioModel.toJson();
 
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.put(_url,
+      http.Response response = await http.put(Uri.parse(_url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -158,7 +158,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
           body: jsonEncode(_dados));
 
       if (trocouImagem) {
-        bool foto = await uploadImagemBool(widget.usuarioModel.id);
+        bool foto = await uploadImagemBool(widget.usuarioModel!.id);
         if (foto) {
           if (response.statusCode == 204) {
             setState(() {
@@ -245,7 +245,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     return utilService.listaPaises();
   }
 
-  Future<UsuarioModel> _buscaUsuarioLogado() async {
+  Future<UsuarioModel?> _buscaUsuarioLogado() async {
     UsuarioService usuarioService = UsuarioService();
     return usuarioService.buscaLogado();
   }
@@ -256,7 +256,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   //   await Future.delayed(Duration(seconds: 2));
   //   Navigator.pop(context);
   // }
-  _showOpc(BuildContext context, String title, String description, int idUsuario){
+  _showOpc(BuildContext context, String title, String description, int? idUsuario){
     showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
@@ -292,14 +292,19 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                   })
                             ],
                           ),
-                          RaisedButton(
+                          ElevatedButton(
+
+
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              padding: const EdgeInsets.all(0.0),
+                            ),
                             onPressed: () {
                               _recuperaImagem("camera", idUsuario);
                               Navigator.pop(context);
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            padding: const EdgeInsets.all(0.0),
+
                             child: Ink(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -340,14 +345,18 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           new Container(
                             height: 20,
                           ),
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () {
                               _recuperaImagem("galeria", idUsuario);
                               Navigator.pop(context);
                             },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            padding: const EdgeInsets.all(0.0),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              padding: const EdgeInsets.all(0.0),
+                            ),
+
+
                             child: Ink(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -394,7 +403,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         },
         transitionDuration: Duration(milliseconds: 200),
         context: context,
-        pageBuilder: (context, animation1, animation2) {});
+        pageBuilder: (context, animation1, animation2) {} as Widget Function(BuildContext, Animation<double>, Animation<double>));
 
   }
 
@@ -425,14 +434,19 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                         })
                   ],
                 ),
-                RaisedButton(
+                ElevatedButton(
+
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    padding: const EdgeInsets.all(0.0),
+                  ),
+
                   onPressed: () {
                     _recuperaImagem("camera", idUsuario);
                     Navigator.pop(context);
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  padding: const EdgeInsets.all(0.0),
+
                   child: Ink(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -473,14 +487,20 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                 new Container(
                   height: 20,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     _recuperaImagem("galeria", idUsuario);
                     Navigator.pop(context);
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  padding: const EdgeInsets.all(0.0),
+
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    padding: const EdgeInsets.all(0.0),
+                  ),
+
+
+
                   child: Ink(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -524,39 +544,41 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         });
   }
 
-  _recuperaImagem(String origemImagem, int idRede) async {
-    File _imagemSelecionada;
+  _recuperaImagem(String origemImagem, int? idRede) async {
+    XFile? _imagemSelecionada;
+    final ImagePicker _picker = ImagePicker();
     switch (origemImagem) {
       case "camera":
-        _imagemSelecionada = await ImagePicker.pickImage(
+        _imagemSelecionada = await _picker.pickImage(
             source: ImageSource.camera,
             imageQuality: 30); //, maxHeight: 500, maxWidth: 500
         break;
       case "galeria":
-        _imagemSelecionada = await ImagePicker.pickImage(
+        _imagemSelecionada = await _picker.pickImage(
             source: ImageSource.gallery,
             imageQuality: 30); //, maxHeight: 500, maxWidth: 500
         break;
     }
+    File fileImage = File(_imagemSelecionada!.path);
 
-    _imagem = _imagemSelecionada;
+    _imagem = fileImage;
     trocouImagem = true;
 
     setState(() {});
   }
 
-  Future<bool> uploadImagemBool(int idUsuario) async {
+  Future<bool> uploadImagemBool(int? idUsuario) async {
     final prefs = await SharedPreferences.getInstance();
-    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
     var request = new http.MultipartRequest(
         'PUT', Uri.parse('${ConstantesRest.URL_USUARIOS}/$idUsuario/foto'));
 
     var stream =
-        new http.ByteStream(DelegatingStream.typed(_imagem.openRead()));
-    var length = await _imagem.length();
+        new http.ByteStream(DelegatingStream.typed(_imagem!.openRead()));
+    var length = await _imagem!.length();
     var multipartFile = new http.MultipartFile('file', stream, length,
-        filename: basename(_imagem.path));
+        filename: basename(_imagem!.path));
 
     var header = new Map<String, String>();
     header['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -568,8 +590,8 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
     request.files.add(
         //multipartFile
-        http.MultipartFile.fromBytes('file', _imagem.readAsBytesSync(),
-            filename: _imagem.path.split("/").last));
+        http.MultipartFile.fromBytes('file', _imagem!.readAsBytesSync(),
+            filename: _imagem!.path.split("/").last));
 
     var streamedResponse = await request.send();
     final respStr = await streamedResponse.stream.bytesToString();
@@ -586,18 +608,18 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   }
 
-  Future<UsuarioModel> _uploadImagem(int idUsuario) async {
+  Future<UsuarioModel?> _uploadImagem(int idUsuario) async {
     final prefs = await SharedPreferences.getInstance();
-    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
     var request = new http.MultipartRequest(
         'PUT', Uri.parse('${ConstantesRest.URL_USUARIOS}/$idUsuario/foto'));
 
     var stream =
-        new http.ByteStream(DelegatingStream.typed(_imagem.openRead()));
-    var length = await _imagem.length();
+        new http.ByteStream(DelegatingStream.typed(_imagem!.openRead()));
+    var length = await _imagem!.length();
     var multipartFile = new http.MultipartFile('file', stream, length,
-        filename: basename(_imagem.path));
+        filename: basename(_imagem!.path));
 
     var header = new Map<String, String>();
     header['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -609,8 +631,8 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
     request.files.add(
         //multipartFile
-        http.MultipartFile.fromBytes('file', _imagem.readAsBytesSync(),
-            filename: _imagem.path.split("/").last));
+        http.MultipartFile.fromBytes('file', _imagem!.readAsBytesSync(),
+            filename: _imagem!.path.split("/").last));
 
     var streamedResponse = await request.send();
     final respStr = await streamedResponse.stream.bytesToString();
@@ -625,7 +647,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   void _buscaPais() async {
     UsuarioService usuarioService = UsuarioService();
-    List<PaisesModel> paises = await usuarioService.listaPaises();
+    List<PaisesModel>? paises = await usuarioService.listaPaises();
     if (paises != null) {
       for (int i = 0; i < paises.length; i++) {
         listDropPais.add(paises[i].texto);
@@ -636,7 +658,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
   void _buscaEstado() async {
     listDropEstado.add('');
     UsuarioService usuarioService = UsuarioService();
-    List<EstadosModel> estados = await usuarioService.listaEstados();
+    List<EstadosModel>? estados = await usuarioService.listaEstados();
     if (estados != null) {
       estadosList = estados;
       for (int i = 0; i < estados.length; i++) {
@@ -724,7 +746,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                       context,
                                       "Imagem",
                                       "Buscar imagem de qual origem?",
-                                      widget.usuarioModel.id);
+                                      widget.usuarioModel!.id);
                                 },
                                 child: new Container(
                                   margin: const EdgeInsets.all(4),
@@ -745,7 +767,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                       // ],
                                       ),
                                   child: CircleAvatar(
-                                    backgroundImage: NetworkImage(widget.image),
+                                    backgroundImage: NetworkImage(widget.image!),
                                     radius: 30.0,
                                   ),
                                 ),
@@ -758,7 +780,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                   context,
                                   "Imagem",
                                   "Buscar imagem de qual origem?",
-                                  widget.usuarioModel.id);
+                                  widget.usuarioModel!.id);
                             },
                             child: new Container(
                               height: 110,
@@ -766,7 +788,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                               decoration: new BoxDecoration(
                                   //color: const Color(0xff7c94b6),
                                   image: new DecorationImage(
-                                    image: new FileImage(_imagem),
+                                    image: new FileImage(_imagem!),
                                     fit: BoxFit.cover,
                                   ),
                                   shape: BoxShape.circle,
@@ -776,7 +798,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           )),
                 // _showModalAtualizaImagem(context, "Imagem", "Buscar imagem de qual origem?", widget.usuarioModel.id);
 
-                FutureBuilder<UsuarioModel>(
+                FutureBuilder<UsuarioModel?>(
                   future: _buscaUsuarioLogado(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
@@ -864,16 +886,16 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                           String idUser = '';
 
                           if (!enableEdit) {
-                            UsuarioModel usuarioModel = snapshot.data;
+                            UsuarioModel usuarioModel = snapshot.data!;
                             idUser = usuarioModel.id.toString();
                             prefs.setString(
-                                'fotoPerfil', usuarioModel.nomeFoto);
-                            _controllerNome.text = usuarioModel.nome;
-                            _controllerApelido.text = usuarioModel.apelido;
+                                'fotoPerfil', usuarioModel.nomeFoto!);
+                            _controllerNome.text = usuarioModel.nome!;
+                            _controllerApelido.text = usuarioModel.apelido!;
                             _nomeImagem = ConstantesRest.URL_STATIC_USER +
-                                usuarioModel.nomeFoto;
+                                usuarioModel.nomeFoto!;
                             _controllerDataNascimento.text =
-                                usuarioModel.dataNascimento;
+                                usuarioModel.dataNascimento!;
                             //_controllerDataNascimento.text = "";
                             if (usuarioModel.dataNascimento != null &&
                                 usuarioModel.dataNascimento != "") {
@@ -888,8 +910,8 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                             _controllerSexo = usuarioModel.sexo;
                             _controllerPosicionamento = usuarioModel.posicao;
                             _controllerPais = usuarioModel.pais;
-                            _controllerCidade.text = usuarioModel.cidade;
-                            _controllerLocal.text = usuarioModel.ondeJoga;
+                            _controllerCidade.text = usuarioModel.cidade!;
+                            _controllerLocal.text = usuarioModel.ondeJoga!;
                             estado = usuarioModel.estado ?? '';
                             posicao =
                             usuarioModel.posicao == '2'
@@ -1001,7 +1023,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                                 hintText: ""),
                                           )
                                               : new Text(
-                                            primeiroNome(_controllerNome.text),
+                                            '${primeiroNome(_controllerNome.text)}',
                                             textAlign: TextAlign.center,
                                             style: new TextStyle(
                                               fontSize: 20,
@@ -1123,13 +1145,18 @@ class _PerfilSubViewState extends State<PerfilSubView> {
             child: new Container(
               margin: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
               height: 50,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   _atualizar(context);
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
-                padding: const EdgeInsets.all(0.0),
+
+
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                  padding: const EdgeInsets.all(0.0),
+                ),
+
                 child: Ink(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -1460,10 +1487,10 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                         _controllerPais = newValue;
                       });
                     },
-                    items: listDropPais.map((String value) {
+                    items: listDropPais.map((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                   ),
@@ -1536,10 +1563,10 @@ class _PerfilSubViewState extends State<PerfilSubView> {
                                     //controllerNomeCartaoContaBancaria.text = newValue;
                                   });
                                 },
-                                items: listDropEstado.map((String value) {
+                                items: listDropEstado.map((String? value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
-                                    child: Text(value),
+                                    child: Text(value!),
                                   );
                                 }).toList(),
                               ),
@@ -1560,7 +1587,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
 
   }
 
-  Widget rowsStringSexo(String titile, String value) {
+  Widget rowsStringSexo(String titile, String? value) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -1716,10 +1743,10 @@ class _PerfilSubViewState extends State<PerfilSubView> {
     showLoad(context);
 
     final prefs = await SharedPreferences.getInstance();
-    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+    String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
     String url = "${ConstantesRest.URL_USUARIOS}/desativa/$idUsuario";
-    var response = await http.put(url, headers: <String, String>{
+    var response = await http.put(Uri.parse(url), headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,
     });
@@ -1768,7 +1795,7 @@ class _PerfilSubViewState extends State<PerfilSubView> {
         });
   }
 
-  String primeiroNome(String nome) {
+  String? primeiroNome(String? nome) {
    if(nome != null){
       if (nome.split(' ').length == 1) {
         return nome;

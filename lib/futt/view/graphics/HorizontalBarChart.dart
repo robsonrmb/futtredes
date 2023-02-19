@@ -1,5 +1,6 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter_new/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:charts_flutter_new/flutter.dart';
 
 class HorizontalBarChart extends StatelessWidget {
 
@@ -11,7 +12,7 @@ class HorizontalBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new charts.BarChart(
-      seriesList,
+      seriesList as List<Series<dynamic, String>>,
       animate: animate,
       vertical: false,
     );

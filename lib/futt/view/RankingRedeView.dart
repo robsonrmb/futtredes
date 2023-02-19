@@ -29,13 +29,10 @@ class _RankingRedeViewState extends State<RankingRedeView> {
           opacity: 1,
         ),
         backgroundColor: Color(0xff093352),
-        textTheme: TextTheme(
-            title: TextStyle(
-                color: Colors.white,
-                fontSize: 20
-            )
-        ),
-        title: Text("Ranking"),
+        title: Text("Ranking",style: TextStyle(
+            color: Colors.white,
+            fontSize: 20
+        ),),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.colorFloatButton,

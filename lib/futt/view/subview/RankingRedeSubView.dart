@@ -44,10 +44,10 @@ class _RankingRedeSubViewState extends State<RankingRedeSubView> {
           case ConnectionState.done :
             if( snapshot.hasData ) {
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
 
-                  List<RankingModel> ranking = snapshot.data;
+                  List<RankingModel> ranking = snapshot.data!;
                   RankingModel resultado = ranking[index];
 
                   return Container(
@@ -58,7 +58,7 @@ class _RankingRedeSubViewState extends State<RankingRedeSubView> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(ConstantesRest.URL_STATIC_USER + resultado.fotoUsuario),
+                        backgroundImage: NetworkImage(ConstantesRest.URL_STATIC_USER + resultado.fotoUsuario!),
                         radius: 30.0,
                       ),
                       title: Row(

@@ -15,7 +15,8 @@ class BaseRestFixo {
 
   processaHttpPostFixo() async {
     http.Response response = await http.post(
-        "${ConstantesRest.URL_BASE_TESTE}/posts",
+        Uri.parse("${ConstantesRest.URL_BASE_TESTE}/posts")
+        ,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -29,7 +30,7 @@ class BaseRestFixo {
 
   processaHttpPutFixo() async {
     http.Response response = await http.put(
-        "${ConstantesRest.URL_BASE_TESTE}/posts/1",
+      Uri.parse("${ConstantesRest.URL_BASE_TESTE}/posts/1"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -43,7 +44,7 @@ class BaseRestFixo {
 
   processaHttpDeleteFixo() async {
     http.Response response = await http.delete(
-        "${ConstantesRest.URL_BASE_TESTE}/posts/1",
+      Uri.parse("${ConstantesRest.URL_BASE_TESTE}/posts/1"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         }

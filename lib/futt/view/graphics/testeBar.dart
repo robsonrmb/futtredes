@@ -1,10 +1,11 @@
 /// Vertical bar chart with bar label renderer example.
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter_new/flutter.dart' as charts;
+import 'package:charts_flutter_new/flutter.dart';
 import 'package:flutter/material.dart';
 
 class VerticalBarLabelChart extends StatelessWidget {
   List<charts.Series> seriesList;
-  final bool animate;
+  final bool? animate;
 
   VerticalBarLabelChart(this.seriesList, {this.animate});
 
@@ -28,7 +29,7 @@ class VerticalBarLabelChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new charts.BarChart(
-      seriesList,
+      seriesList as List<Series<dynamic, String>>,
       animate: animate,
       vertical: true,
       // Set a bar label decorator.
@@ -52,7 +53,7 @@ class VerticalBarLabelChart extends StatelessWidget {
           id: 'Sales',
           domainFn: (OrdinalSales sales, _) => sales.year,
           measureFn: (OrdinalSales sales, _) => sales.sales,
-          data: data,
+          data: data as List<OrdinalSales>,
           // Set a label accessor to control the text of the bar label.
           labelAccessorFn: (OrdinalSales sales, _) =>
           '\$${sales.sales.toString()}')

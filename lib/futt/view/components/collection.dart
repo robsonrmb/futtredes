@@ -4,11 +4,11 @@ import 'package:futt/futt/view/components/collection-list.dart';
 import 'package:futt/futt/view/style/colors.dart';
 
 class Collection extends StatefulWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String titulo;
   final List<String> lista;
-  final ValueChanged<String> onChange;
-  final String valorPadrao;
+  final ValueChanged<String?>? onChange;
+  final String? valorPadrao;
   final Color colorStyle;
   final int skip;
   final int take;
@@ -17,9 +17,9 @@ class Collection extends StatefulWidget {
   final bool escondeSearch;
 
   Collection({
-    Key key,
-    @required this.titulo,
-    @required this.lista,
+    Key? key,
+    required this.titulo,
+    required this.lista,
     this.onChange,
     this.valorPadrao,
     this.solicitacaoAgendamento: false,
@@ -36,8 +36,8 @@ class Collection extends StatefulWidget {
 }
 
 class CollectionState extends State<Collection> {
-  String _itemSelecionado  = '';
-  String _anterior = "Selecione";
+  String? _itemSelecionado  = '';
+  String? _anterior = "Selecione";
 
 
   @override
@@ -180,7 +180,7 @@ class CollectionState extends State<Collection> {
             );
           },
         ));
-    if (widget.onChange != null) widget.onChange(_itemSelecionado);
+    if (widget.onChange != null) widget.onChange!(_itemSelecionado);
 
     setState(() {});
   }

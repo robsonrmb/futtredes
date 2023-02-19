@@ -1,9 +1,9 @@
 class UsuarioAssinanteModel {
-  int idAssinatura;
-  bool status;
-  String validade;
-  String produto;
-  String email;
+  int? idAssinatura;
+  bool? status;
+  String? validade;
+  String? produto;
+  String? email;
 
   UsuarioAssinanteModel(
       {this.idAssinatura,

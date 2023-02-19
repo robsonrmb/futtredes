@@ -10,9 +10,9 @@ import 'dart:convert';
 
 class EstatisticaRest extends BaseRest {
 
-  Future<List<RespQuantidadeModel>> processaHttpGetListRespQuantidade(String url, int tipo) async {
+  Future<List<RespQuantidadeModel>?> processaHttpGetListRespQuantidade(String url, int tipo) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -31,9 +31,9 @@ class EstatisticaRest extends BaseRest {
 
   }
 
-  Future<List<RespPerformanceModel>> processaHttpGetListRespPerformance(String url, int tipo) async {
+  Future<List<RespPerformanceModel>?> processaHttpGetListRespPerformance(String url, int tipo) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -52,9 +52,9 @@ class EstatisticaRest extends BaseRest {
 
   }
 
-  Future<List<QuantidadeModel>> processaHttpGetListQuantidade(String url, int tipo) async {
+  Future<List<QuantidadeModel>?> processaHttpGetListQuantidade(String url, int tipo) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         String source = Utf8Decoder().convert(response.bodyBytes);
         var dadosJson = json.decode(source);
@@ -73,13 +73,13 @@ class EstatisticaRest extends BaseRest {
 
   }
 
-  Future<List<RespostaModel>> processaHttpGetListResposta(String url, int tipo) async {
+  Future<List<RespostaModel>?> processaHttpGetListResposta(String url, int tipo) async {
     try {
       //http.Response response = await http.get(url);
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': token,
@@ -103,7 +103,7 @@ class EstatisticaRest extends BaseRest {
   }
 
   List<RespQuantidadeModel> _parseListaRespQuantidadeModel(dadosJson) {
-    List<RespQuantidadeModel> lista = List();
+    List<RespQuantidadeModel> lista = [];
     for (var registro in dadosJson) {
       RespQuantidadeModel resultadoModel = RespQuantidadeModel.fromJson(
           registro); //.converteJson
@@ -113,7 +113,7 @@ class EstatisticaRest extends BaseRest {
   }
 
   List<RespPerformanceModel> _parseListaRespPerformanceModel(dadosJson) {
-    List<RespPerformanceModel> lista = List();
+    List<RespPerformanceModel> lista = [];
     for (var registro in dadosJson) {
       RespPerformanceModel resultadoModel = RespPerformanceModel.fromJson(
           registro); //.converteJson
@@ -123,7 +123,7 @@ class EstatisticaRest extends BaseRest {
   }
 
   List<QuantidadeModel> _parseListaQuantidadeModel(dadosJson) {
-    List<QuantidadeModel> lista = List();
+    List<QuantidadeModel> lista = [];
     for (var registro in dadosJson) {
       QuantidadeModel resultadoModel = QuantidadeModel.fromJson(
           registro); //.converteJson
@@ -133,7 +133,7 @@ class EstatisticaRest extends BaseRest {
   }
 
   List<RespostaModel> _parseListaRespostaModel(dadosJson) {
-    List<RespostaModel> lista = List();
+    List<RespostaModel> lista = [];
     for (var registro in dadosJson) {
       RespostaModel resultadoModel = RespostaModel.fromJson(
           registro); //.converteJson

@@ -8,9 +8,9 @@ import 'dart:convert';
 
 class RedeRest extends BaseRest {
 
-  Future<List<RedeModel>> processaHttpGetList(String url, String tipo) async {
+  Future<List<RedeModel>?> processaHttpGetList(String url, String tipo) async {
     try {
-      http.Response response = await http.get(url);
+      http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         var dadosJson = json.decode(response.body);
         return _parseListaRedeModel(dadosJson);
@@ -27,12 +27,12 @@ class RedeRest extends BaseRest {
     }
   }
 
-  Future<List<RedeModel>> processaHttpGetListToken(String url, String tipo) async {
+  Future<List<RedeModel>?> processaHttpGetListToken(String url, String tipo) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
         headers: <String, String>{
           'Authorization': token,
         });
@@ -58,7 +58,7 @@ class RedeRest extends BaseRest {
 
   Future<List<RedeModel>> processaHttpPostList(String url, var redeModel) async {
     try {
-      http.Response response = await http.post(url,
+      http.Response response = await http.post(Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -84,10 +84,10 @@ class RedeRest extends BaseRest {
   }
 
   Future<List<IntegranteModel>> processaHttpGetListIntegrantes(String url) async {
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var dadosJson = json.decode(response.body);
-      List<IntegranteModel> lista = List();
+      List<IntegranteModel> lista = [];
       for (var registro in dadosJson) {
         IntegranteModel integranteModel = IntegranteModel.fromJson(
             registro); //.converteJson
@@ -100,7 +100,7 @@ class RedeRest extends BaseRest {
   }
 
   List<RedeModel> _parseListaRedeModel(dadosJson) {
-    List<RedeModel> lista = List();
+    List<RedeModel> lista = [];
     for (var registro in dadosJson) {
       RedeModel resultadoModel = RedeModel.fromJson(
           registro); //.converteJson
@@ -109,12 +109,12 @@ class RedeRest extends BaseRest {
     return lista;
   }
 
-  Future<RedeModel> processaHttpGetObject(String url) async {
+  Future<RedeModel?> processaHttpGetObject(String url) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN);
+      String token = await prefs.getString(ConstantesConfig.PREFERENCES_TOKEN)!;
 
-      http.Response response = await http.get(url,
+      http.Response response = await http.get(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': token,
